@@ -89,6 +89,13 @@ export const menuItems: NavItemData[] = [
         icon: Globe,
         href: "/globalmaster",
       },
+      {
+        id: "daybeginend",
+        title: "Day Begin / End",
+        titleKey: "sidebar.dayBeginEnd",
+        icon: Landmark,
+        href: "/day-begin-end",
+      },
     ],
   },
 
