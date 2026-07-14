@@ -72,6 +72,7 @@ import TdsTransactionPage from "@/pages/transactionmaster/TdsTransactionPage";
 import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
 import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
+import ModifyTdsTransactionPage from "@/pages/transactionmaster/ModifyTdsTransactionPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
@@ -176,6 +177,7 @@ export const router = createBrowserRouter([
       { path: "/transactionmaster/tl-cc-installment", element: <TlCcInstallmentPage /> },
       { path: "/transactionmaster/tl-disbursement", element: <TlDisbursementPage /> },
       { path: "/transactionmaster/transfer", element: <TransferPage /> },
+      { path: "/transactionmaster/modify-tds-transaction", element: <ModifyTdsTransactionPage /> },
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
     ],

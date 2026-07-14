@@ -97,4 +97,12 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     icon: "/Transfer.png",
     href: "/transactionmaster/transfer",
   },
+  {
+    id: "modify-tds-transaction",
+    titleEn: "Modify TDS Transaction",
+    titleHi: "टीडीएस व्यवहार सुधारणे",
+    descriptionEn: "Modify the TDS transaction details.",
+    icon: FALLBACK_ICON,
+    href: "/transactionmaster/modify-tds-transaction",
+  },
 ];
