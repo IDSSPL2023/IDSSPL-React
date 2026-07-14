@@ -43,10 +43,22 @@
     "title": "கணக்கு மாஸ்டர்",
     "breadcrumb": "கணக்கு மாஸ்டர்",
     "options": {
-      "caSa": { "title": "சிஏ/எஸ்ஏ", "description": "சிஏ/எஸ்ஏ விண்ணப்ப விவரங்களை உள்ளிடவும்." },
-      "deposit": { "title": "வைப்பு", "description": "வைப்பு விண்ணப்ப விவரங்களை உள்ளிடவும்." },
-      "loan": { "title": "கடன்", "description": "கடன் விண்ணப்ப விவரங்களை உள்ளிடவும்." },
-      "investment": { "title": "முதலீடு", "description": "முதலீடு விண்ணப்ப விவரங்களை உள்ளிடவும்." }
+      "caSa": {
+        "title": "சிஏ/எஸ்ஏ",
+        "description": "சிஏ/எஸ்ஏ விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      },
+      "deposit": {
+        "title": "வைப்பு",
+        "description": "வைப்பு விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      },
+      "loan": {
+        "title": "கடன்",
+        "description": "கடன் விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      },
+      "investment": {
+        "title": "முதலீடு",
+        "description": "முதலீடு விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      }
     },
     "filters": {
       "id": "ஐடி",
@@ -203,6 +215,24 @@
       "newAuthorization": "புதிய அங்கீகாரம்",
       "modifyAuthorization": "அங்கீகாரம் மாற்று",
       "authorizeRejected": "அங்கீகாரம் நிராகரிக்கப்பட்டது"
+    }
+  },
+  "accountAuthorizeMaster": {
+    "title": "கணக்கை அங்கீகரிக்கவும்",
+    "navTitle": "மாஸ்டர் பராமரிப்பு கணக்கு அங்கீகாரம்",
+    "searchPlaceholder": "கணக்கு வகையைத் தேடுங்கள்...",
+    "show": "காட்டு",
+    "cards": {
+      "casaAuthorization": "சேமிப்பு/நடப்புக் கணக்கு அங்கீகாரம்",
+      "casaAuthorizationClosing": "சேமிப்பு/நடப்புக் கணக்கு அங்கீகாரம் மூடல்",
+      "depositAuthorization": "வைப்பு அங்கீகாரம்",
+      "depositAuthorizationClosing": "வைப்பு அங்கீகாரம் மூடல்",
+      "loanAuthorization": "கடன் அங்கீகாரம்",
+      "loanClosing": "கடன் முடிவு",
+      "fixedAssetAuthorization": "நிலையான சொத்து அங்கீகாரம்",
+      "fixedAssetClosing": "நிலையான சொத்து மூடல்",
+      "investmentAuthorization": "முதலீடு அங்கீகாரம்",
+      "investmentClosing": "முதலீடு மூடல்"
     }
   },
   "tdClose": {

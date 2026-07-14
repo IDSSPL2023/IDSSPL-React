@@ -54,7 +54,7 @@ export interface AuthorizeSavingAccountData {
 /* ===================== Config ===================== */
 
 const CONFIG = {
-  icon: "/Authorize.png",
+  icon: "/shield-check.png",
   titleEn: "Authorize Saving Account",
   titleHi: "सेव्हिंग अकाउंटसाठी परवाना द्या",
   descEn: "Check information related to the Account and Authorize them.",

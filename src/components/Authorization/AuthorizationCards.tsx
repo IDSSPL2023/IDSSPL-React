@@ -23,7 +23,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
-    href: "authorization/authorizeaccount",
+    href: "/authorization/authorizeaccountmain",
   },
   {
     key: "customer",
@@ -33,7 +33,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
-    href: "authorization/customer",
+    href: "/authorization/authorizecustomer",
   },
   {
     key: "user",
@@ -163,12 +163,10 @@ const AuthorizationCard = ({ item }: AuthorizationCardProps) => {
 
 const AuthorizationCards = () => {
   return (
-    <div className=" m-5 w-full max-w-7xl rounded-xl bg-white p-3 sm:p-4 md:p-6 dark:bg-slate-900">
-      <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-2">
-        {AUTHORIZATION_ITEMS.map((item) => (
-          <AuthorizationCard key={item.key} item={item} />
-        ))}
-      </div>
+    <div className="p-4 grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-2">
+      {AUTHORIZATION_ITEMS.map((item) => (
+        <AuthorizationCard key={item.key} item={item} />
+      ))}
     </div>
   );
 };

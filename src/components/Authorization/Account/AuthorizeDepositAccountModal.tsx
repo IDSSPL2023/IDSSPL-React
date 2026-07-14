@@ -84,7 +84,7 @@ export interface AuthorizeDepositAccountData {
 /* ===================== Config ===================== */
 
 const CONFIG = {
-  icon: "/Authorize.png",
+  icon: "/shield-check.png",
   titleEn: "Authorize Deposit Account",
   titleHi: "ठेवीचे खाते अधिकृत करा",
   descEn: "Check information related to the Account and Authorize them.",
