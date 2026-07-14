@@ -74,6 +74,7 @@ import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
+import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -125,9 +126,10 @@ export const router = createBrowserRouter([
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/day-begin-end", element: <DayBeginEndPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
+      { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
-      { path: "/authorization/authorizeaccount", element: <AuthorizeAccountPage /> },
-      { path: "/authorization/customer", element: <AuthorizationCustomerPage /> },
+      { path: "/authorization/authorizeaccountmain/authorizeaccount", element: <AuthorizeAccountPage /> },
+      { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
       { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
       { path: "/authorization/transaction/cash-deposit", element: <CashDepositAuthorizePage /> },
       { path: "/authorization/transaction/cash-withdrawal", element: <CashWithdrawalAuthorizePage /> },
