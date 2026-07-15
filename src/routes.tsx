@@ -62,6 +62,7 @@ import TLOtherChargesPage from "@/pages/futuremodels/TLOtherChargesPage";
 import UnLeanPage from "@/pages/futuremodels/UnLeanPage";
 import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
+import SupportUtilityPage from "@/pages/SupportUtilityPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
 import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
@@ -167,6 +168,7 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/un-lean", element: <UnLeanPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
+      { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
       { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },
