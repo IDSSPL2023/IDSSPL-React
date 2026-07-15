@@ -21,7 +21,9 @@
     "view": "पहा",
     "edit": "संपादित करा",
     "services": "सेवा",
-    "logout": "लॉगआउट"
+    "logout": "लॉगआउट",
+    "modify": "सुधारणा करा",
+    "fieldRequired": "हे क्षेत्र आवश्यक आहे"
   },
   "fields": {
     "accountCode": "खाते कोड",
@@ -37,16 +39,50 @@
     "loanAccountName": "कर्ज खाते नाव",
     "lienAmount": "बोजा रक्कम",
     "remark": "शेरा",
-    "serial": "क्रम"
+    "serial": "क्रम",
+    "branchCode": "शाखा कोड",
+    "branchName": "शाखेचे नाव",
+    "assignedBy": "यांनी नियुक्त केले",
+    "reasonOfModification": "सुधारणा कारण",
+    "newLedgerBalance": "नवीन लेजर शिल्लक",
+    "monthMinimumBalance": "मासिक किमान शिल्लक",
+    "glAccountCode": "जीएल खाते कोड",
+    "openingBalance": "प्रारंभिक शिल्लक",
+    "currentBalance": "सध्याची शिल्लक",
+    "tnxDate": "व्यवहार तारीख",
+    "debitCash": "डेबिट रोख",
+    "creditCash": "क्रेडिट रोख",
+    "debitTransfer": "डेबिट हस्तांतरण",
+    "creditTransfer": "क्रेडिट हस्तांतरण",
+    "debitClearing": "डेबिट क्लिअरिंग",
+    "creditClearing": "क्रेडिट क्लिअरिंग",
+    "debitCashVouchers": "डेबिट रोख व्हाउचर्स",
+    "creditCashVouchers": "क्रेडिट रोख व्हाउचर्स",
+    "debitTransferVouchers": "डेबिट हस्तांतरण व्हाउचर्स",
+    "creditTransferVouchers": "क्रेडिट हस्तांतरण व्हाउचर्स",
+    "debitClVouchers": "डेबिट सीएल व्हाउचर्स",
+    "creditClVouchers": "क्रेडिट सीएल व्हाउचर्स"
   },
   "accountMaster": {
     "title": "खाते मास्टर",
     "breadcrumb": "खाते मास्टर",
     "options": {
-      "caSa": { "title": "चालू/बचत खाते", "description": "सीए/एसए अर्जाचा तपशील भरा." },
-      "deposit": { "title": "ठेव", "description": "ठेव अर्जाचा तपशील भरा." },
-      "loan": { "title": "कर्ज", "description": "कर्ज अर्जाचा तपशील भरा." },
-      "investment": { "title": "गुंतवणूक", "description": "गुंतवणूक अर्जाचा तपशील भरा." }
+      "caSa": {
+        "title": "चालू/बचत खाते",
+        "description": "सीए/एसए अर्जाचा तपशील भरा."
+      },
+      "deposit": {
+        "title": "ठेव",
+        "description": "ठेव अर्जाचा तपशील भरा."
+      },
+      "loan": {
+        "title": "कर्ज",
+        "description": "कर्ज अर्जाचा तपशील भरा."
+      },
+      "investment": {
+        "title": "गुंतवणूक",
+        "description": "गुंतवणूक अर्जाचा तपशील भरा."
+      }
     },
     "filters": {
       "id": "आयडी",
@@ -205,6 +241,24 @@
       "authorizeRejected": "अधिकृतीकरण नाकारले"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "खाते अधिकृत करा",
+    "navTitle": "खाते अधिकृत मास्टर मेंटेनन्स",
+    "searchPlaceholder": "खाते प्रकार शोधा...",
+    "show": "दाखवा",
+    "cards": {
+      "casaAuthorization": "बचत/चालू खाते अधिकृतीकरण",
+      "casaAuthorizationClosing": "बचत/चालू खाते अधिकृतीकरण बंद",
+      "depositAuthorization": "ठेव अधिकृतीकरण",
+      "depositAuthorizationClosing": "ठेव अधिकृतीकरण बंद",
+      "loanAuthorization": "कर्ज अधिकृतीकरण",
+      "loanClosing": "कर्ज बंद करणे",
+      "fixedAssetAuthorization": "स्थिर मालमत्ता अधिकृतीकरण",
+      "fixedAssetClosing": "स्थिर मालमत्ता बंद करणे",
+      "investmentAuthorization": "गुंतवणूक अधिकृतीकरण",
+      "investmentClosing": "गुंतवणूक बंद करणे"
+    }
+  },
   "tdClose": {
     "title": "मुदत ठेव बंद करा",
     "breadcrumb": "मुदत ठेव बंद करा"
@@ -237,6 +291,12 @@
   },
   "lienRevoke": {
     "title": "बोजा काढल्याची नोंद"
+  },
+  "modifyAccountBalance": {
+    "title": "खाते शिल्लक सुधारणा करा",
+    "breadcrumb": "खाते शिल्लक सुधारणा करा",
+    "subtitle": "मंजूर कारणासह खात्याची लेजर व उपलब्ध शिल्लक अद्यतनित करा.",
+    "successTitle": "खाते शिल्लक यशस्वीरित्या सुधारित केली"
   },
   "tdCalculate": {
     "title": "परिपक्वतेची रक्कम",
@@ -280,6 +340,7 @@
     "headOfficeMaster": "मुख्य कार्यालय मास्टर",
     "globalMaster": "जागतिक मास्टर",
     "branchMaster": "शाखा मास्टर",
+    "dayBeginEnd": "दिवस सुरू / संपवणे",
     "futureModels": "फ्युचर मॉडेल्स",
     "search": "शोधा",
     "lastLogin": "शेवटचे लॉगिन:",
@@ -294,5 +355,49 @@
     "noMatchingItems": "जुळणारे मेनू आयटम नाहीत",
     "comingSoon": "लवकरच येत आहे",
     "logoAlt": "लोगो"
+  },
+  "modifyBranchGlBalance": {
+    "title": "शाखेची जीएल शिल्लक सुधारित करा",
+    "successTitle": "शाखेची जीएल शिल्लक यशस्वीरित्या सुधारित केली"
+  },
+  "modifyBranchGlHistory": {
+    "title": "शाखेच्या जीएल (GL) इतिहासामध्ये बदल करा",
+    "successTitle": "शाखेचा जीएल इतिहास यशस्वीरित्या सुधारित केला",
+    "amountPlaceholder": "रक्कम प्रविष्ट करा",
+    "namePlaceholder": "name@company.com"
+  },
+  "modifyCashHandlingRecord": {
+    "title": "रोख व्यवहार नोंदीमध्ये बदल करा",
+    "infoTitle": "रोख व्यवहार माहिती",
+    "infoSubtitle": "रोख चलनाची नोंद करण्यापूर्वी शाखा व व्यवहाराची माहिती निवडा.",
+    "summaryTitle": "रोख चलन सारांश",
+    "summarySubtitle": "मूल्यनिहाय नोटा व नाण्यांची संख्या भरून एकूण रोख रक्कम पडताळा.",
+    "successTitle": "रोख व्यवहार नोंद यशस्वीरित्या सुधारित केली",
+    "amountPlaceholder": "रक्कम प्रविष्ट करा",
+    "namePlaceholder": "name@company.com",
+    "keyPlaceholder": "की क्रमांक",
+    "fields": {
+      "asOnDate": "दिनांकाप्रमाणे",
+      "scrollNumber": "स्क्रोल क्रमांक",
+      "cashHandlingNumber": "रोख व्यवहार क्रमांक",
+      "amount": "रक्कम",
+      "returnAmount": "परत रक्कम",
+      "r2000": "R2000",
+      "r500": "R500",
+      "p2000": "P2000",
+      "p500": "P500",
+      "r200": "R200",
+      "r100": "R100",
+      "p200": "P200",
+      "p100": "P100",
+      "r50": "R50",
+      "r20": "R20",
+      "p50": "P50",
+      "p20": "P20",
+      "r10": "R10",
+      "rChange": "RChange",
+      "p10": "P10",
+      "pChange": "PChange"
+    }
   }
 }

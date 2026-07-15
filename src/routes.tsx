@@ -23,6 +23,7 @@ import AccountMasterLoanPage from "@/pages/account-master/AccountMasterLoanPage"
 import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
+import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
@@ -71,8 +72,16 @@ import TdsTransactionPage from "@/pages/transactionmaster/TdsTransactionPage";
 import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
 import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
+import ModifyTdsTransactionPage from "@/pages/transactionmaster/ModifyTdsTransactionPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
+import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
+import FutureModalsPage from "./components/FutureModal";
+import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
+import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
+import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
+import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
+
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -122,10 +131,12 @@ export const router = createBrowserRouter([
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
+      { path: "/day-begin-end", element: <DayBeginEndPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
+      { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
-      { path: "/authorization/authorizeaccount", element: <AuthorizeAccountPage /> },
-      { path: "/authorization/customer", element: <AuthorizationCustomerPage /> },
+      { path: "/authorization/authorizeaccountmain/authorizeaccount", element: <AuthorizeAccountPage /> },
+      { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
       { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
       { path: "/authorization/transaction/cash-deposit", element: <CashDepositAuthorizePage /> },
       { path: "/authorization/transaction/cash-withdrawal", element: <CashWithdrawalAuthorizePage /> },
@@ -159,6 +170,12 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/tl-open", element: <TermLoanOpenPage /> },
       { path: "/futuremodels/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/futuremodels/un-lean", element: <UnLeanPage /> },
+
+      { path: "/futuremodels/modifyaccountbalance", element: <ModifyAccountBalancePage /> },
+      { path: "/futuremodels/modifybranchglbalance", element: <ModifyBranchGlBalance /> },
+      { path: "/futuremodels/modifybranchglhistory", element: <ModifyBranchGlHistory /> },
+      { path: "/futuremodels/modifycashhandlingrecord", element: <ModifyCashHandlingRecord /> },
+
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
@@ -171,7 +188,9 @@ export const router = createBrowserRouter([
       { path: "/transactionmaster/tl-cc-installment", element: <TlCcInstallmentPage /> },
       { path: "/transactionmaster/tl-disbursement", element: <TlDisbursementPage /> },
       { path: "/transactionmaster/transfer", element: <TransferPage /> },
+      { path: "/transactionmaster/modify-tds-transaction", element: <ModifyTdsTransactionPage /> },
       { path: "/usermaster", element: <UserMasterPage /> },
+      { path: "/futuremodals", element: <FutureModalsPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },

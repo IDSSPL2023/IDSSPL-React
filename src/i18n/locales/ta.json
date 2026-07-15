@@ -37,16 +37,41 @@
     "loanAccountName": "கடன் கணக்கு பெயர்",
     "lienAmount": "பிணைய தொகை",
     "remark": "குறிப்பு",
-    "serial": "வரிசை எண்"
+    "serial": "வரிசை எண்",
+    "tnxDate": "TNX Date",
+    "debitCash": "Debit Cash",
+    "creditCash": "Credit Cash",
+    "debitTransfer": "Debit Transfer",
+    "creditTransfer": "Credit Transfer",
+    "debitClearing": "Debit Clearing",
+    "creditClearing": "Credit Clearing",
+    "debitCashVouchers": "Debit Cash Vouchers",
+    "creditCashVouchers": "Credit Cash Vouchers",
+    "debitTransferVouchers": "Debit Transfer Vouchers",
+    "creditTransferVouchers": "Credit Transfer Vouchers",
+    "debitClVouchers": "Debit Cl Vouchers",
+    "creditClVouchers": "Credit Cl Vouchers"
   },
   "accountMaster": {
     "title": "கணக்கு மாஸ்டர்",
     "breadcrumb": "கணக்கு மாஸ்டர்",
     "options": {
-      "caSa": { "title": "சிஏ/எஸ்ஏ", "description": "சிஏ/எஸ்ஏ விண்ணப்ப விவரங்களை உள்ளிடவும்." },
-      "deposit": { "title": "வைப்பு", "description": "வைப்பு விண்ணப்ப விவரங்களை உள்ளிடவும்." },
-      "loan": { "title": "கடன்", "description": "கடன் விண்ணப்ப விவரங்களை உள்ளிடவும்." },
-      "investment": { "title": "முதலீடு", "description": "முதலீடு விண்ணப்ப விவரங்களை உள்ளிடவும்." }
+      "caSa": {
+        "title": "சிஏ/எஸ்ஏ",
+        "description": "சிஏ/எஸ்ஏ விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      },
+      "deposit": {
+        "title": "வைப்பு",
+        "description": "வைப்பு விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      },
+      "loan": {
+        "title": "கடன்",
+        "description": "கடன் விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      },
+      "investment": {
+        "title": "முதலீடு",
+        "description": "முதலீடு விண்ணப்ப விவரங்களை உள்ளிடவும்."
+      }
     },
     "filters": {
       "id": "ஐடி",
@@ -205,6 +230,24 @@
       "authorizeRejected": "அங்கீகாரம் நிராகரிக்கப்பட்டது"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "கணக்கை அங்கீகரிக்கவும்",
+    "navTitle": "மாஸ்டர் பராமரிப்பு கணக்கு அங்கீகாரம்",
+    "searchPlaceholder": "கணக்கு வகையைத் தேடுங்கள்...",
+    "show": "காட்டு",
+    "cards": {
+      "casaAuthorization": "சேமிப்பு/நடப்புக் கணக்கு அங்கீகாரம்",
+      "casaAuthorizationClosing": "சேமிப்பு/நடப்புக் கணக்கு அங்கீகாரம் மூடல்",
+      "depositAuthorization": "வைப்பு அங்கீகாரம்",
+      "depositAuthorizationClosing": "வைப்பு அங்கீகாரம் மூடல்",
+      "loanAuthorization": "கடன் அங்கீகாரம்",
+      "loanClosing": "கடன் முடிவு",
+      "fixedAssetAuthorization": "நிலையான சொத்து அங்கீகாரம்",
+      "fixedAssetClosing": "நிலையான சொத்து மூடல்",
+      "investmentAuthorization": "முதலீடு அங்கீகாரம்",
+      "investmentClosing": "முதலீடு மூடல்"
+    }
+  },
   "tdClose": {
     "title": "தவணை வைப்பு மூடல்",
     "breadcrumb": "தவணை வைப்பு மூடல்"
@@ -280,6 +323,7 @@
     "headOfficeMaster": "தலைமை அலுவலக மாஸ்டர்",
     "globalMaster": "குளோபல் மாஸ்டர்",
     "branchMaster": "கிளை மாஸ்டர்",
+    "dayBeginEnd": "நாள் தொடக்கம் / முடிவு",
     "futureModels": "எதிர்கால மாதிரிகள்",
     "search": "தேடு",
     "lastLogin": "கடைசி உள்நுழைவு:",
@@ -294,5 +338,45 @@
     "noMatchingItems": "பொருந்தும் மெனு உருப்படிகள் இல்லை",
     "comingSoon": "விரைவில் வருகிறது",
     "logoAlt": "லோகோ"
+  },
+  "modifyBranchGlHistory": {
+    "title": "Modify Branch GL History",
+    "successTitle": "Branch GL history modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com"
+  },
+  "modifyCashHandlingRecord": {
+    "title": "Modify Cash Handeling Records",
+    "infoTitle": "Cash Handling Information",
+    "infoSubtitle": "Select the branch and transaction details before recording cash denominations.",
+    "summaryTitle": "Cash Denomination Summary",
+    "summarySubtitle": "Enter the denomination-wise cash count and verify the total cash amount.",
+    "successTitle": "Cash handling record modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com",
+    "keyPlaceholder": "Key No",
+    "fields": {
+      "asOnDate": "As On Date",
+      "scrollNumber": "Scroll Number",
+      "cashHandlingNumber": "Cash Handling number",
+      "amount": "Amount",
+      "returnAmount": "Return Amount",
+      "r2000": "R2000",
+      "r500": "R500",
+      "p2000": "P2000",
+      "p500": "P500",
+      "r200": "R200",
+      "r100": "R100",
+      "p200": "P200",
+      "p100": "P100",
+      "r50": "R50",
+      "r20": "R20",
+      "p50": "P50",
+      "p20": "P20",
+      "r10": "R10",
+      "rChange": "RChange",
+      "p10": "P10",
+      "pChange": "PChange"
+    }
   }
 }

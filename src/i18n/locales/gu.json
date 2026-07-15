@@ -37,16 +37,41 @@
     "loanAccountName": "લોન ખાતાનું નામ",
     "lienAmount": "બોજાની રકમ",
     "remark": "શેરો",
-    "serial": "ક્રમ"
+    "serial": "ક્રમ",
+    "tnxDate": "TNX Date",
+    "debitCash": "Debit Cash",
+    "creditCash": "Credit Cash",
+    "debitTransfer": "Debit Transfer",
+    "creditTransfer": "Credit Transfer",
+    "debitClearing": "Debit Clearing",
+    "creditClearing": "Credit Clearing",
+    "debitCashVouchers": "Debit Cash Vouchers",
+    "creditCashVouchers": "Credit Cash Vouchers",
+    "debitTransferVouchers": "Debit Transfer Vouchers",
+    "creditTransferVouchers": "Credit Transfer Vouchers",
+    "debitClVouchers": "Debit Cl Vouchers",
+    "creditClVouchers": "Credit Cl Vouchers"
   },
   "accountMaster": {
     "title": "ખાતા માસ્ટર",
     "breadcrumb": "ખાતા માસ્ટર",
     "options": {
-      "caSa": { "title": "સીએ/એસએ", "description": "સીએ/એસએ અરજીની વિગતો દાખલ કરો." },
-      "deposit": { "title": "ડિપોઝિટ", "description": "ડિપોઝિટ અરજીની વિગતો દાખલ કરો." },
-      "loan": { "title": "લોન", "description": "લોન અરજીની વિગતો દાખલ કરો." },
-      "investment": { "title": "રોકાણ", "description": "રોકાણ અરજીની વિગતો દાખલ કરો." }
+      "caSa": {
+        "title": "સીએ/એસએ",
+        "description": "સીએ/એસએ અરજીની વિગતો દાખલ કરો."
+      },
+      "deposit": {
+        "title": "ડિપોઝિટ",
+        "description": "ડિપોઝિટ અરજીની વિગતો દાખલ કરો."
+      },
+      "loan": {
+        "title": "લોન",
+        "description": "લોન અરજીની વિગતો દાખલ કરો."
+      },
+      "investment": {
+        "title": "રોકાણ",
+        "description": "રોકાણ અરજીની વિગતો દાખલ કરો."
+      }
     },
     "filters": {
       "id": "આઈડી",
@@ -205,6 +230,24 @@
       "authorizeRejected": "ઓથોરાઈઝેશન નકારેલ"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "ખાતું અધિકૃત કરો",
+    "navTitle": "માસ્ટર મેન્ટેનન્સ ખાતું અધિકૃત",
+    "searchPlaceholder": "ખાતાનો પ્રકાર શોધો...",
+    "show": "બતાવો",
+    "cards": {
+      "casaAuthorization": "બચત/ચાલુ ખાતું અધિકૃતિકરણ",
+      "casaAuthorizationClosing": "બચત/ચાલુ ખાતું અધિકૃતિકરણ બંધ",
+      "depositAuthorization": "થાપણ અધિકૃતિકરણ",
+      "depositAuthorizationClosing": "થાપણ અધિકૃતિકરણ બંધ",
+      "loanAuthorization": "લોન અધિકૃતિકરણ",
+      "loanClosing": "લોન બંધ",
+      "fixedAssetAuthorization": "સ્થિર મિલકત અધિકૃતિકરણ",
+      "fixedAssetClosing": "સ્થિર મિલકત બંધ",
+      "investmentAuthorization": "રોકાણ અધિકૃતિકરણ",
+      "investmentClosing": "રોકાણ બંધ"
+    }
+  },
   "tdClose": {
     "title": "ટર્મ ડિપોઝિટ બંધ કરો",
     "breadcrumb": "ટર્મ ડિપોઝિટ બંધ કરો"
@@ -280,6 +323,7 @@
     "headOfficeMaster": "હેડ ઓફિસ માસ્ટર",
     "globalMaster": "ગ્લોબલ માસ્ટર",
     "branchMaster": "શાખા માસ્ટર",
+    "dayBeginEnd": "દિવસ શરૂ / અંત",
     "futureModels": "ફ્યુચર મોડેલ્સ",
     "search": "શોધો",
     "lastLogin": "છેલ્લું લોગિન:",
@@ -294,5 +338,45 @@
     "noMatchingItems": "કોઈ મેળ ખાતી મેનૂ આઇટમ નથી",
     "comingSoon": "ટૂંક સમયમાં આવે છે",
     "logoAlt": "લોગો"
+  },
+  "modifyBranchGlHistory": {
+    "title": "Modify Branch GL History",
+    "successTitle": "Branch GL history modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com"
+  },
+  "modifyCashHandlingRecord": {
+    "title": "Modify Cash Handeling Records",
+    "infoTitle": "Cash Handling Information",
+    "infoSubtitle": "Select the branch and transaction details before recording cash denominations.",
+    "summaryTitle": "Cash Denomination Summary",
+    "summarySubtitle": "Enter the denomination-wise cash count and verify the total cash amount.",
+    "successTitle": "Cash handling record modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com",
+    "keyPlaceholder": "Key No",
+    "fields": {
+      "asOnDate": "As On Date",
+      "scrollNumber": "Scroll Number",
+      "cashHandlingNumber": "Cash Handling number",
+      "amount": "Amount",
+      "returnAmount": "Return Amount",
+      "r2000": "R2000",
+      "r500": "R500",
+      "p2000": "P2000",
+      "p500": "P500",
+      "r200": "R200",
+      "r100": "R100",
+      "p200": "P200",
+      "p100": "P100",
+      "r50": "R50",
+      "r20": "R20",
+      "p50": "P50",
+      "p20": "P20",
+      "r10": "R10",
+      "rChange": "RChange",
+      "p10": "P10",
+      "pChange": "PChange"
+    }
   }
 }

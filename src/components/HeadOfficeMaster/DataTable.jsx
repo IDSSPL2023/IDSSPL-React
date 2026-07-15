@@ -1,11 +1,14 @@
-import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowUpDown, MoreVertical, Eye, SquarePen } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ArrowUpDown, Eye, SquarePen, GitBranch } from "lucide-react";
+import RowActionMenu from "../shared/RowActionMenu";
 import { getMasterConfig, rowToFormData } from "./masterConfig";
 import ParameterModal from "./ParameterModal";
+import BranchEnableDisableModal from "./BranchEnableDisableModal";
 
 const menuOptions = [
   { key: "view", label: "View", icon: Eye },
   { key: "edit", label: "Edit", icon: SquarePen },
+  { key: "branchEnableDisable", label: "Branch Enable Disable ", icon: GitBranch },
 ];
 
 const SortableHeader = ({ label, sortable, onSort }) => (
@@ -22,19 +25,7 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
   const config = getMasterConfig(master.key);
   const [sortKey, setSortKey] = useState(null);
   const [sortAsc, setSortAsc] = useState(true);
-  const [openMenuRow, setOpenMenuRow] = useState(null);
   const [modal, setModal] = useState(null);
-  const menuRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpenMenuRow(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleSort = (key) => {
     if (sortKey === key) {
@@ -68,7 +59,13 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
   }, [filteredRows, sortKey, sortAsc]);
 
   const handleMenuAction = (action, row) => {
-    setOpenMenuRow(null);
+    if (action === "branchEnableDisable") {
+      setModal({
+        mode: action,
+        row,
+      });
+      return;
+    }
     setModal({
       mode: action,
       data: rowToFormData(master.key, row),
@@ -145,38 +142,16 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
                           {idx + 1}
                         </span>
                       </td>
-                      <td className="px-4 py-3 relative">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setOpenMenuRow(openMenuRow === row.id ? null : row.id)
-                          }
-                          className="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-300"
-                        >
-                          <MoreVertical size={16} />
-                        </button>
-
-                        {openMenuRow === row.id && (
-                          <div
-                            ref={menuRef}
-                            className="absolute left-4 top-10 z-20 w-44 rounded-xl border border-primary-200 bg-white py-2 shadow-lg dark:bg-slate-900"
-                          >
-                            {menuOptions.map((opt) => {
-                              const Icon = opt.icon;
-                              return (
-                                <button
-                                  key={opt.key}
-                                  type="button"
-                                  onClick={() => handleMenuAction(opt.key, row)}
-                                  className="flex w-full items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                                >
-                                  <Icon size={16} className="text-primary" />
-                                  {opt.label}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
+                      <td className="px-4 py-3">
+                        <RowActionMenu
+                          items={menuOptions.map((opt) => ({
+                            ...opt,
+                            onClick: () => handleMenuAction(opt.key, row),
+                          }))}
+                          menuWidth={224}
+                          triggerClassName="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-300"
+                          ariaLabel="Head office row actions"
+                        />
                       </td>
                       {config.columns.map((col) => (
                         <td key={col.key} className="px-4 py-3 text-gray-700 dark:text-slate-300">
@@ -192,7 +167,25 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
         </div>
       </div>
 
-      {modal && (
+      {modal?.mode === "branchEnableDisable" ? (
+        <BranchEnableDisableModal
+          row={modal.row}
+          onClose={() => setModal(null)}
+          onSubmit={(formData) => {
+            onRowsChange(
+              rows.map((row) =>
+                row.id === modal.row?.id
+                  ? {
+                      ...row,
+                      transactionAllowed: formData.transactionAllowed === "enable" ? "Enable" : "Disable",
+                      workingDate: formData.workingDate,
+                    }
+                  : row
+              )
+            );
+          }}
+        />
+      ) : modal ? (
         <ParameterModal
           mode={modal.mode}
           masterKey={master.key}
@@ -200,7 +193,7 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
           onClose={() => setModal(null)}
           onSave={handleSave}
         />
-      )}
+      ) : null}
     </>
   );
 };
