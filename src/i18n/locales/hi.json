@@ -43,10 +43,22 @@
     "title": "खाता मास्टर",
     "breadcrumb": "खाता मास्टर",
     "options": {
-      "caSa": { "title": "सीए/एसए", "description": "सीए/एसए आवेदन विवरण दर्ज करें." },
-      "deposit": { "title": "जमा", "description": "जमा आवेदन विवरण दर्ज करें." },
-      "loan": { "title": "ऋण", "description": "ऋण आवेदन विवरण दर्ज करें." },
-      "investment": { "title": "निवेश", "description": "निवेश आवेदन विवरण दर्ज करें." }
+      "caSa": {
+        "title": "सीए/एसए",
+        "description": "सीए/एसए आवेदन विवरण दर्ज करें."
+      },
+      "deposit": {
+        "title": "जमा",
+        "description": "जमा आवेदन विवरण दर्ज करें."
+      },
+      "loan": {
+        "title": "ऋण",
+        "description": "ऋण आवेदन विवरण दर्ज करें."
+      },
+      "investment": {
+        "title": "निवेश",
+        "description": "निवेश आवेदन विवरण दर्ज करें."
+      }
     },
     "filters": {
       "id": "आईडी",
@@ -205,6 +217,24 @@
       "authorizeRejected": "प्राधिकरण अस्वीकृत"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "खाता अधिकृत करें",
+    "navTitle": "मास्टर मेंटेनेंस खाता अधिकृत",
+    "searchPlaceholder": "खाता प्रकार खोजें...",
+    "show": "दिखाएं",
+    "cards": {
+      "casaAuthorization": "रोख जमा नोंद",
+      "casaAuthorizationClosing": "रोख पैसे काढणे",
+      "depositAuthorization": "RTGS नोंद",
+      "depositAuthorizationClosing": "मुदत देख व्याज भुगतान चिन्हांकित",
+      "loanAuthorization": "आवती हप्ता नोंद",
+      "loanClosing": "TDS व्यवहार",
+      "fixedAssetAuthorization": "TL/CC हप्ता नोंद",
+      "fixedAssetClosing": "TL वितरण नोंद",
+      "investmentAuthorization": "TL इतर शुल्क नोंद",
+      "investmentClosing": "हस्तांतरण नोंद"
+    }
+  },
   "tdClose": {
     "title": "मियादी जमा बंद करें",
     "breadcrumb": "मियादी जमा बंद करें"
@@ -280,7 +310,8 @@
     "headOfficeMaster": "हेड ऑफिस मास्टर",
     "globalMaster": "ग्लोबल मास्टर",
     "branchMaster": "शाखा मास्टर",
-    "futureModels": "फ्यूचर मॉडल्स",
+    "dayBeginEnd": "दिन प्रारंभ / अंत",
+    "futureModels": "भविष्य के मॉडल",
     "search": "खोजें",
     "lastLogin": "अंतिम लॉगिन:",
     "role": "भूमिका:",

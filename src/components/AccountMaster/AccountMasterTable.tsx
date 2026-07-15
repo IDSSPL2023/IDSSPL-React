@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, SquarePen, UserRoundCog } from "lucide-react";
+import { Eye, SquarePen, UserRoundCog, UserCheck } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 import { type AccountFilters } from "../shared/FilterModal";
 import RowActionMenu, { type RowActionMenuItem } from "../shared/RowActionMenu";
@@ -61,6 +61,7 @@ type AccountMasterTableProps = {
   onView?: (row: RowData) => void;
   onEdit?: (row: RowData) => void;
   onFreeze?: (row: RowData) => void;
+  onCheque?: (row: RowData) => void; // Add this prop
   /** Overrides the default View/Edit/Freeze-Unfreeze row menu (e.g. for an Authorize/Reject workflow). */
   renderMenuItems?: (row: RowData) => RowActionMenuItem[];
 };
@@ -72,6 +73,7 @@ const AccountMasterTable = ({
   onView,
   onEdit,
   onFreeze,
+  onCheque, // Add this prop
   renderMenuItems,
 }: AccountMasterTableProps) => {
   const { tRaw } = useBilingual();
@@ -112,6 +114,7 @@ const AccountMasterTable = ({
           { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => onView?.(row) },
           { key: "edit", label: tRaw("common.edit"), icon: SquarePen, onClick: () => onEdit?.(row) },
           { key: "freeze", label: tRaw("accountMaster.table.menuFreeze"), icon: UserRoundCog, onClick: () => onFreeze?.(row) },
+          { key: "cheque", label: tRaw("accountMaster.table.menuCheque"), icon: UserCheck, onClick: () => onCheque?.(row) } // Fix: Use onCheque instead of onFreeze
         ];
 
   return (

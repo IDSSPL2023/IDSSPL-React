@@ -5,6 +5,8 @@ import AddAccountMaster from "@/components/AccountMaster/AddAccountMaster";
 import ViewAccountModal, { type AccountDetails } from "@/components/AccountMaster/ViewAccount";
 import AccountFreezeModal, { type AccountFreezeSubmitPayload } from "@/components/AccountMaster/AccountFreezeModal";
 import { useBilingual } from "@/i18n/useBilingual";
+import DisplayVouchers from "./Cheque/voucher";
+import ChequeBookIssue from "./Cheque/cheque-issue";
 
 export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment";
 
@@ -27,6 +29,8 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
   const [viewMode, setViewMode] = useState<"view" | "edit" | null>(null);
   const [selectedAccountRow, setSelectedAccountRow] = useState<RowData | null>(null);
   const [freezeRow, setFreezeRow] = useState<RowData | null>(null);
+  const [openChequeModal, setOpenChequeModal] = useState(false);
+  const [openVoucherModal, setOpenVoucherModal] = useState(false);
 
   const handleView = (row: RowData) => {
     setSelectedAccountRow(row);
@@ -36,6 +40,12 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
   const handleEdit = (row: RowData) => {
     setSelectedAccountRow(row);
     setViewMode("edit");
+  };
+
+  // Add this handler for cheque
+  const handleCheque = (row: RowData) => {
+    setSelectedAccountRow(row);
+    setOpenChequeModal(true);
   };
 
   const toAccountDetails = (row: RowData): AccountDetails => ({
@@ -71,7 +81,12 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
       />
 
       <div className="px-3 py-2">
-        <AccountMasterTable onView={handleView} onEdit={handleEdit} onFreeze={(row) => setFreezeRow(row)} />
+        <AccountMasterTable 
+          onView={handleView} 
+          onEdit={handleEdit} 
+          onFreeze={(row) => setFreezeRow(row)}
+          onCheque={handleCheque}  // Pass the cheque handler
+        />
       </div>
 
       {openAddModal && <AddAccountMaster onClose={() => setOpenAddModal(false)} />}
@@ -90,6 +105,20 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
           onClose={() => setFreezeRow(null)}
           onSubmit={handleFreezeSubmit}
         />
+      )}
+      
+      {openChequeModal && (
+        <ChequeBookIssue
+          onClose={() => setOpenChequeModal(false)}
+          onDisplayVouchers={() => {
+            setOpenChequeModal(false);
+            setOpenVoucherModal(true);
+          }}
+        />
+      )}
+      
+      {openVoucherModal && (
+        <DisplayVouchers onClose={() => setOpenVoucherModal(false)} />
       )}
     </div>
   );

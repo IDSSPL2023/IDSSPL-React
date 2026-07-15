@@ -43,10 +43,22 @@
     "title": "Account Master",
     "breadcrumb": "Account Master",
     "options": {
-      "caSa": { "title": "CA/SA", "description": "Enter the CA/SA application details." },
-      "deposit": { "title": "Deposit", "description": "Enter the Deposit application details." },
-      "loan": { "title": "Loan", "description": "Enter the Loan application details." },
-      "investment": { "title": "Investment", "description": "Enter the Investment application details." }
+      "caSa": {
+        "title": "CA/SA",
+        "description": "Enter the CA/SA application details."
+      },
+      "deposit": {
+        "title": "Deposit",
+        "description": "Enter the Deposit application details."
+      },
+      "loan": {
+        "title": "Loan",
+        "description": "Enter the Loan application details."
+      },
+      "investment": {
+        "title": "Investment",
+        "description": "Enter the Investment application details."
+      }
     },
     "filters": {
       "id": "ID",
@@ -205,6 +217,24 @@
       "authorizeRejected": "Authorize Rejected"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "Account Authorize",
+    "navTitle": "Master Maintenance Account Authorize",
+    "searchPlaceholder": "Search account type...",
+    "show": "Show",
+    "cards": {
+      "casaAuthorization": "CASA Authorization",
+      "casaAuthorizationClosing": "CASA Authorization Closing",
+      "depositAuthorization": "Deposit Authorization",
+      "depositAuthorizationClosing": "Deposit Authorization Closing",
+      "loanAuthorization": "Loan Authorization",
+      "loanClosing": "Loan Closing",
+      "fixedAssetAuthorization": "Fixed Asset Authorization",
+      "fixedAssetClosing": "Fixed Asset Closing",
+      "investmentAuthorization": "Investment Authorization",
+      "investmentClosing": "Investment Closing"
+    }
+  },
   "tdClose": {
     "title": "Term Deposit Close",
     "breadcrumb": "Term Deposit Close"
@@ -280,6 +310,7 @@
     "headOfficeMaster": "Headoffice Master",
     "globalMaster": "Global Master",
     "branchMaster": "Branch Master",
+    "dayBeginEnd": "Day Begin/End",
     "futureModels": "Future Models",
     "search": "Search",
     "lastLogin": "Last Login:",

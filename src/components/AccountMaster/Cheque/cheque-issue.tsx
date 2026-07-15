@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import Image from "@/components/ui/Image";
-import { 
-  X, 
+import {
+  X,
   ChevronDown,
-  MoreVertical, 
-  Check, 
+  MoreVertical,
+  Check,
   Receipt,
   User,
   UserCircle,
@@ -17,21 +16,20 @@ import {
   Layers,
   Banknote,
   Building2,
-  Settings,
   Users,
-  FileCheck,
-  BookOpen,
-  ListChecks,
-  ClipboardCheck,
-  Wallet,
-  ArrowRightLeft,
   FileStack,
-  BadgeCheck,
-  CircleCheck,
-  Send,
-  FilePenLine,
-  Printer
+  ArrowRightLeft,
+  Wallet,
+  Search,
 } from 'lucide-react';
+import FormModal from '@/components/shared/FormModal';
+import {
+  FieldShell,
+  TextInput,
+  RadioYesNo,
+  SectionCard,
+  SelectInput,
+} from '@/components/shared/FormFields';
 
 // ==================== TYPE DEFINITIONS ====================
 
@@ -56,573 +54,655 @@ interface FormData {
   authorisedSignatory3: string;
 }
 
-interface FieldConfig {
-  key: keyof FormData;
-  label: string;
-  labelMarathi: string;
-  placeholder?: string;
-  icon?: React.ReactNode;
-  readOnly?: boolean;
-  required?: boolean;
-  textAlign?: 'left' | 'right' | 'center';
-  type?: 'text' | 'number' | 'date';
-  colSpan?: 1 | 2 | 3;
-  rightIcon?: React.ReactNode;
-  onRightIconClick?: () => void;
-  isSelect?: boolean;
-  options?: Array<{ value: string; label: string }>;
-  isRadio?: boolean;
-  radioOptions?: Array<{ value: string; label: string }>;
-  radioName?: string;
-}
-
-interface SectionConfig {
-  title: string;
-  titleMarathi: string;
-  icon: React.ReactNode;
-  fields: FieldConfig[];
-}
-
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'disabled';
-  disabled?: boolean;
-  icon?: React.ComponentType<{ size?: number; strokeWidth?: number }>;
-  onClick?: () => void;
-  className?: string;
-  type?: 'button' | 'submit' | 'reset';
-}
-
-// ==================== REUSABLE COMPONENTS ====================
-
-// 1. Reusable Form Field
-const FormField: React.FC<{
-  field: FieldConfig;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  onRadioChange?: (value: string) => void;
-}> = ({ field, value, onChange, onRadioChange }) => {
-  const {
-    key,
-    label,
-    labelMarathi,
-    placeholder = '',
-    icon,
-    readOnly = false,
-    required = false,
-    textAlign = 'left',
-    type = 'text',
-    rightIcon,
-    onRightIconClick,
-    isSelect = false,
-    options = [],
-    isRadio = false,
-    radioOptions = [],
-    radioName = key,
-  } = field;
-
-  // Radio Group
-  if (isRadio) {
-    return (
-      <div>
-        <label className="block text-xs font-semibold text-slate-700 mb-1.5 dark:text-slate-300">
-          {label} <span className="text-slate-400 font-normal">/ {labelMarathi}</span>
-        </label>
-        <div className="flex items-center gap-6 py-2">
-          {radioOptions.map((option) => (
-            <label key={option.value} className="flex items-center gap-2 text-sm text-slate-700 font-medium cursor-pointer dark:text-slate-300">
-              <input 
-                type="radio" 
-                name={radioName}
-                value={option.value}
-                checked={value === option.value}
-                onChange={() => onRadioChange?.(option.value)}
-                className="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500 focus:ring-2" 
-              />
-              <span>{option.label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Select Field
-  if (isSelect) {
-    return (
-      <div>
-        <label className="block text-xs font-semibold text-slate-700 mb-1.5 dark:text-slate-300">
-          {label}
-          <span className="text-slate-400 font-normal"> / {labelMarathi}</span>
-          {required && <span className="text-red-500 font-bold ml-1">*</span>}
-        </label>
-        <div className="relative flex items-center">
-          {icon && (
-            <div className="absolute left-3 flex items-center justify-center text-slate-500">
-              {icon}
-            </div>
-          )}
-          <select
-            value={value}
-            onChange={onChange}
-            disabled={readOnly}
-            className={`w-full ${readOnly ? 'bg-[#f1f5f9] dark:bg-slate-800 cursor-not-allowed' : 'bg-white dark:bg-slate-900'}
-              border border-slate-300 dark:border-slate-700 rounded-[10px]
-              ${icon ? 'pl-9' : 'pl-3'} pr-10 py-2 text-sm
-              ${readOnly ? 'text-slate-600 dark:text-slate-400' : 'text-slate-800 dark:text-slate-100'}
-              font-medium shadow-sm
-              ${!readOnly && 'focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none'}
-              appearance-none
-            `}
-          >
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown size={16} className="absolute right-3 text-slate-500 pointer-events-none" />
-        </div>
-      </div>
-    );
-  }
-
-  // Input Field
-  return (
-    <div>
-      <label className="block text-xs font-semibold text-slate-700 mb-1.5 dark:text-slate-300">
-        {label}
-        <span className="text-slate-400 font-normal"> / {labelMarathi}</span>
-        {required && <span className="text-red-500 font-bold ml-1">*</span>}
-      </label>
-      <div className="relative flex items-center">
-        {icon && (
-          <div className="absolute left-3 flex items-center justify-center text-slate-500">
-            {icon}
-          </div>
-        )}
-        <input
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          readOnly={readOnly}
-          className={`w-full ${readOnly ? 'bg-[#f1f5f9] dark:bg-slate-800 cursor-not-allowed' : 'bg-white dark:bg-slate-900'}
-            border border-slate-300 dark:border-slate-700 rounded-[10px]
-            ${icon ? 'pl-9' : 'pl-3'} ${rightIcon ? 'pr-9' : 'pr-3'} py-2 text-sm
-            ${readOnly ? 'text-slate-600 dark:text-slate-400' : 'text-slate-800 dark:text-slate-100'}
-            font-medium shadow-sm
-            ${!readOnly && 'focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none'}
-            ${textAlign === 'right' ? 'text-right' : textAlign === 'center' ? 'text-center' : 'text-left'}
-          `}
-        />
-        {rightIcon && (
-          <button
-            onClick={onRightIconClick}
-            type="button"
-            className="absolute right-2 flex items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-          >
-            {rightIcon}
-          </button>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// 2. Reusable Section Header
-const SectionHeader: React.FC<{ title: string; titleMarathi: string; icon: React.ReactNode }> = ({ 
-  title, 
-  titleMarathi, 
-  icon 
-}) => {
-  return (
-    <div className="flex items-center gap-2 pb-4 mb-5 border-b border-slate-100 dark:border-slate-800">
-      <div className="w-7 h-7 flex items-center justify-center text-[#0256cc] dark:text-blue-400 flex-shrink-0">
-        {icon}
-      </div>
-      <h2 className="text-sm font-bold text-[#1e293b] dark:text-slate-100 flex items-center gap-1.5 flex-wrap">
-        <span>{title}</span>
-        <span className="text-slate-400 font-normal">/</span>
-        <span className="text-slate-500 dark:text-slate-400 font-medium">{titleMarathi}</span>
-      </h2>
-    </div>
-  );
-};
-
-// 3. Reusable Card Container
-const CardContainer: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
-  children, 
-  className = "" 
-}) => {
-  return (
-    <div className={`border border-[#0256cc]/60 border-t-[3.5px] border-t-[#0256cc] rounded-[14px] p-5 bg-white dark:bg-slate-900 shadow-sm ${className}`}>
-      {children}
-    </div>
-  );
-};
-
-// 4. Reusable Button
-const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  disabled = false,
-  icon: IconComponent,
-  onClick,
-  className = "",
-  type = "button"
-}) => {
-  const variants = {
-    primary: 'bg-[#0256cc] hover:bg-blue-700 active:bg-blue-800 text-white border-transparent',
-    secondary: 'bg-white dark:bg-slate-900 border border-[#0256cc] text-[#0256cc] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 active:bg-blue-100',
-    disabled: 'bg-[#f1f5f9] dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700 cursor-not-allowed'
-  };
-
-  const baseStyle = 'flex items-center justify-center gap-1.5 px-6 py-2.5 rounded-lg text-sm font-semibold shadow-sm transition-all duration-200';
-  const variantStyle = disabled ? variants.disabled : variants[variant] || variants.primary;
-
-  return (
-    <button 
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyle} ${variantStyle} ${className}`}
-    >
-      <span>{children}</span>
-      {IconComponent && <IconComponent size={16} strokeWidth={2.5} />}
-    </button>
-  );
-};
-
-// ==================== MAIN COMPONENT ====================
-
 interface ChequeBookIssueProps {
   onClose?: () => void;
   onDisplayVouchers?: () => void;
+  mode?: 'edit' | 'view' | 'authorize';
 }
 
-export default function ChequeBookIssue({ onClose, onDisplayVouchers }: ChequeBookIssueProps) {
-  const [formData, setFormData] = useState<FormData>({
-    accountCode: "1234567890",
-    accountName: "Akshay Om More",
-    shortName: "Akshay More",
-    ledgerBalance: "408493.5",
-    availableBalance: "408493.5",
-    accountType: "SB",
-    chequeType: "CTS",
-    chequeSeries: "A",
-    chequeNoFrom: "70010",
-    chequeNoTo: "70020",
-    issueDate: "01-Jun-2026",
-    noOfLeaves: "10",
-    chargesApply: "no",
-    chequeIssueCharges: "",
-    serviceTax: "",
-    authorisedSignatory1: "-",
-    authorisedSignatory2: "-",
-    authorisedSignatory3: "-",
-  });
+// ==================== MODE CONFIG ====================
 
-  const handleChange = (field: keyof FormData) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
-  };
+interface ModeConfig {
+  titleEn: string;
+  titleHi: string;
+  descEn: string;
+  descHi: string;
+}
 
-  const handleRadioChange = (field: keyof FormData) => (value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+const MODE_CONFIG: Record<'edit' | 'view' | 'authorize', ModeConfig> = {
+  edit: {
+    titleEn: 'Cheque Book Issue',
+    titleHi: 'धनादेश पुस्तिका वितरण',
+    descEn: 'Create or edit cheque book issue details for the account',
+    descHi: 'खात्यासाठी धनादेश पुस्तिका वितरण तपशील तयार किंवा संपादित करा',
+  },
+  view: {
+    titleEn: 'View Cheque Book Issue',
+    titleHi: 'धनादेश पुस्तिका वितरण पहा',
+    descEn: 'View cheque book issue details for the account',
+    descHi: 'खात्यासाठी धनादेश पुस्तिका वितरण तपशील पहा.',
+  },
+  authorize: {
+    titleEn: 'Authorize Cheque Book Issue',
+    titleHi: 'धनादेश पुस्तिका वितरण अधिकृत करा',
+    descEn: 'Review and authorize cheque book issue request',
+    descHi: 'धनादेश पुस्तिका वितरण विनंतीचे पुनरावलोकन करा आणि अधिकृत करा.',
+  },
+};
 
-  // Define sections with their fields configuration using Lucide icons
-  const sections: SectionConfig[] = [
-    {
-      title: "Account Details",
-      titleMarathi: "खात्याचा तपशील",
-      icon: <UserCircle size={20} strokeWidth={2} />,
-      fields: [
-        {
-          key: "accountCode",
-          label: "Account Code",
-          labelMarathi: "खाते कोड",
-          icon: <Hash size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "accountName",
-          label: "Account Name",
-          labelMarathi: "खाते नाव",
-          icon: <User size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "shortName",
-          label: "Short Name",
-          labelMarathi: "संक्षिप्त नाव",
-          icon: <User size={16} strokeWidth={2} />,
-          required: true,
-        },
-        {
-          key: "ledgerBalance",
-          label: "Ledger Balance",
-          labelMarathi: "लेजर शिल्लक",
-          icon: <Wallet size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-          textAlign: "right",
-        },
-        {
-          key: "availableBalance",
-          label: "Available Balance",
-          labelMarathi: "उपलब्ध शिल्लक",
-          icon: <Banknote size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-          textAlign: "right",
-        },
-      ],
-    },
-    {
-      title: "Cheque Details",
-      titleMarathi: "धनादेश तपशील",
-      icon: <CreditCard size={20} strokeWidth={2} />,
-      fields: [
-        {
-          key: "accountType",
-          label: "Account Type",
-          labelMarathi: "खात्याचा प्रकार",
-          icon: <Building2 size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "chequeType",
-          label: "Cheque Type",
-          labelMarathi: "धनादेश प्रकार",
-          icon: <FileText size={16} strokeWidth={2} />,
-          isSelect: true,
-          options: [
-            { value: 'CTS', label: 'CTS' },
-            { value: 'NON-CTS', label: 'Non-CTS' }
-          ],
-          required: true,
-        },
-        {
-          key: "chequeSeries",
-          label: "Cheque Series",
-          labelMarathi: "धनादेश मालिका",
-          icon: <Layers size={16} strokeWidth={2} />,
-          required: true,
-        },
-        {
-          key: "chequeNoFrom",
-          label: "Cheque No From",
-          labelMarathi: "चेक क्रमांकापासून",
-          icon: <ArrowRightLeft size={16} strokeWidth={2} />,
-          required: true,
-          rightIcon: <MoreVertical size={16} />,
-          onRightIconClick: () => console.log('More options clicked'),
-        },
-        {
-          key: "chequeNoTo",
-          label: "Cheque No To",
-          labelMarathi: "चेक क्रमांकापर्यंत",
-          icon: <ArrowRightLeft size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "issueDate",
-          label: "Issue Date",
-          labelMarathi: "वितरण तारीख",
-          icon: <Calendar size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "noOfLeaves",
-          label: "No Of Leaves",
-          labelMarathi: "पानांची संख्या",
-          icon: <FileStack size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "chargesApply",
-          label: "Charges Apply",
-          labelMarathi: "वशुल्क लागू",
-          isRadio: true,
-          radioName: "charges_apply",
-          radioOptions: [
-            { value: 'yes', label: 'Yes' },
-            { value: 'no', label: 'No' }
-          ],
-        },
-        {
-          key: "chequeIssueCharges",
-          label: "Chequebook Issue Charges",
-          labelMarathi: "चेकबुक इश्यू चार्जेस",
-          icon: <DollarSign size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-          placeholder: "0.00",
-        },
-        {
-          key: "serviceTax",
-          label: "Service Tax",
-          labelMarathi: "सेवा कर",
-          icon: <DollarSign size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-          placeholder: "0.00",
-        },
-        {
-          key: "authorisedSignatory1",
-          label: "Authorized Signatory 1",
-          labelMarathi: "अधिकृत स्वाक्षरी १",
-          icon: <Signature size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "authorisedSignatory2",
-          label: "Authorized Signatory 2",
-          labelMarathi: "अधिकृत स्वाक्षरी २",
-          icon: <Users size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-        {
-          key: "authorisedSignatory3",
-          label: "Authorized Signatory 3",
-          labelMarathi: "अधिकृत स्वाक्षरी ३",
-          icon: <Users size={16} strokeWidth={2} />,
-          readOnly: true,
-          required: true,
-        },
-      ],
-    },
-  ];
+const DEFAULT_DATA: FormData = {
+  accountCode: '1234567890',
+  accountName: 'Akshay Om More',
+  shortName: 'Akshay More',
+  ledgerBalance: '408493.5',
+  availableBalance: '408493.5',
+  accountType: 'SB',
+  chequeType: 'CTS',
+  chequeSeries: 'A',
+  chequeNoFrom: '70010',
+  chequeNoTo: '70020',
+  issueDate: '01-Jun-2026',
+  noOfLeaves: '10',
+  chargesApply: 'no',
+  chequeIssueCharges: '',
+  serviceTax: '',
+  authorisedSignatory1: '-',
+  authorisedSignatory2: '-',
+  authorisedSignatory3: '-',
+};
 
-  // Helper to get grid classes based on field count
-  const getGridCols = (fieldCount: number): string => {
-    if (fieldCount <= 3) return 'grid-cols-1 md:grid-cols-3';
-    if (fieldCount <= 5) return 'grid-cols-1 md:grid-cols-3';
-    return 'grid-cols-1 md:grid-cols-3';
-  };
+// ==================== CHEQUE NUMBER DATA ====================
 
-  // Handlers
-  const handleValidate = (): void => {
-    console.log('Validate clicked');
-    console.log('Form Data:', formData);
-  };
+const CHEQUE_NUMBER_LIST = [
+  { from: '20010', to: '20020' },
+  { from: '70010', to: '70020' },
+  { from: '36010', to: '36020' },
+  { from: '36030', to: '36040' },
+  { from: '60010', to: '60020' },
+  { from: '6001', to: '60010' },
+  { from: '36001', to: '360010' },
+  { from: '360030', to: '360040' },
+  { from: '360060', to: '360070' },
+  { from: '88091', to: '89001' },
+];
 
-  const handleCancel = (): void => {
-    console.log('Cancel clicked');
-    onClose?.();
-  };
+// ==================== LIST MODAL ====================
+
+interface ListModalProps {
+  title: string;
+  columns: { key: string; label: string }[];
+  rows: Record<string, string>[];
+  onSelect: (row: Record<string, string>) => void;
+  onClose: () => void;
+}
+
+function ListModal({ title, columns, rows, onSelect, onClose }: ListModalProps) {
+  const [searchText, setSearchText] = useState('');
+
+  const filteredRows = React.useMemo(() => {
+    if (!searchText.trim()) return rows;
+    const q = searchText.trim().toLowerCase();
+    return rows.filter((row) =>
+      columns.some((col) => String(row[col.key] ?? '').toLowerCase().includes(q))
+    );
+  }, [rows, columns, searchText]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 antialiased font-sans bg-black/40">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4">
+      <div className="relative flex max-h-[85vh] w-[95vw] max-w-[720px] flex-col overflow-hidden rounded-[28px] bg-white shadow-2xl">
+        {/* Decorative corner circles */}
+        <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-primary-100" />
+        <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-primary-100" />
 
-      {/* Main Dialog Modal Container */}
-      <div className="w-full max-w-6xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-[24px] shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
-
-        {/* Header Block */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 flex-shrink-0">
-              <Image
-                src="/add-icn.png"
-                alt="Person"
-                fill
-                className="object-contain"
-                sizes="40px"
-                priority
-                unoptimized={import.meta.env.DEV}
-              />
-            </div>
-
-            <h1 className="text-xl font-bold text-[#1e293b] dark:text-slate-100 flex items-center gap-2 flex-wrap">
-              <span className="tracking-tight text-[#1e293b] dark:text-slate-100">Cheque Book Issue</span>
-              <span className="text-slate-400 font-normal">/</span>
-              <span className="text-[#64748b] dark:text-slate-400 font-bold text-xl">धनादेश पुस्तिका वितरण</span>
-            </h1>
+        {/* Header */}
+        <div className="relative z-10 flex items-center justify-between gap-4 px-6 pt-6 pb-5">
+          <h2 className="shrink-0 text-lg font-bold text-slate-800">{title}</h2>
+          <div className="relative w-full max-w-[260px]">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              placeholder="Search"
+              className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm text-slate-700 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+            />
           </div>
-
           <button
+            type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 dark:hover:text-slate-300 p-1.5 rounded-full transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
             aria-label="Close"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
           >
-            <X size={26} strokeWidth={1.5} />
+            <X className="h-4 w-4" strokeWidth={1.75} />
           </button>
         </div>
 
-        {/* Content Body Grid - scrollable */}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
-          <div className="space-y-6">
-            {sections.map((section, sectionIndex) => (
-              <CardContainer key={sectionIndex}>
-                <SectionHeader
-                  title={section.title}
-                  titleMarathi={section.titleMarathi}
-                  icon={section.icon}
-                />
-
-                <div className={`grid ${getGridCols(section.fields.length)} gap-x-6 gap-y-4`}>
-                  {section.fields.map((field) => (
-                    <FormField
-                      key={field.key}
-                      field={field}
-                      value={formData[field.key] as string}
-                      onChange={handleChange(field.key)}
-                      onRadioChange={field.isRadio ? handleRadioChange(field.key) : undefined}
-                    />
+        {/* Table */}
+        <div className="scrollbar-hide relative z-10 flex-1 overflow-y-auto px-6 pb-6">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="bg-primary-100 text-slate-700">
+                {columns.map((col, idx) => (
+                  <th
+                    key={col.key}
+                    className={`px-4 py-3 font-semibold ${idx === 0 ? 'rounded-l-lg' : ''}`}
+                  >
+                    {col.label}
+                  </th>
+                ))}
+                <th className="rounded-r-lg px-4 py-3 text-right font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRows.map((row, rowIdx) => (
+                <tr key={rowIdx} className="border-b border-slate-50 last:border-0">
+                  {columns.map((col, idx) => (
+                    <td key={col.key} className={`px-4 py-3 ${idx === 0 ? '' : 'text-slate-700'}`}>
+                      {idx === 0 ? (
+                        <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                          {String(row[col.key] ?? '')}
+                        </span>
+                      ) : (
+                        String(row[col.key] ?? '')
+                      )}
+                    </td>
                   ))}
-                </div>
-              </CardContainer>
-            ))}
-          </div>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      type="button"
+                      onClick={() => onSelect(row)}
+                      className="rounded-lg bg-primary-50 px-4 py-1.5 text-sm font-medium text-primary transition hover:bg-primary-100"
+                    >
+                      Select
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {filteredRows.length === 0 && (
+                <tr>
+                  <td colSpan={columns.length + 1} className="px-4 py-8 text-center text-sm text-slate-400">
+                    No records found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-
-        {/* Action Button Strip */}
-        <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex-shrink-0">
-          <Button
-            variant="primary"
-            icon={Check}
-            onClick={handleValidate}
-          >
-            Validate
-          </Button>
-
-          <Button
-            variant="secondary"
-            icon={X}
-            onClick={handleCancel}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            variant="secondary"
-            icon={Receipt}
-            onClick={onDisplayVouchers}
-          >
-            Display Vouchers
-          </Button>
-
-          <Button
-            variant="disabled"
-            icon={ChevronDown}
-            disabled
-          >
-            Save
-          </Button>
-        </div>
-
       </div>
     </div>
+  );
+}
+
+// ==================== MAIN COMPONENT ====================
+
+export default function ChequeBookIssue({
+  onClose,
+  onDisplayVouchers,
+  mode = 'edit',
+}: ChequeBookIssueProps) {
+  const [formData, setFormData] = useState<FormData>({ ...DEFAULT_DATA });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isValidated, setIsValidated] = useState(false);
+  const [isChequeListOpen, setIsChequeListOpen] = useState(false);
+
+  const isView = mode === 'view' || mode === 'authorize';
+  const isEdit = mode === 'edit';
+  const config = MODE_CONFIG[mode] || MODE_CONFIG.edit;
+
+  const clearError = (key: string) => {
+    setErrors((prev) => ({ ...prev, [key]: '' }));
+    setIsValidated(false);
+  };
+
+  const set =
+    <K extends keyof FormData>(key: K) =>
+    (val: FormData[K]) => {
+      setFormData((prev) => ({ ...prev, [key]: val }));
+      clearError(key);
+    };
+
+  const validate = (): boolean => {
+    const nextErrors: Record<string, string> = {};
+
+    if (!formData.accountCode.trim()) nextErrors.accountCode = 'Account Code is required';
+    if (!formData.accountName.trim()) nextErrors.accountName = 'Account Name is required';
+    if (!formData.shortName.trim()) nextErrors.shortName = 'Short Name is required';
+    if (!formData.chequeSeries.trim()) nextErrors.chequeSeries = 'Cheque Series is required';
+    if (!formData.chequeNoFrom.trim()) nextErrors.chequeNoFrom = 'Cheque No From is required';
+
+    // Validate cheque numbers are numeric
+    if (formData.chequeNoFrom && !/^\d+$/.test(formData.chequeNoFrom.trim())) {
+      nextErrors.chequeNoFrom = 'Enter a valid cheque number';
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleValidate = () => {
+    setIsValidated(validate());
+  };
+
+  const handleSave = () => {
+    if (!isValidated) return;
+    console.log('Form Data:', formData);
+    onClose?.();
+  };
+
+  const handleChequeSelect = (row: Record<string, string>) => {
+    setFormData((prev) => ({
+      ...prev,
+      chequeNoFrom: row.from,
+      chequeNoTo: row.to,
+    }));
+    setIsChequeListOpen(false);
+    clearError('chequeNoFrom');
+  };
+
+  const grid4 = 'grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4';
+  const grid3 = 'grid grid-cols-1 gap-4 md:grid-cols-3';
+
+  // Footer actions based on mode
+  const renderFooter = () => {
+    if (mode === 'authorize') {
+      return (
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+          >
+            Reject <X size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+          >
+            Cancel <X size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+          >
+            Authorize <Check size={16} />
+          </button>
+        </div>
+      );
+    }
+
+    if (mode === 'view') {
+      return (
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+          >
+            Cancel <X size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex items-center gap-1.5 rounded-lg border border-transparent bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+          >
+            OK, Got it <Check size={16} />
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4 flex-wrap">
+        <button
+          type="button"
+          onClick={handleValidate}
+          disabled={isValidated}
+          className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Validate <Check size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+        >
+          Cancel <X size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={onDisplayVouchers}
+          className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+        >
+          Display Vouchers <Receipt size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={!isValidated}
+          className="flex items-center gap-1.5 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-200 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Save <ChevronDown size={16} />
+        </button>
+      </div>
+    );
+  };
+
+  // Replace Image with img element for React compatibility
+  const HeaderIcon = () => (
+    <div className="flex h-12 w-12 items-center justify-center">
+      <img src="/add-icn.png" alt="Cheque Book" width={50} height={50} />
+    </div>
+  );
+
+  return (
+    <>
+      <FormModal
+        onClose={onClose ?? (() => {})}
+        titleEn={config.titleEn}
+        titleHi={config.titleHi}
+        subtitleEn={config.descEn}
+        subtitleHi={config.descHi}
+        tabs={[]}
+        activeTab=""
+        onTabChange={() => {}}
+        hideFooter
+        headerIcon={<HeaderIcon />}
+      >
+        {/* Account Details Section */}
+        <SectionCard
+          titleEn="Account Details"
+          titleHi="खात्याचा तपशील"
+          icon="/User.png"
+        >
+          <div className={grid3}>
+            <FieldShell label="Account Code" labelHi="खाते कोड" required>
+              <TextInput
+                icon={<Hash size={16} />}
+                value={formData.accountCode}
+                onChange={() => {}}
+                readOnly
+              />
+            </FieldShell>
+
+            <FieldShell label="Account Name" labelHi="खाते नाव" required>
+              <TextInput
+                icon={<User size={16} />}
+                value={formData.accountName}
+                onChange={() => {}}
+                readOnly
+              />
+            </FieldShell>
+
+            <FieldShell label="Short Name" labelHi="संक्षिप्त नाव" required>
+              <TextInput
+                icon={<User size={16} />}
+                value={formData.shortName}
+                onChange={set('shortName')}
+                placeholder="Enter Short Name"
+                readOnly={isView}
+                error={!!errors.shortName}
+              />
+              {errors.shortName && <p className="mt-1 text-sm text-red-500">{errors.shortName}</p>}
+            </FieldShell>
+          </div>
+
+          <div className={`${grid3} mt-3`}>
+            <FieldShell label="Ledger Balance" labelHi="लेजर शिल्लक" required>
+              <TextInput
+                icon={<Wallet size={16} />}
+                value={formData.ledgerBalance}
+                onChange={() => {}}
+                readOnly
+              />
+            </FieldShell>
+
+            <FieldShell label="Available Balance" labelHi="उपलब्ध शिल्लक" required>
+              <TextInput
+                icon={<Banknote size={16} />}
+                value={formData.availableBalance}
+                onChange={() => {}}
+                readOnly
+              />
+            </FieldShell>
+          </div>
+        </SectionCard>
+
+        {/* Cheque Details Section */}
+        <SectionCard
+          titleEn="Cheque Details"
+          titleHi="धनादेश तपशील"
+          icon="/User.png"
+        >
+          <div className={grid3}>
+            <FieldShell label="Account Type" labelHi="खात्याचा प्रकार" required>
+              {isEdit ? (
+                <SelectInput
+                  icon={<Building2 size={16} />}
+                  value={formData.accountType}
+                  onChange={set('accountType')}
+                  options={['SB', 'Current', 'Saving', 'Fixed Deposit']}
+                  placeholder="Select Account Type"
+                  error={!!errors.accountType}
+                />
+              ) : (
+                <TextInput
+                  icon={<Building2 size={16} />}
+                  value={formData.accountType}
+                  onChange={() => {}}
+                  readOnly
+                />
+              )}
+            </FieldShell>
+
+            <FieldShell label="Cheque Type" labelHi="धनादेश प्रकार" required>
+              {isEdit ? (
+                <SelectInput
+                  icon={<FileText size={16} />}
+                  value={formData.chequeType}
+                  onChange={set('chequeType')}
+                  options={['GST', 'CTS', 'NON-CTS']}
+                  placeholder="Select Cheque Type"
+                  error={!!errors.chequeType}
+                />
+              ) : (
+                <TextInput
+                  icon={<FileText size={16} />}
+                  value={formData.chequeType}
+                  onChange={() => {}}
+                  readOnly
+                />
+              )}
+            </FieldShell>
+
+            <FieldShell label="Cheque Series" labelHi="धनादेश मालिका" required>
+              {isEdit ? (
+                <SelectInput
+                  icon={<Layers size={16} />}
+                  value={formData.chequeSeries}
+                  onChange={set('chequeSeries')}
+                  options={['A', 'B', 'C', 'D']}
+                  placeholder="Select Cheque Series"
+                  error={!!errors.chequeSeries}
+                />
+              ) : (
+                <TextInput
+                  icon={<Layers size={16} />}
+                  value={formData.chequeSeries}
+                  onChange={() => {}}
+                  readOnly
+                />
+              )}
+            </FieldShell>
+          </div>
+
+          <div className={`${grid3} mt-4`}>
+            <FieldShell label="Cheque No From" labelHi="चेक क्रमांकापासून" required>
+              <div className="flex items-center gap-2">
+                <div className="min-w-0 flex-1">
+                  <TextInput
+                    icon={<ArrowRightLeft size={16} />}
+                    value={formData.chequeNoFrom}
+                    onChange={set('chequeNoFrom')}
+                    placeholder="Enter Starting Cheque No"
+                    readOnly={isView}
+                    error={!!errors.chequeNoFrom}
+                  />
+                </div>
+                {isEdit && (
+                  <button
+                    type="button"
+                    onClick={() => setIsChequeListOpen(true)}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary-50 text-primary hover:bg-primary-100"
+                  >
+                    <MoreVertical size={14} />
+                  </button>
+                )}
+              </div>
+              {errors.chequeNoFrom && <p className="mt-1 text-sm text-red-500">{errors.chequeNoFrom}</p>}
+            </FieldShell>
+
+            <FieldShell label="Cheque No To" labelHi="चेक क्रमांकापर्यंत" required>
+              <TextInput
+                icon={<ArrowRightLeft size={16} />}
+                value={formData.chequeNoTo}
+                onChange={set('chequeNoTo')}
+                placeholder="Enter Ending Cheque No"
+                readOnly={isView}
+                error={!!errors.chequeNoTo}
+              />
+              {errors.chequeNoTo && <p className="mt-1 text-sm text-red-500">{errors.chequeNoTo}</p>}
+            </FieldShell>
+
+            <FieldShell label="Issue Date" labelHi="वितरण तारीख" required>
+              {isEdit ? (
+                <input
+                  type="date"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
+                  value={formData.issueDate}
+                  onChange={(e) => set('issueDate')(e.target.value)}
+                />
+              ) : (
+                <TextInput
+                  icon={<Calendar size={16} />}
+                  value={formData.issueDate}
+                  onChange={() => {}}
+                  readOnly
+                />
+              )}
+            </FieldShell>
+          </div>
+
+          <div className={`${grid3} mt-4`}>
+            <FieldShell label="No Of Leaves" labelHi="पानांची संख्या" required>
+              <TextInput
+                icon={<FileStack size={16} />}
+                value={formData.noOfLeaves}
+                onChange={() => {}}
+                readOnly
+              />
+            </FieldShell>
+
+            <FieldShell label="Charges Apply" labelHi="वशुल्क लागू">
+              <RadioYesNo
+                label=""
+                labelHi=""
+                value={formData.chargesApply === 'yes'}
+                onChange={(v) => set('chargesApply')(v ? 'yes' : 'no')}
+                disabled={isView}
+              />
+            </FieldShell>
+
+            <FieldShell label="Chequebook Issue Charges" labelHi="चेकबुक इश्यू चार्जस" required>
+              <TextInput
+                icon={<DollarSign size={16} />}
+                value={formData.chequeIssueCharges}
+                onChange={set('chequeIssueCharges')}
+                placeholder="0.00"
+                readOnly={isView}
+              />
+              {errors.chequeIssueCharges && (
+                <p className="mt-1 text-sm text-red-500">{errors.chequeIssueCharges}</p>
+              )}
+            </FieldShell>
+          </div>
+
+          <div className={`${grid3} mt-4`}>
+            <FieldShell label="Service Tax" labelHi="सेवा कर" required>
+              <TextInput
+                icon={<DollarSign size={16} />}
+                value={formData.serviceTax}
+                onChange={set('serviceTax')}
+                placeholder="0.00"
+                readOnly={isView}
+              />
+              {errors.serviceTax && <p className="mt-1 text-sm text-red-500">{errors.serviceTax}</p>}
+            </FieldShell>
+
+            <FieldShell label="Authorized Signatory 1" labelHi="अधिकृत स्वाक्षरी १" required>
+              <TextInput
+                icon={<Signature size={16} />}
+                value={formData.authorisedSignatory1}
+                onChange={set('authorisedSignatory1')}
+                placeholder="Enter Authorized Signatory"
+                readOnly={isView}
+              />
+              {errors.authorisedSignatory1 && (
+                <p className="mt-1 text-sm text-red-500">{errors.authorisedSignatory1}</p>
+              )}
+            </FieldShell>
+
+            <FieldShell label="Authorized Signatory 2" labelHi="अधिकृत स्वाक्षरी २" required>
+              <TextInput
+                icon={<Users size={16} />}
+                value={formData.authorisedSignatory2}
+                onChange={set('authorisedSignatory2')}
+                placeholder="Enter Authorized Signatory"
+                readOnly={isView}
+              />
+              {errors.authorisedSignatory2 && (
+                <p className="mt-1 text-sm text-red-500">{errors.authorisedSignatory2}</p>
+              )}
+            </FieldShell>
+          </div>
+
+          <div className={`${grid3} mt-4`}>
+            <FieldShell label="Authorized Signatory 3" labelHi="अधिकृत स्वाक्षरी ३" required>
+              <TextInput
+                icon={<Users size={16} />}
+                value={formData.authorisedSignatory3}
+                onChange={set('authorisedSignatory3')}
+                placeholder="Enter Authorized Signatory"
+                readOnly={isView}
+              />
+              {errors.authorisedSignatory3 && (
+                <p className="mt-1 text-sm text-red-500">{errors.authorisedSignatory3}</p>
+              )}
+            </FieldShell>
+          </div>
+        </SectionCard>
+
+        {/* Footer */}
+        {renderFooter()}
+      </FormModal>
+
+      {/* Cheque Number List Modal */}
+      {isChequeListOpen && (
+        <ListModal
+          title="Cheque List"
+          columns={[
+            { key: 'from', label: 'Cheque Number From' },
+            { key: 'to', label: 'Cheque Number To' },
+          ]}
+          rows={CHEQUE_NUMBER_LIST.map((item) => ({
+            from: item.from,
+            to: item.to,
+          }))}
+          onSelect={handleChequeSelect}
+          onClose={() => setIsChequeListOpen(false)}
+        />
+      )}
+    </>
   );
 }

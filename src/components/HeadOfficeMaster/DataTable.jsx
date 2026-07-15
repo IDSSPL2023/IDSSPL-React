@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowUpDown, MoreVertical, Eye, SquarePen } from "lucide-react";
+import { ArrowUpDown, MoreVertical, Eye, SquarePen, GitBranch } from "lucide-react";
 import { getMasterConfig, rowToFormData } from "./masterConfig";
 import ParameterModal from "./ParameterModal";
+import BranchEnableDisableModal from "./BranchEnableDisableModal";
 
 const menuOptions = [
   { key: "view", label: "View", icon: Eye },
   { key: "edit", label: "Edit", icon: SquarePen },
+  { key: "branchEnableDisable", label: "Branch Enable Disable ", icon: GitBranch },
 ];
 
 const SortableHeader = ({ label, sortable, onSort }) => (
@@ -69,6 +71,13 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
 
   const handleMenuAction = (action, row) => {
     setOpenMenuRow(null);
+    if (action === "branchEnableDisable") {
+      setModal({
+        mode: action,
+        row,
+      });
+      return;
+    }
     setModal({
       mode: action,
       data: rowToFormData(master.key, row),
@@ -159,7 +168,7 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
                         {openMenuRow === row.id && (
                           <div
                             ref={menuRef}
-                            className="absolute left-4 top-10 z-20 w-44 rounded-xl border border-primary-200 bg-white py-2 shadow-lg dark:bg-slate-900"
+                            className="absolute left-4 top-10 z-20 w-56 rounded-xl border border-primary-200 bg-white py-2 shadow-lg dark:bg-slate-900"
                           >
                             {menuOptions.map((opt) => {
                               const Icon = opt.icon;
@@ -192,7 +201,25 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
         </div>
       </div>
 
-      {modal && (
+      {modal?.mode === "branchEnableDisable" ? (
+        <BranchEnableDisableModal
+          row={modal.row}
+          onClose={() => setModal(null)}
+          onSubmit={(formData) => {
+            onRowsChange(
+              rows.map((row) =>
+                row.id === modal.row?.id
+                  ? {
+                      ...row,
+                      transactionAllowed: formData.transactionAllowed === "enable" ? "Enable" : "Disable",
+                      workingDate: formData.workingDate,
+                    }
+                  : row
+              )
+            );
+          }}
+        />
+      ) : modal ? (
         <ParameterModal
           mode={modal.mode}
           masterKey={master.key}
@@ -200,7 +227,7 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
           onClose={() => setModal(null)}
           onSave={handleSave}
         />
-      )}
+      ) : null}
     </>
   );
 };
