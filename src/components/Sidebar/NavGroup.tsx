@@ -123,17 +123,25 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
                 const ChildIcon = child.icon;
                 const childLabel = child.titleKey ? tRaw(child.titleKey) : child.title;
                 const isActive = pathname === child.href;
+                const childDisabled = !child.href;
                 return (
                   <button
                     key={child.id}
                     type="button"
                     role="menuitem"
+                    disabled={childDisabled}
+                    title={childDisabled ? tRaw("sidebar.comingSoon") : undefined}
                     onClick={() => {
+                      if (!child.href) return;
                       setOpen(false);
                       router.push(child.href);
                     }}
                     className={`flex h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-[13px] font-medium transition-colors ${
-                      isActive ? "bg-primary text-white" : "text-[#1B2143] hover:bg-primary-50"
+                      childDisabled
+                        ? "cursor-not-allowed text-[#A8ACC0] opacity-60"
+                        : isActive
+                        ? "bg-primary text-white"
+                        : "text-[#1B2143] hover:bg-primary-50"
                     }`}
                   >
                     {ChildIcon && <ChildIcon size={15} className="shrink-0" />}
