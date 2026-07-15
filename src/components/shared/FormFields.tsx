@@ -33,7 +33,7 @@ export const FieldShell = ({
   <div className={className}>
     <label
       className={`mb-1.5 block text-black ${variant === "large"
-          ? "text-[16px] font-semibold"
+          ? "text-[14px] font-semibold"
           : "text-sm font-medium"
         }`}
     >

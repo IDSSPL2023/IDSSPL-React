@@ -21,7 +21,10 @@
     "view": "જુઓ",
     "edit": "સંપાદિત કરો",
     "services": "સેવાઓ",
-    "logout": "લોગઆઉટ"
+    "logout": "લોગઆઉટ",
+    "apply": "લાગુ કરો",
+    "calculate": "ગણતરી કરો",
+    "report": "અહેવાલ"
   },
   "fields": {
     "accountCode": "ખાતા કોડ",
@@ -37,7 +40,20 @@
     "loanAccountName": "લોન ખાતાનું નામ",
     "lienAmount": "બોજાની રકમ",
     "remark": "શેરો",
-    "serial": "ક્રમ"
+    "serial": "ક્રમ",
+    "tnxDate": "TNX Date",
+    "debitCash": "Debit Cash",
+    "creditCash": "Credit Cash",
+    "debitTransfer": "Debit Transfer",
+    "creditTransfer": "Credit Transfer",
+    "debitClearing": "Debit Clearing",
+    "creditClearing": "Credit Clearing",
+    "debitCashVouchers": "Debit Cash Vouchers",
+    "creditCashVouchers": "Credit Cash Vouchers",
+    "debitTransferVouchers": "Debit Transfer Vouchers",
+    "creditTransferVouchers": "Credit Transfer Vouchers",
+    "debitClVouchers": "Debit Cl Vouchers",
+    "creditClVouchers": "Credit Cl Vouchers"
   },
   "accountMaster": {
     "title": "ખાતા માસ્ટર",
@@ -325,5 +341,102 @@
     "noMatchingItems": "કોઈ મેળ ખાતી મેનૂ આઇટમ નથી",
     "comingSoon": "ટૂંક સમયમાં આવે છે",
     "logoAlt": "લોગો"
+  },
+  "supportUtility": {
+    "allMasters": "બધા માસ્ટર્સ",
+    "recentlyUsed": "તાજેતરમાં વપરાયેલ",
+    "open": "ખોલો",
+    "welcomeTitle": "સપોર્ટ યુટિલિટીમાં આપનું સ્વાગત છે",
+    "welcomeSubtitle": "બધી માસ્ટર યુટિલિટીઝ એક જ જગ્યાએ શોધો અને સંચાલિત કરો",
+    "searchPlaceholder": "યુટિલિટી શોધો...",
+    "show": "બતાવો",
+    "noUtilitiesFound": "કોઈ યુટિલિટી મળી નથી"
+  },
+  "modifyBranchGlHistory": {
+    "title": "Modify Branch GL History",
+    "successTitle": "Branch GL history modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com"
+  },
+  "modifyCashHandlingRecord": {
+    "title": "Modify Cash Handeling Records",
+    "infoTitle": "Cash Handling Information",
+    "infoSubtitle": "Select the branch and transaction details before recording cash denominations.",
+    "summaryTitle": "Cash Denomination Summary",
+    "summarySubtitle": "Enter the denomination-wise cash count and verify the total cash amount.",
+    "successTitle": "Cash handling record modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com",
+    "keyPlaceholder": "Key No",
+    "fields": {
+      "asOnDate": "As On Date",
+      "scrollNumber": "Scroll Number",
+      "cashHandlingNumber": "Cash Handling number",
+      "amount": "Amount",
+      "returnAmount": "Return Amount",
+      "r2000": "R2000",
+      "r500": "R500",
+      "p2000": "P2000",
+      "p500": "P500",
+      "r200": "R200",
+      "r100": "R100",
+      "p200": "P200",
+      "p100": "P100",
+      "r50": "R50",
+      "r20": "R20",
+      "p50": "P50",
+      "p20": "P20",
+      "r10": "R10",
+      "rChange": "RChange",
+      "p10": "P10",
+      "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "Loan Interest Rate Modification",
+    "subtitle": "View the parameter information and associated details.",
+    "successTitle": "Loan interest rate modified successfully",
+    "successSubtitle": "Please Authorize",
+    "actions": {
+      "new": "New"
+    },
+    "placeholders": {
+      "accountCode": "Select Account Code",
+      "accountName": "name"
+    },
+    "table": {
+      "check": "Check",
+      "interestRate": "Interest Rate",
+      "penalInterest": "Penal Interest",
+      "overdueInterest": "Overdue Interest",
+      "moratoriumInterest": "Moratorium Interest",
+      "dateOfApplication": "Date of Application"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "successTitle": "Interest posting processed successfully",
+    "fields": {
+      "asOnDate": "As on Date",
+      "interestRate": "Interest Rate"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date"
+    },
+    "actions": {
+      "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
+    }
   }
 }
