@@ -12,9 +12,10 @@ export interface ModalButton {
 }
 
 export interface ModalHeaderProps {
-  icon?: LucideIcon;
+  icon?: LucideIcon | React.ReactNode | string;
   iconColor?: string;
   iconBgColor?: string;
+  iconSize?: number;
   title: string;
   titleHi?: string;
   subtitle?: string;
@@ -103,14 +104,72 @@ const ModalWrapper = ({
     return `${baseClasses} ${variantClasses[button.variant || "primary"]}`;
   };
 
+  const renderIcon = () => {
+    if (!header?.icon) return null;
+
+    const { icon, iconColor, iconBgColor, iconSize = 64 } = header;
+
+    // If icon is a string (image URL or imported image)
+    if (typeof icon === "string") {
+      // Check if it's an image URL or base64
+      if (
+        icon.startsWith("data:") ||
+        icon.startsWith("http") ||
+        icon.includes("/")
+      ) {
+        return (
+          <div
+            className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full ${iconBgColor} overflow-hidden`}
+          >
+            <img src={icon} alt="icon" className="h-16 w-16 object-cover" />
+          </div>
+        );
+      }
+      // If it's a simple text/emoji
+      return (
+        <div
+          className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
+        >
+          <span className={`${iconColor} text-lg font-bold`}>{icon}</span>
+        </div>
+      );
+    }
+
+    // If icon is a React element (custom SVG or component)
+    if (React.isValidElement(icon)) {
+      const element = icon as React.ReactElement<any>;
+      return (
+        <div
+          className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
+        >
+          {React.cloneElement(element, {
+            className: `${iconColor} h-5 w-5`,
+            size: iconSize,
+          } as any)}
+        </div>
+      );
+    }
+
+    // If icon is a function (LucideIcon or custom component)
+    if (typeof icon === "function") {
+      const IconComponent = icon as React.ComponentType<any>;
+      return (
+        <div
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
+        >
+          <IconComponent className={iconColor} size={iconSize} />
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   const renderModalHeader = () => {
     if (renderHeader) return renderHeader();
     if (!header) return null;
 
     const {
-      icon: Icon,
-      iconColor = "text-white",
-      iconBgColor = "bg-primary",
       title,
       titleHi,
       subtitle,
@@ -123,13 +182,7 @@ const ModalWrapper = ({
       <div className="shrink-0 p-6 pb-4">
         <div className="flex items-start justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            {Icon && (
-              <div
-                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
-              >
-                <Icon className={iconColor} size={22} />
-              </div>
-            )}
+            {renderIcon()}
             <div>
               <h2 className="text-2xl font-bold text-[#101828] dark:text-slate-100">
                 {title}
@@ -200,8 +253,8 @@ const ModalWrapper = ({
                       disabled={button.disabled}
                       className={getButtonClasses(button)}
                     >
-                      {button.label}
                       {button.icon}
+                      {button.label}
                     </button>
                   ))}
 

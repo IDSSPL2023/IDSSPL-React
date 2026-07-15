@@ -22,6 +22,7 @@ import RadioInput from "../../shared/Inputs/RadioInput";
 import ListModal, { type ListModalItem } from "../ListModal";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
+import { PERSON } from "@/assets";
 
 export interface TdsReportFormData {
   accountType: string;
@@ -248,9 +249,9 @@ function ProvisonAndVlcc({
 
   // Define header configuration
   const getHeaderConfig = () => ({
-    icon: User,
-    iconColor: "text-white",
-    iconBgColor: "bg-primary",
+    icon: PERSON,
+    // iconColor: "text-white",
+    // iconBgColor: "bg-primary",
     title: "TDS Report Apply provision & VLCC",
     titleHi: "TDS रिपोर्ट प्रावधान लागू करा आणि VLCC",
     subtitle: "View the parameter information and associated details.",
@@ -290,12 +291,14 @@ function ProvisonAndVlcc({
         onClick: () => {},
         variant: "outline" as const,
         icon: <Calculator size={16} />,
+        className: "bg-[#F3F4FB] border border-[#0B63C1] text-[#0B63C1]",
       },
       {
         label: "Report",
         onClick: () => {},
         variant: "outline" as const,
         icon: <FileText size={16} />,
+        className: "bg-[#F3F4FB] text-[#0B63C1]",
       },
       {
         label: "Apply",
