@@ -43,10 +43,22 @@
     "title": "खाते मास्टर",
     "breadcrumb": "खाते मास्टर",
     "options": {
-      "caSa": { "title": "चालू/बचत खाते", "description": "सीए/एसए अर्जाचा तपशील भरा." },
-      "deposit": { "title": "ठेव", "description": "ठेव अर्जाचा तपशील भरा." },
-      "loan": { "title": "कर्ज", "description": "कर्ज अर्जाचा तपशील भरा." },
-      "investment": { "title": "गुंतवणूक", "description": "गुंतवणूक अर्जाचा तपशील भरा." }
+      "caSa": {
+        "title": "चालू/बचत खाते",
+        "description": "सीए/एसए अर्जाचा तपशील भरा."
+      },
+      "deposit": {
+        "title": "ठेव",
+        "description": "ठेव अर्जाचा तपशील भरा."
+      },
+      "loan": {
+        "title": "कर्ज",
+        "description": "कर्ज अर्जाचा तपशील भरा."
+      },
+      "investment": {
+        "title": "गुंतवणूक",
+        "description": "गुंतवणूक अर्जाचा तपशील भरा."
+      }
     },
     "filters": {
       "id": "आयडी",
@@ -205,6 +217,24 @@
       "authorizeRejected": "अधिकृतीकरण नाकारले"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "खाते अधिकृत करा",
+    "navTitle": "खाते अधिकृत मास्टर मेंटेनन्स",
+    "searchPlaceholder": "खाते प्रकार शोधा...",
+    "show": "दाखवा",
+    "cards": {
+      "casaAuthorization": "बचत/चालू खाते अधिकृतीकरण",
+      "casaAuthorizationClosing": "बचत/चालू खाते अधिकृतीकरण बंद",
+      "depositAuthorization": "ठेव अधिकृतीकरण",
+      "depositAuthorizationClosing": "ठेव अधिकृतीकरण बंद",
+      "loanAuthorization": "कर्ज अधिकृतीकरण",
+      "loanClosing": "कर्ज बंद करणे",
+      "fixedAssetAuthorization": "स्थिर मालमत्ता अधिकृतीकरण",
+      "fixedAssetClosing": "स्थिर मालमत्ता बंद करणे",
+      "investmentAuthorization": "गुंतवणूक अधिकृतीकरण",
+      "investmentClosing": "गुंतवणूक बंद करणे"
+    }
+  },
   "tdClose": {
     "title": "मुदत ठेव बंद करा",
     "breadcrumb": "मुदत ठेव बंद करा"
@@ -280,6 +310,7 @@
     "headOfficeMaster": "मुख्य कार्यालय मास्टर",
     "globalMaster": "जागतिक मास्टर",
     "branchMaster": "शाखा मास्टर",
+    "dayBeginEnd": "दिवस सुरू / संपवणे",
     "futureModels": "फ्युचर मॉडेल्स",
     "search": "शोधा",
     "lastLogin": "शेवटचे लॉगिन:",

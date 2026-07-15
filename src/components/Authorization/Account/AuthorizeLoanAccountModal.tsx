@@ -145,7 +145,7 @@ export interface AuthorizeLoanAccountData {
 /* ===================== Config ===================== */
 
 const CONFIG = {
-  icon: "/Authorize.png",
+  icon: "/shield-check.png",
   titleEn: "Authorize Loan Account",
   titleHi: "कर्ज खात्याला मंजुरी द्या",
   descEn: "Check information related to the Account and Authorize them.",

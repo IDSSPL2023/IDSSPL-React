@@ -43,10 +43,22 @@
     "title": "ખાતા માસ્ટર",
     "breadcrumb": "ખાતા માસ્ટર",
     "options": {
-      "caSa": { "title": "સીએ/એસએ", "description": "સીએ/એસએ અરજીની વિગતો દાખલ કરો." },
-      "deposit": { "title": "ડિપોઝિટ", "description": "ડિપોઝિટ અરજીની વિગતો દાખલ કરો." },
-      "loan": { "title": "લોન", "description": "લોન અરજીની વિગતો દાખલ કરો." },
-      "investment": { "title": "રોકાણ", "description": "રોકાણ અરજીની વિગતો દાખલ કરો." }
+      "caSa": {
+        "title": "સીએ/એસએ",
+        "description": "સીએ/એસએ અરજીની વિગતો દાખલ કરો."
+      },
+      "deposit": {
+        "title": "ડિપોઝિટ",
+        "description": "ડિપોઝિટ અરજીની વિગતો દાખલ કરો."
+      },
+      "loan": {
+        "title": "લોન",
+        "description": "લોન અરજીની વિગતો દાખલ કરો."
+      },
+      "investment": {
+        "title": "રોકાણ",
+        "description": "રોકાણ અરજીની વિગતો દાખલ કરો."
+      }
     },
     "filters": {
       "id": "આઈડી",
@@ -205,6 +217,24 @@
       "authorizeRejected": "ઓથોરાઈઝેશન નકારેલ"
     }
   },
+  "accountAuthorizeMaster": {
+    "title": "ખાતું અધિકૃત કરો",
+    "navTitle": "માસ્ટર મેન્ટેનન્સ ખાતું અધિકૃત",
+    "searchPlaceholder": "ખાતાનો પ્રકાર શોધો...",
+    "show": "બતાવો",
+    "cards": {
+      "casaAuthorization": "બચત/ચાલુ ખાતું અધિકૃતિકરણ",
+      "casaAuthorizationClosing": "બચત/ચાલુ ખાતું અધિકૃતિકરણ બંધ",
+      "depositAuthorization": "થાપણ અધિકૃતિકરણ",
+      "depositAuthorizationClosing": "થાપણ અધિકૃતિકરણ બંધ",
+      "loanAuthorization": "લોન અધિકૃતિકરણ",
+      "loanClosing": "લોન બંધ",
+      "fixedAssetAuthorization": "સ્થિર મિલકત અધિકૃતિકરણ",
+      "fixedAssetClosing": "સ્થિર મિલકત બંધ",
+      "investmentAuthorization": "રોકાણ અધિકૃતિકરણ",
+      "investmentClosing": "રોકાણ બંધ"
+    }
+  },
   "tdClose": {
     "title": "ટર્મ ડિપોઝિટ બંધ કરો",
     "breadcrumb": "ટર્મ ડિપોઝિટ બંધ કરો"
@@ -280,6 +310,7 @@
     "headOfficeMaster": "હેડ ઓફિસ માસ્ટર",
     "globalMaster": "ગ્લોબલ માસ્ટર",
     "branchMaster": "શાખા માસ્ટર",
+    "dayBeginEnd": "દિવસ શરૂ / અંત",
     "futureModels": "ફ્યુચર મોડેલ્સ",
     "search": "શોધો",
     "lastLogin": "છેલ્લું લોગિન:",
