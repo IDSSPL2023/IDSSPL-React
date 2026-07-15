@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import { ProtectedRoute, PublicRoute } from "@/components/auth/RouteGuards";
+import { useRouter } from "@/lib/navigation";
 
 // Public pages
 import LoginPage from "@/pages/auth/LoginPage";
@@ -71,6 +72,12 @@ import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
 import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
 import UserMasterPage from "@/pages/UserMasterPage";
+import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
+
+function RoleAuthorizationFlowRoute() {
+  const router = useRouter();
+  return <RoleAuthorizationFlow onClose={() => router.back()} />;
+}
 
 /**
  * Single source of truth for URL -> page. The URLs are unchanged from the
@@ -116,6 +123,7 @@ export const router = createBrowserRouter([
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
+      { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
       { path: "/authorization/authorizeaccount", element: <AuthorizeAccountPage /> },
       { path: "/authorization/customer", element: <AuthorizationCustomerPage /> },
       { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
