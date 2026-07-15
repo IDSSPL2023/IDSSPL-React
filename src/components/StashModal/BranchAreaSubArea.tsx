@@ -76,7 +76,7 @@ function TextField({
         {required && <span className="text-red-500">*</span>}
       </label>
       <div
-        className={`flex h-11 items-center rounded-lg border px-3 transition-colors border-[#B8C2D6] ${
+        className={`flex h-12 items-center rounded-xl border px-3 transition-colors border-[#6A7282] ${
           hasError
             ? "border-red-400 bg-white dark:bg-slate-900"
             : readOnly
@@ -121,7 +121,7 @@ const ToolPick = ({
   <button
     type="button"
     onClick={onClick}
-    className="flex h-11 w-11 items-center justify-center rounded-md bg-primary-100 text-primary hover:bg-primary-200"
+    className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#EEF2FF] text-primary hover:bg-primary-200"
   >
     <MoreVertical size={20} />
   </button>
