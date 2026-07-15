@@ -44,17 +44,17 @@ export interface TdsReportFormData {
 }
 
 export const emptyTdsReportFormData: TdsReportFormData = {
-  accountType: "TD",
+  accountType: "",
   description: "",
-  productCode: "TD",
+  productCode: "",
   productDescription: "",
-  interestDepositCode: "TD",
-  customerId: "TD",
+  interestDepositCode: "",
+  customerId: "",
   customerName: "",
   fromDate: "",
   toDate: "",
-  tdsAmount: "10000",
-  tdsRate: "10",
+  tdsAmount: "",
+  tdsRate: "",
   payableFromDate: "",
   payableToDate: "",
   reportTypeSelect: "Details",
@@ -249,8 +249,6 @@ function ProvisonAndVlcc({
   // Define header configuration
   const getHeaderConfig = () => ({
     icon: ICONS.PERSON,
-    // iconColor: "text-white",
-    // iconBgColor: "bg-primary",
     title: "TDS Report Apply provision & VLCC",
     titleHi: "TDS रिपोर्ट प्रावधान लागू करा आणि VLCC",
     subtitle: "View the parameter information and associated details.",
@@ -331,6 +329,7 @@ function ProvisonAndVlcc({
       >
         <SectionWrapper>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            {/* Account Type - Disabled in view mode */}
             <PickerInput
               labelEn="Account Type"
               labelHi="खाते प्रकार"
@@ -343,6 +342,7 @@ function ProvisonAndVlcc({
               handleOpenList={() => handleOpenList("accountType")}
             />
 
+            {/* Description - Always readOnly */}
             <TextInput
               labelEn="Description"
               labelHi="वर्णन"
@@ -354,6 +354,7 @@ function ProvisonAndVlcc({
               readOnly
             />
 
+            {/* Product Code - Disabled in view mode */}
             <PickerInput
               labelEn="Product Code"
               labelHi="उत्पादन कोड"
@@ -366,6 +367,7 @@ function ProvisonAndVlcc({
               handleOpenList={() => handleOpenList("productCode")}
             />
 
+            {/* Product Description - Always readOnly */}
             <TextInput
               labelEn="Product Description"
               labelHi="उत्पादन वर्णन"
@@ -377,6 +379,7 @@ function ProvisonAndVlcc({
               readOnly
             />
 
+            {/* Interest Paid in Deposit Code - Disabled in view mode */}
             <PickerInput
               labelEn="Interest Paid in Deposit Code"
               labelHi="ठेव कोडमध्ये व्याज दिले"
@@ -389,6 +392,7 @@ function ProvisonAndVlcc({
               handleOpenList={() => handleOpenList("interestDepositCode")}
             />
 
+            {/* Customer ID - Disabled in view mode */}
             <PickerInput
               labelEn="Customer ID"
               labelHi="ग्राहक आयडी"
@@ -401,6 +405,7 @@ function ProvisonAndVlcc({
               handleOpenList={() => handleOpenList("customerId")}
             />
 
+            {/* Customer Name - Always readOnly */}
             <TextInput
               labelEn="Customer Name"
               labelHi="ग्राहकाचे नाव"
@@ -412,6 +417,7 @@ function ProvisonAndVlcc({
               readOnly
             />
 
+            {/* From Date - Disabled in view mode */}
             <DateInput
               labelEn="From Date"
               labelHi="पासून दिनांक"
@@ -421,6 +427,7 @@ function ProvisonAndVlcc({
               readOnly={isView}
             />
 
+            {/* To Date - Disabled in view mode */}
             <DateInput
               labelEn="To Date"
               labelHi="पर्यंत दिनांक"
@@ -430,6 +437,7 @@ function ProvisonAndVlcc({
               readOnly={isView}
             />
 
+            {/* TDS Amount - Disabled in view mode */}
             <TextInput
               labelEn="TDS Amount"
               labelHi="टीडीएस रक्कम"
@@ -441,6 +449,7 @@ function ProvisonAndVlcc({
               readOnly={isView}
             />
 
+            {/* TDS Rate - Disabled in view mode */}
             <TextInput
               labelEn="TDS Rate"
               labelHi="टीडीएस दर"
@@ -452,6 +461,7 @@ function ProvisonAndVlcc({
               readOnly={isView}
             />
 
+            {/* Payable From Date - Disabled in view mode */}
             <DateInput
               labelEn="Payable From Date"
               labelHi="देय दिनांकापासून"
@@ -461,6 +471,7 @@ function ProvisonAndVlcc({
               readOnly={isView}
             />
 
+            {/* Payable To Date - Disabled in view mode */}
             <DateInput
               labelEn="Payable To Date"
               labelHi="देय दिनांकापर्यंत"
@@ -470,6 +481,7 @@ function ProvisonAndVlcc({
               readOnly={isView}
             />
 
+            {/* Report Type Select - Disabled in view mode */}
             <SelectInput
               labelEn="Report Type Select"
               labelMr="अहवाल प्रकार निवडा"
@@ -478,8 +490,10 @@ function ProvisonAndVlcc({
               options={REPORT_TYPE_OPTIONS}
               onChange={(v) => handleChange("reportTypeSelect", v)}
               required
+              editable={!isView}
             />
 
+            {/* Radio inputs - Disabled in view mode */}
             <RadioInput
               label="Select"
               labelHi="निवडा"
@@ -496,8 +510,14 @@ function ProvisonAndVlcc({
               onChange={(v) => handleChange("reportType", v)}
               disabled={isView}
               options={[
-                { icon: ICONS.PDF, value: ICONS.PDF },
-                { icon: ICONS.XLS, value: ICONS.XLS },
+                {
+                  value: "pdf",
+                  icon: ICONS.PDF,
+                },
+                {
+                  value: "xls",
+                  icon: ICONS.XLS,
+                },
               ]}
             />
 
@@ -507,7 +527,10 @@ function ProvisonAndVlcc({
               value={formData.amountSelect}
               onChange={(v) => handleChange("amountSelect", v)}
               disabled={isView}
-              options={["above", "less"]}
+              options={[
+                { value: "above", label: "Above Amount" },
+                { value: "less", label: "Less Amount" },
+              ]}
             />
           </div>
         </SectionWrapper>
