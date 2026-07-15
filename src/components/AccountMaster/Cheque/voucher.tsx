@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  UserCircle, 
-  Calendar, 
+import {
+  X,
+  UserCircle,
+  Calendar,
   Building2,
   Hash,
-  ThumbsUp
+  ThumbsUp,
+  Check,
+  ChevronDown,
+  Receipt
 } from 'lucide-react';
-import Image from "@/components/ui/Image";
+import { TextInput, SectionCard } from '@/components/shared/FormFields';
 
 // ==================== TYPE DEFINITIONS ====================
 
@@ -39,57 +42,15 @@ interface FieldConfig {
 interface SectionConfig {
   title: string;
   titleMarathi: string;
-  icon?: React.ReactNode;
+  subtitle?: string;
+  subtitleMarathi?: string;
+  icon?: string;
   fields: FieldConfig[];
-}
-
-interface CardContainerProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-interface SectionHeaderProps {
-  title: string;
-  titleMarathi: string;
-  icon?: React.ReactNode;
-}
-
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary';
-  icon?: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
 }
 
 // ==================== REUSABLE COMPONENTS ====================
 
-// 1. Reusable Card Container with Thick Top Border
-const CardContainer: React.FC<CardContainerProps> = ({ children, className = "" }) => {
-  return (
-    <div className={`border border-[#0256cc]/60 border-t-[3.5px] border-t-[#0256cc] rounded-[14px] p-5 bg-white dark:bg-slate-900 shadow-sm ${className}`}>
-      {children}
-    </div>
-  );
-};
-
-// 2. Reusable Section Header
-const SectionHeader: React.FC<SectionHeaderProps> = ({ title, titleMarathi, icon }) => {
-  return (
-    <div className="flex items-center gap-2 pb-3 mb-5 border-b border-slate-100 dark:border-slate-800">
-      <div className="w-7 h-7 rounded-full bg-[#eff6ff] dark:bg-blue-900/30 flex items-center justify-center text-[#1d4ed8] dark:text-blue-400">
-        {icon || <UserCircle size={18} className="stroke-[2.5]" />}
-      </div>
-      <h2 className="text-sm font-bold text-[#1e293b] dark:text-slate-100 flex items-center gap-1.5">
-        <span>{title}</span>
-        <span className="text-slate-400 font-normal">/</span>
-        <span className="text-slate-500 dark:text-slate-400 font-medium">{titleMarathi}</span>
-      </h2>
-    </div>
-  );
-};
-
-// 3. Reusable Form Field (unified)
+// 1. Reusable Form Field using TextInput component
 const FormField: React.FC<{
   field: FieldConfig;
 }> = ({ field }) => {
@@ -108,67 +69,30 @@ const FormField: React.FC<{
         {label} <span className="text-slate-400 font-medium">/ {labelMarathi}</span>
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <div className="relative flex items-center">
-        <div className="absolute left-3 text-slate-500">
-          {icon}
-        </div>
-        <input
-          type="text"
-          disabled={readOnly}
-          value={value}
-          className={`w-full ${readOnly ? 'bg-[#f1f5f9] dark:bg-slate-800 cursor-not-allowed' : 'bg-white dark:bg-slate-900'}
-            border border-slate-400 dark:border-slate-700 rounded-[10px]
-            pl-9 pr-3 py-2 text-sm
-            ${readOnly ? 'text-slate-500 dark:text-slate-400' : 'text-slate-800 dark:text-slate-100'}
-            font-semibold shadow-inner
-            ${!readOnly && 'focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none'}
-          `}
-        />
-      </div>
+      <TextInput
+        icon={icon}
+        value={value}
+        onChange={() => {}}
+        readOnly={readOnly}
+        placeholder=""
+      />
     </div>
   );
 };
 
-// 4. Reusable Button
-const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  icon, 
-  onClick,
-  className = ""
-}) => {
-  const variants = {
-    primary: 'bg-[#0256cc] hover:bg-blue-700 active:bg-blue-800 text-white',
-    secondary: 'bg-white dark:bg-slate-900 border border-[#0256cc] text-[#0256cc] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 active:bg-blue-100'
-  };
-
-  const baseStyle = 'flex items-center justify-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold shadow-sm transition-all duration-200';
-  const variantStyle = variants[variant] || variants.primary;
-
-  return (
-    <button 
-      onClick={onClick}
-      className={`${baseStyle} ${variantStyle} ${className}`}
-    >
-      <span>{children}</span>
-      {icon && icon}
-    </button>
-  );
-};
-
-// 5. Reusable Table Component
+// 2. Reusable Table Component
 const VoucherTable: React.FC<{ rows: VoucherRow[] }> = ({ rows }) => {
   return (
     <div className="w-full overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
       <table className="w-full min-w-[800px] border-collapse bg-white dark:bg-slate-900">
         <thead>
           <tr className="bg-[#0256cc] text-white">
-            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider border-b border-slate-200 dark:border-slate-800">Account Code</th>
-            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider border-b border-slate-200 dark:border-slate-800">Account Name</th>
-            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider border-b border-slate-200 dark:border-slate-800">Tr.Ind</th>
-            <th className="px-4 py-3.5 text-right text-xs font-bold tracking-wider border-b border-slate-200 dark:border-slate-800">Amount</th>
-            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider border-b border-slate-200 dark:border-slate-800">Particular</th>
-            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider border-b border-slate-200 dark:border-slate-800">User ID</th>
+            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider">Account Code</th>
+            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider">Account Name</th>
+            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider">Tr.Ind</th>
+            <th className="px-4 py-3.5 text-right text-xs font-bold tracking-wider">Amount</th>
+            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider">Particular</th>
+            <th className="px-4 py-3.5 text-left text-xs font-bold tracking-wider">User ID</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -192,14 +116,21 @@ const VoucherTable: React.FC<{ rows: VoucherRow[] }> = ({ rows }) => {
 
 interface DisplayVouchersProps {
   onClose?: () => void;
+  mode?: 'view' | 'edit' | 'authorize';
+  onDisplayVouchers?: () => void;
 }
 
-export default function DisplayVouchers({ onClose }: DisplayVouchersProps) {
+export default function DisplayVouchers({
+  onClose,
+  mode = 'view',
+  onDisplayVouchers
+}: DisplayVouchersProps) {
   const [formData] = useState<FormData>({
     branchCode: "0002",
     scrollDate: "01-Jun-2026",
     scrollNumber: "117",
   });
+  const [isValidated, setIsValidated] = useState(false);
 
   // Exact data from your screenshot table
   const voucherRows: VoucherRow[] = [
@@ -242,7 +173,9 @@ export default function DisplayVouchers({ onClose }: DisplayVouchersProps) {
     {
       title: "Details",
       titleMarathi: "तपशील",
-      icon: <UserCircle size={18} className="stroke-[2.5]" />,
+      subtitle: "View voucher details",
+      subtitleMarathi: "व्हाउचर तपशील पहा",
+      icon: "/User.png",
       fields: [
         {
           key: "branchCode",
@@ -272,14 +205,6 @@ export default function DisplayVouchers({ onClose }: DisplayVouchersProps) {
     },
   ];
 
-  // Section for vouchers (special case with table)
-  const voucherSection: SectionConfig = {
-    title: "Vouchers Details",
-    titleMarathi: "व्हाउचर तपशील",
-    icon: <UserCircle size={18} className="stroke-[2.5]" />,
-    fields: [], // Empty fields array since we use a table
-  };
-
   // Handlers
   const handleCancel = (): void => {
     console.log('Cancel clicked');
@@ -291,27 +216,136 @@ export default function DisplayVouchers({ onClose }: DisplayVouchersProps) {
     onClose?.();
   };
 
+  const handleValidate = (): void => {
+    setIsValidated(true);
+    console.log('Validate clicked');
+  };
+
+  const handleSave = (): void => {
+    console.log('Save clicked');
+    onClose?.();
+  };
+
+  const handleAuthorize = (): void => {
+    console.log('Authorize clicked');
+    onClose?.();
+  };
+
+  const handleReject = (): void => {
+    console.log('Reject clicked');
+    onClose?.();
+  };
+
+  // Header Icon Component (replacing Next.js Image)
+  const HeaderIcon = () => (
+    <div className="relative w-11 h-11 flex-shrink-0">
+      <img
+        src="/add-icn.png"
+        alt="Person"
+        className="w-full h-full object-contain"
+      />
+    </div>
+  );
+
+  // Footer render function with inline button styling (matching ChequeBookIssue pattern)
+  const renderFooter = () => {
+    if (mode === 'authorize') {
+      return (
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleReject}
+            className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+          >
+            Reject <X size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+          >
+            Cancel <X size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={handleAuthorize}
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+          >
+            Authorize <Check size={16} />
+          </button>
+        </div>
+      );
+    }
+
+    if (mode === 'view') {
+      return (
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+          >
+            Cancel <X size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={handleOk}
+            className="flex items-center gap-1.5 rounded-lg border border-transparent bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+          >
+            OK, Got it <Check size={16} />
+          </button>
+        </div>
+      );
+    }
+
+    // Edit mode
+    return (
+      <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 flex-shrink-0 flex-wrap">
+        <button
+          type="button"
+          onClick={handleValidate}
+          disabled={isValidated}
+          className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Validate <Check size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+        >
+          Cancel <X size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={onDisplayVouchers}
+          className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+        >
+          Display Vouchers <Receipt size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={!isValidated}
+          className="flex items-center gap-1.5 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-200 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Save <ChevronDown size={16} />
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 antialiased font-sans bg-black/40">
 
       {/* Main Dialog Modal Box */}
-      <div className="w-full max-w-8xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-[28px] shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
+      <div className="w-full max-w-7xl max-h-[90vh] bg-white rounded-[28px] shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
 
         {/* Header Block */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
           <div className="flex items-center gap-3">
             {/* Custom User/Plus Logo Icon */}
-            <div className="relative w-11 h-11 flex-shrink-0">
-              <Image
-                src="/add-icn.png"
-                alt="Person"
-                fill
-                className="object-contain"
-                sizes="44px"
-                priority
-                unoptimized={import.meta.env.DEV}
-              />
-            </div>
+            <HeaderIcon />
 
             {/* Header Bilingual Title */}
             <h1 className="text-xl font-bold text-[#1e293b] dark:text-slate-100 flex items-center gap-2 flex-wrap">
@@ -334,56 +368,41 @@ export default function DisplayVouchers({ onClose }: DisplayVouchersProps) {
         {/* Outer Content Wrap Container - scrollable */}
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="space-y-6">
-            {/* Render sections dynamically */}
+            {/* Render sections using SectionCard component */}
             {sections.map((section, sectionIndex) => (
-              <CardContainer key={sectionIndex}>
-                <SectionHeader
-                  title={section.title}
-                  titleMarathi={section.titleMarathi}
-                  icon={section.icon}
-                />
-
+              <SectionCard
+                key={sectionIndex}
+                titleEn={section.title}
+                titleHi={section.titleMarathi}
+                subtitleEn={section.subtitle || ""}
+                subtitleHi={section.subtitleMarathi || ""}
+                icon={section.icon || "/User.png"}
+              >
                 {/* Form Fields Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {section.fields.map((field) => (
                     <FormField key={field.key} field={field} />
                   ))}
                 </div>
-              </CardContainer>
+              </SectionCard>
             ))}
 
-            {/* 2. VOUCHERS DETAILS CARD - With Thick Top Border */}
-            <CardContainer>
-              <SectionHeader
-                title={voucherSection.title}
-                titleMarathi={voucherSection.titleMarathi}
-                icon={voucherSection.icon}
-              />
-
+            {/* 2. VOUCHERS DETAILS CARD - Using SectionCard for consistency */}
+            <SectionCard
+              titleEn="Vouchers Details"
+              titleHi="व्हाउचर तपशील"
+              subtitleEn="View voucher transaction details"
+              subtitleHi="व्हाउचर व्यवहार तपशील पहा"
+              icon="/User.png"
+            >
               {/* Custom Responsive Table Component Container */}
               <VoucherTable rows={voucherRows} />
-            </CardContainer>
+            </SectionCard>
           </div>
         </div>
 
-        {/* Footer Actions Row Button Strip */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex-shrink-0">
-          <Button
-            variant="secondary"
-            icon={<X size={15} strokeWidth={2.5} />}
-            onClick={handleCancel}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            variant="primary"
-            icon={<ThumbsUp size={14} className="scale-x-[1]" />}
-            onClick={handleOk}
-          >
-            Ok, Got It
-          </Button>
-        </div>
+        {/* Footer Actions Row Button Strip - Fixed position at bottom */}
+        {renderFooter()}
 
       </div>
     </div>

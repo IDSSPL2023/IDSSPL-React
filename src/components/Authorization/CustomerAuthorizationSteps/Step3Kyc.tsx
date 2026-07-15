@@ -1,5 +1,6 @@
 // components/Authorization/CustomerAuthorizationSteps/Step3Kyc.tsx
 
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { SectionCard, DocumentRow } from "@/components/shared/FormFields";
 import {
@@ -12,44 +13,75 @@ import {
   type CustomerAuthorizationFormValues,
   type DocState,
 } from "./formTypes";
-import Image from "@/components/ui/Image";
+
+// React component for icon instead of Next.js Image
+const IconWrapper = ({ src, alt, width = 50, height = 50 }: { src: string; alt: string; width?: number; height?: number }) => (
+  <div 
+    className="flex items-center justify-center"
+    style={{ width, height }}
+  >
+    <img 
+      src={src} 
+      alt={alt} 
+      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+    />
+  </div>
+);
 
 export default function Step3Kyc() {
   const { watch, setValue } = useFormContext<CustomerAuthorizationFormValues>();
-  const idProof = watch("idProof");
-  const addressProof = watch("addressProof");
-  const partnershipDocs = watch("partnershipDocs");
-  const businessConcern1Docs = watch("businessConcern1Docs");
-  const businessConcern2Docs = watch("businessConcern2Docs");
-  const proprietaryDocs = watch("proprietaryDocs");
+  
+  // Watch all sections
+  const idProof = watch("idProof") || {};
+  const addressProof = watch("addressProof") || {};
+  const partnershipDocs = watch("partnershipDocs") || {};
+  const businessConcern1Docs = watch("businessConcern1Docs") || {};
+  const businessConcern2Docs = watch("businessConcern2Docs") || {};
+  const proprietaryDocs = watch("proprietaryDocs") || {};
 
   const updateDoc = (
     section: "idProof" | "addressProof" | "partnershipDocs" | "businessConcern1Docs" | "businessConcern2Docs" | "proprietaryDocs",
     key: string,
     patch: Partial<DocState>
   ) => {
-    let current;
+    // Get current section data
+    let currentSection;
     switch (section) {
       case "idProof":
-        current = idProof[key];
+        currentSection = idProof;
         break;
       case "addressProof":
-        current = addressProof[key];
+        currentSection = addressProof;
         break;
       case "partnershipDocs":
-        current = partnershipDocs[key];
+        currentSection = partnershipDocs;
         break;
       case "businessConcern1Docs":
-        current = businessConcern1Docs[key];
+        currentSection = businessConcern1Docs;
         break;
       case "businessConcern2Docs":
-        current = businessConcern2Docs[key];
+        currentSection = businessConcern2Docs;
         break;
       case "proprietaryDocs":
-        current = proprietaryDocs[key];
+        currentSection = proprietaryDocs;
         break;
+      default:
+        currentSection = {};
     }
-    (setValue as (name: string, value: DocState) => void)(`${section}.${key}`, { ...current, ...patch });
+
+    // Get current document data
+    const currentDoc = currentSection[key] || { checked: false, expiryDate: "", documentNumber: "" };
+    
+    // Update the document
+    const updatedDoc = { ...currentDoc, ...patch };
+    
+    // Set the value using the path string
+    setValue(`${section}.${key}`, updatedDoc);
+  };
+
+  // Helper to safely get document state
+  const getDocState = (section: any, key: string): DocState => {
+    return section?.[key] || { checked: false, expiryDate: "", documentNumber: "" };
   };
 
   return (
@@ -60,7 +92,7 @@ export default function Step3Kyc() {
           titleEn="Savings Account (ID Proof)"
           titleHi="बचत खाते (ओळख पुरावा)"
           icon={
-            <Image
+            <IconWrapper
               src="/User.png"
               alt="ID Proof Icon"
               width={50}
@@ -68,18 +100,22 @@ export default function Step3Kyc() {
             />
           }
         >
-          {ID_PROOF_DOCS.map((doc) => (
-            <DocumentRow
-              key={doc.key}
-              label={doc.label}
-              checked={idProof[doc.key]?.checked || false}
-              expiryDate={idProof[doc.key]?.expiryDate || ""}
-              documentNumber={idProof[doc.key]?.documentNumber || ""}
-              onCheck={(v) => updateDoc("idProof", doc.key, { checked: v })}
-              onExpiryChange={(v) => updateDoc("idProof", doc.key, { expiryDate: v })}
-              onDocNumberChange={(v) => updateDoc("idProof", doc.key, { documentNumber: v })}
-            />
-          ))}
+          {ID_PROOF_DOCS.map((doc) => {
+            const docState = getDocState(idProof, doc.key);
+            return (
+              <DocumentRow
+                key={doc.key}
+                label={doc.label}
+                checked={docState.checked}
+                expiryDate={docState.expiryDate}
+                documentNumber={docState.documentNumber}
+                onCheck={(v) => updateDoc("idProof", doc.key, { checked: v })}
+                onExpiryChange={(v) => updateDoc("idProof", doc.key, { expiryDate: v })}
+                onDocNumberChange={(v) => updateDoc("idProof", doc.key, { documentNumber: v })}
+                showDocNumber={true}
+              />
+            );
+          })}
         </SectionCard>
       </div>
 
@@ -89,7 +125,7 @@ export default function Step3Kyc() {
           titleEn="Savings Account (User Proof)"
           titleHi="बचत खाते (पत्ता पुरावा)"
           icon={
-            <Image
+            <IconWrapper
               src="/User.png"
               alt="User Proof Icon"
               width={50}
@@ -97,18 +133,22 @@ export default function Step3Kyc() {
             />
           }
         >
-          {ADDRESS_PROOF_DOCS.map((doc) => (
-            <DocumentRow
-              key={doc.key}
-              label={doc.label}
-              checked={addressProof[doc.key]?.checked || false}
-              expiryDate={addressProof[doc.key]?.expiryDate || ""}
-              documentNumber={addressProof[doc.key]?.documentNumber || ""}
-              onCheck={(v) => updateDoc("addressProof", doc.key, { checked: v })}
-              onExpiryChange={(v) => updateDoc("addressProof", doc.key, { expiryDate: v })}
-              onDocNumberChange={(v) => updateDoc("addressProof", doc.key, { documentNumber: v })}
-            />
-          ))}
+          {ADDRESS_PROOF_DOCS.map((doc) => {
+            const docState = getDocState(addressProof, doc.key);
+            return (
+              <DocumentRow
+                key={doc.key}
+                label={doc.label}
+                checked={docState.checked}
+                expiryDate={docState.expiryDate}
+                documentNumber={docState.documentNumber}
+                onCheck={(v) => updateDoc("addressProof", doc.key, { checked: v })}
+                onExpiryChange={(v) => updateDoc("addressProof", doc.key, { expiryDate: v })}
+                onDocNumberChange={(v) => updateDoc("addressProof", doc.key, { documentNumber: v })}
+                showDocNumber={true}
+              />
+            );
+          })}
         </SectionCard>
       </div>
 
@@ -118,7 +158,7 @@ export default function Step3Kyc() {
           titleEn="Accounts of Proprietary Concern"
           titleHi="मालकीच्या चिंतेची खाती"
           icon={
-            <Image
+            <IconWrapper
               src="/User.png"
               alt="User Icon"
               width={50}
@@ -126,19 +166,22 @@ export default function Step3Kyc() {
             />
           }
         >
-          {PROPRIETARY_DOCS.map((doc) => (
-            <DocumentRow
-              key={doc.key}
-              label={doc.label}
-              checked={proprietaryDocs[doc.key]?.checked || false}
-              expiryDate={proprietaryDocs[doc.key]?.expiryDate || ""}
-              documentNumber={proprietaryDocs[doc.key]?.documentNumber || ""}
-              onCheck={(v) => updateDoc("proprietaryDocs", doc.key, { checked: v })}
-              onExpiryChange={(v) => updateDoc("proprietaryDocs", doc.key, { expiryDate: v })}
-              onDocNumberChange={(v) => updateDoc("proprietaryDocs", doc.key, { documentNumber: v })}
-              showDocNumber={false}
-            />
-          ))}
+          {PROPRIETARY_DOCS.map((doc) => {
+            const docState = getDocState(proprietaryDocs, doc.key);
+            return (
+              <DocumentRow
+                key={doc.key}
+                label={doc.label}
+                checked={docState.checked}
+                expiryDate={docState.expiryDate}
+                documentNumber={docState.documentNumber}
+                onCheck={(v) => updateDoc("proprietaryDocs", doc.key, { checked: v })}
+                onExpiryChange={(v) => updateDoc("proprietaryDocs", doc.key, { expiryDate: v })}
+                onDocNumberChange={(v) => updateDoc("proprietaryDocs", doc.key, { documentNumber: v })}
+                showDocNumber={false}
+              />
+            );
+          })}
         </SectionCard>
       </div>
 
@@ -148,7 +191,7 @@ export default function Step3Kyc() {
           titleEn="Business Concern - Company/Corporate"
           titleHi="व्यवसाय चिंता - कंपनी/कॉर्पोरेट"
           icon={
-            <Image
+            <IconWrapper
               src="/User.png"
               alt="User Icon"
               width={50}
@@ -156,22 +199,22 @@ export default function Step3Kyc() {
             />
           }
         >
-          {/* Business Concern 1 Documents - Only Expiry Date */}
-          {BUSINESS_CONCERN_1_DOCS.map((doc) => (
-            <DocumentRow
-              key={doc.key}
-              label={doc.label}
-              checked={false}
-              expiryDate={businessConcern1Docs[doc.key]?.expiryDate || ""}
-              documentNumber=""
-              onCheck={() => {}}
-              onExpiryChange={(v) => updateDoc("businessConcern1Docs", doc.key, { expiryDate: v })}
-              onDocNumberChange={() => {}}
-              showDocNumber={false}
-              // showExpiryDate={}
-              // showCheckbox={false}
-            />
-          ))}
+          {BUSINESS_CONCERN_1_DOCS.map((doc) => {
+            const docState = getDocState(businessConcern1Docs, doc.key);
+            return (
+              <DocumentRow
+                key={doc.key}
+                label={doc.label}
+                checked={docState.checked}
+                expiryDate={docState.expiryDate}
+                documentNumber={docState.documentNumber}
+                onCheck={(v) => updateDoc("businessConcern1Docs", doc.key, { checked: v })}
+                onExpiryChange={(v) => updateDoc("businessConcern1Docs", doc.key, { expiryDate: v })}
+                onDocNumberChange={(v) => updateDoc("businessConcern1Docs", doc.key, { documentNumber: v })}
+                showDocNumber={false}
+              />
+            );
+          })}
         </SectionCard>
       </div>
 
@@ -181,7 +224,7 @@ export default function Step3Kyc() {
           titleEn="Partnership Firms"
           titleHi="भागीदारी फर्म"
           icon={
-            <Image
+            <IconWrapper
               src="/User.png"
               alt="User Icon"
               width={50}
@@ -189,19 +232,22 @@ export default function Step3Kyc() {
             />
           }
         >
-          {PARTNERSHIP_DOCS.map((doc) => (
-            <DocumentRow
-              key={doc.key}
-              label={doc.label}
-              checked={partnershipDocs[doc.key]?.checked || false}
-              expiryDate={partnershipDocs[doc.key]?.expiryDate || ""}
-              documentNumber={partnershipDocs[doc.key]?.documentNumber || ""}
-              onCheck={(v) => updateDoc("partnershipDocs", doc.key, { checked: v })}
-              onExpiryChange={(v) => updateDoc("partnershipDocs", doc.key, { expiryDate: v })}
-              onDocNumberChange={(v) => updateDoc("partnershipDocs", doc.key, { documentNumber: v })}
-              showDocNumber={false}
-            />
-          ))}
+          {PARTNERSHIP_DOCS.map((doc) => {
+            const docState = getDocState(partnershipDocs, doc.key);
+            return (
+              <DocumentRow
+                key={doc.key}
+                label={doc.label}
+                checked={docState.checked}
+                expiryDate={docState.expiryDate}
+                documentNumber={docState.documentNumber}
+                onCheck={(v) => updateDoc("partnershipDocs", doc.key, { checked: v })}
+                onExpiryChange={(v) => updateDoc("partnershipDocs", doc.key, { expiryDate: v })}
+                onDocNumberChange={(v) => updateDoc("partnershipDocs", doc.key, { documentNumber: v })}
+                showDocNumber={false}
+              />
+            );
+          })}
         </SectionCard>
       </div>
 
@@ -211,7 +257,7 @@ export default function Step3Kyc() {
           titleEn="Business Concern - Other Entities"
           titleHi="व्यवसाय चिंता - इतर संस्था"
           icon={
-            <Image
+            <IconWrapper
               src="/User.png"
               alt="User Icon"
               width={50}
@@ -219,22 +265,22 @@ export default function Step3Kyc() {
             />
           }
         >
-          {/* Business Concern 2 Documents - Only Expiry Date */}
-          {BUSINESS_CONCERN_2_DOCS.map((doc) => (
-            <DocumentRow
-              key={doc.key}
-              label={doc.label}
-              checked={false}
-              expiryDate={businessConcern2Docs[doc.key]?.expiryDate || ""}
-              documentNumber=""
-              onCheck={() => {}}
-              onExpiryChange={(v) => updateDoc("businessConcern2Docs", doc.key, { expiryDate: v })}
-              onDocNumberChange={() => {}}
-              showDocNumber={false}
-              // showExpiryDate={true}
-              // showCheckbox={false}
-            />
-          ))}
+          {BUSINESS_CONCERN_2_DOCS.map((doc) => {
+            const docState = getDocState(businessConcern2Docs, doc.key);
+            return (
+              <DocumentRow
+                key={doc.key}
+                label={doc.label}
+                checked={docState.checked}
+                expiryDate={docState.expiryDate}
+                documentNumber={docState.documentNumber}
+                onCheck={(v) => updateDoc("businessConcern2Docs", doc.key, { checked: v })}
+                onExpiryChange={(v) => updateDoc("businessConcern2Docs", doc.key, { expiryDate: v })}
+                onDocNumberChange={(v) => updateDoc("businessConcern2Docs", doc.key, { documentNumber: v })}
+                showDocNumber={false}
+              />
+            );
+          })}
         </SectionCard>
       </div>
     </div>
