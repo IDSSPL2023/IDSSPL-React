@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "@/components/ui/Image";
 import {
   X,
@@ -7,10 +7,10 @@ import {
   ThumbsUp,
   Landmark,
   Building2,
-  MoreVertical,
-  type LucideIcon,
   Search,
 } from "lucide-react";
+import TextInput from "../shared/Inputs/TextInput";
+import PickerInput from "../shared/Inputs/PickerInput";
 
 export interface BranchFormData {
   branchCode: string;
@@ -42,90 +42,6 @@ const REQUIRED_FIELDS: RequiredFieldKey[] = [
   "subareaCode",
   "subareaDescription",
 ];
-
-interface TextFieldProps {
-  labelEn: string;
-  labelHi: string;
-  icon: LucideIcon;
-  placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
-  hasError?: boolean;
-  required?: boolean;
-  readOnly?: boolean;
-}
-
-function TextField({
-  labelEn,
-  labelHi,
-  icon: Icon,
-  placeholder,
-  value,
-  onChange,
-  hasError,
-  required = true,
-  readOnly = false,
-}: TextFieldProps) {
-  return (
-    <div className="w-full">
-      <label className="mb-1.5 block text-[1rem] font-medium text-black dark:text-slate-100">
-        {labelEn}{" "}
-        <span className="font-medium text-gray-500 dark:text-slate-400">
-          / {labelHi}
-        </span>
-        {required && <span className="text-red-500">*</span>}
-      </label>
-      <div
-        className={`flex h-12 items-center rounded-xl border px-3 transition-colors border-[#6A7282] ${
-          hasError
-            ? "border-red-400 bg-white dark:bg-slate-900"
-            : readOnly
-              ? "bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
-              : "bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700"
-        }`}
-      >
-        <Icon
-          size={18}
-          className="shrink-0 text-[#6B7280] dark:text-slate-400"
-        />
-        {readOnly ? (
-          <span
-            className={`ml-3 w-full truncate text-[15px] ${value ? "text-slate-500 dark:text-slate-400" : "text-slate-400 dark:text-slate-500"}`}
-          >
-            {value || placeholder}
-          </span>
-        ) : (
-          <input
-            type="text"
-            value={value}
-            placeholder={placeholder}
-            onChange={(e) => onChange(e.target.value)}
-            className="ml-3 w-full bg-transparent text-[15px] text-[#4B5563] outline-none placeholder:text-[#7C879B] dark:text-slate-100 dark:placeholder-slate-500"
-          />
-        )}
-      </div>
-      {hasError && (
-        <p className="mt-1 text-xs text-red-500 dark:text-red-400">
-          This field is required
-        </p>
-      )}
-    </div>
-  );
-}
-
-const ToolPick = ({
-  onClick,
-}: {
-  onClick: MouseEventHandler<HTMLButtonElement>;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#EEF2FF] text-primary hover:bg-primary-200"
-  >
-    <MoreVertical size={20} />
-  </button>
-);
 
 /* ------------------------------------------------------------------ */
 /*  ListModal — generic pickup list (search box, pill IDs, Select btn)  */
@@ -432,7 +348,7 @@ function BranchAreaSubAreaModal({
           {/* Scrollable Content - Middle */}
           <div className="flex-1 overflow-y-auto px-6 pb-4">
             <div className="rounded-[20px] border-x border-b space-y-4 border-t-4 border-primary bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900">
-              <TextField
+              <TextInput
                 labelEn="Branch Code"
                 labelHi="शाखा कोड"
                 icon={Landmark}
@@ -443,7 +359,7 @@ function BranchAreaSubAreaModal({
                 readOnly={true}
               />
 
-              <TextField
+              <TextInput
                 labelEn="Branch Name"
                 labelHi="शाखेचे नाव"
                 icon={Landmark}
@@ -454,21 +370,19 @@ function BranchAreaSubAreaModal({
                 readOnly={true}
               />
 
-              <div className="flex gap-2 items-end">
-                <TextField
-                  labelEn="Area Code"
-                  labelHi="क्षेत्रीय कोड"
-                  icon={Building2}
-                  placeholder="Enter Area Code"
-                  value={formData.areaCode}
-                  onChange={(v) => handleChange("areaCode", v)}
-                  hasError={errors.areaCode}
-                  readOnly={isView}
-                />
-                <ToolPick onClick={() => handleOpenList("area")} />
-              </div>
+              <PickerInput
+                labelEn="Area Code"
+                labelHi="क्षेत्रीय कोड"
+                icon={Building2}
+                placeholder="Enter Area Code"
+                value={formData.areaCode}
+                onChange={(v) => handleChange("areaCode", v)}
+                hasError={errors.areaCode}
+                readOnly={isView}
+                handleOpenList={() => handleOpenList("area")}
+              />
 
-              <TextField
+              <TextInput
                 labelEn="Area Description"
                 labelHi="क्षेत्राचे वर्णन"
                 icon={Building2}
@@ -479,21 +393,19 @@ function BranchAreaSubAreaModal({
                 readOnly={isView}
               />
 
-              <div className="flex gap-2 items-end">
-                <TextField
-                  labelEn="Sub-Area Code"
-                  labelHi="उप-क्षेत्रीय कोड"
-                  icon={Building2}
-                  placeholder="Enter Sub-Area Code"
-                  value={formData.subareaCode}
-                  onChange={(v) => handleChange("subareaCode", v)}
-                  hasError={errors.subareaCode}
-                  readOnly={isView}
-                />
-                <ToolPick onClick={() => handleOpenList("subarea")} />
-              </div>
+              <PickerInput
+                labelEn="Sub-Area Code"
+                labelHi="उप-क्षेत्रीय कोड"
+                icon={Building2}
+                placeholder="Enter Sub-Area Code"
+                value={formData.subareaCode}
+                onChange={(v) => handleChange("subareaCode", v)}
+                hasError={errors.subareaCode}
+                readOnly={isView}
+                handleOpenList={() => handleOpenList("subarea")}
+              />
 
-              <TextField
+              <TextInput
                 labelEn="Sub-Area Description"
                 labelHi="उप-क्षेत्रीय वर्णन"
                 icon={Building2}
