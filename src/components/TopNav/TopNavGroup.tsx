@@ -8,7 +8,7 @@ type NavChild = {
   id: string;
   title: string;
   titleKey?: string;
-  href: string;
+  href?: string;
 };
 
 type NavItemData = {

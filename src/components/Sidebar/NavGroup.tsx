@@ -23,7 +23,18 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
   const hasActiveChild = children.some((child) => child.href === pathname);
 
   const [open, setOpen] = useState(false);
+  const [prevCollapsed, setPrevCollapsed] = useState(collapsed);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+
+  // When the sidebar itself collapses (e.g. the pointer leaves it), any open
+  // flyout would be left pointing at a trigger that just shrank/moved — close
+  // it so it doesn't linger disconnected from its trigger. Adjusted during
+  // render (rather than an effect) per React's guidance for resetting state
+  // in response to a prop change.
+  if (collapsed !== prevCollapsed) {
+    setPrevCollapsed(collapsed);
+    if (collapsed) setOpen(false);
+  }
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const flyoutRef = useRef<HTMLDivElement | null>(null);
 
