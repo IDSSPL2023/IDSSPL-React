@@ -143,7 +143,7 @@ function CustomerTDSFlagModal({
         label: "Update",
         onClick: handleApply,
         variant: "primary" as const,
-        icon: <Check size={16} />,
+        icon: <img src={ICONS.UPDATE} />,
         className: "bg-[#F3F4FB] text-[#0B63C1]",
       },
     ];
