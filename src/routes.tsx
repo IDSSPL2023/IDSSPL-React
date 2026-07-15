@@ -77,6 +77,11 @@ import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
 import FutureModalsPage from "./components/FutureModal";
+import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
+import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
+import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
+import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
+
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -165,6 +170,12 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/tl-open", element: <TermLoanOpenPage /> },
       { path: "/futuremodels/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/futuremodels/un-lean", element: <UnLeanPage /> },
+
+      { path: "/futuremodels/modifyaccountbalance", element: <ModifyAccountBalancePage /> },
+      { path: "/futuremodels/modifybranchglbalance", element: <ModifyBranchGlBalance /> },
+      { path: "/futuremodels/modifybranchglhistory", element: <ModifyBranchGlHistory /> },
+      { path: "/futuremodels/modifycashhandlingrecord", element: <ModifyCashHandlingRecord /> },
+
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
