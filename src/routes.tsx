@@ -75,6 +75,7 @@ import TransferPage from "@/pages/transactionmaster/TransferPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
+import FutureModalsPage from "./components/FutureModal";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -176,6 +177,7 @@ export const router = createBrowserRouter([
       { path: "/transactionmaster/tl-disbursement", element: <TlDisbursementPage /> },
       { path: "/transactionmaster/transfer", element: <TransferPage /> },
       { path: "/usermaster", element: <UserMasterPage /> },
+      { path: "/futuremodals", element: <FutureModalsPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
