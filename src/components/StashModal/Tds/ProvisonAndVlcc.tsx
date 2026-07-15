@@ -495,7 +495,10 @@ function ProvisonAndVlcc({
               value={formData.reportType}
               onChange={(v) => handleChange("reportType", v)}
               disabled={isView}
-              options={["pdf", "xls"]}
+              options={[
+                { icon: ICONS.PDF, value: ICONS.PDF },
+                { icon: ICONS.XLS, value: ICONS.XLS },
+              ]}
             />
 
             <RadioInput
