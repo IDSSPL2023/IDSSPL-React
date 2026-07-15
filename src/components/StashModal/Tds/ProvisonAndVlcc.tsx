@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   X,
   Check,
@@ -12,7 +12,6 @@ import {
   Percent,
   ClipboardList,
   Calculator,
-  FileSpreadsheet,
 } from "lucide-react";
 import TextInput from "../../shared/Inputs/TextInput";
 import PickerInput from "../../shared/Inputs/PickerInput";
@@ -22,7 +21,7 @@ import RadioInput from "../../shared/Inputs/RadioInput";
 import ListModal, { type ListModalItem } from "../ListModal";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
-import { PERSON } from "@/assets";
+import { ICONS } from "@/assets";
 
 export interface TdsReportFormData {
   accountType: string;
@@ -249,7 +248,7 @@ function ProvisonAndVlcc({
 
   // Define header configuration
   const getHeaderConfig = () => ({
-    icon: PERSON,
+    icon: ICONS.PERSON,
     // iconColor: "text-white",
     // iconBgColor: "bg-primary",
     title: "TDS Report Apply provision & VLCC",

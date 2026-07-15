@@ -1,2 +1,1 @@
-// Export all assets
-export * from './icons';
+export { ICONS } from './icons';
