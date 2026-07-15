@@ -1,0 +1,298 @@
+{
+  "common": {
+    "home": "Home",
+    "misActivity": "MIS Activity",
+    "futureModels": "Future Models",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "validate": "Validate",
+    "authorize": "Authorize",
+    "revoke": "Revoke",
+    "details": "Details",
+    "accountDetails": "Account Details",
+    "lienDetails": "Lien Details",
+    "add": "Add",
+    "search": "Search",
+    "searchOrFilter": "Search/ Filter",
+    "actions": "Actions",
+    "select": "Select",
+    "noResultsFound": "No results found",
+    "view": "View",
+    "edit": "Edit",
+    "services": "Services",
+    "logout": "Logout"
+  },
+  "fields": {
+    "accountCode": "Account Code",
+    "accountName": "Account Name",
+    "accountType": "Account Type",
+    "productType": "Product Type",
+    "productCode": "Product Code",
+    "description": "Description",
+    "name": "Name",
+    "ledgerBalance": "Ledger Balance",
+    "availableBalance": "Available Balance",
+    "loanAccountCode": "Loan Account Code",
+    "loanAccountName": "Loan Account Name",
+    "lienAmount": "Lien Amount",
+    "remark": "Remark",
+    "serial": "Serial"
+  },
+  "accountMaster": {
+    "title": "Account Master",
+    "breadcrumb": "Account Master",
+    "options": {
+      "caSa": { "title": "CA/SA", "description": "Enter the CA/SA application details." },
+      "deposit": { "title": "Deposit", "description": "Enter the Deposit application details." },
+      "loan": { "title": "Loan", "description": "Enter the Loan application details." },
+      "investment": { "title": "Investment", "description": "Enter the Investment application details." }
+    },
+    "filters": {
+      "id": "ID",
+      "name": "Name",
+      "type": "Type"
+    },
+    "table": {
+      "srNo": "Sr No.",
+      "action": "Action",
+      "applicationNo": "Application No.",
+      "accountId": "Account ID",
+      "status": "Status",
+      "statusLive": "Live",
+      "customerId": "Customer ID",
+      "createdBy": "Created By",
+      "openingDate": "Opening Date",
+      "menuFreeze": "Account Freeze / Unfreeze",
+      "menuCheque": "Cheque Book Issue"
+    },
+    "addForm": {
+      "title": "Add Account",
+      "subtitle": "Add some basic information related to the Employee",
+      "accountTypePlaceholder": "Select Account Type",
+      "productTypePlaceholder": "Select Product Type",
+      "accountTypeListTitle": "Account Type List",
+      "subProductListTitle": "Sub Product List"
+    }
+  },
+  "userMaster": {
+    "title": "User Master",
+    "breadcrumb": "User Master",
+    "table": {
+      "srNo": "Sr No.",
+      "action": "Action",
+      "userDetails": "User Details",
+      "status": "Status",
+      "userName": "User Name",
+      "userRole": "User Role",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "branchCode": "Branch Code",
+      "branchName": "Branch Name",
+      "menuSetPassword": "Set/Reset Password",
+      "menuSetOtp": "Set OTP",
+      "menuToggleStatus": "User Enable/ Disable"
+    }
+  },
+  "application": {
+    "title": "Application",
+    "breadcrumb": "Application"
+  },
+  "assignUserRole": {
+    "title": "Assign User Role",
+    "breadcrumb": "Assign User Role",
+    "tabs": {
+      "newUserRole": "New User Role",
+      "modifyUserRole": "Modify User Role"
+    },
+    "table": {
+      "srNo": "Sr No.",
+      "userDetails": "User Details",
+      "userName": "User Name",
+      "role": "Role",
+      "assigned": "Assigned"
+    },
+    "pagination": {
+      "back": "Back",
+      "next": "Next"
+    }
+  },
+  "customerMaster": {
+    "title": "Customer Master",
+    "breadcrumb": "Customer Master",
+    "table": {
+      "srNo": "Sr No.",
+      "action": "Action",
+      "customerDetails": "Customer Details",
+      "status": "Status",
+      "name": "Customer Name",
+      "gender": "Gender",
+      "dob": "Date of Birth",
+      "regDate": "Registration Date",
+      "categoryCode": "Category Code",
+      "riskCategory": "Risk Category"
+    }
+  },
+  "branchMaster": {
+    "title": "Branch Master",
+    "breadcrumb": "Branch Master",
+    "filters": {
+      "branchCode": "Branch Code",
+      "branchName": "Branch Name",
+      "cityCode": "City Code",
+      "isImplemented": "Is Implemented"
+    },
+    "table": {
+      "srNo": "Sr No.",
+      "branchCode": "Branch Code",
+      "ifscCode": "IFSC Code",
+      "branchName": "Branch Name",
+      "shortName": "Short Name",
+      "address": "Address",
+      "cityCode": "City Code",
+      "emailId": "Email ID",
+      "phoneNo": "Phone No.",
+      "isImplemented": "Is Implemented",
+      "noRecordsFound": "No records found",
+      "menuNonCbsParameter": "Branch Non CBS Parameter",
+      "menuChequeBookLot": "Branch Cheque Book Lot",
+      "menuTdReceiptLot": "Branch TD Receipt Lot"
+    }
+  },
+  "globalMaster": {
+    "title": "Master Maintenance Global"
+  },
+  "headOfficeMaster": {
+    "title": "Master Maintenance Head Office"
+  },
+  "authorization": {
+    "title": "Authorization",
+    "breadcrumb": "Authorization",
+    "customerAuthorization": {
+      "breadcrumb": "Customer Authorization",
+      "tabs": {
+        "newAuthorization": "New Authorization",
+        "modifyAuthorization": "Modify Authorization",
+        "authorizeRejected": "Authorize Rejected"
+      },
+      "table": {
+        "srNo": "Sr No.",
+        "action": "Action",
+        "customerDetails": "Customer Details",
+        "status": "Status",
+        "name": "Customer Name",
+        "gender": "Gender",
+        "dob": "Date of Birth",
+        "regDate": "Registration Date",
+        "categoryCode": "Category Code",
+        "riskCategory": "Risk Category",
+        "menuAuthorize": "Authorize"
+      }
+    }
+  },
+  "authorizeAccount": {
+    "breadcrumb": "Account Authorization",
+    "cards": {
+      "sbCa": "SB / CA",
+      "deposit": "Deposit",
+      "loan": "Loan",
+      "fixedAsset": "Fixed Asset",
+      "investment": "Investment"
+    },
+    "tabs": {
+      "newAuthorization": "New Authorization",
+      "modifyAuthorization": "Modify Authorization",
+      "authorizeRejected": "Authorize Rejected"
+    }
+  },
+  "tdClose": {
+    "title": "Term Deposit Close",
+    "breadcrumb": "Term Deposit Close"
+  },
+  "standingInstructions": {
+    "title": "Standing Instructions",
+    "breadcrumb": "Standing Instructions",
+    "table": {
+      "srNo": "Sr No.",
+      "action": "Action",
+      "debit": "Debit A/c",
+      "credit": "Credit A/c",
+      "amount": "Amount",
+      "frequency": "Frequency",
+      "nextDueDate": "Next Due Date",
+      "status": "Status",
+      "menuStop": "Stop"
+    }
+  },
+  "memo": {
+    "title": "Account Memo",
+    "accountCode": "Account Code",
+    "name": "Name",
+    "memoDetails": "Memo Details",
+    "detailsPlaceholder": "Details",
+    "charactersOnly": "{{count}} Characters Only"
+  },
+  "lienMark": {
+    "title": "Lien Mark"
+  },
+  "lienRevoke": {
+    "title": "Lien Revoke Mark"
+  },
+  "tdCalculate": {
+    "title": "Maturity Amount",
+    "subtitle": "All Information's are related to Maturity Amount",
+    "accountType": "Account Type",
+    "productCode": "Product Code",
+    "productDescription": "Product Description",
+    "categoryCode": "Category Code",
+    "openingDate": "Opening Date",
+    "unitOfPeriod": "Unit Of Period",
+    "periodOfDeposit": "Period of Deposit",
+    "rate": "Rate",
+    "interestFrequency": "Interest Payment frequency",
+    "depositAmount": "Deposit Amount",
+    "maturityAmount": "Maturity Amount",
+    "maturityDate": "Maturity Date",
+    "subProductList": "Sub Product List",
+    "descriptionCol": "Description"
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "aiDashboard": "AI Dashboard",
+    "authorization": "Authorization",
+    "manager": "Manager",
+    "misActivity": "MIS Activity",
+    "accountMaster": "Account Master",
+    "accountClosing": "Account Closing",
+    "clerk": "Clerk",
+    "bills": "Bills",
+    "clearing": "Clearing",
+    "customerMaster": "Customer Master",
+    "locker": "Locker",
+    "queries": "Queries",
+    "sms": "SMS",
+    "transactionMaster": "Transaction Master",
+    "userMaster": "User Master",
+    "assignUserRole": "Assign User Role",
+    "headOfficeMaster": "Headoffice Master",
+    "globalMaster": "Global Master",
+    "branchMaster": "Branch Master",
+    "futureModels": "Future Models",
+    "search": "Search",
+    "lastLogin": "Last Login:",
+    "role": "Role:",
+    "hoOfficer": "Ho Officer",
+    "hoClerk": "Ho Clerk",
+    "supportUtility": "Support Utility",
+    "interestPosting": "Interest Posting",
+    "financialClosing": "Financial Closing",
+    "cashier": "Cashier",
+    "dba": "DBA",
+    "noMatchingItems": "No matching menu items",
+    "comingSoon": "Coming soon",
+    "logoAlt": "Logo"
+  }
+}

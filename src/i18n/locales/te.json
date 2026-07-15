@@ -1,0 +1,298 @@
+{
+  "common": {
+    "home": "హోమ్",
+    "misActivity": "ఎంఐఎస్ కార్యకలాపం",
+    "futureModels": "భవిష్యత్ మోడల్స్",
+    "cancel": "రద్దు చేయండి",
+    "save": "సేవ్ చేయండి",
+    "submit": "సమర్పించండి",
+    "validate": "ధృవీకరించండి",
+    "authorize": "అధికారం ఇవ్వండి",
+    "revoke": "ఉపసంహరించండి",
+    "details": "వివరాలు",
+    "accountDetails": "ఖాతా వివరాలు",
+    "lienDetails": "లియన్ వివరాలు",
+    "add": "జోడించండి",
+    "search": "శోధించండి",
+    "searchOrFilter": "శోధించండి/ ఫిల్టర్ చేయండి",
+    "actions": "చర్యలు",
+    "select": "ఎంచుకోండి",
+    "noResultsFound": "ఫలితాలు కనుగొనబడలేదు",
+    "view": "వీక్షించండి",
+    "edit": "సవరించండి",
+    "services": "సేవలు",
+    "logout": "లాగ్అవుట్"
+  },
+  "fields": {
+    "accountCode": "ఖాతా కోడ్",
+    "accountName": "ఖాతా పేరు",
+    "accountType": "ఖాతా రకం",
+    "productType": "ఉత్పత్తి రకం",
+    "productCode": "ఉత్పత్తి కోడ్",
+    "description": "వివరణ",
+    "name": "పేరు",
+    "ledgerBalance": "లెడ్జర్ బ్యాలెన్స్",
+    "availableBalance": "అందుబాటులో ఉన్న బ్యాలెన్స్",
+    "loanAccountCode": "లోన్ ఖాతా కోడ్",
+    "loanAccountName": "లోన్ ఖాతా పేరు",
+    "lienAmount": "లియన్ మొత్తం",
+    "remark": "వ్యాఖ్య",
+    "serial": "క్రమ సంఖ్య"
+  },
+  "accountMaster": {
+    "title": "ఖాతా మాస్టర్",
+    "breadcrumb": "ఖాతా మాస్టర్",
+    "options": {
+      "caSa": { "title": "సీఏ/ఎస్ఏ", "description": "సీఏ/ఎస్ఏ దరఖాస్తు వివరాలను నమోదు చేయండి." },
+      "deposit": { "title": "డిపాజిట్", "description": "డిపాజిట్ దరఖాస్తు వివరాలను నమోదు చేయండి." },
+      "loan": { "title": "రుణం", "description": "రుణం దరఖాస్తు వివరాలను నమోదు చేయండి." },
+      "investment": { "title": "పెట్టుబడి", "description": "పెట్టుబడి దరఖాస్తు వివరాలను నమోదు చేయండి." }
+    },
+    "filters": {
+      "id": "ఐడి",
+      "name": "పేరు",
+      "type": "రకం"
+    },
+    "table": {
+      "srNo": "క్ర.సం.",
+      "action": "చర్య",
+      "applicationNo": "దరఖాస్తు సంఖ్య",
+      "accountId": "ఖాతా ఐడి",
+      "status": "స్థితి",
+      "statusLive": "లైవ్",
+      "customerId": "కస్టమర్ ఐడి",
+      "createdBy": "సృష్టించినవారు",
+      "openingDate": "ప్రారంభ తేదీ",
+      "menuFreeze": "ఖాతా ఫ్రీజ్ / అన్‌ఫ్రీజ్",
+      "menuCheque": "చెక్ బుక్ జారీ"
+    },
+    "addForm": {
+      "title": "ఖాతా జోడించండి",
+      "subtitle": "ఉద్యోగికి సంబంధించిన కొన్ని ప్రాథమిక సమాచారాన్ని జోడించండి",
+      "accountTypePlaceholder": "ఖాతా రకాన్ని ఎంచుకోండి",
+      "productTypePlaceholder": "ఉత్పత్తి రకాన్ని ఎంచుకోండి",
+      "accountTypeListTitle": "ఖాతా రకాల జాబితా",
+      "subProductListTitle": "సబ్ ఉత్పత్తి జాబితా"
+    }
+  },
+  "userMaster": {
+    "title": "యూజర్ మాస్టర్",
+    "breadcrumb": "యూజర్ మాస్టర్",
+    "table": {
+      "srNo": "క్ర.సం.",
+      "action": "చర్య",
+      "userDetails": "యూజర్ వివరాలు",
+      "status": "స్థితి",
+      "userName": "యూజర్ పేరు",
+      "userRole": "యూజర్ పాత్ర",
+      "createdBy": "సృష్టించినవారు",
+      "createdDate": "సృష్టించిన తేదీ",
+      "branchCode": "బ్రాంచ్ కోడ్",
+      "branchName": "బ్రాంచ్ పేరు",
+      "menuSetPassword": "పాస్‌వర్డ్ సెట్/రీసెట్ చేయండి",
+      "menuSetOtp": "OTP సెట్ చేయండి",
+      "menuToggleStatus": "యూజర్ ఎనేబుల్/డిసేబుల్"
+    }
+  },
+  "application": {
+    "title": "దరఖాస్తు",
+    "breadcrumb": "దరఖాస్తు"
+  },
+  "assignUserRole": {
+    "title": "యూజర్ పాత్ర కేటాయింపు",
+    "breadcrumb": "యూజర్ పాత్ర కేటాయింపు",
+    "tabs": {
+      "newUserRole": "కొత్త యూజర్ పాత్ర",
+      "modifyUserRole": "యూజర్ పాత్రను సవరించండి"
+    },
+    "table": {
+      "srNo": "క్ర.సం.",
+      "userDetails": "యూజర్ వివరాలు",
+      "userName": "యూజర్ పేరు",
+      "role": "పాత్ర",
+      "assigned": "కేటాయించబడింది"
+    },
+    "pagination": {
+      "back": "వెనుకకు",
+      "next": "తదుపరి"
+    }
+  },
+  "customerMaster": {
+    "title": "కస్టమర్ మాస్టర్",
+    "breadcrumb": "కస్టమర్ మాస్టర్",
+    "table": {
+      "srNo": "క్ర.సం.",
+      "action": "చర్య",
+      "customerDetails": "కస్టమర్ వివరాలు",
+      "status": "స్థితి",
+      "name": "కస్టమర్ పేరు",
+      "gender": "లింగం",
+      "dob": "పుట్టిన తేదీ",
+      "regDate": "నమోదు తేదీ",
+      "categoryCode": "కేటగిరీ కోడ్",
+      "riskCategory": "రిస్క్ కేటగిరీ"
+    }
+  },
+  "branchMaster": {
+    "title": "బ్రాంచ్ మాస్టర్",
+    "breadcrumb": "బ్రాంచ్ మాస్టర్",
+    "filters": {
+      "branchCode": "బ్రాంచ్ కోడ్",
+      "branchName": "బ్రాంచ్ పేరు",
+      "cityCode": "సిటీ కోడ్",
+      "isImplemented": "అమలు చేయబడిందా"
+    },
+    "table": {
+      "srNo": "క్ర.సం.",
+      "branchCode": "బ్రాంచ్ కోడ్",
+      "ifscCode": "IFSC కోడ్",
+      "branchName": "బ్రాంచ్ పేరు",
+      "shortName": "సంక్షిప్త పేరు",
+      "address": "చిరునామా",
+      "cityCode": "సిటీ కోడ్",
+      "emailId": "ఇమెయిల్ ఐడి",
+      "phoneNo": "ఫోన్ నంబర్",
+      "isImplemented": "అమలు చేయబడిందా",
+      "noRecordsFound": "రికార్డులు కనుగొనబడలేదు",
+      "menuNonCbsParameter": "బ్రాంచ్ నాన్ CBS పారామీటర్",
+      "menuChequeBookLot": "బ్రాంచ్ చెక్ బుక్ లాట్",
+      "menuTdReceiptLot": "బ్రాంచ్ TD రసీదు లాట్"
+    }
+  },
+  "globalMaster": {
+    "title": "మాస్టర్ మెయింటెనెన్స్ గ్లోబల్"
+  },
+  "headOfficeMaster": {
+    "title": "మాస్టర్ మెయింటెనెన్స్ హెడ్ ఆఫీస్"
+  },
+  "authorization": {
+    "title": "అథరైజేషన్",
+    "breadcrumb": "అథరైజేషన్",
+    "customerAuthorization": {
+      "breadcrumb": "కస్టమర్ అథరైజేషన్",
+      "tabs": {
+        "newAuthorization": "కొత్త అథరైజేషన్",
+        "modifyAuthorization": "అథరైజేషన్ సవరించండి",
+        "authorizeRejected": "తిరస్కరించిన అథరైజేషన్"
+      },
+      "table": {
+        "srNo": "క్ర.సం.",
+        "action": "చర్య",
+        "customerDetails": "కస్టమర్ వివరాలు",
+        "status": "స్థితి",
+        "name": "కస్టమర్ పేరు",
+        "gender": "లింగం",
+        "dob": "పుట్టిన తేదీ",
+        "regDate": "నమోదు తేదీ",
+        "categoryCode": "కేటగిరీ కోడ్",
+        "riskCategory": "రిస్క్ కేటగిరీ",
+        "menuAuthorize": "అథరైజ్ చేయండి"
+      }
+    }
+  },
+  "authorizeAccount": {
+    "breadcrumb": "ఖాతా అథరైజేషన్",
+    "cards": {
+      "sbCa": "ఎస్‌బి / సిఎ",
+      "deposit": "డిపాజిట్",
+      "loan": "లోన్",
+      "fixedAsset": "స్థిర ఆస్తి",
+      "investment": "పెట్టుబడి"
+    },
+    "tabs": {
+      "newAuthorization": "కొత్త అథరైజేషన్",
+      "modifyAuthorization": "అథరైజేషన్ సవరించండి",
+      "authorizeRejected": "అథరైజేషన్ తిరస్కరించబడింది"
+    }
+  },
+  "tdClose": {
+    "title": "టర్మ్ డిపాజిట్ క్లోజ్",
+    "breadcrumb": "టర్మ్ డిపాజిట్ క్లోజ్"
+  },
+  "standingInstructions": {
+    "title": "స్టాండింగ్ ఇన్‌స్ట్రక్షన్స్",
+    "breadcrumb": "స్టాండింగ్ ఇన్‌స్ట్రక్షన్స్",
+    "table": {
+      "srNo": "క్ర.సం.",
+      "action": "చర్య",
+      "debit": "డెబిట్ ఖాతా",
+      "credit": "క్రెడిట్ ఖాతా",
+      "amount": "మొత్తం",
+      "frequency": "ఫ్రీక్వెన్సీ",
+      "nextDueDate": "తదుపరి గడువు తేదీ",
+      "status": "స్థితి",
+      "menuStop": "ఆపండి"
+    }
+  },
+  "memo": {
+    "title": "ఖాతా మెమో",
+    "accountCode": "ఖాతా కోడ్",
+    "name": "పేరు",
+    "memoDetails": "మెమో వివరాలు",
+    "detailsPlaceholder": "వివరాలు",
+    "charactersOnly": "{{count}} అక్షరాలు మాత్రమే"
+  },
+  "lienMark": {
+    "title": "లియన్ మార్క్"
+  },
+  "lienRevoke": {
+    "title": "లియన్ రద్దు మార్క్"
+  },
+  "tdCalculate": {
+    "title": "మెచ్యూరిటీ మొత్తం",
+    "subtitle": "అన్ని సమాచారం మెచ్యూరిటీ మొత్తానికి సంబంధించినది",
+    "accountType": "ఖాతా రకం",
+    "productCode": "ఉత్పత్తి కోడ్",
+    "productDescription": "ఉత్పత్తి వివరణ",
+    "categoryCode": "కేటగిరీ కోడ్",
+    "openingDate": "ప్రారంభ తేదీ",
+    "unitOfPeriod": "కాలవ్యవధి యూనిట్",
+    "periodOfDeposit": "డిపాజిట్ వ్యవధి",
+    "rate": "రేటు",
+    "interestFrequency": "వడ్డీ చెల్లింపు ఫ్రీక్వెన్సీ",
+    "depositAmount": "డిపాజిట్ మొత్తం",
+    "maturityAmount": "మెచ్యూరిటీ మొత్తం",
+    "maturityDate": "మెచ్యూరిటీ తేదీ",
+    "subProductList": "సబ్ ఉత్పత్తి జాబితా",
+    "descriptionCol": "వివరణ"
+  },
+  "dashboard": {
+    "title": "డాష్‌బోర్డ్"
+  },
+  "sidebar": {
+    "dashboard": "డాష్‌బోర్డ్",
+    "aiDashboard": "AI డాష్‌బోర్డ్",
+    "authorization": "అథరైజేషన్",
+    "manager": "మేనేజర్",
+    "misActivity": "ఎంఐఎస్ కార్యకలాపం",
+    "accountMaster": "ఖాతా మాస్టర్",
+    "accountClosing": "ఖాతా మూసివేత",
+    "clerk": "క్లర్క్",
+    "bills": "బిల్లులు",
+    "clearing": "క్లియరింగ్",
+    "customerMaster": "కస్టమర్ మాస్టర్",
+    "locker": "లాకర్",
+    "queries": "ప్రశ్నలు",
+    "sms": "ఎస్ఎంఎస్",
+    "transactionMaster": "ట్రాన్సాక్షన్ మాస్టర్",
+    "userMaster": "యూజర్ మాస్టర్",
+    "assignUserRole": "యూజర్ పాత్ర కేటాయింపు",
+    "headOfficeMaster": "హెడ్ ఆఫీస్ మాస్టర్",
+    "globalMaster": "గ్లోబల్ మాస్టర్",
+    "branchMaster": "బ్రాంచ్ మాస్టర్",
+    "futureModels": "భవిష్యత్ మోడల్స్",
+    "search": "శోధించండి",
+    "lastLogin": "చివరి లాగిన్:",
+    "role": "పాత్ర:",
+    "hoOfficer": "HO అధికారి",
+    "hoClerk": "HO క్లర్క్",
+    "supportUtility": "సపోర్ట్ యుటిలిటీ",
+    "interestPosting": "వడ్డీ పోస్టింగ్",
+    "financialClosing": "ఆర్థిక ముగింపు",
+    "cashier": "క్యాషియర్",
+    "dba": "DBA",
+    "noMatchingItems": "సరిపోలే మెనూ అంశాలు లేవు",
+    "comingSoon": "త్వరలో వస్తుంది",
+    "logoAlt": "లోగో"
+  }
+}

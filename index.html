@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/IDSSPL.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IDSSPL</title>
+    <meta name="description" content="Core Banking Application" />
+
+    <!-- Replaces next/font/google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Applies the persisted primary color before first paint, so there is no
+         flash of the default blue (was the inline script in app/layout.tsx). -->
+    <script>
+      (function () {
+        try {
+          var c = localStorage.getItem("idsspl-primary-color");
+          if (c) document.documentElement.style.setProperty("--primary", c);
+          var d = localStorage.getItem("idsspl-dark-mode");
+          if (d === "true") document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

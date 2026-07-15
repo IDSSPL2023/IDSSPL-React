@@ -1,0 +1,298 @@
+{
+  "common": {
+    "home": "होम",
+    "misActivity": "एमआईएस गतिविधि",
+    "futureModels": "फ्यूचर मॉडल्स",
+    "cancel": "रद्द करें",
+    "save": "सहेजें",
+    "submit": "जमा करें",
+    "validate": "सत्यापित करें",
+    "authorize": "प्राधिकृत करें",
+    "revoke": "निरस्त करें",
+    "details": "विवरण",
+    "accountDetails": "खाता विवरण",
+    "lienDetails": "ग्रहणाधिकार विवरण",
+    "add": "जोड़ें",
+    "search": "खोजें",
+    "searchOrFilter": "खोजें/ फ़िल्टर करें",
+    "actions": "कार्रवाइयां",
+    "select": "चुनें",
+    "noResultsFound": "कोई परिणाम नहीं मिला",
+    "view": "देखें",
+    "edit": "संपादित करें",
+    "services": "सेवाएं",
+    "logout": "लॉगआउट"
+  },
+  "fields": {
+    "accountCode": "खाता कोड",
+    "accountName": "खाता नाम",
+    "accountType": "खाता प्रकार",
+    "productType": "उत्पाद प्रकार",
+    "productCode": "उत्पाद कोड",
+    "description": "विवरण",
+    "name": "नाम",
+    "ledgerBalance": "लेजर बैलेंस",
+    "availableBalance": "उपलब्ध बैलेंस",
+    "loanAccountCode": "ऋण खाता कोड",
+    "loanAccountName": "ऋण खाता नाम",
+    "lienAmount": "ग्रहणाधिकार राशि",
+    "remark": "टिप्पणी",
+    "serial": "क्रम"
+  },
+  "accountMaster": {
+    "title": "खाता मास्टर",
+    "breadcrumb": "खाता मास्टर",
+    "options": {
+      "caSa": { "title": "सीए/एसए", "description": "सीए/एसए आवेदन विवरण दर्ज करें." },
+      "deposit": { "title": "जमा", "description": "जमा आवेदन विवरण दर्ज करें." },
+      "loan": { "title": "ऋण", "description": "ऋण आवेदन विवरण दर्ज करें." },
+      "investment": { "title": "निवेश", "description": "निवेश आवेदन विवरण दर्ज करें." }
+    },
+    "filters": {
+      "id": "आईडी",
+      "name": "नाम",
+      "type": "प्रकार"
+    },
+    "table": {
+      "srNo": "क्र.सं.",
+      "action": "कार्रवाई",
+      "applicationNo": "आवेदन क्रमांक",
+      "accountId": "खाता आईडी",
+      "status": "स्थिति",
+      "statusLive": "लाइव",
+      "customerId": "ग्राहक आईडी",
+      "createdBy": "द्वारा बनाया गया",
+      "openingDate": "खाता खोलने की तारीख",
+      "menuFreeze": "खाता फ्रीज / अनफ्रीज",
+      "menuCheque": "चेक बुक जारी करना"
+    },
+    "addForm": {
+      "title": "खाता जोड़ें",
+      "subtitle": "कर्मचारी से संबंधित कुछ बुनियादी जानकारी जोड़ें",
+      "accountTypePlaceholder": "खाता प्रकार चुनें",
+      "productTypePlaceholder": "उत्पाद प्रकार चुनें",
+      "accountTypeListTitle": "खाता प्रकार सूची",
+      "subProductListTitle": "उप उत्पाद सूची"
+    }
+  },
+  "userMaster": {
+    "title": "यूज़र मास्टर",
+    "breadcrumb": "यूज़र मास्टर",
+    "table": {
+      "srNo": "क्र.सं.",
+      "action": "कार्रवाई",
+      "userDetails": "उपयोगकर्ता विवरण",
+      "status": "स्थिति",
+      "userName": "उपयोगकर्ता नाम",
+      "userRole": "उपयोगकर्ता भूमिका",
+      "createdBy": "द्वारा बनाया गया",
+      "createdDate": "बनाई गई तारीख",
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखा का नाम",
+      "menuSetPassword": "पासवर्ड सेट/रीसेट करें",
+      "menuSetOtp": "ओटीपी सेट करें",
+      "menuToggleStatus": "उपयोगकर्ता सक्षम/अक्षम करें"
+    }
+  },
+  "application": {
+    "title": "आवेदन",
+    "breadcrumb": "आवेदन"
+  },
+  "assignUserRole": {
+    "title": "यूज़र भूमिका असाइन करें",
+    "breadcrumb": "यूज़र भूमिका असाइन करें",
+    "tabs": {
+      "newUserRole": "नई उपयोगकर्ता भूमिका",
+      "modifyUserRole": "उपयोगकर्ता भूमिका संशोधित करें"
+    },
+    "table": {
+      "srNo": "क्र.सं.",
+      "userDetails": "उपयोगकर्ता विवरण",
+      "userName": "उपयोगकर्ता नाम",
+      "role": "भूमिका",
+      "assigned": "असाइन किया गया"
+    },
+    "pagination": {
+      "back": "पीछे",
+      "next": "आगे"
+    }
+  },
+  "customerMaster": {
+    "title": "कस्टमर मास्टर",
+    "breadcrumb": "कस्टमर मास्टर",
+    "table": {
+      "srNo": "क्र.सं.",
+      "action": "कार्रवाई",
+      "customerDetails": "ग्राहक विवरण",
+      "status": "स्थिति",
+      "name": "ग्राहक का नाम",
+      "gender": "लिंग",
+      "dob": "जन्म तिथि",
+      "regDate": "पंजीकरण तिथि",
+      "categoryCode": "श्रेणी कोड",
+      "riskCategory": "जोखिम श्रेणी"
+    }
+  },
+  "branchMaster": {
+    "title": "शाखा मास्टर",
+    "breadcrumb": "शाखा मास्टर",
+    "table": {
+      "srNo": "क्र.सं.",
+      "branchCode": "शाखा कोड",
+      "ifscCode": "आईएफएससी कोड",
+      "branchName": "शाखा का नाम",
+      "shortName": "संक्षिप्त नाम",
+      "address": "पता",
+      "cityCode": "शहर कोड",
+      "emailId": "ईमेल आईडी",
+      "phoneNo": "फ़ोन नंबर",
+      "isImplemented": "लागू है",
+      "noRecordsFound": "कोई रिकॉर्ड नहीं मिला",
+      "menuNonCbsParameter": "शाखा नॉन सीबीएस पैरामीटर",
+      "menuChequeBookLot": "शाखा चेक बुक लॉट",
+      "menuTdReceiptLot": "शाखा टीडी रसीद लॉट"
+    },
+    "filters": {
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखा नाम",
+      "cityCode": "शहर कोड",
+      "isImplemented": "लागू है"
+    }
+  },
+  "globalMaster": {
+    "title": "मास्टर मेंटेनेंस ग्लोबल"
+  },
+  "headOfficeMaster": {
+    "title": "मास्टर मेंटेनेंस हेड ऑफिस"
+  },
+  "authorization": {
+    "title": "प्राधिकरण",
+    "breadcrumb": "प्राधिकरण",
+    "customerAuthorization": {
+      "breadcrumb": "ग्राहक प्राधिकरण",
+      "tabs": {
+        "newAuthorization": "नया प्राधिकरण",
+        "modifyAuthorization": "प्राधिकरण संशोधित करें",
+        "authorizeRejected": "अस्वीकृत प्राधिकरण"
+      },
+      "table": {
+        "srNo": "क्र.सं.",
+        "action": "कार्रवाई",
+        "customerDetails": "ग्राहक विवरण",
+        "status": "स्थिति",
+        "name": "ग्राहक का नाम",
+        "gender": "लिंग",
+        "dob": "जन्म तिथि",
+        "regDate": "पंजीकरण तिथि",
+        "categoryCode": "श्रेणी कोड",
+        "riskCategory": "जोखिम श्रेणी",
+        "menuAuthorize": "अधिकृत करें"
+      }
+    }
+  },
+  "authorizeAccount": {
+    "breadcrumb": "खाता प्राधिकरण",
+    "cards": {
+      "sbCa": "एसबी / सीए",
+      "deposit": "जमा",
+      "loan": "ऋण",
+      "fixedAsset": "स्थिर संपत्ति",
+      "investment": "निवेश"
+    },
+    "tabs": {
+      "newAuthorization": "नया प्राधिकरण",
+      "modifyAuthorization": "प्राधिकरण संशोधित करें",
+      "authorizeRejected": "प्राधिकरण अस्वीकृत"
+    }
+  },
+  "tdClose": {
+    "title": "मियादी जमा बंद करें",
+    "breadcrumb": "मियादी जमा बंद करें"
+  },
+  "standingInstructions": {
+    "title": "स्थायी निर्देश",
+    "breadcrumb": "स्थायी निर्देश",
+    "table": {
+      "srNo": "क्र.सं.",
+      "action": "कार्रवाई",
+      "debit": "डेबिट खाता",
+      "credit": "क्रेडिट खाता",
+      "amount": "राशि",
+      "frequency": "आवृत्ति",
+      "nextDueDate": "अगली नियत तारीख",
+      "status": "स्थिति",
+      "menuStop": "रोकें"
+    }
+  },
+  "memo": {
+    "title": "खाता मेमो",
+    "accountCode": "खाता कोड",
+    "name": "नाम",
+    "memoDetails": "मेमो विवरण",
+    "detailsPlaceholder": "विवरण",
+    "charactersOnly": "केवल {{count}} अक्षर"
+  },
+  "lienMark": {
+    "title": "ग्रहणाधिकार चिह्न"
+  },
+  "lienRevoke": {
+    "title": "ग्रहणाधिकार निरस्त चिह्न"
+  },
+  "tdCalculate": {
+    "title": "परिपक्वता राशि",
+    "subtitle": "सभी जानकारी परिपक्वता राशि से संबंधित है",
+    "accountType": "खाता प्रकार",
+    "productCode": "उत्पाद कोड",
+    "productDescription": "उत्पाद विवरण",
+    "categoryCode": "श्रेणी कोड",
+    "openingDate": "खोलने की तारीख",
+    "unitOfPeriod": "अवधि की इकाई",
+    "periodOfDeposit": "जमा की अवधि",
+    "rate": "दर",
+    "interestFrequency": "ब्याज भुगतान आवृत्ति",
+    "depositAmount": "जमा राशि",
+    "maturityAmount": "परिपक्वता राशि",
+    "maturityDate": "परिपक्वता तारीख",
+    "subProductList": "उप उत्पाद सूची",
+    "descriptionCol": "विवरण"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड"
+  },
+  "sidebar": {
+    "dashboard": "डैशबोर्ड",
+    "aiDashboard": "एआई डैशबोर्ड",
+    "authorization": "प्राधिकरण",
+    "manager": "मैनेजर",
+    "misActivity": "एमआईएस गतिविधि",
+    "accountMaster": "खाता मास्टर",
+    "accountClosing": "खाता बंद करना",
+    "clerk": "क्लर्क",
+    "bills": "बिल",
+    "clearing": "क्लियरिंग",
+    "customerMaster": "कस्टमर मास्टर",
+    "locker": "लॉकर",
+    "queries": "क्वेरीज़",
+    "sms": "एसएमएस",
+    "transactionMaster": "ट्रांजैक्शन मास्टर",
+    "userMaster": "यूज़र मास्टर",
+    "assignUserRole": "यूज़र भूमिका असाइन करें",
+    "headOfficeMaster": "हेड ऑफिस मास्टर",
+    "globalMaster": "ग्लोबल मास्टर",
+    "branchMaster": "शाखा मास्टर",
+    "futureModels": "फ्यूचर मॉडल्स",
+    "search": "खोजें",
+    "lastLogin": "अंतिम लॉगिन:",
+    "role": "भूमिका:",
+    "hoOfficer": "एचओ अधिकारी",
+    "hoClerk": "एचओ क्लर्क",
+    "supportUtility": "सपोर्ट यूटिलिटी",
+    "interestPosting": "ब्याज पोस्टिंग",
+    "financialClosing": "वित्तीय समापन",
+    "cashier": "कैशियर",
+    "dba": "डीबीए",
+    "noMatchingItems": "कोई मेल खाने वाला मेनू आइटम नहीं",
+    "comingSoon": "जल्द आ रहा है",
+    "logoAlt": "लोगो"
+  }
+}

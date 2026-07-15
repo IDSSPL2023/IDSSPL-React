@@ -1,0 +1,298 @@
+{
+  "common": {
+    "home": "முகப்பு",
+    "misActivity": "எம்ஐஎஸ் செயல்பாடு",
+    "futureModels": "எதிர்கால மாதிரிகள்",
+    "cancel": "ரத்து செய்",
+    "save": "சேமி",
+    "submit": "சமர்ப்பி",
+    "validate": "சரிபார்",
+    "authorize": "அங்கீகரிக்கவும்",
+    "revoke": "திரும்பப் பெறு",
+    "details": "விவரங்கள்",
+    "accountDetails": "கணக்கு விவரங்கள்",
+    "lienDetails": "பிணைய விவரங்கள்",
+    "add": "சேர்",
+    "search": "தேடு",
+    "searchOrFilter": "தேடு/ வடிகட்டு",
+    "actions": "செயல்கள்",
+    "select": "தேர்ந்தெடு",
+    "noResultsFound": "முடிவுகள் எதுவும் இல்லை",
+    "view": "காண்க",
+    "edit": "திருத்து",
+    "services": "சேவைகள்",
+    "logout": "வெளியேறு"
+  },
+  "fields": {
+    "accountCode": "கணக்கு குறியீடு",
+    "accountName": "கணக்கு பெயர்",
+    "accountType": "கணக்கு வகை",
+    "productType": "தயாரிப்பு வகை",
+    "productCode": "தயாரிப்பு குறியீடு",
+    "description": "விளக்கம்",
+    "name": "பெயர்",
+    "ledgerBalance": "லெட்ஜர் இருப்பு",
+    "availableBalance": "கிடைக்கும் இருப்பு",
+    "loanAccountCode": "கடன் கணக்கு குறியீடு",
+    "loanAccountName": "கடன் கணக்கு பெயர்",
+    "lienAmount": "பிணைய தொகை",
+    "remark": "குறிப்பு",
+    "serial": "வரிசை எண்"
+  },
+  "accountMaster": {
+    "title": "கணக்கு மாஸ்டர்",
+    "breadcrumb": "கணக்கு மாஸ்டர்",
+    "options": {
+      "caSa": { "title": "சிஏ/எஸ்ஏ", "description": "சிஏ/எஸ்ஏ விண்ணப்ப விவரங்களை உள்ளிடவும்." },
+      "deposit": { "title": "வைப்பு", "description": "வைப்பு விண்ணப்ப விவரங்களை உள்ளிடவும்." },
+      "loan": { "title": "கடன்", "description": "கடன் விண்ணப்ப விவரங்களை உள்ளிடவும்." },
+      "investment": { "title": "முதலீடு", "description": "முதலீடு விண்ணப்ப விவரங்களை உள்ளிடவும்." }
+    },
+    "filters": {
+      "id": "ஐடி",
+      "name": "பெயர்",
+      "type": "வகை"
+    },
+    "table": {
+      "srNo": "வ.எண்.",
+      "action": "செயல்",
+      "applicationNo": "விண்ணப்ப எண்.",
+      "accountId": "கணக்கு ஐடி",
+      "status": "நிலை",
+      "statusLive": "லைவ்",
+      "customerId": "வாடிக்கையாளர் ஐடி",
+      "createdBy": "உருவாக்கியவர்",
+      "openingDate": "தொடக்க தேதி",
+      "menuFreeze": "கணக்கு முடக்கு / முடக்கு நீக்கு",
+      "menuCheque": "காசோலை புத்தக வழங்கல்"
+    },
+    "addForm": {
+      "title": "கணக்கு சேர்",
+      "subtitle": "பணியாளர் தொடர்பான சில அடிப்படை தகவல்களைச் சேர்க்கவும்",
+      "accountTypePlaceholder": "கணக்கு வகையைத் தேர்ந்தெடுக்கவும்",
+      "productTypePlaceholder": "தயாரிப்பு வகையைத் தேர்ந்தெடுக்கவும்",
+      "accountTypeListTitle": "கணக்கு வகை பட்டியல்",
+      "subProductListTitle": "துணை தயாரிப்பு பட்டியல்"
+    }
+  },
+  "userMaster": {
+    "title": "பயனர் மாஸ்டர்",
+    "breadcrumb": "பயனர் மாஸ்டர்",
+    "table": {
+      "srNo": "வ.எண்.",
+      "action": "செயல்",
+      "userDetails": "பயனர் விவரங்கள்",
+      "status": "நிலை",
+      "userName": "பயனர் பெயர்",
+      "userRole": "பயனர் பங்கு",
+      "createdBy": "உருவாக்கியவர்",
+      "createdDate": "உருவாக்கிய தேதி",
+      "branchCode": "கிளை குறியீடு",
+      "branchName": "கிளை பெயர்",
+      "menuSetPassword": "கடவுச்சொல்லை அமை/மீட்டமை",
+      "menuSetOtp": "OTP அமை",
+      "menuToggleStatus": "பயனர் இயக்கு/ முடக்கு"
+    }
+  },
+  "application": {
+    "title": "விண்ணப்பம்",
+    "breadcrumb": "விண்ணப்பம்"
+  },
+  "assignUserRole": {
+    "title": "பயனர் பங்கு ஒதுக்கீடு",
+    "breadcrumb": "பயனர் பங்கு ஒதுக்கீடு",
+    "tabs": {
+      "newUserRole": "புதிய பயனர் பங்கு",
+      "modifyUserRole": "பயனர் பங்கை மாற்று"
+    },
+    "table": {
+      "srNo": "வ.எண்.",
+      "userDetails": "பயனர் விவரங்கள்",
+      "userName": "பயனர் பெயர்",
+      "role": "பங்கு",
+      "assigned": "ஒதுக்கப்பட்டது"
+    },
+    "pagination": {
+      "back": "பின்",
+      "next": "அடுத்து"
+    }
+  },
+  "customerMaster": {
+    "title": "வாடிக்கையாளர் மாஸ்டர்",
+    "breadcrumb": "வாடிக்கையாளர் மாஸ்டர்",
+    "table": {
+      "srNo": "வ.எண்.",
+      "action": "செயல்",
+      "customerDetails": "வாடிக்கையாளர் விவரங்கள்",
+      "status": "நிலை",
+      "name": "வாடிக்கையாளர் பெயர்",
+      "gender": "பாலினம்",
+      "dob": "பிறந்த தேதி",
+      "regDate": "பதிவு தேதி",
+      "categoryCode": "வகை குறியீடு",
+      "riskCategory": "இடர் வகை"
+    }
+  },
+  "branchMaster": {
+    "title": "கிளை மாஸ்டர்",
+    "breadcrumb": "கிளை மாஸ்டர்",
+    "filters": {
+      "branchCode": "கிளை குறியீடு",
+      "branchName": "கிளை பெயர்",
+      "cityCode": "நகர குறியீடு",
+      "isImplemented": "செயல்படுத்தப்பட்டதா"
+    },
+    "table": {
+      "srNo": "வ.எண்.",
+      "branchCode": "கிளை குறியீடு",
+      "ifscCode": "IFSC குறியீடு",
+      "branchName": "கிளை பெயர்",
+      "shortName": "சுருக்கப் பெயர்",
+      "address": "முகவரி",
+      "cityCode": "நகர குறியீடு",
+      "emailId": "மின்னஞ்சல் ஐடி",
+      "phoneNo": "தொலைபேசி எண்.",
+      "isImplemented": "செயல்படுத்தப்பட்டதா",
+      "noRecordsFound": "பதிவுகள் எதுவும் இல்லை",
+      "menuNonCbsParameter": "கிளை Non CBS அளவுரு",
+      "menuChequeBookLot": "கிளை காசோலை புத்தக லாட்",
+      "menuTdReceiptLot": "கிளை TD ரசீது லாட்"
+    }
+  },
+  "globalMaster": {
+    "title": "மாஸ்டர் பராமரிப்பு குளோபல்"
+  },
+  "headOfficeMaster": {
+    "title": "மாஸ்டர் பராமரிப்பு தலைமை அலுவலகம்"
+  },
+  "authorization": {
+    "title": "அங்கீகாரம்",
+    "breadcrumb": "அங்கீகாரம்",
+    "customerAuthorization": {
+      "breadcrumb": "வாடிக்கையாளர் அங்கீகாரம்",
+      "tabs": {
+        "newAuthorization": "புதிய அங்கீகாரம்",
+        "modifyAuthorization": "அங்கீகாரத்தை மாற்று",
+        "authorizeRejected": "நிராகரிக்கப்பட்ட அங்கீகாரம்"
+      },
+      "table": {
+        "srNo": "வ.எண்.",
+        "action": "செயல்",
+        "customerDetails": "வாடிக்கையாளர் விவரங்கள்",
+        "status": "நிலை",
+        "name": "வாடிக்கையாளர் பெயர்",
+        "gender": "பாலினம்",
+        "dob": "பிறந்த தேதி",
+        "regDate": "பதிவு தேதி",
+        "categoryCode": "வகை குறியீடு",
+        "riskCategory": "இடர் வகை",
+        "menuAuthorize": "அங்கீகரி"
+      }
+    }
+  },
+  "authorizeAccount": {
+    "breadcrumb": "கணக்கு அங்கீகாரம்",
+    "cards": {
+      "sbCa": "எஸ்பி / சிஏ",
+      "deposit": "வைப்பு",
+      "loan": "கடன்",
+      "fixedAsset": "நிலையான சொத்து",
+      "investment": "முதலீடு"
+    },
+    "tabs": {
+      "newAuthorization": "புதிய அங்கீகாரம்",
+      "modifyAuthorization": "அங்கீகாரம் மாற்று",
+      "authorizeRejected": "அங்கீகாரம் நிராகரிக்கப்பட்டது"
+    }
+  },
+  "tdClose": {
+    "title": "தவணை வைப்பு மூடல்",
+    "breadcrumb": "தவணை வைப்பு மூடல்"
+  },
+  "standingInstructions": {
+    "title": "நிலையான வழிமுறைகள்",
+    "breadcrumb": "நிலையான வழிமுறைகள்",
+    "table": {
+      "srNo": "வ.எண்.",
+      "action": "செயல்",
+      "debit": "டெபிட் கணக்கு",
+      "credit": "கிரெடிட் கணக்கு",
+      "amount": "தொகை",
+      "frequency": "அதிர்வெண்",
+      "nextDueDate": "அடுத்த நிலுவைத் தேதி",
+      "status": "நிலை",
+      "menuStop": "நிறுத்து"
+    }
+  },
+  "memo": {
+    "title": "கணக்கு மெமோ",
+    "accountCode": "கணக்கு குறியீடு",
+    "name": "பெயர்",
+    "memoDetails": "மெமோ விவரங்கள்",
+    "detailsPlaceholder": "விவரங்கள்",
+    "charactersOnly": "{{count}} எழுத்துகள் மட்டும்"
+  },
+  "lienMark": {
+    "title": "பிணையக் குறிப்பு"
+  },
+  "lienRevoke": {
+    "title": "பிணைய திரும்பப்பெறல் குறிப்பு"
+  },
+  "tdCalculate": {
+    "title": "முதிர்வுத் தொகை",
+    "subtitle": "அனைத்து தகவல்களும் முதிர்வுத் தொகை தொடர்பானவை",
+    "accountType": "கணக்கு வகை",
+    "productCode": "தயாரிப்பு குறியீடு",
+    "productDescription": "தயாரிப்பு விளக்கம்",
+    "categoryCode": "வகை குறியீடு",
+    "openingDate": "தொடக்க தேதி",
+    "unitOfPeriod": "காலஅளவு அலகு",
+    "periodOfDeposit": "வைப்புக் காலம்",
+    "rate": "விகிதம்",
+    "interestFrequency": "வட்டி செலுத்தும் அதிர்வெண்",
+    "depositAmount": "வைப்புத் தொகை",
+    "maturityAmount": "முதிர்வுத் தொகை",
+    "maturityDate": "முதிர்வு தேதி",
+    "subProductList": "துணை தயாரிப்பு பட்டியல்",
+    "descriptionCol": "விளக்கம்"
+  },
+  "dashboard": {
+    "title": "டாஷ்போர்டு"
+  },
+  "sidebar": {
+    "dashboard": "டாஷ்போர்டு",
+    "aiDashboard": "AI டாஷ்போர்டு",
+    "authorization": "அங்கீகாரம்",
+    "manager": "மேலாளர்",
+    "misActivity": "எம்ஐஎஸ் செயல்பாடு",
+    "accountMaster": "கணக்கு மாஸ்டர்",
+    "accountClosing": "கணக்கு மூடல்",
+    "clerk": "எழுத்தர்",
+    "bills": "பில்கள்",
+    "clearing": "கிளியரிங்",
+    "customerMaster": "வாடிக்கையாளர் மாஸ்டர்",
+    "locker": "லாக்கர்",
+    "queries": "வினவல்கள்",
+    "sms": "எஸ்எம்எஸ்",
+    "transactionMaster": "பரிவர்த்தனை மாஸ்டர்",
+    "userMaster": "பயனர் மாஸ்டர்",
+    "assignUserRole": "பயனர் பங்கு ஒதுக்கீடு",
+    "headOfficeMaster": "தலைமை அலுவலக மாஸ்டர்",
+    "globalMaster": "குளோபல் மாஸ்டர்",
+    "branchMaster": "கிளை மாஸ்டர்",
+    "futureModels": "எதிர்கால மாதிரிகள்",
+    "search": "தேடு",
+    "lastLogin": "கடைசி உள்நுழைவு:",
+    "role": "பங்கு:",
+    "hoOfficer": "HO அதிகாரி",
+    "hoClerk": "HO எழுத்தர்",
+    "supportUtility": "சப்போர்ட் யூட்டிலிட்டி",
+    "interestPosting": "வட்டி பதிவு",
+    "financialClosing": "நிதி முடிவு",
+    "cashier": "காசாளர்",
+    "dba": "DBA",
+    "noMatchingItems": "பொருந்தும் மெனு உருப்படிகள் இல்லை",
+    "comingSoon": "விரைவில் வருகிறது",
+    "logoAlt": "லோகோ"
+  }
+}

@@ -1,0 +1,298 @@
+{
+  "common": {
+    "home": "मुख्यपृष्ठ",
+    "misActivity": "एमआयएस अ‍ॅक्टिव्हिटी",
+    "futureModels": "फ्युचर मॉडेल्स",
+    "cancel": "रद्द करा",
+    "save": "जतन करा",
+    "submit": "सादर करा",
+    "validate": "प्रमाणित करा",
+    "authorize": "अधिकृत करा",
+    "revoke": "रद्द करा",
+    "details": "तपशील",
+    "accountDetails": "खात्याचा तपशील",
+    "lienDetails": "बोजा तपशील",
+    "add": "जोडा",
+    "search": "शोधा",
+    "searchOrFilter": "शोधा/ फिल्टर करा",
+    "actions": "क्रिया",
+    "select": "निवडा",
+    "noResultsFound": "कोणतेही निकाल आढळले नाहीत",
+    "view": "पहा",
+    "edit": "संपादित करा",
+    "services": "सेवा",
+    "logout": "लॉगआउट"
+  },
+  "fields": {
+    "accountCode": "खाते कोड",
+    "accountName": "खाते नाव",
+    "accountType": "खात्याचा प्रकार",
+    "productType": "उत्पादनाचा प्रकार",
+    "productCode": "उत्पादन कोड",
+    "description": "वर्णन",
+    "name": "नाव",
+    "ledgerBalance": "लेजर शिल्लक",
+    "availableBalance": "उपलब्ध शिल्लक",
+    "loanAccountCode": "कर्ज खाते कोड",
+    "loanAccountName": "कर्ज खाते नाव",
+    "lienAmount": "बोजा रक्कम",
+    "remark": "शेरा",
+    "serial": "क्रम"
+  },
+  "accountMaster": {
+    "title": "खाते मास्टर",
+    "breadcrumb": "खाते मास्टर",
+    "options": {
+      "caSa": { "title": "चालू/बचत खाते", "description": "सीए/एसए अर्जाचा तपशील भरा." },
+      "deposit": { "title": "ठेव", "description": "ठेव अर्जाचा तपशील भरा." },
+      "loan": { "title": "कर्ज", "description": "कर्ज अर्जाचा तपशील भरा." },
+      "investment": { "title": "गुंतवणूक", "description": "गुंतवणूक अर्जाचा तपशील भरा." }
+    },
+    "filters": {
+      "id": "आयडी",
+      "name": "नाव",
+      "type": "प्रकार"
+    },
+    "table": {
+      "srNo": "अ.क्र.",
+      "action": "कृती",
+      "applicationNo": "अर्ज क्रमांक",
+      "accountId": "खाते आयडी",
+      "status": "स्थिती",
+      "statusLive": "लाइव्ह",
+      "customerId": "ग्राहक आयडी",
+      "createdBy": "तयार केले",
+      "openingDate": "खाते उघडण्याची तारीख",
+      "menuFreeze": "खाते फ्रीज / अनफ्रीज",
+      "menuCheque": "चेक बुक इश्यू"
+    },
+    "addForm": {
+      "title": "खाते जोडा",
+      "subtitle": "कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती",
+      "accountTypePlaceholder": "खात्याचा प्रकार निवडा",
+      "productTypePlaceholder": "उत्पादनाचा प्रकार निवडा",
+      "accountTypeListTitle": "खात्याच्या प्रकाराची यादी",
+      "subProductListTitle": "उप उत्पादन यादी"
+    }
+  },
+  "userMaster": {
+    "title": "युझर मास्टर",
+    "breadcrumb": "युझर मास्टर",
+    "table": {
+      "srNo": "अ.क्र.",
+      "action": "कृती",
+      "userDetails": "वापरकर्ता तपशील",
+      "status": "स्थिती",
+      "userName": "वापरकर्ता नाव",
+      "userRole": "वापरकर्ता भूमिका",
+      "createdBy": "तयार केले",
+      "createdDate": "तयार केल्याची तारीख",
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखेचे नाव",
+      "menuSetPassword": "पासवर्ड सेट/रीसेट करा",
+      "menuSetOtp": "ओटीपी सेट करा",
+      "menuToggleStatus": "वापरकर्ता सक्षम/अक्षम करा"
+    }
+  },
+  "application": {
+    "title": "अर्ज",
+    "breadcrumb": "अर्ज"
+  },
+  "assignUserRole": {
+    "title": "वापरकर्ता भूमिका नियुक्त करा",
+    "breadcrumb": "वापरकर्ता भूमिका नियुक्त करा",
+    "tabs": {
+      "newUserRole": "नवीन वापरकर्ता भूमिका",
+      "modifyUserRole": "वापरकर्ता भूमिका सुधारित करा"
+    },
+    "table": {
+      "srNo": "अ.क्र.",
+      "userDetails": "वापरकर्ता तपशील",
+      "userName": "वापरकर्ता नाव",
+      "role": "भूमिका",
+      "assigned": "नियुक्त केले"
+    },
+    "pagination": {
+      "back": "मागे",
+      "next": "पुढे"
+    }
+  },
+  "customerMaster": {
+    "title": "कस्टमर मास्टर",
+    "breadcrumb": "कस्टमर मास्टर",
+    "table": {
+      "srNo": "अ.क्र.",
+      "action": "कृती",
+      "customerDetails": "ग्राहक तपशील",
+      "status": "स्थिती",
+      "name": "ग्राहकाचे नाव",
+      "gender": "लिंग",
+      "dob": "जन्मतारीख",
+      "regDate": "नोंदणी तारीख",
+      "categoryCode": "कॅटेगरी कोड",
+      "riskCategory": "धोक्याचा प्रकार"
+    }
+  },
+  "branchMaster": {
+    "title": "शाखा मास्टर",
+    "breadcrumb": "शाखा मास्टर",
+    "table": {
+      "srNo": "अ.क्र.",
+      "branchCode": "शाखा कोड",
+      "ifscCode": "आयएफएससी कोड",
+      "branchName": "शाखेचे नाव",
+      "shortName": "संक्षिप्त नाव",
+      "address": "पत्ता",
+      "cityCode": "शहर कोड",
+      "emailId": "ईमेल आयडी",
+      "phoneNo": "फोन नंबर",
+      "isImplemented": "अंमलात आणले आहे",
+      "noRecordsFound": "कोणतीही नोंद आढळली नाही",
+      "menuNonCbsParameter": "शाखा नॉन सीबीएस पॅरामीटर",
+      "menuChequeBookLot": "शाखा चेक बुक लॉट",
+      "menuTdReceiptLot": "शाखा टीडी पावती लॉट"
+    },
+    "filters": {
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखा नाव",
+      "cityCode": "शहर कोड",
+      "isImplemented": "अंमलात आणले"
+    }
+  },
+  "globalMaster": {
+    "title": "जागतिक मास्टर मेंटेनन्स"
+  },
+  "headOfficeMaster": {
+    "title": "मुख्य कार्यालय मास्टर मेंटेनन्स"
+  },
+  "authorization": {
+    "title": "अधिकृतीकरण",
+    "breadcrumb": "अधिकृतीकरण",
+    "customerAuthorization": {
+      "breadcrumb": "ग्राहक अधिकृतीकरण",
+      "tabs": {
+        "newAuthorization": "नवीन अधिकृतीकरण",
+        "modifyAuthorization": "अधिकृतीकरण सुधारणा",
+        "authorizeRejected": "नाकारलेले अधिकृतीकरण"
+      },
+      "table": {
+        "srNo": "अ.क्र.",
+        "action": "कृती",
+        "customerDetails": "ग्राहक तपशील",
+        "status": "स्थिती",
+        "name": "ग्राहकाचे नाव",
+        "gender": "लिंग",
+        "dob": "जन्मतारीख",
+        "regDate": "नोंदणी तारीख",
+        "categoryCode": "कॅटेगरी कोड",
+        "riskCategory": "धोक्याचा प्रकार",
+        "menuAuthorize": "अधिकृत करा"
+      }
+    }
+  },
+  "authorizeAccount": {
+    "breadcrumb": "खाते अधिकृतीकरण",
+    "cards": {
+      "sbCa": "एसबी / सीए",
+      "deposit": "ठेव",
+      "loan": "कर्ज",
+      "fixedAsset": "स्थिर मालमत्ता",
+      "investment": "गुंतवणूक"
+    },
+    "tabs": {
+      "newAuthorization": "नवीन अधिकृतीकरण",
+      "modifyAuthorization": "अधिकृतीकरण सुधारणा",
+      "authorizeRejected": "अधिकृतीकरण नाकारले"
+    }
+  },
+  "tdClose": {
+    "title": "मुदत ठेव बंद करा",
+    "breadcrumb": "मुदत ठेव बंद करा"
+  },
+  "standingInstructions": {
+    "title": "स्थायी सूचना",
+    "breadcrumb": "स्थायी सूचना",
+    "table": {
+      "srNo": "अ.क्र.",
+      "action": "कृती",
+      "debit": "डेबिट खाते",
+      "credit": "क्रेडिट खाते",
+      "amount": "रक्कम",
+      "frequency": "वारंवारता",
+      "nextDueDate": "पुढील देय तारीख",
+      "status": "स्थिती",
+      "menuStop": "थांबवा"
+    }
+  },
+  "memo": {
+    "title": "हिशेबाची टीप",
+    "accountCode": "खात्याचा कोड",
+    "name": "नाव",
+    "memoDetails": "टीप तपशील",
+    "detailsPlaceholder": "तपशील",
+    "charactersOnly": "फक्त {{count}} अक्षरे"
+  },
+  "lienMark": {
+    "title": "बोजा नोंदवणे"
+  },
+  "lienRevoke": {
+    "title": "बोजा काढल्याची नोंद"
+  },
+  "tdCalculate": {
+    "title": "परिपक्वतेची रक्कम",
+    "subtitle": "सर्व माहिती परिपक्वतेच्या रकमेशी संबंधित आहे",
+    "accountType": "खात्याचा प्रकार",
+    "productCode": "उत्पादन कोड",
+    "productDescription": "उत्पादन वर्णन",
+    "categoryCode": "कॅटेगरी कोड",
+    "openingDate": "उद्घाटनाची तारीख",
+    "unitOfPeriod": "कालावधीचे एकक",
+    "periodOfDeposit": "ठेवींची कालावधी",
+    "rate": "दर",
+    "interestFrequency": "व्याज भरण्याची वारंवारिता",
+    "depositAmount": "ठेवी रक्कम",
+    "maturityAmount": "परिपक्वतेची रक्कम",
+    "maturityDate": "परिपक्वता तारीख",
+    "subProductList": "उप उत्पादन यादी",
+    "descriptionCol": "वर्णन"
+  },
+  "dashboard": {
+    "title": "डॅशबोर्ड"
+  },
+  "sidebar": {
+    "dashboard": "डॅशबोर्ड",
+    "aiDashboard": "एआय डॅशबोर्ड",
+    "authorization": "अधिकृतीकरण",
+    "manager": "व्यवस्थापक",
+    "misActivity": "एमआयएस अ‍ॅक्टिव्हिटी",
+    "accountMaster": "खाते मास्टर",
+    "accountClosing": "खाते बंद करणे",
+    "clerk": "क्लार्क",
+    "bills": "बिले",
+    "clearing": "क्लिअरिंग",
+    "customerMaster": "कस्टमर मास्टर",
+    "locker": "लॉकर",
+    "queries": "क्वेरीज",
+    "sms": "एसएमएस",
+    "transactionMaster": "ट्रान्झॅक्शन मास्टर",
+    "userMaster": "युझर मास्टर",
+    "assignUserRole": "वापरकर्ता भूमिका नियुक्त करा",
+    "headOfficeMaster": "मुख्य कार्यालय मास्टर",
+    "globalMaster": "जागतिक मास्टर",
+    "branchMaster": "शाखा मास्टर",
+    "futureModels": "फ्युचर मॉडेल्स",
+    "search": "शोधा",
+    "lastLogin": "शेवटचे लॉगिन:",
+    "role": "भूमिका:",
+    "hoOfficer": "एचओ अधिकारी",
+    "hoClerk": "एचओ क्लार्क",
+    "supportUtility": "सपोर्ट युटिलिटी",
+    "interestPosting": "व्याज पोस्टिंग",
+    "financialClosing": "आर्थिक समारोप",
+    "cashier": "कॅशियर",
+    "dba": "डीबीए",
+    "noMatchingItems": "जुळणारे मेनू आयटम नाहीत",
+    "comingSoon": "लवकरच येत आहे",
+    "logoAlt": "लोगो"
+  }
+}

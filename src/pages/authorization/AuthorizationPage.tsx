@@ -1,0 +1,25 @@
+import GlobalNav from "@/components/GlobalMaster/GlobalNav";
+import AuthorizationCards from "@/components/Authorization/AuthorizationCards";
+import { useBilingual } from "@/i18n/useBilingual";
+
+const AuthorizationPage = () => {
+  const { t, en } = useBilingual();
+  return (
+    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+      <GlobalNav
+        titleEn={en("authorization.title")}
+        titleHi={t("authorization.title")}
+        breadcrumbs={[
+          { label: en("common.home"), href: "/" },
+          { label: en("common.misActivity"), href: "/" },
+          { label: en("authorization.breadcrumb"), href: "#" },
+        ]}
+        onBack={() => window.history.back()}
+      />
+
+      <AuthorizationCards />
+    </div>
+  );
+};
+
+export default AuthorizationPage;
