@@ -1,13 +1,15 @@
 // Export all images
-import PersonIcon from "./person.svg";
-import PdfIcon from "./pdf.svg";
-import XlsIcon from "./xsl.svg";
+import person from "./person.svg";
+import addPerson from "./add-person.svg";
+import pdf from "./pdf.svg";
+import xls from "./xsl.svg";
 
 // Export as ICON object with properties
 export const ICONS = {
-  PERSON: PersonIcon,
-  PDF: PdfIcon,
-  XLS: XlsIcon,
+  PERSON: person,
+  PDF: pdf,
+  XLS: xls,
+  ADD_PERSON: addPerson,
 } as const;
 
 // Default export for convenience

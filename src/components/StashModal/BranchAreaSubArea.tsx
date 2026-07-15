@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "@/components/ui/Image";
 import {
   X,
   Check,
@@ -11,6 +10,9 @@ import {
 import TextInput from "../shared/Inputs/TextInput";
 import PickerInput from "../shared/Inputs/PickerInput";
 import ListModal, { type ListModalItem } from "./ListModal";
+import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
+import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
+import { ICONS } from "@/assets";
 
 export interface BranchFormData {
   branchCode: string;
@@ -131,18 +133,14 @@ function BranchAreaSubAreaModal({
 
   const handleSelectItem = (row: ListModalItem) => {
     if (listType === "area") {
-      // Only set the code, not the description
       handleChange("areaCode", row.code);
-      // Don't set areaDescription - it should be filled manually
     } else {
-      // For sub-area, set both code and description
       handleChange("subareaCode", row.code);
       handleChange("subareaDescription", row.name);
     }
     setOpenList(false);
   };
 
-  // Get the appropriate data and labels based on list type
   const getListData = () => {
     if (listType === "area") {
       return {
@@ -163,167 +161,149 @@ function BranchAreaSubAreaModal({
 
   const listData = getListData();
 
+  // Define header configuration
+  const getHeaderConfig = () => ({
+    icon: ICONS.ADD_PERSON,
+    title: "Branch Area / Sub-Area",
+    titleHi: "शाखा क्षेत्र / उप-क्षेत्र",
+    onClose: onClose,
+    showCloseButton: true,
+  });
+
+  // Define footer buttons based on mode
+  const getFooterButtons = () => {
+    if (isView) {
+      return [
+        {
+          label: "Cancel",
+          onClick: onClose || (() => {}),
+          variant: "outline" as const,
+          icon: <X size={16} />,
+        },
+        {
+          label: "Ok, Got It",
+          onClick: onClose || (() => {}),
+          variant: "primary" as const,
+          icon: <ThumbsUp size={16} />,
+        },
+      ];
+    }
+
+    return [
+      {
+        label: "Validate",
+        onClick: handleValidate,
+        variant: "primary" as const,
+        icon: <Check size={16} />,
+      },
+      {
+        label: "Cancel",
+        onClick: onClose || (() => {}),
+        variant: "outline" as const,
+        icon: <X size={16} />,
+      },
+      {
+        label: "Save",
+        onClick: handleSave,
+        variant: "primary" as const,
+        icon: <ChevronDown size={16} />,
+        disabled: !validated,
+        className: validated
+          ? "bg-primary-100 text-primary hover:bg-primary-200"
+          : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-600",
+      },
+    ];
+  };
+
   return (
     <>
-      <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]"
-        onClick={onClose}
+      <ModalWrapper
+        open={open}
+        onClose={onClose}
+        header={getHeaderConfig()}
+        footerButtons={getFooterButtons()}
+        footerAlign="right"
+        showDefaultClose={false}
+        maxWidth="4xl"
       >
-        <div
-          className="flex max-h-[92vh] w-full max-w-4xl flex-col rounded-3xl bg-white shadow-2xl dark:bg-slate-900"
-          onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-        >
-          {/* Header - Fixed */}
-          <div className="shrink-0 p-6 pb-4">
-            <div className="flex items-start justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
-              <div className="flex items-center gap-3">
-                <Image src="/add-icn.png" alt="" width={64} height={64} />
-                <div>
-                  <h2 className="text-[2rem] font-bold text-[#101828] dark:text-slate-100">
-                    Branch Area / Sub-Area{" "}
-                    <span className="font-bold text-[#64748B] dark:text-slate-400">
-                      / शाखा क्षेत्र / उप-क्षेत्र
-                    </span>
-                  </h2>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-              >
-                <X size={18} strokeWidth={2.5} />
-              </button>
-            </div>
+        <SectionWrapper>
+          <div className="grid grid-cols-1 gap-4">
+            {/* Branch Code - Always readOnly */}
+            <TextInput
+              labelEn="Branch Code"
+              labelHi="शाखा कोड"
+              icon={Landmark}
+              placeholder="Enter Branch Code"
+              value={formData.branchCode}
+              onChange={(v) => handleChange("branchCode", v)}
+              hasError={errors.branchCode}
+              readOnly={true}
+            />
+
+            {/* Branch Name - Always readOnly */}
+            <TextInput
+              labelEn="Branch Name"
+              labelHi="शाखेचे नाव"
+              icon={Landmark}
+              placeholder="Enter Branch Name"
+              value={formData.branchName}
+              onChange={(v) => handleChange("branchName", v)}
+              hasError={errors.branchName}
+              readOnly={true}
+            />
+
+            {/* Area Code - Disabled in view mode */}
+            <PickerInput
+              labelEn="Area Code"
+              labelHi="क्षेत्रीय कोड"
+              icon={Building2}
+              placeholder="Enter Area Code"
+              value={formData.areaCode}
+              onChange={(v) => handleChange("areaCode", v)}
+              hasError={errors.areaCode}
+              readOnly={isView}
+              handleOpenList={() => handleOpenList("area")}
+            />
+
+            {/* Area Description - Disabled in view mode */}
+            <TextInput
+              labelEn="Area Description"
+              labelHi="क्षेत्राचे वर्णन"
+              icon={Building2}
+              placeholder="Area Description"
+              value={formData.areaDescription}
+              onChange={(v) => handleChange("areaDescription", v)}
+              hasError={errors.areaDescription}
+              readOnly={isView}
+            />
+
+            {/* Sub-Area Code - Disabled in view mode */}
+            <PickerInput
+              labelEn="Sub-Area Code"
+              labelHi="उप-क्षेत्रीय कोड"
+              icon={Building2}
+              placeholder="Enter Sub-Area Code"
+              value={formData.subareaCode}
+              onChange={(v) => handleChange("subareaCode", v)}
+              hasError={errors.subareaCode}
+              readOnly={isView}
+              handleOpenList={() => handleOpenList("subarea")}
+            />
+
+            {/* Sub-Area Description - Disabled in view mode */}
+            <TextInput
+              labelEn="Sub-Area Description"
+              labelHi="उप-क्षेत्रीय वर्णन"
+              icon={Building2}
+              placeholder="Sub-Area Description"
+              value={formData.subareaDescription}
+              onChange={(v) => handleChange("subareaDescription", v)}
+              hasError={errors.subareaDescription}
+              readOnly={isView}
+            />
           </div>
-
-          {/* Scrollable Content - Middle */}
-          <div className="flex-1 overflow-y-auto px-6 pb-4">
-            <div className="rounded-[20px] border-x border-b space-y-4 border-t-4 border-primary bg-white p-5 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900">
-              <TextInput
-                labelEn="Branch Code"
-                labelHi="शाखा कोड"
-                icon={Landmark}
-                placeholder="Enter Branch Code"
-                value={formData.branchCode}
-                onChange={(v) => handleChange("branchCode", v)}
-                hasError={errors.branchCode}
-                readOnly={true}
-              />
-
-              <TextInput
-                labelEn="Branch Name"
-                labelHi="शाखेचे नाव"
-                icon={Landmark}
-                placeholder="Enter Branch Name"
-                value={formData.branchName}
-                onChange={(v) => handleChange("branchName", v)}
-                hasError={errors.branchName}
-                readOnly={true}
-              />
-
-              <PickerInput
-                labelEn="Area Code"
-                labelHi="क्षेत्रीय कोड"
-                icon={Building2}
-                placeholder="Enter Area Code"
-                value={formData.areaCode}
-                onChange={(v) => handleChange("areaCode", v)}
-                hasError={errors.areaCode}
-                readOnly={isView}
-                handleOpenList={() => handleOpenList("area")}
-              />
-
-              <TextInput
-                labelEn="Area Description"
-                labelHi="क्षेत्राचे वर्णन"
-                icon={Building2}
-                placeholder="Area Description"
-                value={formData.areaDescription}
-                onChange={(v) => handleChange("areaDescription", v)}
-                hasError={errors.areaDescription}
-                readOnly={isView}
-              />
-
-              <PickerInput
-                labelEn="Sub-Area Code"
-                labelHi="उप-क्षेत्रीय कोड"
-                icon={Building2}
-                placeholder="Enter Sub-Area Code"
-                value={formData.subareaCode}
-                onChange={(v) => handleChange("subareaCode", v)}
-                hasError={errors.subareaCode}
-                readOnly={isView}
-                handleOpenList={() => handleOpenList("subarea")}
-              />
-
-              <TextInput
-                labelEn="Sub-Area Description"
-                labelHi="उप-क्षेत्रीय वर्णन"
-                icon={Building2}
-                placeholder="Sub-Area Description"
-                value={formData.subareaDescription}
-                onChange={(v) => handleChange("subareaDescription", v)}
-                hasError={errors.subareaDescription}
-                readOnly={isView}
-              />
-            </div>
-          </div>
-
-          {/* Footer - Fixed */}
-          <div className="shrink-0 p-6 pt-4">
-            <div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
-              {isView ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-                  >
-                    Cancel <X size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-                  >
-                    Ok, Got It <ThumbsUp size={16} />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={handleValidate}
-                    className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-                  >
-                    Validate <Check size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-                  >
-                    Cancel <X size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    disabled={!validated}
-                    onClick={handleSave}
-                    className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                      validated
-                        ? "bg-primary-100 text-primary hover:bg-primary-200"
-                        : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-600"
-                    }`}
-                  >
-                    Save <ChevronDown size={16} />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+        </SectionWrapper>
+      </ModalWrapper>
 
       {/* List Modal */}
       {openList && (
