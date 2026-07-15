@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "@/components/ui/Image";
 import {
   X,
@@ -7,10 +7,10 @@ import {
   ThumbsUp,
   Landmark,
   Building2,
-  Search,
 } from "lucide-react";
 import TextInput from "../shared/Inputs/TextInput";
 import PickerInput from "../shared/Inputs/PickerInput";
+import ListModal, { type ListModalItem } from "./ListModal";
 
 export interface BranchFormData {
   branchCode: string;
@@ -43,171 +43,27 @@ const REQUIRED_FIELDS: RequiredFieldKey[] = [
   "subareaDescription",
 ];
 
-/* ------------------------------------------------------------------ */
-/*  ListModal — generic pickup list (search box, pill IDs, Select btn)  */
-/* ------------------------------------------------------------------ */
-
-interface AreaItem {
-  id: string;
-  areaCode: string;
-  areaName: string;
-}
-
-interface SubAreaItem {
-  id: string;
-  subAreaCode: string;
-  subAreaName: string;
-}
-
-type ListItem = AreaItem | SubAreaItem;
-
-interface ListModalProps {
-  title: string;
-  rows: ListItem[];
-  columns: { key: keyof ListItem; label: string }[];
-  onSelect: (row: ListItem) => void;
-  onClose: () => void;
-}
-
-function ListModal({
-  title,
-  rows,
-  columns,
-  onSelect,
-  onClose,
-}: ListModalProps) {
-  const [searchText, setSearchText] = useState("");
-
-  const filteredRows = useMemo(() => {
-    if (!searchText.trim()) return rows;
-    const q = searchText.trim().toLowerCase();
-    return rows.filter((row) =>
-      columns.some((col) =>
-        String(row[col.key] ?? "")
-          .toLowerCase()
-          .includes(q),
-      ),
-    );
-  }, [rows, columns, searchText]);
-
-  return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 p-4">
-      <div className="relative flex max-h-[85vh] w-[95vw] max-w-180 flex-col overflow-hidden rounded-[28px] bg-white shadow-2xl">
-        {/* Decorative corner circles — clipped to the card */}
-        <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-primary-100" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-primary-100" />
-
-        {/* Header — title, single search box, close circle */}
-        <div className="relative z-10 flex items-center justify-between gap-4 px-6 pt-6 pb-5">
-          <h2 className="shrink-0 text-lg font-bold text-slate-800">{title}</h2>
-          <div className="relative w-full max-w-65 ml-auto">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Search"
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm text-slate-700 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-          >
-            <X className="h-4 w-4" strokeWidth={1.75} />
-          </button>
-        </div>
-
-        {/* Table */}
-        <div className="scrollbar-hide relative z-10 flex-1 overflow-y-auto px-6 pb-6">
-          <table className="w-full border-collapse text-left text-sm">
-            <thead>
-              <tr className="bg-primary-100 text-slate-700">
-                {columns.map((col, idx) => (
-                  <th
-                    key={String(col.key)}
-                    className={`px-4 py-3 font-semibold ${idx === 0 ? "rounded-l-lg" : "text-center"}`}
-                  >
-                    {col.label}
-                  </th>
-                ))}
-                <th className="rounded-r-lg px-4 py-3 text-right font-semibold">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRows.map((row, rowIdx) => (
-                <tr
-                  key={rowIdx}
-                  className="border-b border-slate-50 last:border-0"
-                >
-                  {columns.map((col, idx) => (
-                    <td
-                      key={String(col.key)}
-                      className={`px-4 py-3 ${idx === 0 ? "" : "text-center text-slate-700"}`}
-                    >
-                      {idx === 0 ? (
-                        <span className="inline-block rounded-md bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                          {String(row[col.key] ?? "")}
-                        </span>
-                      ) : (
-                        String(row[col.key] ?? "")
-                      )}
-                    </td>
-                  ))}
-                  <td className="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => onSelect(row)}
-                      className="rounded-md bg-primary-50 px-4 py-1.5 text-sm font-medium text-primary transition hover:bg-primary-100"
-                    >
-                      Select
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {filteredRows.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={columns.length + 1}
-                    className="px-4 py-8 text-center text-sm text-slate-400"
-                  >
-                    No records found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Sample Area Data
-const AREA_DATA: AreaItem[] = [
-  { id: "1", areaCode: "01", areaName: "Main Bilagi" },
-  { id: "2", areaCode: "02", areaName: "0002 Recovery" },
-  { id: "3", areaCode: "03", areaName: "Downtown Area" },
-  { id: "4", areaCode: "04", areaName: "Industrial Zone" },
-  { id: "5", areaCode: "05", areaName: "Residential Colony" },
+const AREA_DATA: ListModalItem[] = [
+  { id: "1", code: "01", name: "Main Bilagi" },
+  { id: "2", code: "02", name: "0002 Recovery" },
+  { id: "3", code: "03", name: "Downtown Area" },
+  { id: "4", code: "04", name: "Industrial Zone" },
+  { id: "5", code: "05", name: "Residential Colony" },
 ];
 
 // Sample Sub-Area Data
-const SUB_AREA_DATA: SubAreaItem[] = [
-  { id: "1", subAreaCode: "01", subAreaName: "Aanadinni" },
-  { id: "2", subAreaCode: "02", subAreaName: "Aanegundi" },
-  { id: "3", subAreaCode: "03", subAreaName: "Achanur" },
-  { id: "4", subAreaCode: "04", subAreaName: "Adavi Sangapur" },
-  { id: "5", subAreaCode: "05", subAreaName: "MUDHOLAdihal BRANCH" },
-  { id: "6", subAreaCode: "06", subAreaName: "Advi Sangapur" },
-  { id: "7", subAreaCode: "07", subAreaName: "Agara" },
-  { id: "8", subAreaCode: "08", subAreaName: "Agasanakoppa" },
-  { id: "9", subAreaCode: "09", subAreaName: "RAMDURG BRANCH" },
-  { id: "10", subAreaCode: "10", subAreaName: "Ahmedabad" },
+const SUB_AREA_DATA: ListModalItem[] = [
+  { id: "1", code: "01", name: "Aanadinni" },
+  { id: "2", code: "02", name: "Aanegundi" },
+  { id: "3", code: "03", name: "Achanur" },
+  { id: "4", code: "04", name: "Adavi Sangapur" },
+  { id: "5", code: "05", name: "MUDHOLAdihal BRANCH" },
+  { id: "6", code: "06", name: "Advi Sangapur" },
+  { id: "7", code: "07", name: "Agara" },
+  { id: "8", code: "08", name: "Agasanakoppa" },
+  { id: "9", code: "09", name: "RAMDURG BRANCH" },
+  { id: "10", code: "10", name: "Ahmedabad" },
 ];
 
 export interface BranchAreaSubAreaModalProps {
@@ -273,38 +129,34 @@ function BranchAreaSubAreaModal({
     setOpenList(true);
   };
 
-  const handleSelectItem = (row: ListItem) => {
+  const handleSelectItem = (row: ListModalItem) => {
     if (listType === "area") {
       // Only set the code, not the description
-      handleChange("areaCode", (row as AreaItem).areaCode);
+      handleChange("areaCode", row.code);
       // Don't set areaDescription - it should be filled manually
     } else {
       // For sub-area, set both code and description
-      handleChange("subareaCode", (row as SubAreaItem).subAreaCode);
-      handleChange("subareaDescription", (row as SubAreaItem).subAreaName);
+      handleChange("subareaCode", row.code);
+      handleChange("subareaDescription", row.name);
     }
     setOpenList(false);
   };
 
-  // Get the appropriate data and columns based on list type
+  // Get the appropriate data and labels based on list type
   const getListData = () => {
     if (listType === "area") {
       return {
         title: "Area List",
         rows: AREA_DATA,
-        columns: [
-          { key: "areaCode" as keyof ListItem, label: "Area Code" },
-          { key: "areaName" as keyof ListItem, label: "Area Name" },
-        ],
+        codeLabel: "Area Code",
+        nameLabel: "Area Name",
       };
     } else {
       return {
         title: "Sub-Area List",
         rows: SUB_AREA_DATA,
-        columns: [
-          { key: "subAreaCode" as keyof ListItem, label: "Sub-Area Code" },
-          { key: "subAreaName" as keyof ListItem, label: "Sub-Area Name" },
-        ],
+        codeLabel: "Sub-Area Code",
+        nameLabel: "Sub-Area Name",
       };
     }
   };
@@ -478,7 +330,8 @@ function BranchAreaSubAreaModal({
         <ListModal
           title={listData.title}
           rows={listData.rows}
-          columns={listData.columns}
+          codeLabel={listData.codeLabel}
+          nameLabel={listData.nameLabel}
           onSelect={handleSelectItem}
           onClose={() => setOpenList(false)}
         />
