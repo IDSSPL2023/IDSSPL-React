@@ -43,10 +43,22 @@
     "title": "ఖాతా మాస్టర్",
     "breadcrumb": "ఖాతా మాస్టర్",
     "options": {
-      "caSa": { "title": "సీఏ/ఎస్ఏ", "description": "సీఏ/ఎస్ఏ దరఖాస్తు వివరాలను నమోదు చేయండి." },
-      "deposit": { "title": "డిపాజిట్", "description": "డిపాజిట్ దరఖాస్తు వివరాలను నమోదు చేయండి." },
-      "loan": { "title": "రుణం", "description": "రుణం దరఖాస్తు వివరాలను నమోదు చేయండి." },
-      "investment": { "title": "పెట్టుబడి", "description": "పెట్టుబడి దరఖాస్తు వివరాలను నమోదు చేయండి." }
+      "caSa": {
+        "title": "సీఏ/ఎస్ఏ",
+        "description": "సీఏ/ఎస్ఏ దరఖాస్తు వివరాలను నమోదు చేయండి."
+      },
+      "deposit": {
+        "title": "డిపాజిట్",
+        "description": "డిపాజిట్ దరఖాస్తు వివరాలను నమోదు చేయండి."
+      },
+      "loan": {
+        "title": "రుణం",
+        "description": "రుణం దరఖాస్తు వివరాలను నమోదు చేయండి."
+      },
+      "investment": {
+        "title": "పెట్టుబడి",
+        "description": "పెట్టుబడి దరఖాస్తు వివరాలను నమోదు చేయండి."
+      }
     },
     "filters": {
       "id": "ఐడి",
@@ -203,6 +215,24 @@
       "newAuthorization": "కొత్త అథరైజేషన్",
       "modifyAuthorization": "అథరైజేషన్ సవరించండి",
       "authorizeRejected": "అథరైజేషన్ తిరస్కరించబడింది"
+    }
+  },
+  "accountAuthorizeMaster": {
+    "title": "ఖాతాను ప్రామాణీకరించండి",
+    "navTitle": "మాస్టర్ మెయింటెనెన్స్ ఖాతా ప్రామాణీకరణ",
+    "searchPlaceholder": "ఖాతా రకాన్ని వెతకండి...",
+    "show": "చూపించు",
+    "cards": {
+      "casaAuthorization": "పొదుపు/కరెంట్ ఖాతా ప్రామాణీకరణ",
+      "casaAuthorizationClosing": "పొదుపు/కరెంట్ ఖాతా ప్రామాణీకరణ మూసివేత",
+      "depositAuthorization": "డిపాజిట్ ప్రామాణీకరణ",
+      "depositAuthorizationClosing": "డిపాజిట్ ప్రామాణీకరణ మూసివేత",
+      "loanAuthorization": "రుణ ప్రామాణీకరణ",
+      "loanClosing": "రుణం మూసివేత",
+      "fixedAssetAuthorization": "స్థిర ఆస్తి ప్రామాణీకరణ",
+      "fixedAssetClosing": "స్థిర ఆస్తి మూసివేత",
+      "investmentAuthorization": "పెట్టుబడి ప్రామాణీకరణ",
+      "investmentClosing": "పెట్టుబడి మూసివేత"
     }
   },
   "tdClose": {
