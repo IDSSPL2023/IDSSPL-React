@@ -253,8 +253,8 @@ const ModalWrapper = ({
                       disabled={button.disabled}
                       className={getButtonClasses(button)}
                     >
-                      {button.icon}
                       {button.label}
+                      {button.icon}
                     </button>
                   ))}
 
