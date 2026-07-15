@@ -23,6 +23,7 @@ import AccountMasterLoanPage from "@/pages/account-master/AccountMasterLoanPage"
 import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
+import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
@@ -123,6 +124,7 @@ export const router = createBrowserRouter([
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
+      { path: "/day-begin-end", element: <DayBeginEndPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },

@@ -43,7 +43,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
-    href: "authorization/user",
+    href: "/authorization/user",
   },
   {
     key: "roles",
@@ -53,6 +53,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
+    href: "/authorization/authorizerole",
   },
   {
     key: "transaction",
@@ -62,6 +63,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
+    href: "/authorization/transaction",
   },
   {
     key: "clearing",
