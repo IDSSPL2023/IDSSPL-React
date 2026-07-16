@@ -153,6 +153,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
       { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
+      { path: "/authorization/transaction/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
