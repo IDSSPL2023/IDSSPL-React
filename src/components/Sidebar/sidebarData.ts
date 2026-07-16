@@ -262,6 +262,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-locker",
         title: "Locker",
         icon: KeyRound,
+        href: "/locker",
       },
       {
         id: "clerk-queries",
