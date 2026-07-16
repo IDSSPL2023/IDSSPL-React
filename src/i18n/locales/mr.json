@@ -430,5 +430,20 @@
       "moratoriumInterest": "मोरेटोरियम व्याज",
       "dateOfApplication": "अर्जाची तारीख"
     }
+  },
+  "interestPostingProcess": {
+    "subtitle": "पात्र ठेव खात्यांसाठी व्याज नोंदणी प्रक्रिया करा.",
+    "successTitle": "व्याज नोंदणी प्रक्रिया यशस्वीरित्या पूर्ण झाली",
+    "fields": {
+      "asOnDate": "आजच्या तारखेनुसार",
+      "interestRate": "व्याजदर"
+    },
+    "placeholders": {
+      "fromDate": "From Date प्रविष्ट करा",
+      "toDate": "To Date प्रविष्ट करा"
+    },
+    "actions": {
+      "generateReports": "अहवाल तयार करा"
+    }
   }
 }
