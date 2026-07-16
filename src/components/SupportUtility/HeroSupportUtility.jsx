@@ -49,9 +49,7 @@ const HeroSupportUtility = ({
     return (
       <div
         className={`group flex items-center justify-between rounded-md border px-5 py-3 transition-all duration-200 hover:shadow-md dark:bg-slate-900 ${
-          // highlighted
-          //   ? "border-[#2563EB] bg-[#EEF4FF] hover:border-[#2563EB] dark:border-primary-700 dark:bg-primary-950/30"
-             "border-[#E5E7EB] bg-white hover:border-[#D7E3FF] dark:border-slate-800 dark:hover:border-primary-800"
+           "border-[#E5E7EB] bg-white hover:border-[#D7E3FF] dark:border-slate-800 dark:hover:border-primary-800"
         }`}
       >
         <div className="flex items-center gap-4 min-w-0">
