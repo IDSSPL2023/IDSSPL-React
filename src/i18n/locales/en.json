@@ -26,7 +26,9 @@
     "fieldRequired": "This field is required",
     "apply": "Apply",
     "calculate": "Calculate",
-    "report": "Report"
+    "report": "Report",
+    "yes": "Yes",
+    "no": "No"
   },
   "fields": {
     "accountCode": "Account Code",
@@ -459,6 +461,214 @@
     },
     "placeholders": {
       "uptoDate": "Enter Upto Date"
+    }
+  },
+  "tlccInterestPosting": {
+    "title": "TL/CC Interest Posting",
+    "fields": {
+      "accountType": "Account Type",
+      "accountTypeDescription": "Account Type Description",
+      "nextIntPostingDate": "Next Int. Posting Date",
+      "nextIntPostingUpToDate": "Next Int. Posting Up To Date",
+      "applyServiceCharges": "Apply Service Charges",
+      "interestReposting": "Interest Reposting"
+    },
+    "placeholders": {
+      "selectAccountType": "Select Account Type",
+      "description": "Description"
+    }
+  },
+  "tdPostingConsistency": {
+    "title": "Deposit Interest Posting",
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "fields": {
+      "applyInterestUpToDate": "Apply Interest Up to date",
+      "postAs": "Post as",
+      "select": "Select",
+      "reportType": "Report Type",
+      "productCode": "Product Code",
+      "productDescription": "Product Description"
+    },
+    "placeholders": {
+      "applyInterestUpToDate": "Enter Apply Interest Up to date",
+      "postAs": "Select Post As",
+      "productCode": "Select Product Code",
+      "description": "Description"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "npaModification": {
+    "title": "NPA Modification",
+    "subtitle": "Fill in the details below to create a new parameter.",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "accountNumber": "Account Number",
+      "accountName": "Account Name",
+      "osAmount": "OS Amount",
+      "principalOverdueAmount": "Prin. Ovd. Amt.",
+      "interestOverdueAmount": "Int. Ovd. Amt.",
+      "principalOverdueMonths": "Prin. Ovd. Months",
+      "interestOverdueDate": "Int. Ovd. Date",
+      "calculatedNpaClass": "Calc. NPA Class",
+      "description": "Description",
+      "actualNpaClass": "Act. NPA Class",
+      "calculatedNpaPercentage": "Calc. NPA Per.",
+      "actualNpaPercentage": "Act. NPA Per",
+      "provisionOnAmount": "Prov. On Amt.",
+      "calculatedProvision": "Calc. Prov.",
+      "actualProvision": "Act. Prov."
+    },
+    "placeholders": {
+      "guardianName": "Enter Guardian Name",
+      "accountType": "Select Account Type",
+      "description": "Description"
+    }
+  },
+  "depreciationCalculation": {
+    "title": "Deprecation Calculation",
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "balanceDate": "Balance Date for Simple Deprection",
+      "roundingRequired": "Rounding Required"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date",
+      "balanceDate": "Enter Balance Date for Simple Deprection"
+    }
+  },
+  "pigmyInterestProvision": {
+    "title": "Pigmy Interest Provision/Posting",
+    "subtitle": "Process automatic renewal at the beginning of the day.",
+    "fields": {
+      "fromProductCode": "From Product Code",
+      "productDescription": "Product Description",
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "interestNotApplied": {
+    "title": "Interest Not Applied",
+    "subtitle": "Process automatic renewal at the beginning of the day.",
+    "fields": {
+      "branchCode": "Branch Code",
+      "asOnDate": "As On Date"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    }
+  },
+  "nFormBalancesheet": {
+    "title": "Reports Parameter",
+    "fields": {
+      "productCode": "Product Code",
+      "lastQuarterDate": "Last Quarter Date",
+      "select": "Select"
+    },
+    "placeholders": {
+      "enterToDate": "Enter To Date"
+    },
+    "options": {
+      "regular": "Regular",
+      "closing": "Closing"
+    },
+    "actions": {
+      "generateRecord": "Generate Record",
+      "generateNFormBalanceSheet": "Generate N form Balance Sheet",
+      "generatePnL": "Generate P&L A/C"
+    }
+  },
+  "detailTrialBalance": {
+    "title": "Detail Trail Balance Sheet",
+    "fields": {
+      "branchCode": "Branch Code",
+      "branchName": "Branch Name",
+      "asOnDate": "As On Date",
+      "select": "Select",
+      "reportType": "Report Type"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "modifyDepositDiary": {
+    "title": "Modify Deposit Diary",
+    "fields": {
+      "productCode": "Product Code",
+      "productDescription": "Product Description",
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "reportFor": "Report For",
+      "selectInterestFrequency": "Select Interest Frequency"
+    },
+    "placeholders": {
+      "name": "name"
+    },
+    "options": {
+      "all": "All",
+      "si": "SI",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    }
+  },
+  "exceedCashLimitReport": {
+    "title": "Exceed Balance Limit Amount and Review Date",
+    "fields": {
+      "fromProductCode": "From Product Code",
+      "productDescription": "Product Description",
+      "toProductCode": "To Product Code",
+      "asOnDate": "As On Date"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "hoInterestReportBranch": {
+    "title": "HO Interest Posting",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date"
+    }
+  },
+  "hoInterestReportHo": {
+    "title": "HO Account Interest",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "fromAccountCode": "From Account Code",
+      "toAccountCode": "To Account Code",
+      "accountName": "Account Name"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "hoInterestReportGl": {
+    "title": "HO Interest Report Posting",
+    "fields": {
+      "glAccountCode": "GL Account Code",
+      "accountName": "Account Name",
+      "fromDate": "From Date",
+      "toDate": "To Date"
+    },
+    "placeholders": {
+      "name": "name"
     }
   }
 }

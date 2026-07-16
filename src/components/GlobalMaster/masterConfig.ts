@@ -44,6 +44,12 @@ export type MasterConfigEntry = {
 
 export const MASTERS: MasterItem[] = [
   { icon: "Settings", titleEn: "Operation Capacity Master", titleHi: "ऑपरेशन कॅपॅसिटी मास्टर", key: "operationCapacity" },
+   {
+    titleEn: 'Branch wise Next Interest Apply Date',
+    titleHi: 'शाखानिहाय पुढील व्याज लागू होण्याची तारीख',
+    key: 'branchInterest',
+    icon: "Settings",
+  },
   { icon: "GitBranch", titleEn: "Clearing Branch Master", titleHi: "क्लिअरिंग शाखा मास्टर", key: "clearingBranch" },
   { icon: "Layers", titleEn: "Category Master", titleHi: "श्रेणी मास्टर", key: "category" },
   { icon: "BookOpen", titleEn: "Constitution Master", titleHi: "संविधान मास्टर", key: "constitution" },
@@ -161,6 +167,67 @@ export const MASTER_CONFIG: Record<string, MasterConfigEntry> = {
       { key: "description", label: "Description" },
     ],
   },
+  // Add this to the MASTER_CONFIG object
+branchInterest: {
+  columns: [
+    { key: "srNo", label: "Sr No." },
+    { key: "productCode", label: "Product Code" },
+    { key: "description", label: "Description" },
+    { key: "interestApplyDate", label: "Interest Apply Date" },
+    { key: "interestFlag", label: "Interest Flag", type: "badge" },
+  ],
+  rows: [
+    { id: "1", srNo: "1", productCode: "301", description: "Cash Credit Loan", interestApplyDate: "27/04/2026", interestFlag: "Y" },
+    { id: "2", srNo: "2", productCode: "303", description: "Personal Loan", interestApplyDate: "20/07/2025", interestFlag: "Y" },
+    { id: "3", srNo: "3", productCode: "306", description: "Education Loan", interestApplyDate: "10/10/2025", interestFlag: "Y" },
+    { id: "4", srNo: "4", productCode: "305", description: "Gold Loan", interestApplyDate: "15/09/2025", interestFlag: "Y" },
+    { id: "5", srNo: "5", productCode: "309", description: "Medical Loan", interestApplyDate: "15/01/2026", interestFlag: "Y" },
+    { id: "6", srNo: "6", productCode: "307", description: "Business Loan", interestApplyDate: "25/11/2025", interestFlag: "Y" },
+    { id: "7", srNo: "7", productCode: "304", description: "Vehicle Loan", interestApplyDate: "01/08/2025", interestFlag: "Y" },
+    { id: "8", srNo: "8", productCode: "308", description: "Travel Loan", interestApplyDate: "05/12/2025", interestFlag: "Y" },
+    { id: "9", srNo: "9", productCode: "310", description: "Wedding Loan", interestApplyDate: "01/02/2026", interestFlag: "Y" },
+  ],
+  formColumns: 2,
+  fields: [
+    { 
+      key: "productCode", 
+      labelEn: "Product Code", 
+      labelHi: "उत्पादन कोड", 
+      placeholder: "Enter Product Code (e.g., 301)", 
+      icon: "hash", 
+      readOnlyOnEdit: true 
+    },
+    { 
+      key: "description", 
+      labelEn: "Description", 
+      labelHi: "वर्णन", 
+      placeholder: "Enter Loan Description", 
+      icon: "text" 
+    },
+    { 
+      key: "interestApplyDate", 
+      labelEn: "Interest Apply Date", 
+      labelHi: "व्याज लागू तारीख", 
+      placeholder: "DD/MM/YYYY", 
+      icon: "calendar" 
+    },
+    { 
+      key: "interestFlag", 
+      labelEn: "Interest Flag", 
+      labelHi: "व्याज फ्लॅग", 
+      placeholder: "Select Flag", 
+      icon: "flag",
+      type: "select",
+      options: ["Y", "N"]
+    },
+  ],
+  filterFields: [
+    { key: "productCode", label: "Product Code" },
+    { key: "description", label: "Description" },
+    { key: "interestApplyDate", label: "Interest Apply Date" },
+    { key: "interestFlag", label: "Interest Flag" },
+  ],
+},
   addressProof: {
     columns: [
       { key: "addressProofCode", label: "Address Proof Code" },

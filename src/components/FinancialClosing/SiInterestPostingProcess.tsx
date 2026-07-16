@@ -40,14 +40,14 @@ const FIELDS: FieldConfig[] = [
   {
     key: "productCode",
     labelKey: "fields.productCode",
-    icon: <Hash size={15} />,
+    icon: <Hash size={18} />,
     type: "text",
     validate: validateRequired,
   },
   {
     key: "uptoDate",
     labelKey: "siInterestPosting.fields.uptoDate",
-    icon: <Calendar size={15} />,
+    icon: <Calendar size={18} />,
     type: "date",
     placeholderKey: "siInterestPosting.placeholders.uptoDate",
     validate: validateDate,
@@ -55,7 +55,7 @@ const FIELDS: FieldConfig[] = [
 ];
 
 const buttonBase =
-  "flex h-9 items-center justify-center gap-1.5 rounded-md px-5 text-[12px] font-semibold transition";
+  "flex h-11 items-center justify-center gap-1 rounded-md px-3 text-[12px] font-semibold transition";
 const activeOutline = "border border-primary bg-white text-primary hover:bg-primary-50";
 const disabledStyle = "cursor-not-allowed bg-slate-100 text-slate-400";
 
@@ -121,21 +121,21 @@ export default function SiInterestPostingProcess({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-[500px] rounded-xl bg-white p-3 shadow-2xl">
+      <div className="w-full max-w-xl rounded-xl bg-white p-4 shadow-2xl">
         <div className="rounded-2xl p-3">
-          <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-4">
-            <div className="flex items-start gap-2">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary">
-                <UserRound size={17} />
+          <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+                <UserRound size={22} />
               </div>
               <div className="min-w-0">
-                <h2 className="text-[15px] font-bold leading-tight text-[#1F2858]">
+                <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
                   {en("siInterestPosting.postingParameter")}
                   {t("siInterestPosting.postingParameter") ? (
                     <span className="text-[#64748B]"> / {t("siInterestPosting.postingParameter")}</span>
                   ) : null}
                 </h2>
-                <p className=" text-[11px] leading-snug text-slate-500">
+                <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
                   {en("interestPostingProcess.subtitle")}
                   {t("interestPostingProcess.subtitle") ? (
                     <span> / {t("interestPostingProcess.subtitle")}</span>
@@ -147,14 +147,14 @@ export default function SiInterestPostingProcess({
               type="button"
               onClick={onClose}
               aria-label={en("common.cancel")}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
             >
-              <X size={15} />
+              <X size={16} />
             </button>
           </div>
 
-          <div className="rounded-xl border border-primary border-t-4 bg-white px-4 pb-5 pt-4 shadow-[0_1px_8px_rgba(37,99,235,0.12)]">
-            <div className="space-y-4">
+          <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
+            <div className="space-y-5">
               {FIELDS.map((field) => (
                 <FormField
                   key={field.key}
@@ -175,14 +175,14 @@ export default function SiInterestPostingProcess({
           </div>
         </div>
 
-        <div className="mt-2 flex flex-wrap items-center justify-end gap-3">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
             onClick={handleValidate}
             className={`${buttonBase} bg-primary text-white hover:bg-primary-700`}
           >
             {en("common.validate")}
-            <Check size={14} />
+            <Check size={18} />
           </button>
           <button
             type="button"
@@ -191,7 +191,7 @@ export default function SiInterestPostingProcess({
             className={`${buttonBase} ${isValidated ? activeOutline : disabledStyle}`}
           >
             {en("common.calculate")}
-            <Calculator size={13} />
+            <Calculator size={17} />
           </button>
           <button
             type="button"
@@ -200,16 +200,16 @@ export default function SiInterestPostingProcess({
             className={`${buttonBase} ${isValidated ? activeOutline : disabledStyle}`}
           >
             {en("common.report")}
-            <FileText size={13} />
+            <FileText size={17} />
           </button>
           <button
             type="button"
             disabled={!isCalculated}
             onClick={handleApply}
-            className={`${buttonBase} min-w-[100px] ${isCalculated ? "bg-primary text-white hover:bg-primary-700 cursor-pointer" : disabledStyle}`}
+            className={`${buttonBase} min-w-[128px] ${isCalculated ? "bg-primary text-white hover:bg-primary-700 cursor-pointer" : disabledStyle}`}
           >
             {en("common.apply")}
-            <Check size={14} />
+            <Check size={18} />
           </button>
           <button
             type="button"
@@ -217,7 +217,7 @@ export default function SiInterestPostingProcess({
             className={`${buttonBase} ${activeOutline}`}
           >
             {en("common.cancel")}
-            <X size={14} />
+            <X size={20} />
           </button>
         </div>
       </div>
@@ -238,13 +238,13 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-[12px] font-semibold leading-none text-[#1F2937]">
+      <label className="mb-3 block text-[15px] font-semibold leading-none text-[#1F2937]">
         {label}
         {labelHi ? <span className="text-[#64748B]"> / {labelHi}</span> : null}
         <span className="ml-0.5 text-rose-600">*</span>
       </label>
       {children}
-      {error ? <p className="mt-1 text-[11px] text-rose-600">{error}</p> : null}
+      {error ? <p className="mt-1 text-[12px] text-rose-600">{error}</p> : null}
     </div>
   );
 }
@@ -263,14 +263,14 @@ function IconInput({
   type?: "text" | "date";
 }) {
   return (
-    <div className="flex h-10 items-center rounded-md border border-[#A6AFBD] bg-white px-3 text-[12px] text-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
-      <span className="mr-2 shrink-0 text-slate-500">{icon}</span>
+    <div className="flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+      <span className="mr-3 shrink-0 text-[#64748B]">{icon}</span>
       <input
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-slate-400"
+        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
       />
     </div>
   );

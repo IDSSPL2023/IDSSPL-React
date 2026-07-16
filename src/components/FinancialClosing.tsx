@@ -1,10 +1,28 @@
+// src/components/FinancialClosing.tsx
 import { useMemo, useState } from "react";
 import { Search, ChevronRight } from "lucide-react";
 import { useRouter } from "@/lib/navigation";
 import GlobalNav from "./GlobalMaster/GlobalNav";
 import Image from "@/components/ui/Image";
+import DepreciationCalculationProcess from "./futuremodels/DepreciationCalculationProcess";
 import InterestPostingProcess from "./futuremodels/InterestPostingProcess";
-import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
+// import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
+import ReportsParameterModal from "./futuremodels/Income&ExpClosing";
+import ReportsParameterBranchModal from "./futuremodels/Income&ExpRegular";
+import NpaModificationProcess from "./futuremodels/NpaModificationProcess";
+import TdPostingConsistencyProcess from "./futuremodels/TdPostingConsistencyProcess";
+import TlccInterestPostingProcess from "./futuremodels/TlccInterestPostingProcess";
+import SiInterestPostingProcess from "./FinancialClosing/SiInterestPostingProcess";
+import SetBranchParameterModal from "./FinancialClosing/SetBranchParameterModal";
+import PigmyInterestProvisionProcess from "./FinancialClosing/PigmyInterestProvisionProcess";
+import InterestNotAppliedProcess from "./FinancialClosing/InterestNotAppliedProcess";
+import NFormBalancesheetProcess from "./futuremodels/NFormBalancesheetProcess";
+import DetailTrialBalanceProcess from "./futuremodels/DetailTrialBalanceProcess";
+import ModifyDepositDiaryProcess from "./futuremodels/ModifyDepositDiaryProcess";
+import ExceedCashLimitReportProcess from "./FinancialClosing/ExceedCashLimitReportProcess";
+import HoInterestReportBranchProcess from "./FinancialClosing/HoInterestReportBranchProcess";
+import HoInterestReportHoProcess from "./FinancialClosing/HoInterestReportHoProcess";
+import HoInterestReportGlProcess from "./FinancialClosing/HoInterestReportGlProcess";
 
 type ClosingCategory = "parameter" | "calculation" | "reports" | "export";
 
@@ -24,6 +42,10 @@ const TABS: { id: ClosingCategory; label: string }[] = [
     { id: "reports", label: "Closing Reports" },
     { id: "export", label: "Export File" },
 ];
+
+// Reports items that should open the SIMPLE modal (As on Date only, no Branch Code/Generate).
+// All other "reports" items default to ReportsParameterBranchModal (Branch Code + As on Date + Generate).
+const SIMPLE_REPORT_IDS = new Set<string>(["schedule-income-exp-regular"]);
 
 const ITEMS: FinancialItem[] = [
     {
@@ -74,7 +96,6 @@ const ITEMS: FinancialItem[] = [
         marathiTitle: "एनपीए सुधारणा",
         icon: "/authorize transaction list icon.png",
         category: "calculation",
-        actionLabel: "12 record",
     },
     {
         id: "depreciation-calculation",
@@ -103,7 +124,6 @@ const ITEMS: FinancialItem[] = [
         marathiTitle: "लागू न केलेले व्याज",
         icon: "/authorize transaction list icon.png",
         category: "calculation",
-        actionLabel: "12 record",
     },
     {
         id: "pigmy-interest-provision",
@@ -117,7 +137,7 @@ const ITEMS: FinancialItem[] = [
         title: "Modify Deposit Diary",
         marathiTitle: "ठेव डायरी सुधारणा",
         icon: "/authorize transaction list icon.png",
-        category: "calculation",
+        category: "export",
     },
     {
         id: "n-form-balancesheet",
@@ -197,8 +217,34 @@ const FinancialClosing = () => {
         );
     }, [query, activeTab]);
 
+    const activeItem = useMemo(
+        () => ITEMS.find((item) => item.id === activeModal) ?? null,
+        [activeModal]
+    );
+    const isReportsItem = activeItem?.category === "reports";
+    const isSimpleReport = isReportsItem && SIMPLE_REPORT_IDS.has(activeItem!.id);
+    const isNFormBalancesheet = activeModal === "n-form-balancesheet";
+    const isDetailTrialBalance = activeModal === "detail-trial-balance";
+    const isExceedCashLimitReport = activeModal === "exceed-cash-limit-report";
+    const isHoInterestReportBranch = activeModal === "ho-interest-report-branch";
+    const isHoInterestReportHo = activeModal === "ho-interest-report-ho";
+    const isHoInterestReportGl = activeModal === "ho-interest-report-gl";
+    const isBranchReport =
+        isReportsItem &&
+        !isSimpleReport &&
+        !isNFormBalancesheet &&
+        !isDetailTrialBalance &&
+        !isExceedCashLimitReport &&
+        !isHoInterestReportBranch &&
+        !isHoInterestReportHo &&
+        !isHoInterestReportGl;
+
     const handleOpen = (id: string) => {
-        setActiveModal(id);
+        if (id === "set-product-status") {
+            router.push("/financial-closing/set-product-status");
+        } else {
+            setActiveModal(id);
+        }
     };
 
     const handleCloseModal = () => {
@@ -263,11 +309,10 @@ const FinancialClosing = () => {
                             key={tab.id}
                             type="button"
                             onClick={() => setActiveTab(tab.id)}
-                            className={`-mb-px whitespace-nowrap border-b-2 pb-2.5 text-sm font-medium transition-colors ${
-                                activeTab === tab.id
+                            className={`-mb-px whitespace-nowrap border-b-2 pb-2.5 text-sm font-medium transition-colors ${activeTab === tab.id
                                     ? "border-primary text-primary"
                                     : "border-transparent text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
-                            }`}
+                                }`}
                         >
                             {tab.label}
                         </button>
@@ -335,10 +380,83 @@ const FinancialClosing = () => {
                 open={activeModal === "matured-td-interest-provision"}
                 onClose={handleCloseModal}
             />
+            <TdPostingConsistencyProcess
+                open={activeModal === "td-interest-posting"}
+                onClose={handleCloseModal}
+            />
+            <NpaModificationProcess
+                open={activeModal === "npa-modification"}
+                onClose={handleCloseModal}
+            />
+            <DepreciationCalculationProcess
+                open={activeModal === "depreciation-calculation"}
+                onClose={handleCloseModal}
+            />
             <SiInterestPostingProcess
                 open={activeModal === "si-interest-posting"}
                 onClose={handleCloseModal}
             />
+
+            {activeItem && isSimpleReport && (
+                <ReportsParameterModal
+                    open={isSimpleReport}
+                    onClose={handleCloseModal}
+                />
+            )}
+
+            {activeItem && isBranchReport && (
+                <ReportsParameterBranchModal
+                    open={isBranchReport}
+                    onClose={handleCloseModal}
+                />
+
+            )}
+            <TlccInterestPostingProcess
+                open={activeModal === "tlcc-interest-posting"}
+                onClose={handleCloseModal}
+            />
+            <PigmyInterestProvisionProcess
+                open={activeModal === "pigmy-interest-provision"}
+                onClose={handleCloseModal}
+            />
+            <InterestNotAppliedProcess
+                open={activeModal === "interest-not-applied"}
+                onClose={handleCloseModal}
+            />
+            <NFormBalancesheetProcess
+                open={isNFormBalancesheet}
+                onClose={handleCloseModal}
+            />
+            <DetailTrialBalanceProcess
+                open={isDetailTrialBalance}
+                onClose={handleCloseModal}
+            />
+            <ModifyDepositDiaryProcess
+                open={activeModal === "modify-deposit-diary"}
+                onClose={handleCloseModal}
+            />
+            <ExceedCashLimitReportProcess
+                open={isExceedCashLimitReport}
+                onClose={handleCloseModal}
+            />
+            <HoInterestReportBranchProcess
+                open={isHoInterestReportBranch}
+                onClose={handleCloseModal}
+            />
+            <HoInterestReportHoProcess
+                open={isHoInterestReportHo}
+                onClose={handleCloseModal}
+            />
+            <HoInterestReportGlProcess
+                open={isHoInterestReportGl}
+                onClose={handleCloseModal}
+            />
+
+            {activeModal === "set-branch-parameters" && (
+                <SetBranchParameterModal
+                    onClose={handleCloseModal}
+                />
+            )}
         </div>
     );
 };

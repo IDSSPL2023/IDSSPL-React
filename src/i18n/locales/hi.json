@@ -26,7 +26,9 @@
     "fieldRequired": "यह फ़ील्ड आवश्यक है",
     "apply": "लागू करें",
     "calculate": "गणना करें",
-    "report": "रिपोर्ट"
+    "report": "रिपोर्ट",
+    "yes": "हाँ",
+    "no": "नहीं"
   },
   "fields": {
     "accountCode": "खाता कोड",
@@ -458,6 +460,214 @@
     },
     "placeholders": {
       "uptoDate": "अद्यतन तिथि दर्ज करें"
+    }
+  },
+  "tlccInterestPosting": {
+    "title": "टीएल/सीसी ब्याज पोस्टिंग",
+    "fields": {
+      "accountType": "खाता प्रकार",
+      "accountTypeDescription": "खाता प्रकार विवरण",
+      "nextIntPostingDate": "अगली ब्याज पोस्टिंग तिथि",
+      "nextIntPostingUpToDate": "अगली ब्याज पोस्टिंग अद्यतन तिथि तक",
+      "applyServiceCharges": "सेवा शुल्क लागू करें",
+      "interestReposting": "ब्याज पुनः पोस्टिंग"
+    },
+    "placeholders": {
+      "selectAccountType": "खाता प्रकार चुनें",
+      "description": "विवरण"
+    }
+  },
+  "tdPostingConsistency": {
+    "title": "जमा ब्याज पोस्टिंग",
+    "subtitle": "पात्र जमा खातों के लिए ब्याज पोस्टिंग प्रक्रिया करें.",
+    "fields": {
+      "applyInterestUpToDate": "तारीख तक",
+      "postAs": "पोस्ट करें",
+      "select": "चुनें",
+      "reportType": "रिपोर्ट प्रकार",
+      "productCode": "उत्पाद कोड",
+      "productDescription": "विवरण"
+    },
+    "placeholders": {
+      "applyInterestUpToDate": "Enter Apply Interest Up to date",
+      "postAs": "Select Post As",
+      "productCode": "Select Product Code",
+      "description": "Description"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "npaModification": {
+    "title": "एनपीए संशोधन",
+    "subtitle": "नया पैरामीटर बनाने के लिए नीचे विवरण भरें.",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "accountNumber": "Account Number",
+      "accountName": "Account Name",
+      "osAmount": "OS Amount",
+      "principalOverdueAmount": "Prin. Ovd. Amt.",
+      "interestOverdueAmount": "Int. Ovd. Amt.",
+      "principalOverdueMonths": "Prin. Ovd. Months",
+      "interestOverdueDate": "Int. Ovd. Date",
+      "calculatedNpaClass": "Calc. NPA Class",
+      "description": "Description",
+      "actualNpaClass": "Act. NPA Class",
+      "calculatedNpaPercentage": "Calc. NPA Per.",
+      "actualNpaPercentage": "Act. NPA Per",
+      "provisionOnAmount": "Prov. On Amt.",
+      "calculatedProvision": "Calc. Prov.",
+      "actualProvision": "Act. Prov."
+    },
+    "placeholders": {
+      "guardianName": "Enter Guardian Name",
+      "accountType": "Select Account Type",
+      "description": "Description"
+    }
+  },
+  "depreciationCalculation": {
+    "title": "Deprecation Calculation",
+    "subtitle": "पात्र जमा खातों के लिए ब्याज पोस्टिंग प्रक्रिया करें.",
+    "fields": {
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक",
+      "balanceDate": "Balance Date for Simple Deprection",
+      "roundingRequired": "Rounding Required"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date",
+      "balanceDate": "Enter Balance Date for Simple Deprection"
+    }
+  },
+  "pigmyInterestProvision": {
+    "title": "Pigmy Interest Provision/Posting",
+    "subtitle": "दिन की शुरुआत में स्वचालित नवीनीकरण की प्रक्रिया करें.",
+    "fields": {
+      "fromProductCode": "उत्पाद कोड",
+      "productDescription": "विवरण",
+      "uptoDate": "अद्यतन तिथि तक"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "interestNotApplied": {
+    "title": "Interest Not Applied",
+    "subtitle": "दिन की शुरुआत में स्वचालित नवीनीकरण की प्रक्रिया करें.",
+    "fields": {
+      "branchCode": "शाखा कोड",
+      "asOnDate": "आज की तारीख के अनुसार"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    }
+  },
+  "nFormBalancesheet": {
+    "title": "Reports Parameter",
+    "fields": {
+      "productCode": "Product Code",
+      "lastQuarterDate": "Last Quarter Date",
+      "select": "Select"
+    },
+    "placeholders": {
+      "enterToDate": "Enter To Date"
+    },
+    "options": {
+      "regular": "Regular",
+      "closing": "Closing"
+    },
+    "actions": {
+      "generateRecord": "Generate Record",
+      "generateNFormBalanceSheet": "Generate N form Balance Sheet",
+      "generatePnL": "Generate P&L A/C"
+    }
+  },
+  "detailTrialBalance": {
+    "title": "Detail Trail Balance Sheet",
+    "fields": {
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखा का नाम",
+      "asOnDate": "आज की तारीख के अनुसार",
+      "select": "चुनें",
+      "reportType": "रिपोर्ट प्रकार"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "modifyDepositDiary": {
+    "title": "Modify Deposit Diary",
+    "fields": {
+      "productCode": "उत्पाद कोड",
+      "productDescription": "उत्पाद विवरण",
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक",
+      "reportFor": "रिपोर्ट के लिए",
+      "selectInterestFrequency": "ब्याज आवृत्ति चुनें"
+    },
+    "placeholders": {
+      "name": "name"
+    },
+    "options": {
+      "all": "All",
+      "si": "SI",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    }
+  },
+  "exceedCashLimitReport": {
+    "title": "Exceed Balance Limit Amount and Review Date",
+    "fields": {
+      "fromProductCode": "उत्पाद कोड",
+      "productDescription": "विवरण",
+      "toProductCode": "उत्पाद कोड",
+      "asOnDate": "आज की तारीख के अनुसार"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "hoInterestReportBranch": {
+    "title": "एचओ ब्याज पोस्टिंग",
+    "fields": {
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक"
+    }
+  },
+  "hoInterestReportHo": {
+    "title": "एचओ खाता ब्याज",
+    "fields": {
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक",
+      "fromAccountCode": "खाता कोड से",
+      "toAccountCode": "खाता कोड तक",
+      "accountName": "खाता नाम"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "hoInterestReportGl": {
+    "title": "एचओ ब्याज रिपोर्ट पोस्टिंग",
+    "fields": {
+      "glAccountCode": "जीएल खाता कोड",
+      "accountName": "खाता नाम",
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक"
+    },
+    "placeholders": {
+      "name": "name"
     }
   }
 }

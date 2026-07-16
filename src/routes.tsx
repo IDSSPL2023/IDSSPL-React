@@ -86,6 +86,7 @@ import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHisto
 import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
+import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -185,6 +186,7 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/modifycashhandlingrecord", element: <ModifyCashHandlingRecord /> },
 
       { path: "/financial-closing", element: <FinancialClosing /> },
+      { path: "/financial-closing/set-product-status", element: <SetProductStatusPage /> },
 
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
