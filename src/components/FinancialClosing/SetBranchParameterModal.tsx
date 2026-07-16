@@ -325,6 +325,7 @@ const SetBranchParameterModal: FC<SetBranchParameterModalProps> = ({
   initialData = emptyBranchParameterFormData,
   onClose,
   onSave,
+
 }) => {
   const [formData, setFormData] = useState<BranchParameterFormData>(initialData);
   const [errors, setErrors] = useState<Partial<Record<keyof BranchParameterFormData, boolean>>>({});
