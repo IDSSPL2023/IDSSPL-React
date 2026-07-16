@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Calculator, Calendar, Check, FileText, UserRound, X } from "lucide-react";
+import { Calculator, Calendar, Check, FileText, MoreVertical, UserRound, X } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
-import { FieldShell, TextInput, DateInput, RadioYesNo, LookupButton } from "@/components/shared/FormFields";
+import { FieldShell, TextInput, DateInput, RadioYesNo } from "@/components/shared/FormFields";
+import ListModal from "@/components/AccountMaster/ListModal";
 
 export interface TlccInterestPostingData {
   accountType: string;
@@ -57,6 +58,7 @@ export default function TlccInterestPostingProcess({
   const [values, setValues] = useState<TlccInterestPostingData>(INITIAL_VALUES);
   const [errors, setErrors] = useState<Partial<Record<RequiredFieldKey, string>>>({});
   const [isCalculated, setIsCalculated] = useState(false);
+  const [showAccountTypeList, setShowAccountTypeList] = useState(false);
 
   if (!open) return null;
 
@@ -76,11 +78,10 @@ export default function TlccInterestPostingProcess({
     setIsCalculated(false);
   };
 
-  const handlePickAccountType = (description: string) => {
-    const match = ACCOUNT_TYPES.find((a) => a.description === description);
-    if (!match) return;
+  const handlePickAccountType = (match: { code: string; description: string }) => {
     updateValues({ accountType: match.code, accountTypeDescription: match.description });
     setErrors((prev) => ({ ...prev, accountType: undefined }));
+    setShowAccountTypeList(false);
   };
 
   const handleValidate = () => {
@@ -104,6 +105,7 @@ export default function TlccInterestPostingProcess({
   };
 
   return (
+    <>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-3xl rounded-xl bg-white p-3 shadow-2xl">
         <div className="rounded-2xl p-3">
@@ -144,10 +146,13 @@ export default function TlccInterestPostingProcess({
                       placeholder={tRaw("tlccInterestPosting.placeholders.selectAccountType")}
                     />
                   </div>
-                  <LookupButton
-                    items={ACCOUNT_TYPES.map((a) => a.description)}
-                    onPick={handlePickAccountType}
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowAccountTypeList(true)}
+                    className="flex h-10 w-12 shrink-0 items-center justify-center rounded-lg bg-[#EEF3FF] text-primary transition hover:bg-primary-100"
+                  >
+                    <MoreVertical size={20} strokeWidth={3} />
+                  </button>
                 </div>
               </FieldShell>
 
@@ -260,5 +265,19 @@ export default function TlccInterestPostingProcess({
         </div>
       </div>
     </div>
+
+    {showAccountTypeList && (
+      <ListModal
+        title={en("tlccInterestPosting.fields.accountType")}
+        columns={[
+          { key: "code", label: "Code" },
+          { key: "description", label: "Description" },
+        ]}
+        rows={ACCOUNT_TYPES}
+        onSelect={handlePickAccountType}
+        onClose={() => setShowAccountTypeList(false)}
+      />
+    )}
+    </>
   );
 }

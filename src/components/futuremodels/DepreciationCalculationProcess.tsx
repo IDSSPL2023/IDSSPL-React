@@ -117,8 +117,8 @@ export default function DepreciationCalculationProcess({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-[860px] rounded-[22px] bg-white p-5 shadow-2xl">
-        <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-10 pt-7 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
-          <div className="flex items-start gap-4 border-b border-slate-100 pb-7">
+        <div className="rounded-[18px] bg-white">
+          <div className="flex items-start gap-4 border-b border-slate-100">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
               <UserRound size={22} />
             </div>
@@ -138,7 +138,7 @@ export default function DepreciationCalculationProcess({
             </div>
           </div>
 
-          <div className="mt-7 space-y-7">
+          <div className="m-3 space-y-7 border border-primary border-t-4 p-5 rounded-xl">
             {DATE_FIELDS.map((field) => (
               <FormField
                 key={field.key}
@@ -173,7 +173,7 @@ export default function DepreciationCalculationProcess({
           </div>
         </div>
 
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
             onClick={handleValidate}

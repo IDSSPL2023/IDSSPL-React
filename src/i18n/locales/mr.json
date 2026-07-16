@@ -541,5 +541,236 @@
       "toDate": "Enter To Date",
       "balanceDate": "Enter Balance Date for Simple Deprection"
     }
+  },
+  "clearing": {
+    "hero": {
+      "title": "क्लिअरिंग",
+      "welcomeTitle": "क्लिअरिंगमध्ये आपले स्वागत आहे",
+      "searchPlaceholder": "क्लिअरिंग प्रक्रिया शोधा...",
+      "show": "दाखवा",
+      "allMasters": "सर्व मास्टर्स",
+      "recentlyUsed": "अलीकडे वापरलेले",
+      "open": "उघडा",
+      "noUtilitiesFound": "कोणत्याही सुविधा आढळल्या नाहीत",
+      "breadcrumbClerk": "क्लर्क"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "जावक क्लिअरिंग विलंब परतावा नोंद",
+        "cardDescription": "जावक क्लिअरिंग बिलांचा विलंब परतावा नोंदवा व चिन्हांकित करा.",
+        "modalTitle": "जावक बिल वसुली नोंद",
+        "modalSubtitle": "जावक क्लिअरिंग बिलावर आलेला विलंब परतावा नोंदवा.",
+        "successTitle": "जावक क्लिअरिंग विलंब परतावा यशस्वीरित्या नोंदवला"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "उपशाखा आवक क्लिअरिंग परतावा",
+        "cardDescription": "उपशाखेने पाठवलेला आवक क्लिअरिंग परतावा नोंदवा.",
+        "modalTitle": "उपशाखा आवक परतावा",
+        "modalSubtitle": "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
+        "successTitle": "उपशाखा आवक परतावा यशस्वीरित्या जतन झाला"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "जावक क्लिअरिंग नोंद चिन्ह",
+        "cardDescription": "जावक क्लिअरिंग वेळापत्रकाची नोंद स्थिती चिन्हांकित करा.",
+        "modalTitle": "जावक क्लिअरिंग नोंद चिन्हांकित करा",
+        "modalSubtitle": "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
+        "successTitle": "जावक क्लिअरिंग खात्यात यशस्वीरित्या नोंदवले"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "शाखा माहिती",
+        "subtitle": "जावक बिल वसुलीसाठी खाते तपशील प्रविष्ट करा."
+      },
+      "clearingDetails": {
+        "title": "क्लिअरिंग तपशील",
+        "subtitle": "नोंद करण्यापूर्वी शाखा व व्यवहार तपशील निवडा."
+      },
+      "customerAccountDetails": {
+        "title": "ग्राहक व खाते तपशील",
+        "subtitle": "ग्राहक, प्राप्तकर्ता व आहरित बँकेचा तपशील प्रविष्ट करा."
+      },
+      "instrumentDetails": {
+        "title": "उपकरण तपशील",
+        "subtitle": "धनादेश/उपकरणाचा तपशील प्रविष्ट करा."
+      },
+      "returnDetails": {
+        "title": "परतावा तपशील",
+        "subtitle": "नकार व शुल्काचा तपशील प्रविष्ट करा."
+      },
+      "details": {
+        "title": "तपशील",
+        "subtitle": "पॅरामीटरची माहिती आणि संबंधित तपशील पहा."
+      }
+    },
+    "fields": {
+      "bankCode": "बँक कोड",
+      "bankName": "बँकेचे नाव",
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखेचे नाव",
+      "date": "तारीख",
+      "scrollNumber": "स्क्रोल क्रमांक",
+      "clearingTypeId": "क्लिअरिंग प्रकार आयडी",
+      "clearingTypeName": "क्लिअरिंग प्रकार नाव",
+      "dailyOutwardScheduleNo": "दैनंदिन जावक वेळापत्रक क्र.",
+      "scheduleDate": "वेळापत्रक तारीख",
+      "clearingSerialNumber": "क्लिअरिंग अनुक्रमांक",
+      "customerId": "ग्राहक आयडी",
+      "customerName": "ग्राहकाचे नाव",
+      "accountCode": "खाते कोड",
+      "accountName": "खातेधारकाचे नाव",
+      "payeeName": "प्राप्तकर्त्याचे नाव",
+      "drawerName": "आहरकाचे नाव",
+      "instrumentType": "उपकरण प्रकार",
+      "instrumentNumber": "उपकरण क्रमांक",
+      "instrumentDate": "उपकरण तारीख",
+      "instrumentAmount": "उपकरण रक्कम",
+      "outletSerialNo": "आउटलेट अनुक्रमांक",
+      "glOutletDescription": "जीएल आउटलेट वर्णन",
+      "glOutlistDocNo": "जीएल आउटलिस्ट दस्तऐवज क्र.",
+      "rejectionTypeId": "नकार प्रकार आयडी",
+      "rejectionDescription": "नकाराचे वर्णन",
+      "chequeReturnCharges": "धनादेश परतावा शुल्क",
+      "serviceTax": "सेवा कर",
+      "adviceNumber": "सूचना क्रमांक",
+      "adviceDate": "सूचना तारीख",
+      "originalResponding": "मूळ / प्रतिसाद",
+      "dailyInwardScheduleNo": "दैनंदिन आवक वेळापत्रक क्र.",
+      "amount": "रक्कम",
+      "scheduleNumber": "वेळापत्रक क्रमांक",
+      "numberOfInstruments": "उपकरणांची संख्या",
+      "totalAmount": "एकूण रक्कम",
+      "bounceNoOfInstruments": "बाउन्स झालेल्या उपकरणांची संख्या"
+    },
+    "actions": {
+      "postToAccount": "खात्यात नोंदवा"
+    },
+  "pigmyInterestProvision": {
+    "title": "दिवस प्रारंभ स्वयंचलित नूतनीकरण",
+    "subtitle": "दिवसाच्या प्रारंभी स्वयंचलित नूतनीकरण प्रक्रिया करा.",
+    "fields": {
+      "fromProductCode": "उत्पादन कोड",
+      "productDescription": "वर्णन",
+      "uptoDate": "दिनांकपर्यंत"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "interestNotApplied": {
+    "title": "दिवस प्रारंभ स्वयंचलित नूतनीकरण",
+    "subtitle": "दिवसाच्या प्रारंभी स्वयंचलित नूतनीकरण प्रक्रिया करा.",
+    "fields": {
+      "branchCode": "स्क्रोल क्रमांक",
+      "asOnDate": "दिनांकपर्यंत"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    }
+  },
+  "nFormBalancesheet": {
+    "title": "अहवाल मापदंड",
+    "fields": {
+      "productCode": "शाखा कोड",
+      "lastQuarterDate": "अंतिम तिमाहीची तारीख",
+      "select": "निवडा"
+    },
+    "placeholders": {
+      "enterToDate": "Enter To Date"
+    },
+    "options": {
+      "regular": "Regular",
+      "closing": "Closing"
+    },
+    "actions": {
+      "generateRecord": "Generate Record",
+      "generateNFormBalanceSheet": "Generate N form Balance Sheet",
+      "generatePnL": "Generate P&L A/C"
+    }
+  },
+  "detailTrialBalance": {
+    "title": "ठेव व्याज नोंदणी",
+    "fields": {
+      "branchCode": "स्क्रोल क्रमांक",
+      "branchName": "स्क्रोल क्रमांक",
+      "asOnDate": "दिनांकपर्यंत",
+      "select": "निवडा",
+      "reportType": "अहवाल प्रकार"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "modifyDepositDiary": {
+    "title": "ठेवीचे डायरी सुधारणा करा",
+    "fields": {
+      "productCode": "उत्पादन कोड",
+      "productDescription": "उत्पादनाचे वर्णन",
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक",
+      "reportFor": "साठी अहवाल",
+      "selectInterestFrequency": "व्याजाची वारंवारता निवडा"
+    },
+    "placeholders": {
+      "name": "name"
+    },
+    "options": {
+      "all": "All",
+      "si": "SI",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    }
+  },
+  "exceedCashLimitReport": {
+    "title": "ठेव व्याज नोंदणी",
+    "fields": {
+      "fromProductCode": "उत्पादन कोड",
+      "productDescription": "वर्णन",
+      "toProductCode": "उत्पादन कोड",
+      "asOnDate": "दिनांकपर्यंत"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "hoInterestReportBranch": {
+    "title": "एचओ व्याज पोस्टिंग",
+    "fields": {
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक"
+    }
+  },
+  "hoInterestReportHo": {
+    "title": "एचओ व्याज पोस्टिंग",
+    "fields": {
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक",
+      "fromAccountCode": "खाते कोड पासून",
+      "toAccountCode": "खाते कोड पासून",
+      "accountName": "आकाउंट नाव"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "hoInterestReportGl": {
+    "title": "एचओ व्याज अहवाल पोस्टिंग",
+    "fields": {
+      "glAccountCode": "GL अकाउंट कोड",
+      "accountName": "आकाउंट नाव",
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक"
+    },
+    "placeholders": {
+      "name": "name"
+    }
   }
-}
+}}

@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
+import ListModal from "@/components/AccountMaster/ListModal";
 
 type SelectMode = "all" | "single";
 type ReportType = "pdf" | "xls";
@@ -66,6 +67,7 @@ export default function TdPostingConsistencyProcess({
   const [errors, setErrors] = useState<Partial<Record<RequiredField, string>>>({});
   const [isValidated, setIsValidated] = useState(false);
   const [isCalculated, setIsCalculated] = useState(false);
+  const [showProductList, setShowProductList] = useState(false);
 
   if (!open) return null;
 
@@ -114,15 +116,16 @@ export default function TdPostingConsistencyProcess({
     onApply?.(values);
   };
 
-  const handlePickProduct = () => {
-    const nextProduct = PRODUCTS.find((item) => item.code !== values.productCode) ?? PRODUCTS[0];
+  const handlePickProduct = (product: { code: string; description: string }) => {
     updateValues({
-      productCode: nextProduct.code,
-      productDescription: nextProduct.description,
+      productCode: product.code,
+      productDescription: product.description,
     });
+    setShowProductList(false);
   };
 
   return (
+    <>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-[1024px] rounded-[22px] bg-white p-4 shadow-2xl">
           <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
@@ -219,7 +222,7 @@ export default function TdPostingConsistencyProcess({
                 />
                 <button
                   type="button"
-                  onClick={handlePickProduct}
+                  onClick={() => setShowProductList(true)}
                   className="flex h-11 w-14 shrink-0 items-center justify-center rounded-lg bg-[#EEF3FF] text-primary transition hover:bg-primary-100"
                 >
                   <MoreVertical size={22} strokeWidth={3} />
@@ -292,6 +295,20 @@ export default function TdPostingConsistencyProcess({
         </div>
       </div>
     </div>
+
+    {showProductList && (
+      <ListModal
+        title={en("tdPostingConsistency.fields.productCode")}
+        columns={[
+          { key: "code", label: "Product Code" },
+          { key: "description", label: "Description" },
+        ]}
+        rows={PRODUCTS}
+        onSelect={handlePickProduct}
+        onClose={() => setShowProductList(false)}
+      />
+    )}
+    </>
   );
 }
 

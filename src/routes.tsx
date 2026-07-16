@@ -24,6 +24,7 @@ import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
 import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
+import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
@@ -63,6 +64,7 @@ import UnLeanPage from "@/pages/futuremodels/UnLeanPage";
 import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
 import SupportUtilityPage from "@/pages/SupportUtilityPage";
+import ClerkClearingPage from "@/pages/ClerkClearingPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
 import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
@@ -137,6 +139,7 @@ export const router = createBrowserRouter([
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/day-begin-end", element: <DayBeginEndPage /> },
+{ path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
@@ -151,6 +154,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
       { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
+      { path: "/authorization/transaction/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
@@ -189,6 +193,7 @@ export const router = createBrowserRouter([
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
+      { path: "/clerk/clearing", element: <ClerkClearingPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
       { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },

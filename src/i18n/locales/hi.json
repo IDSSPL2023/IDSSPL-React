@@ -541,5 +541,263 @@
       "toDate": "Enter To Date",
       "balanceDate": "Enter Balance Date for Simple Deprection"
     }
+  },
+  "clearing": {
+    "hero": {
+      "title": "क्लियरिंग",
+      "welcomeTitle": "क्लियरिंग में आपका स्वागत है",
+      "searchPlaceholder": "क्लियरिंग प्रक्रियाएँ खोजें...",
+      "show": "दिखाएँ",
+      "allMasters": "सभी मास्टर्स",
+      "recentlyUsed": "हाल ही में उपयोग किए गए",
+      "open": "खोलें",
+      "noUtilitiesFound": "कोई सुविधा नहीं मिली",
+      "breadcrumbClerk": "क्लर्क"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "जावक क्लियरिंग विलंबित रिटर्न चिन्ह",
+        "cardDescription": "जावक क्लियरिंग बिलों का विलंबित रिटर्न दर्ज करें व चिन्हित करें.",
+        "modalTitle": "जावक बिल वसूली प्रविष्टि",
+        "modalSubtitle": "जावक क्लियरिंग बिल पर प्राप्त विलंबित रिटर्न दर्ज करें.",
+        "successTitle": "जावक क्लियरिंग विलंबित रिटर्न सफलतापूर्वक दर्ज हुआ"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "उप शाखा आवक क्लियरिंग रिटर्न",
+        "cardDescription": "उप शाखा द्वारा भेजा गया आवक क्लियरिंग रिटर्न दर्ज करें.",
+        "modalTitle": "उप शाखा आवक रिटर्न",
+        "modalSubtitle": "पैरामीटर की जानकारी और संबंधित विवरण देखें.",
+        "successTitle": "उप शाखा आवक रिटर्न सफलतापूर्वक सहेजा गया"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "जावक क्लियरिंग पोस्टिंग चिन्ह",
+        "cardDescription": "जावक क्लियरिंग शेड्यूल की पोस्टिंग स्थिति चिन्हित करें.",
+        "modalTitle": "जावक क्लियरिंग पोस्टिंग चिन्हांकन",
+        "modalSubtitle": "पैरामीटर की जानकारी और संबंधित विवरण देखें.",
+        "successTitle": "जावक क्लियरिंग खाते में सफलतापूर्वक पोस्ट हुई"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "शाखा जानकारी",
+        "subtitle": "जावक बिल वसूली हेतु खाता विवरण दर्ज करें."
+      },
+      "clearingDetails": {
+        "title": "क्लियरिंग विवरण",
+        "subtitle": "दर्ज करने से पहले शाखा व लेनदेन विवरण चुनें."
+      },
+      "customerAccountDetails": {
+        "title": "ग्राहक व खाता विवरण",
+        "subtitle": "ग्राहक, प्राप्तकर्ता व आहरणकर्ता बैंक का विवरण दर्ज करें."
+      },
+      "instrumentDetails": {
+        "title": "इंस्ट्रूमेंट विवरण",
+        "subtitle": "चेक/इंस्ट्रूमेंट का विवरण दर्ज करें."
+      },
+      "returnDetails": {
+        "title": "रिटर्न विवरण",
+        "subtitle": "अस्वीकृति व शुल्क का विवरण दर्ज करें."
+      },
+      "details": {
+        "title": "विवरण",
+        "subtitle": "पैरामीटर की जानकारी और संबंधित विवरण देखें."
+      }
+    },
+    "fields": {
+      "bankCode": "बैंक कोड",
+      "bankName": "बैंक का नाम",
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखा का नाम",
+      "date": "तारीख",
+      "scrollNumber": "स्क्रॉल नंबर",
+      "clearingTypeId": "क्लियरिंग प्रकार आईडी",
+      "clearingTypeName": "क्लियरिंग प्रकार नाम",
+      "dailyOutwardScheduleNo": "दैनिक जावक शेड्यूल नंबर",
+      "scheduleDate": "शेड्यूल तारीख",
+      "clearingSerialNumber": "क्लियरिंग क्रम संख्या",
+      "customerId": "ग्राहक आईडी",
+      "customerName": "ग्राहक का नाम",
+      "accountCode": "खाता कोड",
+      "accountName": "खाताधारक का नाम",
+      "payeeName": "प्राप्तकर्ता का नाम",
+      "drawerName": "आहरणकर्ता का नाम",
+      "instrumentType": "इंस्ट्रूमेंट प्रकार",
+      "instrumentNumber": "इंस्ट्रूमेंट नंबर",
+      "instrumentDate": "इंस्ट्रूमेंट तारीख",
+      "instrumentAmount": "इंस्ट्रूमेंट राशि",
+      "outletSerialNo": "आउटलेट क्रम संख्या",
+      "glOutletDescription": "जीएल आउटलेट विवरण",
+      "glOutlistDocNo": "जीएल आउटलिस्ट दस्तावेज़ संख्या",
+      "rejectionTypeId": "अस्वीकृति प्रकार आईडी",
+      "rejectionDescription": "अस्वीकृति विवरण",
+      "chequeReturnCharges": "चेक रिटर्न शुल्क",
+      "serviceTax": "सेवा कर",
+      "adviceNumber": "एडवाइस नंबर",
+      "adviceDate": "एडवाइस तारीख",
+      "originalResponding": "मूल / प्रतिक्रिया",
+      "dailyInwardScheduleNo": "दैनिक आवक शेड्यूल नंबर",
+      "amount": "राशि",
+      "scheduleNumber": "शेड्यूल नंबर",
+      "numberOfInstruments": "इंस्ट्रूमेंट की संख्या",
+      "totalAmount": "कुल राशि",
+      "bounceNoOfInstruments": "बाउंस इंस्ट्रूमेंट की संख्या"
+    },
+    "actions": {
+      "postToAccount": "खाते में पोस्ट करें"
+    }
+  },
+  "setProductStatus": {
+    "fields": {
+      "type": "प्रकार",
+      "typeHi": "प्रकार",
+      "description": "विवरण",
+      "descriptionHi": "विवरण",
+      "productCode": "उत्पाद कोड",
+      "productCodeHi": "उत्पाद कोड",
+      "productName": "उत्पादाचे नाव",
+      "productNameHi": "उत्पादाचे नाव",
+      "interestApplyDate": "व्याज लागू तारीख",
+      "interestApplyDateHi": "व्याज लागू तारीख",
+      "interestFlag": "व्याज ध्वज",
+      "interestFlagHi": "व्याज ध्वज"
+    },
+    "errors": {
+      "typeRequired": "प्रकार आवश्यक आहे",
+      "descriptionRequired": "विवरण आवश्यक आहे",
+      "productCodeRequired": "उत्पाद कोड आवश्यक आहे",
+      "productNameRequired": "उत्पादाचे नाव आवश्यक आहे",
+      "interestApplyDateRequired": "व्याज लागू तारीख आवश्यक आहे",
+      "interestFlagRequired": "व्याज ध्वज आवश्यक आहे"
+    },
+    "pickerTitle": "उत्पाद निवडा",
+    "successTitle": "उत्पाद स्थिती यशस्वीरित्या सेव केली",
+    "successSubtitle": "उत्पाद स्थिती यशस्वीरित्या अपडेट केली गेली आहे."},
+  "pigmyInterestProvision": {
+    "title": "Pigmy Interest Provision/Posting",
+    "subtitle": "दिन की शुरुआत में स्वचालित नवीनीकरण की प्रक्रिया करें.",
+    "fields": {
+      "fromProductCode": "उत्पाद कोड",
+      "productDescription": "विवरण",
+      "uptoDate": "अद्यतन तिथि तक"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "interestNotApplied": {
+    "title": "Interest Not Applied",
+    "subtitle": "दिन की शुरुआत में स्वचालित नवीनीकरण की प्रक्रिया करें.",
+    "fields": {
+      "branchCode": "शाखा कोड",
+      "asOnDate": "आज की तारीख के अनुसार"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    }
+  },
+  "nFormBalancesheet": {
+    "title": "Reports Parameter",
+    "fields": {
+      "productCode": "Product Code",
+      "lastQuarterDate": "Last Quarter Date",
+      "select": "Select"
+    },
+    "placeholders": {
+      "enterToDate": "Enter To Date"
+    },
+    "options": {
+      "regular": "Regular",
+      "closing": "Closing"
+    },
+    "actions": {
+      "generateRecord": "Generate Record",
+      "generateNFormBalanceSheet": "Generate N form Balance Sheet",
+      "generatePnL": "Generate P&L A/C"
+    }
+  },
+  "detailTrialBalance": {
+    "title": "Detail Trail Balance Sheet",
+    "fields": {
+      "branchCode": "शाखा कोड",
+      "branchName": "शाखा का नाम",
+      "asOnDate": "आज की तारीख के अनुसार",
+      "select": "चुनें",
+      "reportType": "रिपोर्ट प्रकार"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "modifyDepositDiary": {
+    "title": "Modify Deposit Diary",
+    "fields": {
+      "productCode": "उत्पाद कोड",
+      "productDescription": "उत्पाद विवरण",
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक",
+      "reportFor": "रिपोर्ट के लिए",
+      "selectInterestFrequency": "ब्याज आवृत्ति चुनें"
+    },
+    "placeholders": {
+      "name": "name"
+    },
+    "options": {
+      "all": "All",
+      "si": "SI",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    }
+  },
+  "exceedCashLimitReport": {
+    "title": "Exceed Balance Limit Amount and Review Date",
+    "fields": {
+      "fromProductCode": "उत्पाद कोड",
+      "productDescription": "विवरण",
+      "toProductCode": "उत्पाद कोड",
+      "asOnDate": "आज की तारीख के अनुसार"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "hoInterestReportBranch": {
+    "title": "एचओ ब्याज पोस्टिंग",
+    "fields": {
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक"
+    }
+  },
+  "hoInterestReportHo": {
+    "title": "एचओ खाता ब्याज",
+    "fields": {
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक",
+      "fromAccountCode": "खाता कोड से",
+      "toAccountCode": "खाता कोड तक",
+      "accountName": "खाता नाम"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "hoInterestReportGl": {
+    "title": "एचओ ब्याज रिपोर्ट पोस्टिंग",
+    "fields": {
+      "glAccountCode": "जीएल खाता कोड",
+      "accountName": "खाता नाम",
+      "fromDate": "तारीख से",
+      "toDate": "तारीख तक"
+    },
+    "placeholders": {
+      "name": "name"
+    }
   }
 }

@@ -90,6 +90,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-interest-posting",
         title: "Interest Posting",
         icon: Percent,
+        href: "/interest-posting",
       },
       {
         id: "mis-master-mainenance-global",
@@ -248,6 +249,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-clearing",
         title: "Clearing",
         icon: ArrowLeftRight,
+        href: "/clerk/clearing",
       },
       {
         id: "clerk-customer",
