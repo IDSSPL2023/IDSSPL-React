@@ -357,6 +357,16 @@
     "moreMenusBelow": "More menus below",
     "logoAlt": "Logo"
   },
+  "supportUtility": {
+    "allMasters": "All Masters",
+    "recentlyUsed": "Recently Used",
+    "open": "Open",
+    "welcomeTitle": "Welcome to Support Utility",
+   "welcomeSubtitle": "",
+    "searchPlaceholder": "Search utilities...",
+    "show": "Show",
+    "noUtilitiesFound": "No utilities found"
+  },
   "modifyBranchGlBalance": {
     "title": "Modify Branch GL Balance",
     "successTitle": "Branch GL balance modified successfully"

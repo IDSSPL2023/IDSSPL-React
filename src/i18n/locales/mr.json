@@ -356,6 +356,16 @@
     "comingSoon": "लवकरच येत आहे",
     "logoAlt": "लोगो"
   },
+  "supportUtility": {
+    "allMasters": "सर्व मास्टर्स",
+    "recentlyUsed": "अलीकडे वापरलेले",
+    "open": "उघडा",
+    "welcomeTitle": "सपोर्ट युटिलिटीमध्ये आपले स्वागत आहे",
+    "welcomeSubtitle": "सर्व मास्टर युटिलिटीज एकाच ठिकाणी शोधा आणि व्यवस्थापित करा",
+    "searchPlaceholder": "युटिलिटी शोधा...",
+    "show": "दाखवा",
+    "noUtilitiesFound": "कोणतीही युटिलिटी आढळली नाही"
+  },
   "modifyBranchGlBalance": {
     "title": "शाखेची जीएल शिल्लक सुधारित करा",
     "successTitle": "शाखेची जीएल शिल्लक यशस्वीरित्या सुधारित केली"

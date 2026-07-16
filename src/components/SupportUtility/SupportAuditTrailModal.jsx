@@ -102,7 +102,7 @@ const SupportAuditTrailModal = ({ onClose }) => {
         </div>
 
         {/* Form */}
-        <div className="mt-5 space-y-4 rounded-xl border border-gray-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <div className="mt-5 rounded-[20px] border-x border-b border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900">
           {/* Select Section */}
           <div className="flex items-center gap-4">
             <p className="text-sm font-semibold text-[#1F2858] dark:text-slate-100">Select</p>
@@ -252,7 +252,7 @@ const SupportAuditTrailModal = ({ onClose }) => {
             onClick={handleReport}
             className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
               validated
-                ? "bg-primary-100 text-primary hover:bg-primary-200"
+                ? "bg-primary text-white hover:bg-primary-700"
                 : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
             }`}
           >

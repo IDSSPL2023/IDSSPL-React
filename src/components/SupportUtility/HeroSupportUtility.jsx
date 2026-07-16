@@ -12,7 +12,7 @@ const ICON_MAP = {
   Percent, ShieldCheck,
 };
 
-const HeroSupportUtility = ({ openMaster, setOpenMaster, onOpenAccountLookup, onOpenSupportAuditTrail, tableRows, onRowsChange, filters }) => {
+const HeroSupportUtility = ({ openMaster, setOpenMaster, onOpenAccountLookup, onOpenSupportAuditTrail, onOpenScrollModify, onOpenDenomination, onOpenFormSections, tableRows, onRowsChange, filters }) => {
   const { en } = useBilingual();
   const [activeTab, setActiveTab] = useState(en("supportUtility.allMasters"));
   const [query, setQuery] = useState("");
@@ -90,7 +90,7 @@ const HeroSupportUtility = ({ openMaster, setOpenMaster, onOpenAccountLookup, on
           <h1 className="text-white text-[38px] font-bold leading-tight">
             {en("supportUtility.welcomeTitle")}
             <br />
-            {en("supportUtility.welcomeSubtitle")}
+            {/* {en("supportUtility.welcomeSubtitle")} */}
           </h1>
 
           <div className="mt-6 max-w-xl mx-auto flex items-center bg-white rounded-full px-4 py-2 shadow-lg">
@@ -131,6 +131,12 @@ const HeroSupportUtility = ({ openMaster, setOpenMaster, onOpenAccountLookup, on
                     ? onOpenSupportAuditTrail()
                     : master.uiType === "accountLookupTable"
                     ? onOpenAccountLookup(master)
+                    : master.uiType === "scrollModify"
+                    ? onOpenScrollModify(master)
+                    : master.uiType === "denomination"
+                    ? onOpenDenomination(master)
+                    : master.uiType === "formSections"
+                    ? onOpenFormSections(master)
                     : setOpenMaster(master)
                 }
               />
