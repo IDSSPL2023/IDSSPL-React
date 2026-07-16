@@ -6,7 +6,6 @@ import Image from "@/components/ui/Image";
 import DepreciationCalculationProcess from "./futuremodels/DepreciationCalculationProcess";
 import InterestPostingProcess from "./futuremodels/InterestPostingProcess";
 import NpaModificationProcess from "./futuremodels/NpaModificationProcess";
-import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
 import TdPostingConsistencyProcess from "./futuremodels/TdPostingConsistencyProcess";
 import TlccInterestPostingProcess from "./futuremodels/TlccInterestPostingProcess";
 import SiInterestPostingProcess from "./FinancialClosing/SiInterestPostingProcess";
