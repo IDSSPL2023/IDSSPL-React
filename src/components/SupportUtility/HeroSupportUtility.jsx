@@ -148,6 +148,7 @@ const HeroSupportUtility = ({
             <p className="col-span-2 py-8 text-center text-gray-400 dark:text-slate-500">{en("supportUtility.noUtilitiesFound")}</p>
           ) : (
             filteredMasters.map((master) => {
+              console.log("Master title:", master.titleEn); // Debugging line to check the exact title
               const normTitle = normalize(master.titleEn);
               const isTxnBalance = normTitle === TXN_BALANCE_TITLE;
               const isTxnCurrentBalance = normTitle === TXN_CURRENT_BALANCE_TITLE;
