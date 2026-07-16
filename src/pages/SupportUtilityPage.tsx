@@ -1,3 +1,4 @@
+// src/pages/SupportUtilityPage.tsx
 import React, { useState, useCallback } from "react";
 import Nav from "@/components/HeadOfficeMaster/Nav";
 import HeroSupportUtility from "@/components/SupportUtility/HeroSupportUtility";
@@ -5,6 +6,8 @@ import ParameterModal from "@/components/SupportUtility/ParameterModal";
 import FilterModal from "@/components/SupportUtility/FilterModal";
 import AccountLookupTableModal from "@/components/SupportUtility/AccountLookupTableModal";
 import SupportAuditTrailModal from "@/components/SupportUtility/SupportAuditTrailModal";
+import UpdateTxnBalanceModal from "@/components/SupportUtility/UpdateTXNBalance";
+import UpdateTxnCurrentBalanceModal from "@/components/SupportUtility/UpdateTXNCurrentBalance";
 import { getMasterConfig, emptyFormData } from "@/components/SupportUtility/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
 
@@ -34,6 +37,11 @@ const SupportUtilityPage: React.FC = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [accountLookupMaster, setAccountLookupMaster] = useState<MasterItem | null>(null);
   const [supportAuditTrailOpen, setSupportAuditTrailOpen] = useState(false);
+
+  // Update TXN Balance modal
+  const [txnBalanceOpen, setTxnBalanceOpen] = useState(false);
+  // Update TXN Current Balance modal
+  const [txnCurrentBalanceOpen, setTxnCurrentBalanceOpen] = useState(false);
 
   const handleOpenMaster = useCallback((master: MasterItem) => {
     const config = getMasterConfig(master.key);
@@ -92,6 +100,8 @@ const SupportUtilityPage: React.FC = () => {
         setOpenMaster={handleOpenMaster}
         onOpenAccountLookup={setAccountLookupMaster}
         onOpenSupportAuditTrail={() => setSupportAuditTrailOpen(true)}
+        onOpenTxnBalance={() => setTxnBalanceOpen(true)}
+        onOpenTxnCurrentBalance={() => setTxnCurrentBalanceOpen(true)}
         tableRows={tableRows}
         onRowsChange={setTableRows}
         filters={filters}
@@ -127,6 +137,20 @@ const SupportUtilityPage: React.FC = () => {
       {supportAuditTrailOpen && (
         <SupportAuditTrailModal
           onClose={() => setSupportAuditTrailOpen(false)}
+        />
+      )}
+
+      {txnBalanceOpen && (
+        <UpdateTxnBalanceModal
+          open={txnBalanceOpen}
+          onClose={() => setTxnBalanceOpen(false)}
+        />
+      )}
+
+      {txnCurrentBalanceOpen && (
+        <UpdateTxnCurrentBalanceModal
+          open={txnCurrentBalanceOpen}
+          onClose={() => setTxnCurrentBalanceOpen(false)}
         />
       )}
     </div>
