@@ -1,9 +1,9 @@
 // src/components/SupportUtility/UpdateTxnCurrentBalanceModal.tsx
 import { useMemo, useRef, useState } from "react";
-import type { ReactNode } from "react";
 import { User, Building2, Calendar, ChevronDown, MoreVertical, X, Check, AlertCircle, Search } from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
+import SuccessModal from "@/components/shared/SuccessModal";
 
 export interface UpdateTxnCurrentBalanceModalProps {
   open: boolean;
@@ -206,34 +206,6 @@ const PickListModal = ({ title, rows, onSelect, onClose }: any) => {
 };
 
 // ============================================
-// SUCCESS MODAL
-// ============================================
-
-const SuccessModal = ({ title = "Update Successfully", subtitle = "TXN Current Balance has been Updated Successfully", onClose }: any) => (
-  <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 p-4 backdrop-blur-[1px]">
-    <div className="relative w-full max-w-[480px] overflow-hidden rounded-[30px] bg-white shadow-[0_25px_60px_rgba(0,0,0,0.18)]">
-      <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#DCEBFF] opacity-90" />
-      <div className="absolute -left-14 -bottom-14 h-44 w-44 rounded-full bg-[#DCEBFF] opacity-90" />
-      <button onClick={onClose} className="absolute right-7 top-7 text-[#6F7785] hover:scale-105"><X size={28} /></button>
-      <div className="flex flex-col items-center px-12 py-14">
-        <div className="relative flex items-center justify-center">
-          <span className="absolute h-[105px] w-[105px] rounded-full border border-dashed border-[#3F73F5]/20" />
-          {["top-0 left-1/2", "top-4 left-3", "top-6 right-3", "left-0 top-1/2", "right-0 top-1/2", "bottom-5 left-3", "bottom-4 right-4", "bottom-0 left-1/2"].map((cls, i) => (
-            <span key={i} className={`absolute ${cls} h-[4px] w-[4px] rounded-full bg-[#3F73F5]`} />
-          ))}
-          <div className="flex h-[96px] w-[96px] items-center justify-center rounded-full bg-[#416EF4] shadow-[0_10px_20px_rgba(65,110,244,0.35)]">
-            <Check size={44} strokeWidth={3.5} color="white" />
-          </div>
-        </div>
-        <h2 className="mt-10 text-center text-[26px] font-bold leading-[34px] text-black">{title}</h2>
-        <p className="mt-2 text-center text-sm text-gray-500">{subtitle}</p>
-        <button onClick={onClose} className="mt-9 h-[45px] min-w-[88px] rounded-lg bg-[#1F67F4] px-6 text-lg font-semibold text-white shadow-md hover:bg-[#0E57EA]">OK</button>
-      </div>
-    </div>
-  </div>
-);
-
-// ============================================
 // MAIN
 // ============================================
 
@@ -359,7 +331,15 @@ export default function UpdateTxnCurrentBalanceModal({ open, onClose }: UpdateTx
 
       {activePickList === "account" && <PickListModal title="Account Code List" rows={ACCOUNT_CODE_OPTIONS} onSelect={handleAccountSelect} onClose={() => setActivePickList(null)} />}
       {activePickList === "branch" && <PickListModal title="Branch Code List" rows={BRANCH_CODE_OPTIONS} onSelect={handleBranchSelect} onClose={() => setActivePickList(null)} />}
-      {isSuccessOpen && <SuccessModal title="Update Successfully" subtitle="TXN Current Balance has been Updated Successfully" onClose={handleSuccessClose} />}
+      {isSuccessOpen && (
+        <SuccessModal
+          variant="success"
+          title="Update Successfully"
+          subtitle="TXN Current Balance has been Updated Successfully"
+          onClose={handleSuccessClose}
+          onDone={handleSuccessClose}
+        />
+      )}
     </>
   );
 }

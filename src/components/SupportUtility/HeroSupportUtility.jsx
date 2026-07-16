@@ -30,6 +30,9 @@ const HeroSupportUtility = ({
   onOpenSupportAuditTrail,
   onOpenTxnBalance,          // NEW
   onOpenTxnCurrentBalance,   // NEW
+  onOpenScrollModify,
+  onOpenDenomination,
+  onOpenFormSections,
   tableRows,
   onRowsChange,
   filters,
@@ -165,6 +168,9 @@ const HeroSupportUtility = ({
                     if (isTxnCurrentBalance) return onOpenTxnCurrentBalance?.();
                     if (master.key === "supportAuditTrail") return onOpenSupportAuditTrail();
                     if (master.uiType === "accountLookupTable") return onOpenAccountLookup(master);
+                    if (master.uiType === "scrollModify") return onOpenScrollModify?.(master);
+                    if (master.uiType === "denomination") return onOpenDenomination?.(master);
+                    if (master.uiType === "formSections") return onOpenFormSections?.(master);
                     return setOpenMaster(master);
                   }}
                 />

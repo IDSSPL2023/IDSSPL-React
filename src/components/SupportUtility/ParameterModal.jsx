@@ -267,7 +267,7 @@ const ParameterModal = ({
       </div>
 
       {/* Success modal, shown after a real, validated save */}
-      {successOpen  (
+      {successOpen && (
         <SuccessModal
           variant="success"
           title={mode === "add" ? "Parameter Added Successfully" : "Parameter Updated Successfully"}
