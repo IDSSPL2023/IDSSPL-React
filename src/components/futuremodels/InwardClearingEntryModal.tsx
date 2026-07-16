@@ -19,11 +19,11 @@ import {
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import { ICONS } from "@/assets";
 import PickerInput from "../shared/Inputs/PickerInput";
-import ListModal, { type ListModalItem } from "../StashModal/ListModal";
 import SectionHeader from "../shared/Wrappers/SectionHeader";
 import RadioInput from "../shared/Inputs/RadioInput";
 import TextInput from "../shared/Inputs/TextInput";
 import DateInput from "../shared/Inputs/DateInput";
+import ListModal, { ListModalItem } from "../shared/Modals/ListModal";
 
 export interface InwardClearingEntryFormData {
   // Schedule Details
