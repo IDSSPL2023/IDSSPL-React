@@ -23,7 +23,10 @@
     "services": "Services",
     "logout": "Logout",
     "modify": "Modify",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "apply": "Apply",
+    "calculate": "Calculate",
+    "report": "Report"
   },
   "fields": {
     "accountCode": "Account Code",
@@ -445,6 +448,17 @@
     },
     "actions": {
       "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
     }
   }
 }

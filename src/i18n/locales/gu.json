@@ -21,7 +21,10 @@
     "view": "જુઓ",
     "edit": "સંપાદિત કરો",
     "services": "સેવાઓ",
-    "logout": "લોગઆઉટ"
+    "logout": "લોગઆઉટ",
+    "apply": "લાગુ કરો",
+    "calculate": "ગણતરી કરો",
+    "report": "અહેવાલ"
   },
   "fields": {
     "accountCode": "ખાતા કોડ",
@@ -423,6 +426,17 @@
     },
     "actions": {
       "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
     }
   }
 }

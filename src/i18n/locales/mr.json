@@ -23,7 +23,10 @@
     "services": "सेवा",
     "logout": "लॉगआउट",
     "modify": "सुधारणा करा",
-    "fieldRequired": "हे क्षेत्र आवश्यक आहे"
+    "fieldRequired": "हे क्षेत्र आवश्यक आहे",
+    "apply": "लागू करा",
+    "calculate": "गणना करा",
+    "report": "अहवाल"
   },
   "fields": {
     "accountCode": "खाते कोड",
@@ -444,6 +447,17 @@
     },
     "actions": {
       "generateReports": "अहवाल तयार करा"
+    }
+  },
+  "siInterestPosting": {
+    "title": "एसआय व्याज नोंदणी",
+    "menuTitle": "एसआय व्याज नोंदणी",
+    "postingParameter": "पोस्टिंग पॅरामीटर",
+    "fields": {
+      "uptoDate": "अद्यावत"
+    },
+    "placeholders": {
+      "uptoDate": "अद्यावत तारीख टाका"
     }
   }
 }

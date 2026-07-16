@@ -21,7 +21,10 @@
     "view": "காண்க",
     "edit": "திருத்து",
     "services": "சேவைகள்",
-    "logout": "வெளியேறு"
+    "logout": "வெளியேறு",
+    "apply": "பயன்படுத்து",
+    "calculate": "கணக்கிடு",
+    "report": "அறிக்கை"
   },
   "fields": {
     "accountCode": "கணக்கு குறியீடு",
@@ -423,6 +426,17 @@
     },
     "actions": {
       "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
     }
   }
 }

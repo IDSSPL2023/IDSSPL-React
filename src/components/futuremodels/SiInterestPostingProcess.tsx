@@ -1,32 +1,33 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { Calendar, Check, FileText, Percent, UserRound, X } from "lucide-react";
+import { Calculator, Calendar, Check, FileText, Hash, UserRound, X } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 
-export interface InterestPostingProcessData {
-  asOnDate: string;
-  interestRate: string;
+export interface SiInterestPostingData {
+  productCode: string;
+  uptoDate: string;
 }
 
-export interface InterestPostingProcessProps {
+export interface SiInterestPostingProcessProps {
   open: boolean;
   onClose: () => void;
-  onSave?: (data: InterestPostingProcessData) => void;
-  onGenerateReport?: (data: InterestPostingProcessData) => void;
+  onCalculate?: (data: SiInterestPostingData) => void;
+  onGenerateReport?: (data: SiInterestPostingData) => void;
+  onApply?: (data: SiInterestPostingData) => void;
 }
 
-type FieldKey = keyof InterestPostingProcessData;
+type FieldKey = keyof SiInterestPostingData;
 
-// Single source of truth for field config — DRY: add/remove fields here only.
 interface FieldConfig {
   key: FieldKey;
   labelKey: string;
   icon: ReactNode;
   type: "date" | "text";
-  inputMode?: "decimal" | "text" | "numeric";
   placeholderKey?: string;
   validate: (value: string) => string;
 }
+
+const validateRequired = (value: string) => (value.trim() ? "" : "This field is required");
 
 const validateDate = (value: string) => {
   if (!value) return "This field is required";
@@ -35,49 +36,44 @@ const validateDate = (value: string) => {
   return "";
 };
 
-const validateRate = (value: string) => {
-  if (!value.trim()) return "This field is required";
-  const num = Number(value);
-  if (Number.isNaN(num)) return "Enter a valid number";
-  if (num < 0 || num > 100) return "Rate must be between 0 and 100";
-  return "";
-};
-
 const FIELDS: FieldConfig[] = [
   {
-    key: "asOnDate",
-    labelKey: "interestPostingProcess.fields.asOnDate",
-    icon: <Calendar size={15} />,
-    type: "date",
-    validate: validateDate,
+    key: "productCode",
+    labelKey: "fields.productCode",
+    icon: <Hash size={15} />,
+    type: "text",
+    validate: validateRequired,
   },
   {
-    key: "interestRate",
-    labelKey: "interestPostingProcess.fields.interestRate",
-    icon: <Percent size={15} />,
-    type: "text",
-    inputMode: "decimal",
-    placeholderKey: "interestPostingProcess.placeholders.toDate",
-    validate: validateRate,
+    key: "uptoDate",
+    labelKey: "siInterestPosting.fields.uptoDate",
+    icon: <Calendar size={15} />,
+    type: "date",
+    placeholderKey: "siInterestPosting.placeholders.uptoDate",
+    validate: validateDate,
   },
 ];
 
 const buttonBase =
   "flex h-9 items-center justify-center gap-1.5 rounded-md px-5 text-[12px] font-semibold transition";
+const activeOutline = "border border-primary bg-white text-primary hover:bg-primary-50";
+const disabledStyle = "cursor-not-allowed bg-slate-100 text-slate-400";
 
-export default function InterestPostingProcess({
+export default function SiInterestPostingProcess({
   open,
   onClose,
-  onSave,
+  onCalculate,
   onGenerateReport,
-}: InterestPostingProcessProps) {
+  onApply,
+}: SiInterestPostingProcessProps) {
   const { en, t, tRaw } = useBilingual();
-  const [values, setValues] = useState<InterestPostingProcessData>({
-    asOnDate: "",
-    interestRate: "",
+  const [values, setValues] = useState<SiInterestPostingData>({
+    productCode: "",
+    uptoDate: "",
   });
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
   const [isValidated, setIsValidated] = useState(false);
+  const [isCalculated, setIsCalculated] = useState(false);
 
   if (!open) return null;
 
@@ -94,10 +90,16 @@ export default function InterestPostingProcess({
   const handleValidate = () => {
     if (!validate()) {
       setIsValidated(false);
+      setIsCalculated(false);
       return;
     }
-    onSave?.(values);
     setIsValidated(true);
+  };
+
+  const handleCalculate = () => {
+    if (!isValidated) return;
+    onCalculate?.(values);
+    setIsCalculated(true);
   };
 
   const handleGenerateReport = () => {
@@ -105,34 +107,50 @@ export default function InterestPostingProcess({
     onGenerateReport?.(values);
   };
 
+  const handleApply = () => {
+    if (!isCalculated) return;
+    onApply?.(values);
+  };
+
   const handleFieldChange = (field: FieldKey, value: string) => {
     setValues((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
     setIsValidated(false);
+    setIsCalculated(false);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-[500px] rounded-xl bg-white p-3 shadow-2xl">
         <div className="rounded-2xl p-3">
-          <div className="flex items-start gap-2 border-b border-slate-100 pb-4">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary">
-              <UserRound size={17} />
+          <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-4">
+            <div className="flex items-start gap-2">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary">
+                <UserRound size={17} />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[15px] font-bold leading-tight text-[#1F2858]">
+                  {en("siInterestPosting.postingParameter")}
+                  {t("siInterestPosting.postingParameter") ? (
+                    <span className="text-[#64748B]"> / {t("siInterestPosting.postingParameter")}</span>
+                  ) : null}
+                </h2>
+                <p className=" text-[11px] leading-snug text-slate-500">
+                  {en("interestPostingProcess.subtitle")}
+                  {t("interestPostingProcess.subtitle") ? (
+                    <span> / {t("interestPostingProcess.subtitle")}</span>
+                  ) : null}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="text-[15px] font-bold leading-tight text-[#1F2858]">
-                {en("common.accountDetails")}
-                {t("common.accountDetails") ? (
-                  <span className="text-[#64748B]"> / {t("common.accountDetails")}</span>
-                ) : null}
-              </h2>
-              <p className=" text-[11px] leading-snug text-slate-500">
-                {en("interestPostingProcess.subtitle")}
-                {t("interestPostingProcess.subtitle") ? (
-                  <span> / {t("interestPostingProcess.subtitle")}</span>
-                ) : null}
-              </p>
-            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={en("common.cancel")}
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
+            >
+              <X size={15} />
+            </button>
           </div>
 
           <div className="rounded-xl border border-primary border-t-4 bg-white px-4 pb-5 pt-4 shadow-[0_1px_8px_rgba(37,99,235,0.12)]">
@@ -150,7 +168,6 @@ export default function InterestPostingProcess({
                     value={values[field.key]}
                     onChange={(value) => handleFieldChange(field.key, value)}
                     placeholder={field.placeholderKey ? tRaw(field.placeholderKey) : undefined}
-                    inputMode={field.inputMode}
                   />
                 </FormField>
               ))}
@@ -158,7 +175,7 @@ export default function InterestPostingProcess({
           </div>
         </div>
 
-        <div className="mt-2 flex items-center justify-end gap-4">
+        <div className="mt-2 flex flex-wrap items-center justify-end gap-3">
           <button
             type="button"
             onClick={handleValidate}
@@ -170,20 +187,34 @@ export default function InterestPostingProcess({
           <button
             type="button"
             disabled={!isValidated}
-            onClick={handleGenerateReport}
-            className={`${buttonBase} min-w-[128px] ${
-              isValidated
-                ? "bg-primary text-white hover:bg-primary-700 cursor-pointer"
-                : "cursor-not-allowed bg-slate-100 text-slate-400"
-            }`}
+            onClick={handleCalculate}
+            className={`${buttonBase} ${isValidated ? activeOutline : disabledStyle}`}
           >
-            {en("interestPostingProcess.actions.generateReports")}
+            {en("common.calculate")}
+            <Calculator size={13} />
+          </button>
+          <button
+            type="button"
+            disabled={!isValidated}
+            onClick={handleGenerateReport}
+            className={`${buttonBase} ${isValidated ? activeOutline : disabledStyle}`}
+          >
+            {en("common.report")}
             <FileText size={13} />
           </button>
           <button
             type="button"
+            disabled={!isCalculated}
+            onClick={handleApply}
+            className={`${buttonBase} min-w-[100px] ${isCalculated ? "bg-primary text-white hover:bg-primary-700 cursor-pointer" : disabledStyle}`}
+          >
+            {en("common.apply")}
+            <Check size={14} />
+          </button>
+          <button
+            type="button"
             onClick={onClose}
-            className={`${buttonBase} border border-primary bg-white text-primary hover:bg-primary-50`}
+            className={`${buttonBase} ${activeOutline}`}
           >
             {en("common.cancel")}
             <X size={14} />
@@ -218,21 +249,17 @@ function FormField({
   );
 }
 
-// Single reusable input — handles text and native date types so there's
-// only one styled input shell in the whole file (DRY).
 function IconInput({
   icon,
   value,
   onChange,
   placeholder,
-  inputMode,
   type = "text",
 }: {
   icon: ReactNode;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  inputMode?: "decimal" | "text" | "numeric";
   type?: "text" | "date";
 }) {
   return (
@@ -243,7 +270,6 @@ function IconInput({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        inputMode={inputMode}
         className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-slate-400"
       />
     </div>
