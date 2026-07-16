@@ -26,7 +26,9 @@
     "fieldRequired": "हे क्षेत्र आवश्यक आहे",
     "apply": "लागू करा",
     "calculate": "गणना करा",
-    "report": "अहवाल"
+    "report": "अहवाल",
+    "yes": "होय",
+    "no": "नाही"
   },
   "fields": {
     "accountCode": "खाते कोड",
@@ -458,6 +460,86 @@
     },
     "placeholders": {
       "uptoDate": "अद्यावत तारीख टाका"
+    }
+  },
+  "tlccInterestPosting": {
+    "title": "टीएल/सीसी व्याज नोंदणी",
+    "fields": {
+      "accountType": "उत्पादन कोड",
+      "accountTypeDescription": "वर्णन",
+      "nextIntPostingDate": "दिनांकपर्यंत",
+      "nextIntPostingUpToDate": "दिनांकपर्यंत",
+      "applyServiceCharges": "निवडा",
+      "interestReposting": "निवडा"
+    },
+    "placeholders": {
+      "selectAccountType": "खाते प्रकार निवडा",
+      "description": "वर्णन"
+    }
+  },
+  "tdPostingConsistency": {
+    "title": "ठेव व्याज नोंदणी",
+    "subtitle": "पात्र ठेव खात्यांसाठी व्याज नोंदणी प्रक्रिया करा.",
+    "fields": {
+      "applyInterestUpToDate": "दिनांकपर्यंत",
+      "postAs": "दिनांकपर्यंत",
+      "select": "निवडा",
+      "reportType": "अहवाल प्रकार",
+      "productCode": "उत्पादन कोड",
+      "productDescription": "वर्णन"
+    },
+    "placeholders": {
+      "applyInterestUpToDate": "Enter Apply Interest Up to date",
+      "postAs": "Select Post As",
+      "productCode": "Select Product Code",
+      "description": "Description"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "npaModification": {
+    "title": "मुदत कर्ज वितरण",
+    "subtitle": "नवीन पॅरामीटर जोडण्यासाठी खालील तपशील प्रविष्ट करा.",
+    "fields": {
+      "fromDate": "स्क्रोल क्रमांक",
+      "toDate": "स्क्रोल क्रमांक",
+      "accountNumber": "उत्पादन कोड",
+      "accountName": "वर्णन",
+      "osAmount": "स्क्रोल क्रमांक",
+      "principalOverdueAmount": "स्क्रोल क्रमांक",
+      "interestOverdueAmount": "उत्पादन कोड",
+      "principalOverdueMonths": "उत्पादन कोड",
+      "interestOverdueDate": "स्क्रोल क्रमांक",
+      "calculatedNpaClass": "स्क्रोल क्रमांक",
+      "description": "उत्पादन कोड",
+      "actualNpaClass": "उत्पादन कोड",
+      "calculatedNpaPercentage": "स्क्रोल क्रमांक",
+      "actualNpaPercentage": "स्क्रोल क्रमांक",
+      "provisionOnAmount": "उत्पादन कोड",
+      "calculatedProvision": "उत्पादन कोड",
+      "actualProvision": "स्क्रोल क्रमांक"
+    },
+    "placeholders": {
+      "guardianName": "Enter Guardian Name",
+      "accountType": "Select Account Type",
+      "description": "Description"
+    }
+  },
+  "depreciationCalculation": {
+    "title": "ठेव व्याज नोंदणी",
+    "subtitle": "पात्र ठेव खात्यांसाठी व्याज नोंदणी प्रक्रिया करा.",
+    "fields": {
+      "fromDate": "दिनांकपर्यंत",
+      "toDate": "दिनांकपर्यंत",
+      "balanceDate": "दिनांकपर्यंत",
+      "roundingRequired": "निवडा"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date",
+      "balanceDate": "Enter Balance Date for Simple Deprection"
     }
   }
 }

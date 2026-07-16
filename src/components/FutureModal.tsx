@@ -91,7 +91,10 @@ const FutureModalsPage = () => {
             )}
 
             {showInterestPosting && (
-                <InterestPostingProcess onClose={() => setShowInterestPosting(false)} />
+                <InterestPostingProcess
+                    open={showInterestPosting}
+                    onClose={() => setShowInterestPosting(false)}
+                />
             )}
             {showSiPosting && (
                 <SiIntrest/>
