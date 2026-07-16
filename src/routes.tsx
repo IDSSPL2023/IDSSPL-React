@@ -84,6 +84,7 @@ import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBal
 import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
 import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
 import FinancialClosing from "./components/FinancialClosing";
+import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -150,6 +151,8 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
+      { path: "/authorization/user", element: <AuthorizationUserPage /> },
+      { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },

@@ -31,10 +31,17 @@ export const AUTHORIZE_TRANSACTION_ITEMS: AuthorizeTransactionItem[] = [
     icon: ICON,
   },
   {
-    id: "td-interest-payment",
+    id: "td-interest-payment-mark",
     title: "TD Interest Payment Mark Authorize",
     marathiTitle: "मुदत ठेव व्याज भुगतान चिन्हांकित",
     route: "/authorization/transaction/td-interest-payment",
+    icon: ICON,
+  },
+  {
+    id: "td-interest-payment",
+    title: "TD Interest Payment Authorize",
+    marathiTitle: "मुदत ठेव व्याज भुगतान",
+    route: "/authorization/transaction/term-deposit-interest-payment",
     icon: ICON,
   },
   {
