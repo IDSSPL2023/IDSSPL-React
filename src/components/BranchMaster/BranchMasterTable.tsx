@@ -3,6 +3,7 @@ import { ArrowUpDown, ChevronUp, ChevronDown, Eye, Landmark, CreditCard, Receipt
 import { emptyBranchFormData, type BranchFormData } from "./AddBranchModal";
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu from "../shared/RowActionMenu";
+import BranchAreaSubAreaModal from "./Modals/BranchAreaSubArea";
 
 export interface BranchRow {
   sr: number;
@@ -135,6 +136,7 @@ export default function BranchMasterTable({
 }: BranchMasterTableProps) {
   const { tRaw } = useBilingual();
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const [openBranchArea, setOpenBranchArea] = useState(false);
 
   const handleSort = (col: ColumnDef) => {
     if (!col.sortKey) return;
@@ -159,6 +161,7 @@ export default function BranchMasterTable({
   }, [initialRows, sortConfig]);
 
   return (
+    <>
     <div className="w-full bg-white rounded-xl overflow-hidden shadow-sm dark:bg-slate-900">
       <div className="overflow-x-auto no-scrollbar">
         <table className="w-full border-collapse">
@@ -202,9 +205,8 @@ export default function BranchMasterTable({
                       triggerClassName="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 dark:hover:bg-slate-800 dark:text-slate-400"
                       items={[
                         { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => onView?.(r) },
-                        { key: "nonCbs", label: tRaw("branchMaster.table.menuNonCbsParameter"), icon: Landmark, onClick: () => onBranchNonCbsParameter?.(r) },
-                        { key: "chequeBookLot", label: tRaw("branchMaster.table.menuChequeBookLot"), icon: CreditCard, onClick: () => onBranchChequeBookLot?.(r) },
-                        { key: "tdReceiptLot", label: tRaw("branchMaster.table.menuTdReceiptLot"), icon: Receipt, onClick: () => onBranchTdReceiptLot?.(r) },
+                        { key: "edit", label: "Edit", icon: Landmark, onClick: () => onBranchNonCbsParameter?.(r) },
+                        { key: "area", label: "Branch Area/Sub Area", icon: CreditCard, onClick: () => setOpenBranchArea(true) },
                       ]}
                     />
                   </td>
@@ -226,5 +228,9 @@ export default function BranchMasterTable({
         </table>
       </div>
     </div>
+    {
+      <BranchAreaSubAreaModal open={openBranchArea} onClose={()=>setOpenBranchArea(false)} />
+    }
+    </>
   );
 }
