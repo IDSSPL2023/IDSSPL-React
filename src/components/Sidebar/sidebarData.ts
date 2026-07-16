@@ -119,6 +119,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-tds",
         title: "TDS",
         icon: Percent,
+        href: "/tds",
       },
       // {
       //   id: "daybeginend",
