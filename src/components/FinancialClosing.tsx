@@ -4,7 +4,8 @@ import { useRouter } from "@/lib/navigation";
 import GlobalNav from "./GlobalMaster/GlobalNav";
 import Image from "@/components/ui/Image";
 import InterestPostingProcess from "./futuremodels/InterestPostingProcess";
-import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
+import SiInterestPostingProcess from "./FinancialClosing/SiInterestPostingProcess";
+import SetBranchParameterModal from "./FinancialClosing/SetBranchParameterModal";
 
 type ClosingCategory = "parameter" | "calculation" | "reports" | "export";
 
@@ -198,7 +199,11 @@ const FinancialClosing = () => {
     }, [query, activeTab]);
 
     const handleOpen = (id: string) => {
-        setActiveModal(id);
+        if (id === "set-product-status") {
+            router.push("/financial-closing/set-product-status");
+        } else {
+            setActiveModal(id);
+        }
     };
 
     const handleCloseModal = () => {
@@ -339,6 +344,12 @@ const FinancialClosing = () => {
                 open={activeModal === "si-interest-posting"}
                 onClose={handleCloseModal}
             />
+
+            {activeModal === "set-branch-parameters" && (
+    <SetBranchParameterModal
+        onClose={handleCloseModal}
+    />
+)}
         </div>
     );
 };
