@@ -1,37 +1,45 @@
 import { useEffect, useState } from "react";
-import { X, Check, ThumbsUp, FileText, Hash, Tag } from "lucide-react";
+import { X, Check, ThumbsUp, FileText, Hash, Tag, Mail } from "lucide-react";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
 import { ICONS } from "@/assets";
 import PickerInput from "@/components/shared/Inputs/PickerInput";
 import TextInput from "@/components/shared/Inputs/TextInput";
+import DateInput from "@/components/shared/Inputs/DateInput";
 import ListModal, { ListModalItem } from "@/components/shared/Modals/ListModal";
 
-export interface GenerateOutwardScheduleFormData {
+export interface GeneratedInwardScheduleFormData {
   clearingTypeId: string;
   clearingTypeName: string;
-  outwardScheduleNo: string;
-  scheduleNoFrom: string;
+  dailyInwardScheduleNo: string;
+  adviceNumber: string;
+  scheduleDate: string;
+  adviceDate: string;
+  original: string;
 }
 
-export const emptyGenerateOutwardScheduleFormData: GenerateOutwardScheduleFormData =
+export const emptyGeneratedInwardScheduleFormData: GeneratedInwardScheduleFormData =
   {
     clearingTypeId: "0002",
     clearingTypeName: "",
-    outwardScheduleNo: "43",
-    scheduleNoFrom: "1",
+    dailyInwardScheduleNo: "12",
+    adviceNumber: "43",
+    scheduleDate: "12-May-2026",
+    adviceDate: "12-May-2026",
+    original: "name@company.com",
   };
 
-export type GenerateOutwardScheduleModalMode = "add" | "view";
+export type GeneratedInwardScheduleModalMode = "add" | "view";
 
 type RequiredFieldKey = keyof Pick<
-  GenerateOutwardScheduleFormData,
-  "clearingTypeId" | "scheduleNoFrom"
+  GeneratedInwardScheduleFormData,
+  "clearingTypeId" | "scheduleDate" | "adviceDate"
 >;
 
 const REQUIRED_FIELDS: RequiredFieldKey[] = [
   "clearingTypeId",
-  "scheduleNoFrom",
+  "scheduleDate",
+  "adviceDate",
 ];
 
 // Sample clearing type data for picker
@@ -42,42 +50,30 @@ const CLEARING_TYPE_DATA: ListModalItem[] = [
   { id: "4", code: "0004", name: "NEFT Clearing" },
 ];
 
-// Sample outward schedule data for picker
-const OUTWARD_SCHEDULE_DATA: ListModalItem[] = [
-  { id: "1", code: "41", name: "Schedule 41" },
-  { id: "2", code: "42", name: "Schedule 42" },
-  { id: "3", code: "43", name: "Schedule 43" },
-  { id: "4", code: "44", name: "Schedule 44" },
-  { id: "5", code: "45", name: "Schedule 45" },
-];
-
-export interface GenerateOutwardScheduleModalProps {
+export interface GeneratedInwardScheduleModalProps {
   open: boolean;
-  mode?: GenerateOutwardScheduleModalMode;
-  initialData?: GenerateOutwardScheduleFormData;
+  mode?: GeneratedInwardScheduleModalMode;
+  initialData?: GeneratedInwardScheduleFormData;
   onClose?: () => void;
-  onApply?: (data: GenerateOutwardScheduleFormData) => void;
-  onGenerate?: (data: GenerateOutwardScheduleFormData) => void;
+  onApply?: (data: GeneratedInwardScheduleFormData) => void;
+  onReport?: (data: GeneratedInwardScheduleFormData) => void;
 }
 
-function GenerateOutwardScheduleModal({
+function GeneratedInwardScheduleModal({
   open,
   mode = "add",
-  initialData = emptyGenerateOutwardScheduleFormData,
+  initialData = emptyGeneratedInwardScheduleFormData,
   onClose,
   onApply,
-  onGenerate,
-}: GenerateOutwardScheduleModalProps) {
+  onReport,
+}: GeneratedInwardScheduleModalProps) {
   const [formData, setFormData] =
-    useState<GenerateOutwardScheduleFormData>(initialData);
+    useState<GeneratedInwardScheduleFormData>(initialData);
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState<
     Partial<Record<RequiredFieldKey, boolean>>
   >({});
   const [openList, setOpenList] = useState(false);
-  const [listType, setListType] = useState<"clearingType" | "outwardSchedule">(
-    "clearingType",
-  );
 
   useEffect(() => {
     setFormData(initialData);
@@ -89,9 +85,9 @@ function GenerateOutwardScheduleModal({
 
   const isView = mode === "view";
 
-  const handleChange = <K extends keyof GenerateOutwardScheduleFormData>(
+  const handleChange = <K extends keyof GeneratedInwardScheduleFormData>(
     key: K,
-    value: GenerateOutwardScheduleFormData[K],
+    value: GeneratedInwardScheduleFormData[K],
   ) => {
     if (isView) return;
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -109,9 +105,9 @@ function GenerateOutwardScheduleModal({
     setValidated(Object.keys(newErrors).length === 0);
   };
 
-  const handleGenerate = () => {
+  const handleReport = () => {
     if (!validated) return;
-    onGenerate?.(formData);
+    onReport?.(formData);
   };
 
   const handleApply = () => {
@@ -119,48 +115,23 @@ function GenerateOutwardScheduleModal({
     onApply?.(formData);
   };
 
-  const handleOpenList = (type: "clearingType" | "outwardSchedule") => {
-    setListType(type);
+  const handleOpenList = () => {
     setOpenList(true);
   };
 
   const handleSelectItem = (row: Record<string, any>) => {
-    if (listType === "clearingType") {
-      handleChange("clearingTypeId", row.code);
-      handleChange("clearingTypeName", row.name);
-    } else if (listType === "outwardSchedule") {
-      handleChange("outwardScheduleNo", row.code);
-    }
+    handleChange("clearingTypeId", row.code);
+    handleChange("clearingTypeName", row.name);
     setOpenList(false);
   };
-
-  const getListData = () => {
-    if (listType === "clearingType") {
-      return {
-        title: "Clearing Type List",
-        rows: CLEARING_TYPE_DATA,
-        codeLabel: "Clearing Type ID",
-        nameLabel: "Clearing Type Name",
-      };
-    } else {
-      return {
-        title: "Outward Schedule List",
-        rows: OUTWARD_SCHEDULE_DATA,
-        codeLabel: "Schedule No",
-        nameLabel: "Schedule Name",
-      };
-    }
-  };
-
-  const listData = getListData();
 
   // Define header configuration
   const getHeaderConfig = () => ({
     icon: ICONS.PERSON,
-    title: "Generate Outward Schedule",
-    titleHi: "आउटवर्ड शेड्यूल तयार करा",
-    subtitle: "Schedule Details",
-    subtitleHi: "वेळापत्रकाचा तपशील",
+    title: "Generated Inward Schedule",
+    titleHi: "उत्पन्न झालेलं इनवर्ड शेक्यूल",
+    subtitle: "View the parameter information and associated details.",
+    subtitleHi: "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
     onClose: onClose,
     showCloseButton: true,
   });
@@ -192,8 +163,8 @@ function GenerateOutwardScheduleModal({
         icon: <Check size={16} />,
       },
       {
-        label: "Generate",
-        onClick: handleGenerate,
+        label: "Report",
+        onClick: handleReport,
         variant: "primary" as const,
         icon: <FileText size={16} />,
         disabled: !validated,
@@ -226,13 +197,13 @@ function GenerateOutwardScheduleModal({
             {/* Clearing Type ID - Picker with List (Editable) */}
             <PickerInput
               labelEn="Clearing Type ID"
-              labelHi="जिल्हाधिकारी प्रकार आपत्ती"
+              labelHi="क्लिनअरिंग प्रकार आयडी"
               icon={ICONS.USER_CIRCLE}
               placeholder="Select Clearing Type"
               value={formData.clearingTypeId}
               onChange={(v) => handleChange("clearingTypeId", v)}
               readOnly={isView}
-              handleOpenList={() => handleOpenList("clearingType")}
+              handleOpenList={handleOpenList}
               required
               hasError={errors.clearingTypeId}
             />
@@ -240,36 +211,72 @@ function GenerateOutwardScheduleModal({
             {/* Clearing Type Name - Auto-populated from picker selection (Read Only) */}
             <TextInput
               labelEn="Clearing Type Name"
-              labelHi="जिल्हाधिकारी प्रकार नाव"
+              labelHi="क्लिनअरिंग प्रकार नाव"
               icon={ICONS.USER_CIRCLE}
               placeholder="Clearing Type Name"
               value={formData.clearingTypeName}
               onChange={(v) => handleChange("clearingTypeName", v)}
               readOnly
-              required
-            />
-
-            {/* Outward Schedule No - Display only (Read Only) */}
-            <TextInput
-              labelEn="Outward Schedule No"
-              labelHi="आवडवाई वेळापत्रक क्रमांक"
-              icon={ICONS.CALENDAR_STATS}
-              placeholder="Outward Schedule No"
-              value={formData.outwardScheduleNo}
-              onChange={(v) => handleChange("outwardScheduleNo", v)}
               required={false}
             />
 
-            {/* Schedule No From - Editable */}
+            {/* Daily Inward Schedule No - Text Input (Read Only/Disabled) */}
             <TextInput
-              labelEn="Schedule No"
-              labelHi="खाते कोंड पासून"
+              labelEn="Daily Inward Schedule No"
+              labelHi="दैनंदिन आवक अनुसूची क्रमांक"
               icon={ICONS.CALENDAR_STATS}
-              placeholder="Enter Schedule Number"
-              value={formData.scheduleNoFrom}
-              onChange={(v) => handleChange("scheduleNoFrom", v)}
-              hasError={errors.scheduleNoFrom}
+              placeholder="Daily Inward Schedule No"
+              value={formData.dailyInwardScheduleNo}
+              onChange={(v) => handleChange("dailyInwardScheduleNo", v)}
+              readOnly
+              required={false}
+            />
+
+            {/* Advice Number - Text Input (Read Only/Disabled) */}
+            <TextInput
+              labelEn="Advice Number"
+              labelHi="सल्ला क्रमांक"
+              icon={ICONS.MESSAGE_LANGUAGE}
+              placeholder="Advice Number"
+              value={formData.adviceNumber}
+              onChange={(v) => handleChange("adviceNumber", v)}
+              readOnly
+              required={false}
+            />
+
+            {/* Schedule Date - Date Input */}
+            <DateInput
+              labelEn="Schedule Date"
+              labelHi="अनुसूची दिनांक"
+              icon={ICONS.CALENDAR}
+              value={formData.scheduleDate}
+              onChange={(v) => handleChange("scheduleDate", v)}
+              hasError={errors.scheduleDate}
+              readOnly={isView}
               required
+            />
+
+            {/* Advice Date - Date Input */}
+            <DateInput
+              labelEn="Advice Date"
+              labelHi="सल्ला दिनांक"
+              value={formData.adviceDate}
+              onChange={(v) => handleChange("adviceDate", v)}
+              hasError={errors.adviceDate}
+              readOnly={isView}
+              required
+            />
+
+            {/* Original - Text Input (Read Only/Disabled) */}
+            <TextInput
+              labelEn="Original"
+              labelHi="Original"
+              icon={ICONS.USER_SQUARE}
+              placeholder="Original"
+              value={formData.original}
+              onChange={(v) => handleChange("original", v)}
+              readOnly
+              required={false}
             />
           </div>
         </SectionWrapper>
@@ -278,10 +285,10 @@ function GenerateOutwardScheduleModal({
       {/* List Modal */}
       {openList && (
         <ListModal
-          title={listData.title}
-          rows={listData.rows}
-          codeLabel={listData.codeLabel}
-          nameLabel={listData.nameLabel}
+          title="Clearing Type List"
+          rows={CLEARING_TYPE_DATA}
+          codeLabel="Clearing Type ID"
+          nameLabel="Clearing Type Name"
           onSelect={handleSelectItem}
           onClose={() => setOpenList(false)}
         />
@@ -290,4 +297,4 @@ function GenerateOutwardScheduleModal({
   );
 }
 
-export default GenerateOutwardScheduleModal;
+export default GeneratedInwardScheduleModal;
