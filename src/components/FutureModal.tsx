@@ -4,6 +4,7 @@ import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanIn
 import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import StopChequePayment from "@/components/futuremodels/StopChequePayment";
 import SiIntrest from "./futuremodels/SiIntrest";
+import SetBranchParameterModal from "@/components/futuremodels/SetBranchParameterModal";
 
 interface FutureModelAction {
     label: string;
@@ -35,6 +36,7 @@ const FutureModalsPage = () => {
     const [showLoanInterestRate, setShowLoanInterestRate] = useState(false);
     const [showInterestPosting, setShowInterestPosting] = useState(false);
     const [showSiPosting, setShowSiPosting] = useState(false);
+    const [showSetBranchParameter, setShowSetBranchParameter] = useState(false);
 
     return (
         <div className="p-6">
@@ -80,6 +82,13 @@ const FutureModalsPage = () => {
                 >
                     SI INTREST POSTING
                 </button>
+                <button
+                    type="button"
+                    onClick={() => setShowSetBranchParameter(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    SET BRANCH PARAMETER
+                </button>
             </div>
 
             {showStopChequePayment && (
@@ -95,6 +104,10 @@ const FutureModalsPage = () => {
             )}
             {showSiPosting && (
                 <SiIntrest/>
+            )}
+
+            {showSetBranchParameter && (
+                <SetBranchParameterModal onClose={() => setShowSetBranchParameter(false)} />
             )}
         </div>
     );
