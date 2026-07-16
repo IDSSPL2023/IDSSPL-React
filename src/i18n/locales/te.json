@@ -339,6 +339,16 @@
     "comingSoon": "త్వరలో వస్తుంది",
     "logoAlt": "లోగో"
   },
+  "supportUtility": {
+    "allMasters": "అన్ని మాస్టర్స్",
+    "recentlyUsed": "ఇటీవల ఉపయోగించినవి",
+    "open": "తెరవండి",
+    "welcomeTitle": "సపోర్ట్ యుటిలిటీకి స్వాగతం",
+    "welcomeSubtitle": "అన్ని మాస్టర్ యుటిలిటీలను ఒకే చోట శోధించి నిర్వహించండి",
+    "searchPlaceholder": "యుటిలిటీని శోధించండి...",
+    "show": "చూపించు",
+    "noUtilitiesFound": "యుటిలిటీలు కనుగొనబడలేదు"
+  },
   "modifyBranchGlHistory": {
     "title": "Modify Branch GL History",
     "successTitle": "Branch GL history modified successfully",

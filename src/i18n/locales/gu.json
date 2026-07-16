@@ -339,6 +339,16 @@
     "comingSoon": "ટૂંક સમયમાં આવે છે",
     "logoAlt": "લોગો"
   },
+  "supportUtility": {
+    "allMasters": "બધા માસ્ટર્સ",
+    "recentlyUsed": "તાજેતરમાં વપરાયેલ",
+    "open": "ખોલો",
+    "welcomeTitle": "સપોર્ટ યુટિલિટીમાં આપનું સ્વાગત છે",
+    "welcomeSubtitle": "બધી માસ્ટર યુટિલિટીઝ એક જ જગ્યાએ શોધો અને સંચાલિત કરો",
+    "searchPlaceholder": "યુટિલિટી શોધો...",
+    "show": "બતાવો",
+    "noUtilitiesFound": "કોઈ યુટિલિટી મળી નથી"
+  },
   "modifyBranchGlHistory": {
     "title": "Modify Branch GL History",
     "successTitle": "Branch GL history modified successfully",

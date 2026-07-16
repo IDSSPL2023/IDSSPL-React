@@ -339,6 +339,16 @@
     "comingSoon": "விரைவில் வருகிறது",
     "logoAlt": "லோகோ"
   },
+  "supportUtility": {
+    "allMasters": "அனைத்து மாஸ்டர்கள்",
+    "recentlyUsed": "சமீபத்தில் பயன்படுத்தியவை",
+    "open": "திற",
+    "welcomeTitle": "சப்போர்ட் யூட்டிலிட்டிக்கு வரவேற்கிறோம்",
+    "welcomeSubtitle": "அனைத்து மாஸ்டர் யூட்டிலிட்டிகளையும் ஒரே இடத்தில் தேடி நிர்வகிக்கவும்",
+    "searchPlaceholder": "யூட்டிலிட்டியைத் தேடுங்கள்...",
+    "show": "காட்டு",
+    "noUtilitiesFound": "எந்த யூட்டிலிட்டியும் கிடைக்கவில்லை"
+  },
   "modifyBranchGlHistory": {
     "title": "Modify Branch GL History",
     "successTitle": "Branch GL history modified successfully",

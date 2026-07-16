@@ -356,6 +356,16 @@
     "comingSoon": "जल्द आ रहा है",
     "logoAlt": "लोगो"
   },
+  "supportUtility": {
+    "allMasters": "सभी मास्टर्स",
+    "recentlyUsed": "हाल ही में उपयोग किया गया",
+    "open": "खोलें",
+    "welcomeTitle": "सपोर्ट यूटिलिटी में आपका स्वागत है",
+    "welcomeSubtitle": "सभी मास्टर यूटिलिटीज़ को एक ही स्थान पर खोजें और प्रबंधित करें",
+    "searchPlaceholder": "यूटिलिटी खोजें...",
+    "show": "दिखाएं",
+    "noUtilitiesFound": "कोई यूटिलिटी नहीं मिली"
+  },
   "modifyBranchGlBalance": {
     "title": "शाखा जीएल शेष संशोधित करें",
     "successTitle": "शाखा जीएल शेष सफलतापूर्वक संशोधित किया गया"
