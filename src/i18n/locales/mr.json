@@ -399,5 +399,26 @@
       "p10": "P10",
       "pChange": "PChange"
     }
+  },
+  "loanInterestRate": {
+    "title": "कर्जाचा व्याजदर बदलणे",
+    "subtitle": "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
+    "successTitle": "कर्जाचा व्याजदर यशस्वीरित्या बदलला",
+    "successSubtitle": "कृपया अधिकृत करा",
+    "actions": {
+      "new": "नवीन"
+    },
+    "placeholders": {
+      "accountCode": "खाते कोड निवडा",
+      "accountName": "नाव"
+    },
+    "table": {
+      "check": "तपासा",
+      "interestRate": "व्याजदर",
+      "penalInterest": "दंड व्याज",
+      "overdueInterest": "थकीत व्याज",
+      "moratoriumInterest": "मोरेटोरियम व्याज",
+      "dateOfApplication": "अर्जाची तारीख"
+    }
   }
 }

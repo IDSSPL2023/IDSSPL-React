@@ -399,5 +399,26 @@
       "p10": "P10",
       "pChange": "PChange"
     }
+  },
+  "loanInterestRate": {
+    "title": "ऋण ब्याज दर संशोधन",
+    "subtitle": "पैरामीटर जानकारी और संबंधित विवरण देखें.",
+    "successTitle": "ऋण ब्याज दर सफलतापूर्वक संशोधित की गई",
+    "successSubtitle": "कृपया अधिकृत करें",
+    "actions": {
+      "new": "नया"
+    },
+    "placeholders": {
+      "accountCode": "खाता कोड चुनें",
+      "accountName": "नाम"
+    },
+    "table": {
+      "check": "चेक",
+      "interestRate": "ब्याज दर",
+      "penalInterest": "दंड ब्याज",
+      "overdueInterest": "अतिदेय ब्याज",
+      "moratoriumInterest": "मोरेटोरियम ब्याज",
+      "dateOfApplication": "आवेदन की तारीख"
+    }
   }
 }

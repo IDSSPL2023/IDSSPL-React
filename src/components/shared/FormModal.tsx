@@ -68,7 +68,9 @@ const FormModal = ({
             <div>
               <h2 className="text-xl font-bold text-slate-800">
                 {titleEn}{" "}
-                <span className="font-bold text-[#64748B]">/ {titleHi}</span>
+                {titleHi ? (
+                  <span className="font-bold text-[#64748B]">/ {titleHi}</span>
+                ) : null}
               </h2>
               {(subtitleEn || subtitleHi) && (
                 <p className="text-sm text-slate-500">
