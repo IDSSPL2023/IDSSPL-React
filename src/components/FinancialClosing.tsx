@@ -1,3 +1,4 @@
+// src/components/FinancialClosing.tsx
 import { useMemo, useState } from "react";
 import { Search, ChevronRight } from "lucide-react";
 import { useRouter } from "@/lib/navigation";
@@ -5,6 +6,9 @@ import GlobalNav from "./GlobalMaster/GlobalNav";
 import Image from "@/components/ui/Image";
 import DepreciationCalculationProcess from "./futuremodels/DepreciationCalculationProcess";
 import InterestPostingProcess from "./futuremodels/InterestPostingProcess";
+// import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
+import ReportsParameterModal from "./futuremodels/Income&ExpClosing";
+import ReportsParameterBranchModal from "./futuremodels/Income&ExpRegular";
 import NpaModificationProcess from "./futuremodels/NpaModificationProcess";
 import TdPostingConsistencyProcess from "./futuremodels/TdPostingConsistencyProcess";
 import TlccInterestPostingProcess from "./futuremodels/TlccInterestPostingProcess";
@@ -29,6 +33,10 @@ const TABS: { id: ClosingCategory; label: string }[] = [
     { id: "reports", label: "Closing Reports" },
     { id: "export", label: "Export File" },
 ];
+
+// Reports items that should open the SIMPLE modal (As on Date only, no Branch Code/Generate).
+// All other "reports" items default to ReportsParameterBranchModal (Branch Code + As on Date + Generate).
+const SIMPLE_REPORT_IDS = new Set<string>(["schedule-income-exp-regular"]);
 
 const ITEMS: FinancialItem[] = [
     {
@@ -200,6 +208,14 @@ const FinancialClosing = () => {
         );
     }, [query, activeTab]);
 
+    const activeItem = useMemo(
+        () => ITEMS.find((item) => item.id === activeModal) ?? null,
+        [activeModal]
+    );
+    const isReportsItem = activeItem?.category === "reports";
+    const isSimpleReport = isReportsItem && SIMPLE_REPORT_IDS.has(activeItem!.id);
+    const isBranchReport = isReportsItem && !isSimpleReport;
+
     const handleOpen = (id: string) => {
         if (id === "set-product-status") {
             router.push("/financial-closing/set-product-status");
@@ -358,6 +374,21 @@ const FinancialClosing = () => {
                 open={activeModal === "si-interest-posting"}
                 onClose={handleCloseModal}
             />
+
+          {activeItem && isSimpleReport && (
+  <ReportsParameterModal
+    open={isSimpleReport}
+    onClose={handleCloseModal}
+  />
+)}
+
+{activeItem && isBranchReport && (
+  <ReportsParameterBranchModal
+    open={isBranchReport}
+    onClose={handleCloseModal}
+  />
+
+            )}
             <TlccInterestPostingProcess
                 open={activeModal === "tlcc-interest-posting"}
                 onClose={handleCloseModal}
