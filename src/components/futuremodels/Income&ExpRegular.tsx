@@ -1,5 +1,5 @@
 // src/components/futuremodels/ReportsParameterBranchModal.tsx
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Calendar, Percent, Printer, X, Database } from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
@@ -17,19 +17,8 @@ export default function ReportsParameterBranchModal({
   const [branchCode] = useState("0002");
   const [asOnDate, setAsOnDate] = useState("");
   const [isValidated, setIsValidated] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
-
-  const handleIconClick = () => {
-    const el = inputRef.current;
-    if (!el) return;
-    if (typeof (el as any).showPicker === "function") {
-      (el as any).showPicker();
-    } else {
-      el.focus();
-    }
-  };
 
   const handlePrint = () => {
     setIsValidated(true);
@@ -96,7 +85,7 @@ export default function ReportsParameterBranchModal({
       <div className="p-1">
         <div className="bg-white rounded-[20px] border-x border-b border-t-4 border-[#0A66D8] p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
           <div className="flex flex-col gap-5">
-            <FieldShell label="Branch Code /" labelHi="शाखा कोड" required>
+            <FieldShell label="Branch Code " labelHi="शाखा कोड" required>
               <TextInput
                 icon={<Percent size={16} />}
                 value={branchCode}
@@ -105,29 +94,13 @@ export default function ReportsParameterBranchModal({
               />
             </FieldShell>
 
-            <FieldShell label="As on Date /" labelHi="आजच्या तारखेनुसार" required>
-              <div className="relative flex items-center">
-                <span 
-                  onClick={handleIconClick}
-                  className="absolute left-3 z-10 cursor-pointer text-slate-400"
-                >
-                  <Calendar size={16} />
-                </span>
-                <input
-                  ref={inputRef}
-                  type="date"
-                  value={asOnDate}
-                  onChange={(e) => setAsOnDate(e.target.value)}
-                  className="min-h-[42px] w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 outline-none focus:border-primary focus:ring-1 focus:ring-primary opacity-0 absolute inset-0 cursor-pointer"
-                  style={{ opacity: 0, position: 'absolute' }}
-                />
-                <div 
-                  onClick={handleIconClick}
-                  className="min-h-[42px] w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 outline-none cursor-pointer flex items-center"
-                >
-                  {asOnDate || "Enter From Date"}
-                </div>
-              </div>
+            <FieldShell label="As on Date " labelHi="आजच्या तारखेनुसार" required>
+              <TextInput
+                icon={<Calendar size={16} />}
+                value={asOnDate}
+                onChange={setAsOnDate}
+                placeholder="Enter From Date"
+              />
             </FieldShell>
           </div>
         </div>

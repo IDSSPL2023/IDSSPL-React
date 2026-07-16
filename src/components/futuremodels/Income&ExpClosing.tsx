@@ -74,7 +74,7 @@ export default function ReportsParameterModal({
     >
       <div className="p-1">
         <div className="bg-white rounded-[20px] border-x border-b border-t-4 border-[#0A66D8] p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
-          <FieldShell label="As on Date /" labelHi="आजच्या तारखेनुसार" required>
+          <FieldShell label="As on Date " labelHi="आजच्या तारखेनुसार" required>
             <div className="relative flex items-center">
               <span 
                 onClick={handleIconClick}
