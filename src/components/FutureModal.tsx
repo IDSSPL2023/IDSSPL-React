@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanInterestRate";
 import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import StopChequePayment from "@/components/futuremodels/StopChequePayment";
-import SiIntrest from "./futuremodels/SiIntrest";
 import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchParameterModal";
 
 interface FutureModelAction {
