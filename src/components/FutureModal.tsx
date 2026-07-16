@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanInterestRate";
+import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import StopChequePayment from "@/components/futuremodels/StopChequePayment";
 
 interface FutureModelAction {
@@ -31,6 +32,7 @@ const FutureModalsPage = () => {
     const navigate = useNavigate();
     const [showStopChequePayment, setShowStopChequePayment] = useState(false);
     const [showLoanInterestRate, setShowLoanInterestRate] = useState(false);
+    const [showInterestPosting, setShowInterestPosting] = useState(false);
 
     return (
         <div className="p-6">
@@ -61,6 +63,14 @@ const FutureModalsPage = () => {
                 >
                     ADD/MODIFY LOAN INTEREST RATE
                 </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowInterestPosting(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    MATURED TD
+                </button>
             </div>
 
             {showStopChequePayment && (
@@ -69,6 +79,10 @@ const FutureModalsPage = () => {
 
             {showLoanInterestRate && (
                 <AddModifyLoanInterestRate onClose={() => setShowLoanInterestRate(false)} />
+            )}
+
+            {showInterestPosting && (
+                <InterestPostingProcess onClose={() => setShowInterestPosting(false)} />
             )}
         </div>
     );

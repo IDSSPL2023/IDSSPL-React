@@ -420,5 +420,20 @@
       "moratoriumInterest": "मोरेटोरियम ब्याज",
       "dateOfApplication": "आवेदन की तारीख"
     }
+  },
+  "interestPostingProcess": {
+    "subtitle": "पात्र जमा खातों के लिए ब्याज पोस्टिंग प्रक्रिया करें.",
+    "successTitle": "ब्याज पोस्टिंग सफलतापूर्वक संसाधित की गई",
+    "fields": {
+      "asOnDate": "आज की तारीख के अनुसार",
+      "interestRate": "ब्याज दर"
+    },
+    "placeholders": {
+      "fromDate": "From Date दर्ज करें",
+      "toDate": "To Date दर्ज करें"
+    },
+    "actions": {
+      "generateReports": "रिपोर्ट बनाएं"
+    }
   }
 }

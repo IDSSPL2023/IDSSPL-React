@@ -399,5 +399,20 @@
       "moratoriumInterest": "Moratorium Interest",
       "dateOfApplication": "Date of Application"
     }
+  },
+  "interestPostingProcess": {
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "successTitle": "Interest posting processed successfully",
+    "fields": {
+      "asOnDate": "As on Date",
+      "interestRate": "Interest Rate"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date"
+    },
+    "actions": {
+      "generateReports": "Generate Reports"
+    }
   }
 }
