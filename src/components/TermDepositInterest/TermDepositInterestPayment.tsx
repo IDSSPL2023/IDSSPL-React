@@ -71,8 +71,8 @@ const TdInterestPaymentAuthorizePage = () => {
   return (
     <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
       <GlobalNav
-        titleEn="TD Interest Payment Authorize"
-        titleHi="मुदत ठेव व्याज भुगतान चिन्हांकित"
+        titleEn="Term Deposit Interest Payment"
+        titleHi="ठराविक ठेवीवरील व्याज देयक"
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "MIS Activity", href: "/" },
@@ -98,7 +98,7 @@ const TdInterestPaymentAuthorizePage = () => {
           activeTab={activeTab}
           filters={filters}
           onAuthorize={handleAuthorize}
-          onView={handleView} // If your table supports view action
+        //   onView={handleView} // If your table supports view action
         />
       </div>
 

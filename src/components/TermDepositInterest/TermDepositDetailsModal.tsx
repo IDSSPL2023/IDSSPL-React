@@ -534,7 +534,7 @@ const TermDepositDetailModal = ({
                 value={data.modeOfPayment}
                 onChange={() => {}}
                 options={MODE_OF_PAYMENT_OPTIONS}
-                disabled={isReadOnly}
+                // disabled={isReadOnly}
               />
             </FieldShell>
 
