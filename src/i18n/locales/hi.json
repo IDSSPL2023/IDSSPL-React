@@ -23,7 +23,10 @@
     "services": "सेवाएं",
     "logout": "लॉगआउट",
     "modify": "संशोधित करें",
-    "fieldRequired": "यह फ़ील्ड आवश्यक है"
+    "fieldRequired": "यह फ़ील्ड आवश्यक है",
+    "apply": "लागू करें",
+    "calculate": "गणना करें",
+    "report": "रिपोर्ट"
   },
   "fields": {
     "accountCode": "खाता कोड",
@@ -444,6 +447,17 @@
     },
     "actions": {
       "generateReports": "रिपोर्ट बनाएं"
+    }
+  },
+  "siInterestPosting": {
+    "title": "एसआई ब्याज पोस्टिंग",
+    "menuTitle": "एसआई ब्याज पोस्टिंग",
+    "postingParameter": "पोस्टिंग पैरामीटर",
+    "fields": {
+      "uptoDate": "अद्यतन तिथि"
+    },
+    "placeholders": {
+      "uptoDate": "अद्यतन तिथि दर्ज करें"
     }
   }
 }

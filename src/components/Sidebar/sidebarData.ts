@@ -84,6 +84,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-financial-closing",
         title: "Financial Closing",
         icon: FileText,
+        href:"/financial-closing",
       },
       {
         id: "mis-interest-posting",
