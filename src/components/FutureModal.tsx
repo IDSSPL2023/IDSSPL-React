@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanInterestRate";
 import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import StopChequePayment from "@/components/futuremodels/StopChequePayment";
+import SiIntrest from "./futuremodels/SiIntrest";
 
 interface FutureModelAction {
     label: string;
@@ -33,6 +34,7 @@ const FutureModalsPage = () => {
     const [showStopChequePayment, setShowStopChequePayment] = useState(false);
     const [showLoanInterestRate, setShowLoanInterestRate] = useState(false);
     const [showInterestPosting, setShowInterestPosting] = useState(false);
+    const [showSiPosting, setShowSiPosting] = useState(false);
 
     return (
         <div className="p-6">
@@ -71,6 +73,13 @@ const FutureModalsPage = () => {
                 >
                     MATURED TD
                 </button>
+                <button
+                    type="button"
+                    onClick={() => setShowSiPosting(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    SI INTREST POSTING
+                </button>
             </div>
 
             {showStopChequePayment && (
@@ -83,6 +92,9 @@ const FutureModalsPage = () => {
 
             {showInterestPosting && (
                 <InterestPostingProcess onClose={() => setShowInterestPosting(false)} />
+            )}
+            {showSiPosting && (
+                <SiIntrest/>
             )}
         </div>
     );
