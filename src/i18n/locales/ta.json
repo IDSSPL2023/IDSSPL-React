@@ -37,7 +37,20 @@
     "loanAccountName": "கடன் கணக்கு பெயர்",
     "lienAmount": "பிணைய தொகை",
     "remark": "குறிப்பு",
-    "serial": "வரிசை எண்"
+    "serial": "வரிசை எண்",
+    "tnxDate": "TNX Date",
+    "debitCash": "Debit Cash",
+    "creditCash": "Credit Cash",
+    "debitTransfer": "Debit Transfer",
+    "creditTransfer": "Credit Transfer",
+    "debitClearing": "Debit Clearing",
+    "creditClearing": "Credit Clearing",
+    "debitCashVouchers": "Debit Cash Vouchers",
+    "creditCashVouchers": "Credit Cash Vouchers",
+    "debitTransferVouchers": "Debit Transfer Vouchers",
+    "creditTransferVouchers": "Credit Transfer Vouchers",
+    "debitClVouchers": "Debit Cl Vouchers",
+    "creditClVouchers": "Credit Cl Vouchers"
   },
   "accountMaster": {
     "title": "கணக்கு மாஸ்டர்",
@@ -325,5 +338,45 @@
     "noMatchingItems": "பொருந்தும் மெனு உருப்படிகள் இல்லை",
     "comingSoon": "விரைவில் வருகிறது",
     "logoAlt": "லோகோ"
+  },
+  "modifyBranchGlHistory": {
+    "title": "Modify Branch GL History",
+    "successTitle": "Branch GL history modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com"
+  },
+  "modifyCashHandlingRecord": {
+    "title": "Modify Cash Handeling Records",
+    "infoTitle": "Cash Handling Information",
+    "infoSubtitle": "Select the branch and transaction details before recording cash denominations.",
+    "summaryTitle": "Cash Denomination Summary",
+    "summarySubtitle": "Enter the denomination-wise cash count and verify the total cash amount.",
+    "successTitle": "Cash handling record modified successfully",
+    "amountPlaceholder": "Enter Amount",
+    "namePlaceholder": "name@company.com",
+    "keyPlaceholder": "Key No",
+    "fields": {
+      "asOnDate": "As On Date",
+      "scrollNumber": "Scroll Number",
+      "cashHandlingNumber": "Cash Handling number",
+      "amount": "Amount",
+      "returnAmount": "Return Amount",
+      "r2000": "R2000",
+      "r500": "R500",
+      "p2000": "P2000",
+      "p500": "P500",
+      "r200": "R200",
+      "r100": "R100",
+      "p200": "P200",
+      "p100": "P100",
+      "r50": "R50",
+      "r20": "R20",
+      "p50": "P50",
+      "p20": "P20",
+      "r10": "R10",
+      "rChange": "RChange",
+      "p10": "P10",
+      "pChange": "PChange"
+    }
   }
 }
