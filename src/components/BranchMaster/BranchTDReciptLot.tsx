@@ -7,6 +7,106 @@ import Image from "../ui/Image";
 import SuccessModal from "../shared/SuccessModal";
 
 /* ------------------------------------------------------------------ */
+/*  TextField — EXACTLY LIKE PIGMY CLOSING                           */
+/* ------------------------------------------------------------------ */
+
+interface TextFieldProps {
+  labelEn: string;
+  labelHi: string;
+  icon?: React.ElementType;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  hasError?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+}
+
+function TextField({
+  labelEn,
+  labelHi,
+  icon: Icon,
+  placeholder,
+  value,
+  onChange,
+  hasError,
+  readOnly,
+  required,
+}: TextFieldProps) {
+  return (
+    <div className="mb-3 last:mb-0">
+      <label className="mb-1.5 block text-[11px] font-semibold text-slate-700">
+        {labelEn} <span className="text-slate-400 font-normal">/ {labelHi}</span>
+        {required && <span className="text-red-500">*</span>}
+      </label>
+      <div
+        className={`group flex items-center w-full h-8 rounded-[10px] border px-2.5 transition-all duration-200 ${
+          readOnly
+            ? "bg-[#f0f2f5] border-slate-200 cursor-not-allowed"
+            : hasError
+              ? "bg-white border-red-400 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500"
+              : "bg-white border-slate-300 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+        }`}
+      >
+        {Icon && <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
+        <input
+          type="text"
+          value={value}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          onChange={(e) => onChange(e.target.value)}
+          className={`ml-2 w-full bg-transparent outline-none text-[11px] placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal ${
+            readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
+          }`}
+        />
+      </div>
+      {hasError && <p className="mt-1 text-[10px] text-red-500">This field is required</p>}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  CardSection — EXACTLY LIKE PIGMY CLOSING                         */
+/* ------------------------------------------------------------------ */
+
+function CardSection({
+  icon: Icon,
+  titleEn,
+  titleHi,
+  descriptionEn,
+  descriptionHi,
+  children,
+}: {
+  icon?: React.ElementType;
+  titleEn: string;
+  titleHi: string;
+  descriptionEn?: string;
+  descriptionHi?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="border border-[#0256cc]/60 border-t-[3.5px] border-t-[#0256cc] rounded-[14px] p-4 sm:p-5 bg-white shadow-sm">
+      <div className="flex items-start gap-3 mb-4">
+        <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
+          {Icon && <Icon className="w-4 h-4 text-blue-600" />}
+        </div>
+        <div>
+          <h2 className="text-sm font-bold text-slate-800">
+            {titleEn} <span className="text-slate-400 font-normal text-xs">/ {titleHi}</span>
+          </h2>
+          {descriptionEn && (
+            <p className="text-[10px] text-slate-500 mt-0.5">
+              {descriptionEn} {descriptionHi && `/ ${descriptionHi}`}
+            </p>
+          )}
+        </div>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Form data — UNCHANGED                                              */
 /* ------------------------------------------------------------------ */
 
@@ -44,107 +144,7 @@ const REQUIRED_FIELDS: (keyof TdReceiptLotFormData)[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  TextField — Pigmy style (unchanged look, font, border)             */
-/* ------------------------------------------------------------------ */
-
-interface TextFieldProps {
-  labelEn: string;
-  labelHi: string;
-  icon?: React.ElementType;
-  placeholder?: string;
-  value: string;
-  onChange: (value: string) => void;
-  hasError?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
-}
-
-function TextField({
-  labelEn,
-  labelHi,
-  icon: Icon,
-  placeholder,
-  value,
-  onChange,
-  hasError,
-  readOnly,
-  required,
-}: TextFieldProps) {
-  return (
-    <div className="mb-3 last:mb-0">
-      <label className="mb-1.5 block text-[14px] font-semibold text-slate-700">
-        {labelEn} <span className="text-slate-400 font-normal">/ {labelHi}</span>
-        {required && <span className="text-red-500">*</span>}
-      </label>
-      <div
-        className={`group flex items-center w-full h-8 rounded-[10px] border px-2.5 transition-all duration-200 ${
-          readOnly
-            ? "bg-[#f0f2f5] border-slate-200 cursor-not-allowed"
-            : hasError
-              ? "bg-white border-red-400 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500"
-              : "bg-white border-slate-300 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
-        }`}
-      >
-        {Icon && <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
-        <input
-          type="text"
-          value={value}
-          placeholder={placeholder}
-          readOnly={readOnly}
-          onChange={(e) => onChange(e.target.value)}
-          className={`ml-2 w-full bg-transparent outline-none text-[13.5px] placeholder:text-[13.5px] placeholder:text-slate-400 placeholder:font-normal ${
-            readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
-          }`}
-        />
-      </div>
-      {hasError && <p className="mt-1 text-[11px] text-red-500">This field is required</p>}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  CardSection — Pigmy CardSection style (border, radius, shadow)     */
-/* ------------------------------------------------------------------ */
-
-function CardSection({
-  icon: Icon,
-  titleEn,
-  titleHi,
-  descriptionEn,
-  descriptionHi,
-  children,
-}: {
-  icon?: React.ElementType;
-  titleEn: string;
-  titleHi: string;
-  descriptionEn?: string;
-  descriptionHi?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="border border-[#0256cc]/60 border-t-[3.5px] border-t-[#0256cc] rounded-[14px] p-4 sm:p-5 bg-white shadow-sm">
-      <div className="flex items-start gap-3 mb-4">
-        <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
-          {Icon && <Icon className="w-4 h-4 text-blue-600" />}
-        </div>
-        <div>
-          <h2 className="text-[17px] font-bold text-slate-800">
-            {titleEn} <span className="text-slate-400 font-normal text-xs">/ {titleHi}</span>
-          </h2>
-          {descriptionEn && (
-            <p className="text-[12px] text-slate-500 mt-0.5">
-              {descriptionEn} {descriptionHi && `/ ${descriptionHi}`}
-            </p>
-          )}
-        </div>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Modal — UNCHANGED logic, Pigmy grid/font/border styling            */
+/*  Modal — EXACTLY LIKE PIGMY CLOSING                               */
 /* ------------------------------------------------------------------ */
 
 interface BranchTdReceiptLotModalProps {
@@ -160,14 +160,28 @@ export function BranchTdReceiptLotModal({
   onClose,
   onSave,
 }: BranchTdReceiptLotModalProps) {
-  const [formData, setFormData] = useState<TdReceiptLotFormData>(initialData);
+  const [formData, setFormData] = useState<TdReceiptLotFormData>({
+    ...initialData,
+    branchCode: "0002",
+    branchName: "Main Branch, Bilagi",
+    accountType: "SB",
+    fromReceiptNumber: "70010",
+    toReceiptNumber: "70020",
+  });
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof TdReceiptLotFormData, boolean>>>({});
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     if (open) {
-      setFormData(initialData);
+      setFormData({
+        ...initialData,
+        branchCode: "0002",
+        branchName: "Main Branch, Bilagi",
+        accountType: "SB",
+        fromReceiptNumber: "70010",
+        toReceiptNumber: "70020",
+      });
       setValidated(false);
       setErrors({});
       setShowSuccess(false);
@@ -255,8 +269,8 @@ export function BranchTdReceiptLotModal({
             icon={Building2}
             titleEn="Branch Details"
             titleHi="शाखेचा तपशील"
-            descriptionEn="Branch and account type for this TD receipt lot."
-            descriptionHi="या TD पावती लॉटसाठी शाखा व खाते प्रकार."
+            descriptionEn=""
+            descriptionHi=""
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               <TextField
@@ -299,8 +313,8 @@ export function BranchTdReceiptLotModal({
               icon={Hash}
               titleEn="Term Deposit Details"
               titleHi="मुद्दत ठेव तपशील"
-              descriptionEn="Receipt number range to be issued in this lot."
-              descriptionHi="या लॉटमध्ये जारी करावयाची पावती क्रमांक श्रेणी."
+              descriptionEn=""
+              descriptionHi=""
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <TextField

@@ -119,6 +119,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-tds",
         title: "TDS",
         icon: Percent,
+        href: "/tds",
       },
       // {
       //   id: "daybeginend",
@@ -216,11 +217,11 @@ export const menuItems: NavItemData[] = [
     titleKey: "sidebar.clerk",
     icon: User,
     children: [
-      // {
-      //   id: "clerk-account",
-      //   title: "Account",
-      //   icon: Landmark,
-      // },
+      {
+        id: "clerk-account",
+        title: "Account",
+        icon: Landmark,
+      },
       // {
       //   id: "clerk-account-opening",
       //   title: "Account Opening",

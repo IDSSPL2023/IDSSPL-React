@@ -1,3 +1,4 @@
+// src/components/SupportUtility/HeroSupportUtility.tsx
 import { useState, useMemo } from "react";
 import {
   Wallet, Landmark, History, Banknote, ScrollText, ArrowLeftRight, Coins,
@@ -12,18 +13,45 @@ const ICON_MAP = {
   Percent, ShieldCheck,
 };
 
-const HeroSupportUtility = ({ openMaster, setOpenMaster, onOpenAccountLookup, onOpenSupportAuditTrail, onOpenScrollModify, onOpenDenomination, onOpenFormSections, tableRows, onRowsChange, filters }) => {
+// Normalize a title so small differences (spacing/casing) don't break matching.
+const normalize = (s = "") => s.toLowerCase().replace(/\s+/g, " ").trim();
+
+// Master cards that should open a modal directly instead of the table view.
+// If highlighting still doesn't show up, console.log(master.titleEn) inside
+// the .map() below to see the EXACT string masterConfig.ts is giving you,
+// then update the strings here to match exactly.
+const TXN_BALANCE_TITLE = normalize("Update TXN Balance");
+const TXN_CURRENT_BALANCE_TITLE = normalize("Update TXN Current Balance");
+
+const HeroSupportUtility = ({
+  openMaster,
+  setOpenMaster,
+  onOpenAccountLookup,
+  onOpenSupportAuditTrail,
+  onOpenTxnBalance,          // NEW
+  onOpenTxnCurrentBalance,   // NEW
+  onOpenScrollModify,
+  onOpenDenomination,
+  onOpenFormSections,
+  tableRows,
+  onRowsChange,
+  filters,
+}) => {
   const { en } = useBilingual();
   const [activeTab, setActiveTab] = useState(en("supportUtility.allMasters"));
   const [query, setQuery] = useState("");
 
   const TABS = [en("supportUtility.allMasters"), en("supportUtility.recentlyUsed")];
 
-  const MasterCard = ({ icon, titleEn, titleHi, onOpen }) => {
+  const MasterCard = ({ icon, titleEn, titleHi, onOpen, highlighted }) => {
     const Icon = ICON_MAP[icon] || Wallet;
 
     return (
-      <div className="group flex items-center justify-between rounded-md border border-[#E5E7EB] bg-white px-5 py-3 transition-all duration-200 hover:border-[#D7E3FF] hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary-800">
+      <div
+        className={`group flex items-center justify-between rounded-md border px-5 py-3 transition-all duration-200 hover:shadow-md dark:bg-slate-900 ${
+           "border-[#E5E7EB] bg-white hover:border-[#D7E3FF] dark:border-slate-800 dark:hover:border-primary-800"
+        }`}
+      >
         <div className="flex items-center gap-4 min-w-0">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[#052F5B]">
             <Icon size={22} strokeWidth={2} className="text-white" />
@@ -120,27 +148,33 @@ const HeroSupportUtility = ({ openMaster, setOpenMaster, onOpenAccountLookup, on
           {filteredMasters.length === 0 ? (
             <p className="col-span-2 py-8 text-center text-gray-400 dark:text-slate-500">{en("supportUtility.noUtilitiesFound")}</p>
           ) : (
-            filteredMasters.map((master) => (
-              <MasterCard
-                key={master.key}
-                icon={master.icon}
-                titleEn={master.titleEn}
-                titleHi={master.titleHi}
-                onOpen={() =>
-                  master.key === "supportAuditTrail"
-                    ? onOpenSupportAuditTrail()
-                    : master.uiType === "accountLookupTable"
-                    ? onOpenAccountLookup(master)
-                    : master.uiType === "scrollModify"
-                    ? onOpenScrollModify(master)
-                    : master.uiType === "denomination"
-                    ? onOpenDenomination(master)
-                    : master.uiType === "formSections"
-                    ? onOpenFormSections(master)
-                    : setOpenMaster(master)
-                }
-              />
-            ))
+            filteredMasters.map((master) => {
+              console.log("Master title:", master.titleEn); // Debugging line to check the exact title
+              const normTitle = normalize(master.titleEn);
+              const isTxnBalance = normTitle === TXN_BALANCE_TITLE;
+              const isTxnCurrentBalance = normTitle === TXN_CURRENT_BALANCE_TITLE;
+              const highlighted = isTxnBalance || isTxnCurrentBalance;
+
+              return (
+                <MasterCard
+                  key={master.key}
+                  icon={master.icon}
+                  titleEn={master.titleEn}
+                  titleHi={master.titleHi}
+                  highlighted={highlighted}
+                  onOpen={() => {
+                    if (isTxnBalance) return onOpenTxnBalance?.();
+                    if (isTxnCurrentBalance) return onOpenTxnCurrentBalance?.();
+                    if (master.key === "supportAuditTrail") return onOpenSupportAuditTrail();
+                    if (master.uiType === "accountLookupTable") return onOpenAccountLookup(master);
+                    if (master.uiType === "scrollModify") return onOpenScrollModify?.(master);
+                    if (master.uiType === "denomination") return onOpenDenomination?.(master);
+                    if (master.uiType === "formSections") return onOpenFormSections?.(master);
+                    return setOpenMaster(master);
+                  }}
+                />
+              );
+            })
           )}
         </div>
       </div>

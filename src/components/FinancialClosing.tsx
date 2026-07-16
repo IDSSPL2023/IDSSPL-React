@@ -9,6 +9,8 @@ import NpaModificationProcess from "./futuremodels/NpaModificationProcess";
 import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
 import TdPostingConsistencyProcess from "./futuremodels/TdPostingConsistencyProcess";
 import TlccInterestPostingProcess from "./futuremodels/TlccInterestPostingProcess";
+import SiInterestPostingProcess from "./FinancialClosing/SiInterestPostingProcess";
+import SetBranchParameterModal from "./FinancialClosing/SetBranchParameterModal";
 
 type ClosingCategory = "parameter" | "calculation" | "reports" | "export";
 
@@ -200,7 +202,11 @@ const FinancialClosing = () => {
     }, [query, activeTab]);
 
     const handleOpen = (id: string) => {
-        setActiveModal(id);
+        if (id === "set-product-status") {
+            router.push("/financial-closing/set-product-status");
+        } else {
+            setActiveModal(id);
+        }
     };
 
     const handleCloseModal = () => {
@@ -357,6 +363,12 @@ const FinancialClosing = () => {
                 open={activeModal === "tlcc-interest-posting"}
                 onClose={handleCloseModal}
             />
+
+            {activeModal === "set-branch-parameters" && (
+    <SetBranchParameterModal
+        onClose={handleCloseModal}
+    />
+)}
         </div>
     );
 };
