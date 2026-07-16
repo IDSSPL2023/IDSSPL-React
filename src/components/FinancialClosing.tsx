@@ -4,10 +4,16 @@ import { Search, ChevronRight } from "lucide-react";
 import { useRouter } from "@/lib/navigation";
 import GlobalNav from "./GlobalMaster/GlobalNav";
 import Image from "@/components/ui/Image";
+import DepreciationCalculationProcess from "./futuremodels/DepreciationCalculationProcess";
 import InterestPostingProcess from "./futuremodels/InterestPostingProcess";
-import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
+// import SiInterestPostingProcess from "./futuremodels/SiInterestPostingProcess";
 import ReportsParameterModal from "./futuremodels/Income&ExpClosing";
 import ReportsParameterBranchModal from "./futuremodels/Income&ExpRegular";
+import NpaModificationProcess from "./futuremodels/NpaModificationProcess";
+import TdPostingConsistencyProcess from "./futuremodels/TdPostingConsistencyProcess";
+import TlccInterestPostingProcess from "./futuremodels/TlccInterestPostingProcess";
+import SiInterestPostingProcess from "./FinancialClosing/SiInterestPostingProcess";
+import SetBranchParameterModal from "./FinancialClosing/SetBranchParameterModal";
 
 type ClosingCategory = "parameter" | "calculation" | "reports" | "export";
 
@@ -81,7 +87,6 @@ const ITEMS: FinancialItem[] = [
         marathiTitle: "एनपीए सुधारणा",
         icon: "/authorize transaction list icon.png",
         category: "calculation",
-        actionLabel: "12 record",
     },
     {
         id: "depreciation-calculation",
@@ -110,7 +115,6 @@ const ITEMS: FinancialItem[] = [
         marathiTitle: "लागू न केलेले व्याज",
         icon: "/authorize transaction list icon.png",
         category: "calculation",
-        actionLabel: "12 record",
     },
     {
         id: "pigmy-interest-provision",
@@ -124,7 +128,7 @@ const ITEMS: FinancialItem[] = [
         title: "Modify Deposit Diary",
         marathiTitle: "ठेव डायरी सुधारणा",
         icon: "/authorize transaction list icon.png",
-        category: "calculation",
+        category: "export",
     },
     {
         id: "n-form-balancesheet",
@@ -213,7 +217,11 @@ const FinancialClosing = () => {
     const isBranchReport = isReportsItem && !isSimpleReport;
 
     const handleOpen = (id: string) => {
-        setActiveModal(id);
+        if (id === "set-product-status") {
+            router.push("/financial-closing/set-product-status");
+        } else {
+            setActiveModal(id);
+        }
     };
 
     const handleCloseModal = () => {
@@ -350,6 +358,18 @@ const FinancialClosing = () => {
                 open={activeModal === "matured-td-interest-provision"}
                 onClose={handleCloseModal}
             />
+            <TdPostingConsistencyProcess
+                open={activeModal === "td-interest-posting"}
+                onClose={handleCloseModal}
+            />
+            <NpaModificationProcess
+                open={activeModal === "npa-modification"}
+                onClose={handleCloseModal}
+            />
+            <DepreciationCalculationProcess
+                open={activeModal === "depreciation-calculation"}
+                onClose={handleCloseModal}
+            />
             <SiInterestPostingProcess
                 open={activeModal === "si-interest-posting"}
                 onClose={handleCloseModal}
@@ -369,6 +389,16 @@ const FinancialClosing = () => {
   />
 
             )}
+            <TlccInterestPostingProcess
+                open={activeModal === "tlcc-interest-posting"}
+                onClose={handleCloseModal}
+            />
+
+            {activeModal === "set-branch-parameters" && (
+    <SetBranchParameterModal
+        onClose={handleCloseModal}
+    />
+)}
         </div>
     );
 };
