@@ -1,9 +1,25 @@
+// app/branch-master/page.tsx or components/BranchMaster/BranchMasterPage.tsx
 import { useCallback, useMemo, useState } from "react";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
-import BranchMasterTable, { DEFAULT_BRANCH_ROWS, rowToBranchFormData, type BranchRow } from "@/components/BranchMaster/BranchMasterTable";
-import AddBranchModal, { emptyBranchFormData, type BranchFormData } from "@/components/BranchMaster/AddBranchModal";
-import FilterModal, { defaultBranchFilterValues, type BranchFilters } from "@/components/BranchMaster/FilterModal";
-import BranchChequeBookLotModal, { rowToChequeBookLotFormData, type ChequeBookLotFormData } from "@/components/BranchMaster/BranchChequeBookLotModal";
+import BranchMasterTable, { 
+  DEFAULT_BRANCH_ROWS, 
+  rowToBranchFormData, 
+  type BranchRow 
+} from "@/components/BranchMaster/BranchMasterTable";
+import AddBranchModal, { 
+  emptyBranchFormData, 
+  type BranchFormData 
+} from "@/components/BranchMaster/AddBranchModal";
+import FilterModal, { 
+  defaultBranchFilterValues, 
+  type BranchFilters 
+} from "@/components/BranchMaster/FilterModal";
+import BranchChequeBookLotModal, { 
+  rowToChequeBookLotFormData, 
+  type ChequeBookLotFormData 
+} from "@/components/BranchMaster/BranchChequeBookLotModal";
+import { BranchNonCBSModal, rowToBranchNonCBSFormData, emptyBranchNonCBSFormData, type BranchNonCBSFormData } from "@/components/BranchMaster/BranchNonCBS";
+import { BranchTdReceiptLotModal, rowToTdReceiptLotFormData, emptyTdReceiptLotFormData, type TdReceiptLotFormData } from "@/components/BranchMaster/BranchTDReciptLot";
 import { useBilingual } from "@/i18n/useBilingual";
 
 export default function BranchMasterPage() {
@@ -27,6 +43,8 @@ export default function BranchMasterPage() {
   const [showFilter, setShowFilter] = useState(false);
   const [viewRow, setViewRow] = useState<BranchRow | null>(null);
   const [chequeBookLotRow, setChequeBookLotRow] = useState<BranchRow | null>(null);
+  const [branchNonCbsRow, setBranchNonCbsRow] = useState<BranchRow | null>(null);
+  const [tdReceiptLotRow, setTdReceiptLotRow] = useState<BranchRow | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<BranchFilters>(defaultBranchFilterValues);
 
@@ -55,7 +73,7 @@ export default function BranchMasterPage() {
     const [firstKey, firstVal] = entries[0];
     const extra = entries.length > 1 ? ` +${entries.length - 1} more` : "";
     return `${FILTER_LABELS[firstKey]}:${firstVal}${extra}`;
-  }, [filters]);
+  }, [filters, FILTER_LABELS]);
 
   const handleAddSave = useCallback((formData: BranchFormData) => {
     setRows((prev) => [
@@ -79,6 +97,16 @@ export default function BranchMasterPage() {
   const handleChequeBookLotSave = useCallback((data: ChequeBookLotFormData) => {
     console.log("Branch Cheque Book Lot saved", data);
     setChequeBookLotRow(null);
+  }, []);
+
+  const handleBranchNonCbsSave = useCallback((data: BranchNonCBSFormData) => {
+    console.log("Branch Non CBS Parameter saved", data);
+    setBranchNonCbsRow(null);
+  }, []);
+
+  const handleTdReceiptLotSave = useCallback((data: TdReceiptLotFormData) => {
+    console.log("Branch TD Receipt Lot saved", data);
+    setTdReceiptLotRow(null);
   }, []);
 
   return (
@@ -105,12 +133,13 @@ export default function BranchMasterPage() {
         <BranchMasterTable
           rows={filteredRows}
           onView={setViewRow}
-          onBranchNonCbsParameter={(row) => console.log("Branch Non CBS Parameter", row)}
+          onBranchNonCbsParameter={setBranchNonCbsRow}
           onBranchChequeBookLot={setChequeBookLotRow}
-          onBranchTdReceiptLot={(row) => console.log("Branch TD Receipt Lot", row)}
+          onBranchTdReceiptLot={setTdReceiptLotRow}
         />
       </div>
 
+      {/* Add Branch Modal */}
       <AddBranchModal
         open={showAdd}
         mode="add"
@@ -119,6 +148,7 @@ export default function BranchMasterPage() {
         onSave={handleAddSave}
       />
 
+      {/* View Branch Modal */}
       <AddBranchModal
         open={!!viewRow}
         mode="view"
@@ -126,6 +156,7 @@ export default function BranchMasterPage() {
         onClose={() => setViewRow(null)}
       />
 
+      {/* Branch Cheque Book Lot Modal */}
       <BranchChequeBookLotModal
         open={!!chequeBookLotRow}
         initialData={chequeBookLotRow ? rowToChequeBookLotFormData(chequeBookLotRow) : undefined}
@@ -133,6 +164,23 @@ export default function BranchMasterPage() {
         onSave={handleChequeBookLotSave}
       />
 
+      {/* Branch Non-CBS Modal */}
+      <BranchNonCBSModal
+        open={!!branchNonCbsRow}
+        initialData={branchNonCbsRow ? rowToBranchNonCBSFormData(branchNonCbsRow) : emptyBranchNonCBSFormData}
+        onClose={() => setBranchNonCbsRow(null)}
+        onSave={handleBranchNonCbsSave}
+      />
+
+      {/* Branch TD Receipt Lot Modal */}
+      <BranchTdReceiptLotModal
+        open={!!tdReceiptLotRow}
+        initialData={tdReceiptLotRow ? rowToTdReceiptLotFormData(tdReceiptLotRow) : emptyTdReceiptLotFormData}
+        onClose={() => setTdReceiptLotRow(null)}
+        onSave={handleTdReceiptLotSave}
+      />
+
+      {/* Filter Modal */}
       {showFilter && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"

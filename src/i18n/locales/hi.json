@@ -21,7 +21,9 @@
     "view": "देखें",
     "edit": "संपादित करें",
     "services": "सेवाएं",
-    "logout": "लॉगआउट"
+    "logout": "लॉगआउट",
+    "modify": "संशोधित करें",
+    "fieldRequired": "यह फ़ील्ड आवश्यक है"
   },
   "fields": {
     "accountCode": "खाता कोड",
@@ -37,7 +39,29 @@
     "loanAccountName": "ऋण खाता नाम",
     "lienAmount": "ग्रहणाधिकार राशि",
     "remark": "टिप्पणी",
-    "serial": "क्रम"
+    "serial": "क्रम",
+    "branchCode": "शाखा कोड",
+    "branchName": "शाखा का नाम",
+    "assignedBy": "द्वारा सौंपा गया",
+    "reasonOfModification": "संशोधन का कारण",
+    "newLedgerBalance": "नई लेजर बैलेंस",
+    "monthMinimumBalance": "मासिक न्यूनतम बैलेंस",
+    "glAccountCode": "जीएल खाता कोड",
+    "openingBalance": "प्रारंभिक शेष",
+    "currentBalance": "वर्तमान शेष",
+    "tnxDate": "लेनदेन तारीख",
+    "debitCash": "डेबिट नकद",
+    "creditCash": "क्रेडिट नकद",
+    "debitTransfer": "डेबिट ट्रांसफर",
+    "creditTransfer": "क्रेडिट ट्रांसफर",
+    "debitClearing": "डेबिट क्लियरिंग",
+    "creditClearing": "क्रेडिट क्लियरिंग",
+    "debitCashVouchers": "डेबिट नकद वाउचर",
+    "creditCashVouchers": "क्रेडिट नकद वाउचर",
+    "debitTransferVouchers": "डेबिट ट्रांसफर वाउचर",
+    "creditTransferVouchers": "क्रेडिट ट्रांसफर वाउचर",
+    "debitClVouchers": "डेबिट सीएल वाउचर",
+    "creditClVouchers": "क्रेडिट सीएल वाउचर"
   },
   "accountMaster": {
     "title": "खाता मास्टर",
@@ -268,6 +292,12 @@
   "lienRevoke": {
     "title": "ग्रहणाधिकार निरस्त चिह्न"
   },
+  "modifyAccountBalance": {
+    "title": "खाता शेष संशोधित करें",
+    "breadcrumb": "खाता शेष संशोधित करें",
+    "subtitle": "स्वीकृत कारण के साथ खाते की लेजर और उपलब्ध शेष राशि अपडेट करें।",
+    "successTitle": "खाता शेष सफलतापूर्वक संशोधित किया गया"
+  },
   "tdCalculate": {
     "title": "परिपक्वता राशि",
     "subtitle": "सभी जानकारी परिपक्वता राशि से संबंधित है",
@@ -325,5 +355,49 @@
     "noMatchingItems": "कोई मेल खाने वाला मेनू आइटम नहीं",
     "comingSoon": "जल्द आ रहा है",
     "logoAlt": "लोगो"
+  },
+  "modifyBranchGlBalance": {
+    "title": "शाखा जीएल शेष संशोधित करें",
+    "successTitle": "शाखा जीएल शेष सफलतापूर्वक संशोधित किया गया"
+  },
+  "modifyBranchGlHistory": {
+    "title": "शाखा जीएल इतिहास संशोधित करें",
+    "successTitle": "शाखा जीएल इतिहास सफलतापूर्वक संशोधित किया गया",
+    "amountPlaceholder": "राशि दर्ज करें",
+    "namePlaceholder": "name@company.com"
+  },
+  "modifyCashHandlingRecord": {
+    "title": "कैश हैंडलिंग रिकॉर्ड संशोधित करें",
+    "infoTitle": "कैश हैंडलिंग जानकारी",
+    "infoSubtitle": "नकद मूल्यवर्ग दर्ज करने से पहले शाखा और लेनदेन विवरण चुनें।",
+    "summaryTitle": "नकद मूल्यवर्ग सारांश",
+    "summarySubtitle": "मूल्यवर्ग के अनुसार नकद संख्या दर्ज करें और कुल नकद राशि सत्यापित करें।",
+    "successTitle": "कैश हैंडलिंग रिकॉर्ड सफलतापूर्वक संशोधित किया गया",
+    "amountPlaceholder": "राशि दर्ज करें",
+    "namePlaceholder": "name@company.com",
+    "keyPlaceholder": "की नंबर",
+    "fields": {
+      "asOnDate": "दिनांक तक",
+      "scrollNumber": "स्क्रोल नंबर",
+      "cashHandlingNumber": "कैश हैंडलिंग नंबर",
+      "amount": "राशि",
+      "returnAmount": "वापसी राशि",
+      "r2000": "R2000",
+      "r500": "R500",
+      "p2000": "P2000",
+      "p500": "P500",
+      "r200": "R200",
+      "r100": "R100",
+      "p200": "P200",
+      "p100": "P100",
+      "r50": "R50",
+      "r20": "R20",
+      "p50": "P50",
+      "p20": "P20",
+      "r10": "R10",
+      "rChange": "RChange",
+      "p10": "P10",
+      "pChange": "PChange"
+    }
   }
 }

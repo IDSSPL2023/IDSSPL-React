@@ -23,7 +23,18 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
   const hasActiveChild = children.some((child) => child.href === pathname);
 
   const [open, setOpen] = useState(false);
+  const [prevCollapsed, setPrevCollapsed] = useState(collapsed);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+
+  // When the sidebar itself collapses (e.g. the pointer leaves it), any open
+  // flyout would be left pointing at a trigger that just shrank/moved — close
+  // it so it doesn't linger disconnected from its trigger. Adjusted during
+  // render (rather than an effect) per React's guidance for resetting state
+  // in response to a prop change.
+  if (collapsed !== prevCollapsed) {
+    setPrevCollapsed(collapsed);
+    if (collapsed) setOpen(false);
+  }
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const flyoutRef = useRef<HTMLDivElement | null>(null);
 
@@ -123,17 +134,25 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
                 const ChildIcon = child.icon;
                 const childLabel = child.titleKey ? tRaw(child.titleKey) : child.title;
                 const isActive = pathname === child.href;
+                const childDisabled = !child.href;
                 return (
                   <button
                     key={child.id}
                     type="button"
                     role="menuitem"
+                    disabled={childDisabled}
+                    title={childDisabled ? tRaw("sidebar.comingSoon") : undefined}
                     onClick={() => {
+                      if (!child.href) return;
                       setOpen(false);
                       router.push(child.href);
                     }}
                     className={`flex h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-[13px] font-medium transition-colors ${
-                      isActive ? "bg-primary text-white" : "text-[#1B2143] hover:bg-primary-50"
+                      childDisabled
+                        ? "cursor-not-allowed text-[#A8ACC0] opacity-60"
+                        : isActive
+                        ? "bg-primary text-white"
+                        : "text-[#1B2143] hover:bg-primary-50"
                     }`}
                   >
                     {ChildIcon && <ChildIcon size={15} className="shrink-0" />}

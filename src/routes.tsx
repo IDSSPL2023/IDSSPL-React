@@ -62,6 +62,7 @@ import TLOtherChargesPage from "@/pages/futuremodels/TLOtherChargesPage";
 import UnLeanPage from "@/pages/futuremodels/UnLeanPage";
 import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
+import SupportUtilityPage from "@/pages/SupportUtilityPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
 import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
@@ -72,9 +73,16 @@ import TdsTransactionPage from "@/pages/transactionmaster/TdsTransactionPage";
 import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
 import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
+import ModifyTdsTransactionPage from "@/pages/transactionmaster/ModifyTdsTransactionPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
+import FutureModalsPage from "./components/FutureModal";
+import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
+import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
+import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
+import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
+
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -163,8 +171,15 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/tl-open", element: <TermLoanOpenPage /> },
       { path: "/futuremodels/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/futuremodels/un-lean", element: <UnLeanPage /> },
+
+      { path: "/futuremodels/modifyaccountbalance", element: <ModifyAccountBalancePage /> },
+      { path: "/futuremodels/modifybranchglbalance", element: <ModifyBranchGlBalance /> },
+      { path: "/futuremodels/modifybranchglhistory", element: <ModifyBranchGlHistory /> },
+      { path: "/futuremodels/modifycashhandlingrecord", element: <ModifyCashHandlingRecord /> },
+
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
+      { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
       { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },
@@ -175,7 +190,9 @@ export const router = createBrowserRouter([
       { path: "/transactionmaster/tl-cc-installment", element: <TlCcInstallmentPage /> },
       { path: "/transactionmaster/tl-disbursement", element: <TlDisbursementPage /> },
       { path: "/transactionmaster/transfer", element: <TransferPage /> },
+      { path: "/transactionmaster/modify-tds-transaction", element: <ModifyTdsTransactionPage /> },
       { path: "/usermaster", element: <UserMasterPage /> },
+      { path: "/futuremodals", element: <FutureModalsPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
