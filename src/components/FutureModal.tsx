@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import StopChequePayment from "@/components/futuremodels/StopChequePayment";
 
 interface FutureModelAction {
     label: string;
@@ -26,6 +28,7 @@ const FUTURE_MODEL_ACTIONS: FutureModelAction[] = [
 
 const FutureModalsPage = () => {
     const navigate = useNavigate();
+    const [showStopChequePayment, setShowStopChequePayment] = useState(false);
 
     return (
         <div className="p-6">
@@ -40,7 +43,19 @@ const FutureModalsPage = () => {
                         {label}
                     </button>
                 ))}
+
+                <button
+                    type="button"
+                    onClick={() => setShowStopChequePayment(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    STOP CHEQUE PAYMENT
+                </button>
             </div>
+
+            {showStopChequePayment && (
+                <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
+            )}
         </div>
     );
 };

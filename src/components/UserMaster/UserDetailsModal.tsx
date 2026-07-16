@@ -353,7 +353,7 @@ export default function UserDetailsModal({
             </FieldShell>
 
             <FieldShell label="Employee Code" labelHi="कर्मचारी कोड" required>
-              <TextInput icon={<IdCard size={16} />} value={data.employeeCode} onChange={() => {}} readOnly />
+              <TextInput icon={<IdCard size={16} />} value={data.employeeCode} onChange={() => {}}  />
             </FieldShell>
           </div>
 
