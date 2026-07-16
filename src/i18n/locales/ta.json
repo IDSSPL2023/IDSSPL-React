@@ -339,6 +339,16 @@
     "comingSoon": "விரைவில் வருகிறது",
     "logoAlt": "லோகோ"
   },
+  "supportUtility": {
+    "allMasters": "அனைத்து மாஸ்டர்கள்",
+    "recentlyUsed": "சமீபத்தில் பயன்படுத்தியவை",
+    "open": "திற",
+    "welcomeTitle": "சப்போர்ட் யூட்டிலிட்டிக்கு வரவேற்கிறோம்",
+    "welcomeSubtitle": "அனைத்து மாஸ்டர் யூட்டிலிட்டிகளையும் ஒரே இடத்தில் தேடி நிர்வகிக்கவும்",
+    "searchPlaceholder": "யூட்டிலிட்டியைத் தேடுங்கள்...",
+    "show": "காட்டு",
+    "noUtilitiesFound": "எந்த யூட்டிலிட்டியும் கிடைக்கவில்லை"
+  },
   "modifyBranchGlHistory": {
     "title": "Modify Branch GL History",
     "successTitle": "Branch GL history modified successfully",
@@ -377,6 +387,42 @@
       "rChange": "RChange",
       "p10": "P10",
       "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "Loan Interest Rate Modification",
+    "subtitle": "View the parameter information and associated details.",
+    "successTitle": "Loan interest rate modified successfully",
+    "successSubtitle": "Please Authorize",
+    "actions": {
+      "new": "New"
+    },
+    "placeholders": {
+      "accountCode": "Select Account Code",
+      "accountName": "name"
+    },
+    "table": {
+      "check": "Check",
+      "interestRate": "Interest Rate",
+      "penalInterest": "Penal Interest",
+      "overdueInterest": "Overdue Interest",
+      "moratoriumInterest": "Moratorium Interest",
+      "dateOfApplication": "Date of Application"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "successTitle": "Interest posting processed successfully",
+    "fields": {
+      "asOnDate": "As on Date",
+      "interestRate": "Interest Rate"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date"
+    },
+    "actions": {
+      "generateReports": "Generate Reports"
     }
   }
 }

@@ -74,9 +74,11 @@ export const menuItems: NavItemData[] = [
     icon: FileText,
     children: [
       {
-        id: "mis-day-begin-end",
+        id: "daybeginend",
         title: "DAY Begin / End",
+        titleKey: "sidebar.dayBeginEnd",
         icon: PlayCircle,
+        href: "/day-begin-end",
       },
       {
         id: "mis-financial-closing",
@@ -117,13 +119,13 @@ export const menuItems: NavItemData[] = [
         title: "TDS",
         icon: Percent,
       },
-      {
-        id: "daybeginend",
-        title: "Day Begin / End",
-        titleKey: "sidebar.dayBeginEnd",
-        icon: Landmark,
-        href: "/day-begin-end",
-      },
+      // {
+      //   id: "daybeginend",
+      //   title: "Day Begin / End",
+      //   titleKey: "sidebar.dayBeginEnd",
+      //   icon: Landmark,
+      //   href: "/day-begin-end",
+      // },
     ],
   },
   {

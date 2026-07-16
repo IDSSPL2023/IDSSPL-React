@@ -356,6 +356,16 @@
     "comingSoon": "लवकरच येत आहे",
     "logoAlt": "लोगो"
   },
+  "supportUtility": {
+    "allMasters": "सर्व मास्टर्स",
+    "recentlyUsed": "अलीकडे वापरलेले",
+    "open": "उघडा",
+    "welcomeTitle": "सपोर्ट युटिलिटीमध्ये आपले स्वागत आहे",
+    "welcomeSubtitle": "सर्व मास्टर युटिलिटीज एकाच ठिकाणी शोधा आणि व्यवस्थापित करा",
+    "searchPlaceholder": "युटिलिटी शोधा...",
+    "show": "दाखवा",
+    "noUtilitiesFound": "कोणतीही युटिलिटी आढळली नाही"
+  },
   "modifyBranchGlBalance": {
     "title": "शाखेची जीएल शिल्लक सुधारित करा",
     "successTitle": "शाखेची जीएल शिल्लक यशस्वीरित्या सुधारित केली"
@@ -398,6 +408,42 @@
       "rChange": "RChange",
       "p10": "P10",
       "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "कर्जाचा व्याजदर बदलणे",
+    "subtitle": "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
+    "successTitle": "कर्जाचा व्याजदर यशस्वीरित्या बदलला",
+    "successSubtitle": "कृपया अधिकृत करा",
+    "actions": {
+      "new": "नवीन"
+    },
+    "placeholders": {
+      "accountCode": "खाते कोड निवडा",
+      "accountName": "नाव"
+    },
+    "table": {
+      "check": "तपासा",
+      "interestRate": "व्याजदर",
+      "penalInterest": "दंड व्याज",
+      "overdueInterest": "थकीत व्याज",
+      "moratoriumInterest": "मोरेटोरियम व्याज",
+      "dateOfApplication": "अर्जाची तारीख"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "पात्र ठेव खात्यांसाठी व्याज नोंदणी प्रक्रिया करा.",
+    "successTitle": "व्याज नोंदणी प्रक्रिया यशस्वीरित्या पूर्ण झाली",
+    "fields": {
+      "asOnDate": "आजच्या तारखेनुसार",
+      "interestRate": "व्याजदर"
+    },
+    "placeholders": {
+      "fromDate": "From Date प्रविष्ट करा",
+      "toDate": "To Date प्रविष्ट करा"
+    },
+    "actions": {
+      "generateReports": "अहवाल तयार करा"
     }
   }
 }

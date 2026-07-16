@@ -117,7 +117,7 @@ const HeroSupportUtility = ({
           <h1 className="text-white text-[38px] font-bold leading-tight">
             {en("supportUtility.welcomeTitle")}
             <br />
-            {en("supportUtility.welcomeSubtitle")}
+            {/* {en("supportUtility.welcomeSubtitle")} */}
           </h1>
 
           <div className="mt-6 max-w-xl mx-auto flex items-center bg-white rounded-full px-4 py-2 shadow-lg">

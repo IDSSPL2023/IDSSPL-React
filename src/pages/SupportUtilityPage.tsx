@@ -8,6 +8,9 @@ import AccountLookupTableModal from "@/components/SupportUtility/AccountLookupTa
 import SupportAuditTrailModal from "@/components/SupportUtility/SupportAuditTrailModal";
 import UpdateTxnBalanceModal from "@/components/SupportUtility/UpdateTXNBalance";
 import UpdateTxnCurrentBalanceModal from "@/components/SupportUtility/UpdateTXNCurrentBalance";
+import ScrollModifyModal from "@/components/SupportUtility/ScrollModifyModal";
+import DenominationModal from "@/components/SupportUtility/DenominationModal";
+import FormSectionsModal from "@/components/SupportUtility/FormSectionsModal";
 import { getMasterConfig, emptyFormData } from "@/components/SupportUtility/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
 
@@ -42,6 +45,9 @@ const SupportUtilityPage: React.FC = () => {
   const [txnBalanceOpen, setTxnBalanceOpen] = useState(false);
   // Update TXN Current Balance modal
   const [txnCurrentBalanceOpen, setTxnCurrentBalanceOpen] = useState(false);
+  const [scrollModifyMaster, setScrollModifyMaster] = useState<MasterItem | null>(null);
+  const [denominationMaster, setDenominationMaster] = useState<MasterItem | null>(null);
+  const [formSectionsMaster, setFormSectionsMaster] = useState<MasterItem | null>(null);
 
   const handleOpenMaster = useCallback((master: MasterItem) => {
     const config = getMasterConfig(master.key);
@@ -102,6 +108,9 @@ const SupportUtilityPage: React.FC = () => {
         onOpenSupportAuditTrail={() => setSupportAuditTrailOpen(true)}
         onOpenTxnBalance={() => setTxnBalanceOpen(true)}
         onOpenTxnCurrentBalance={() => setTxnCurrentBalanceOpen(true)}
+        onOpenScrollModify={setScrollModifyMaster}
+        onOpenDenomination={setDenominationMaster}
+        onOpenFormSections={setFormSectionsMaster}
         tableRows={tableRows}
         onRowsChange={setTableRows}
         filters={filters}
@@ -151,6 +160,30 @@ const SupportUtilityPage: React.FC = () => {
         <UpdateTxnCurrentBalanceModal
           open={txnCurrentBalanceOpen}
           onClose={() => setTxnCurrentBalanceOpen(false)}
+        />
+      )}
+
+      {scrollModifyMaster && (
+        <ScrollModifyModal
+          masterKey={scrollModifyMaster.key}
+          onClose={() => setScrollModifyMaster(null)}
+          onSave={() => setScrollModifyMaster(null)}
+        />
+      )}
+
+      {denominationMaster && (
+        <DenominationModal
+          masterKey={denominationMaster.key}
+          onClose={() => setDenominationMaster(null)}
+          onSave={() => setDenominationMaster(null)}
+        />
+      )}
+
+      {formSectionsMaster && (
+        <FormSectionsModal
+          masterKey={formSectionsMaster.key}
+          onClose={() => setFormSectionsMaster(null)}
+          onSave={() => setFormSectionsMaster(null)}
         />
       )}
     </div>
