@@ -13,17 +13,17 @@ import {
   ClipboardList,
   Calculator,
 } from "lucide-react";
-import TextInput from "../../shared/Inputs/TextInput";
-import PickerInput from "../../shared/Inputs/PickerInput";
-import DateInput from "../../shared/Inputs/DateInput";
-import SelectInput from "../../shared/Inputs/SelectInput";
-import RadioInput from "../../shared/Inputs/RadioInput";
-import ListModal, { type ListModalItem } from "../../shared/Modals/ListModal";
+import TextInput from "../../../shared/Inputs/TextInput";
+import PickerInput from "../../../shared/Inputs/PickerInput";
+import DateInput from "../../../shared/Inputs/DateInput";
+import SelectInput from "../../../shared/Inputs/SelectInput";
+import RadioInput from "../../../shared/Inputs/RadioInput";
+import ListModal, { type ListModalItem } from "../../../shared/Modals/ListModal";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
 import { ICONS } from "@/assets";
 
-export interface TDSReportAllFormData {
+export interface TdsReportFormData {
   accountType: string;
   description: string;
   productCode: string;
@@ -41,34 +41,32 @@ export interface TDSReportAllFormData {
   memberSelect: string;
   reportType: string;
   amountSelect: string;
-  fromSelect: string;
 }
 
-export const emptyTDSReportAllFormData: TDSReportAllFormData = {
-  accountType: "TD",
-  description: "Term Deposit",
-  productCode: "TD",
-  productDescription: "Product Descir",
-  interestDepositCode: "TD",
-  customerId: "TD",
-  customerName: "name@company.com",
-  fromDate: "2026-04-01",
-  toDate: "2026-06-01",
-  tdsAmount: "10000",
-  tdsRate: "10",
-  payableFromDate: "2026-05-12",
-  payableToDate: "2026-05-12",
+export const emptyTdsReportFormData: TdsReportFormData = {
+  accountType: "",
+  description: "",
+  productCode: "",
+  productDescription: "",
+  interestDepositCode: "",
+  customerId: "",
+  customerName: "",
+  fromDate: "",
+  toDate: "",
+  tdsAmount: "",
+  tdsRate: "",
+  payableFromDate: "",
+  payableToDate: "",
   reportTypeSelect: "Details",
   memberSelect: "All",
   reportType: "pdf",
   amountSelect: "above",
-  fromSelect: "15G",
 };
 
-export type TDSReportAllModalMode = "add" | "view";
+export type TdsReportModalMode = "add" | "view";
 
 type RequiredFieldKey = keyof Pick<
-  TDSReportAllFormData,
+  TdsReportFormData,
   | "accountType"
   | "productCode"
   | "interestDepositCode"
@@ -129,22 +127,22 @@ const CUSTOMER_DATA: ListModalItem[] = [
 
 const REPORT_TYPE_OPTIONS = ["Details", "Summary"];
 
-export interface TDSReportAllModalProps {
+export interface ProvisonAndVlccModalProps {
   open: boolean;
-  mode?: TDSReportAllModalMode;
-  initialData?: TDSReportAllFormData;
+  mode?: TdsReportModalMode;
+  initialData?: TdsReportFormData;
   onClose?: () => void;
-  onApply?: (data: TDSReportAllFormData) => void;
+  onApply?: (data: TdsReportFormData) => void;
 }
 
-function TDSReportAllModal({
+function ProvisonAndVlcc({
   open,
   mode = "add",
-  initialData = emptyTDSReportAllFormData,
+  initialData = emptyTdsReportFormData,
   onClose,
   onApply,
-}: TDSReportAllModalProps) {
-  const [formData, setFormData] = useState<TDSReportAllFormData>(initialData);
+}: ProvisonAndVlccModalProps) {
+  const [formData, setFormData] = useState<TdsReportFormData>(initialData);
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState<
     Partial<Record<RequiredFieldKey, boolean>>
@@ -162,9 +160,9 @@ function TDSReportAllModal({
 
   const isView = mode === "view";
 
-  const handleChange = <K extends keyof TDSReportAllFormData>(
+  const handleChange = <K extends keyof TdsReportFormData>(
     key: K,
-    value: TDSReportAllFormData[K],
+    value: TdsReportFormData[K],
   ) => {
     if (isView) return;
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -251,10 +249,10 @@ function TDSReportAllModal({
   // Define header configuration
   const getHeaderConfig = () => ({
     icon: ICONS.PERSON,
-    title: "TDS Report All",
-    titleHi: "सर्व TDS अहवाल",
+    title: "TDS Report Apply provision & VLCC",
+    titleHi: "TDS रिपोर्ट प्रावधान लागू करा आणि VLCC",
     subtitle: "View the parameter information and associated details.",
-    subtitleHi: "परिमाणीय माहिती आणि संबंधित तपशील पहा.",
+    subtitleHi: "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
     onClose: onClose,
     showCloseButton: true,
   });
@@ -331,7 +329,7 @@ function TDSReportAllModal({
       >
         <SectionWrapper>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-            {/* Account Type */}
+            {/* Account Type - Disabled in view mode */}
             <PickerInput
               labelEn="Account Type"
               labelHi="खाते प्रकार"
@@ -356,7 +354,7 @@ function TDSReportAllModal({
               readOnly
             />
 
-            {/* Product Code */}
+            {/* Product Code - Disabled in view mode */}
             <PickerInput
               labelEn="Product Code"
               labelHi="उत्पादन कोड"
@@ -381,7 +379,7 @@ function TDSReportAllModal({
               readOnly
             />
 
-            {/* Interest Paid in Deposit Code */}
+            {/* Interest Paid in Deposit Code - Disabled in view mode */}
             <PickerInput
               labelEn="Interest Paid in Deposit Code"
               labelHi="ठेव कोडमध्ये व्याज दिले"
@@ -394,7 +392,7 @@ function TDSReportAllModal({
               handleOpenList={() => handleOpenList("interestDepositCode")}
             />
 
-            {/* Customer ID */}
+            {/* Customer ID - Disabled in view mode */}
             <PickerInput
               labelEn="Customer ID"
               labelHi="ग्राहक आयडी"
@@ -419,27 +417,27 @@ function TDSReportAllModal({
               readOnly
             />
 
-            {/* From Date */}
+            {/* From Date - Disabled in view mode */}
             <DateInput
               labelEn="From Date"
               labelHi="पासून दिनांक"
               value={formData.fromDate}
               onChange={(v) => handleChange("fromDate", v)}
               hasError={errors.fromDate}
-              readOnly={true}
+              readOnly={isView}
             />
 
-            {/* To Date */}
+            {/* To Date - Disabled in view mode */}
             <DateInput
               labelEn="To Date"
               labelHi="पर्यंत दिनांक"
               value={formData.toDate}
               onChange={(v) => handleChange("toDate", v)}
               hasError={errors.toDate}
-              readOnly={true}
+              readOnly={isView}
             />
 
-            {/* TDS Amount */}
+            {/* TDS Amount - Disabled in view mode */}
             <TextInput
               labelEn="TDS Amount"
               labelHi="टीडीएस रक्कम"
@@ -451,7 +449,7 @@ function TDSReportAllModal({
               readOnly={isView}
             />
 
-            {/* TDS Rate */}
+            {/* TDS Rate - Disabled in view mode */}
             <TextInput
               labelEn="TDS Rate"
               labelHi="टीडीएस दर"
@@ -463,7 +461,7 @@ function TDSReportAllModal({
               readOnly={isView}
             />
 
-            {/* Payable From Date */}
+            {/* Payable From Date - Disabled in view mode */}
             <DateInput
               labelEn="Payable From Date"
               labelHi="देय दिनांकापासून"
@@ -473,7 +471,7 @@ function TDSReportAllModal({
               readOnly={isView}
             />
 
-            {/* Payable To Date */}
+            {/* Payable To Date - Disabled in view mode */}
             <DateInput
               labelEn="Payable To Date"
               labelHi="देय दिनांकापर्यंत"
@@ -483,7 +481,7 @@ function TDSReportAllModal({
               readOnly={isView}
             />
 
-            {/* Report Type Select */}
+            {/* Report Type Select - Disabled in view mode */}
             <SelectInput
               labelEn="Report Type Select"
               labelMr="अहवाल प्रकार निवडा"
@@ -495,9 +493,10 @@ function TDSReportAllModal({
               editable={!isView}
             />
 
+            {/* Radio inputs - Disabled in view mode */}
             <RadioInput
               label="Select"
-              labelHi="नियंत्रण"
+              labelHi="निवडा"
               value={formData.memberSelect}
               onChange={(v) => handleChange("memberSelect", v)}
               disabled={isView}
@@ -514,19 +513,17 @@ function TDSReportAllModal({
                 {
                   value: "pdf",
                   icon: ICONS.PDF,
-                  label: "PDF",
                 },
                 {
                   value: "xls",
                   icon: ICONS.XLS,
-                  label: "XLS",
                 },
               ]}
             />
 
             <RadioInput
               label="Select"
-              labelHi="नियंत्रण"
+              labelHi="निवडा"
               value={formData.amountSelect}
               onChange={(v) => handleChange("amountSelect", v)}
               disabled={isView}
@@ -534,15 +531,6 @@ function TDSReportAllModal({
                 { value: "above", label: "Above Amount" },
                 { value: "less", label: "Less Amount" },
               ]}
-            />
-
-            <RadioInput
-              label="From Select"
-              labelHi="म्यूज नियंत्रण"
-              value={formData.fromSelect}
-              onChange={(v) => handleChange("fromSelect", v)}
-              disabled={isView}
-              options={["15G", "15H"]}
             />
           </div>
         </SectionWrapper>
@@ -563,4 +551,4 @@ function TDSReportAllModal({
   );
 }
 
-export default TDSReportAllModal;
+export default ProvisonAndVlcc;
