@@ -78,6 +78,7 @@ import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
 import FutureModalsPage from "./components/FutureModal";
+import TDSReportsPage from "./pages/Tds";
 import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
 import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
 import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
@@ -196,6 +197,7 @@ export const router = createBrowserRouter([
       { path: "/transactionmaster/modify-tds-transaction", element: <ModifyTdsTransactionPage /> },
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
+      { path: "/tds", element: <TDSReportsPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
