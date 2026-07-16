@@ -6,6 +6,8 @@ import type { ChatMessage, DashboardResponse } from "@/components/AiDashboard/ty
 
 const CHAT_PANEL_WIDTH = 384; // px — matches w-96
 const STORAGE_KEY = "idsspl_ai_dashboard_chat";
+const AI_DASHBOARD_PROMPT_URL =
+  import.meta.env.VITE_AI_DASHBOARD_PROMPT_URL || "https://sms-app.appantech.com/api/dashboard/sms/prompt";
 
 type StoredChat = {
   messages: ChatMessage[];
@@ -48,7 +50,7 @@ const AiDashboardPage = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/ai-dashboard/prompt", {
+      const res = await fetch(AI_DASHBOARD_PROMPT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),

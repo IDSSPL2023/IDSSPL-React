@@ -400,5 +400,26 @@
       "p10": "P10",
       "pChange": "PChange"
     }
+  },
+  "loanInterestRate": {
+    "title": "Loan Interest Rate Modification",
+    "subtitle": "View the parameter information and associated details.",
+    "successTitle": "Loan interest rate modified successfully",
+    "successSubtitle": "Please Authorize",
+    "actions": {
+      "new": "New"
+    },
+    "placeholders": {
+      "accountCode": "Select Account Code",
+      "accountName": "name"
+    },
+    "table": {
+      "check": "Check",
+      "interestRate": "Interest Rate",
+      "penalInterest": "Penal Interest",
+      "overdueInterest": "Overdue Interest",
+      "moratoriumInterest": "Moratorium Interest",
+      "dateOfApplication": "Date of Application"
+    }
   }
 }
