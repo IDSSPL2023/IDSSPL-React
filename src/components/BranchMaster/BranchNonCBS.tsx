@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import Image from "next/image";
 import { X, Check, ChevronDown, UserRound, Landmark } from "lucide-react";
 import { type BranchRow } from "./BranchMasterTable";
 import Image from "../ui/Image";
 import SuccessModal from "../shared/SuccessModal";
 
 /* ------------------------------------------------------------------ */
-/*  TextField component — Pigmy style                                  */
+/*  TextField — EXACTLY LIKE PIGMY CLOSING                           */
 /* ------------------------------------------------------------------ */
 
 interface TextFieldProps {
@@ -34,7 +33,7 @@ function TextField({
 }: TextFieldProps) {
   return (
     <div className="mb-3 last:mb-0">
-      <label className="mb-1.5 block text-[14px] font-semibold text-slate-700">
+      <label className="mb-1.5 block text-[11px] font-semibold text-slate-700">
         {labelEn} <span className="text-slate-400 font-normal">/ {labelHi}</span>
         <span className="text-red-500">*</span>
       </label>
@@ -54,18 +53,18 @@ function TextField({
           placeholder={placeholder}
           readOnly={readOnly}
           onChange={(e) => onChange(e.target.value)}
-          className={`ml-2 w-full bg-transparent outline-none text-[13.5px] placeholder:text-[13.5px] placeholder:text-slate-400 placeholder:font-normal ${
+          className={`ml-2 w-full bg-transparent outline-none text-[11px] placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal ${
             readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
           }`}
         />
       </div>
-      {hasError && <p className="mt-1 text-[11px] text-red-500">Required</p>}
+      {hasError && <p className="mt-1 text-[10px] text-red-500">Required</p>}
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  CardSection — Pigmy CardSection style (border, radius, shadow)     */
+/*  CardSection — EXACTLY LIKE PIGMY CLOSING                         */
 /* ------------------------------------------------------------------ */
 
 function CardSection({
@@ -90,11 +89,11 @@ function CardSection({
           {Icon && <Icon className="w-4 h-4 text-blue-600" />}
         </div>
         <div>
-          <h2 className="text-[17px] font-bold text-slate-800">
+          <h2 className="text-sm font-bold text-slate-800">
             {titleEn} <span className="text-slate-400 font-normal text-xs">/ {titleHi}</span>
           </h2>
           {descriptionEn && (
-            <p className="text-[12px] text-slate-500 mt-0.5">
+            <p className="text-[10px] text-slate-500 mt-0.5">
               {descriptionEn} {descriptionHi && `/ ${descriptionHi}`}
             </p>
           )}
@@ -158,7 +157,7 @@ const REQUIRED_FIELDS: (keyof BranchNonCBSFormData)[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Radio field (Yes/No) — Pigmy YesNoField style                      */
+/*  Radio field — EXACTLY LIKE PIGMY CLOSING                         */
 /* ------------------------------------------------------------------ */
 
 interface RadioFieldProps {
@@ -173,27 +172,27 @@ interface RadioFieldProps {
 function RadioField({ labelEn, labelHi, value, onChange, hasError, name }: RadioFieldProps) {
   return (
     <div className="mb-2">
-      <label className="block text-[14px] font-semibold text-slate-700 mb-1.5">
+      <label className="block text-[11px] font-semibold text-slate-700 mb-1.5">
         {labelEn} <span className="text-slate-400 font-normal">/ {labelHi}</span>
         <span className="text-red-500">*</span>
       </label>
       <div className="flex items-center gap-6 mt-1">
-        <label className="flex items-center gap-2 text-[14px] text-slate-700 cursor-pointer">
-          <input type="radio" name={name} checked={value === "Yes"} onChange={() => onChange("Yes")} className="w-4 h-4 text-blue-600 focus:ring-blue-500" />
+        <label className="flex items-center gap-2 text-[11px] text-slate-700 cursor-pointer">
+          <input type="radio" name={name} checked={value === "Yes"} onChange={() => onChange("Yes")} className="w-3.5 h-3.5 text-blue-600 focus:ring-blue-500" />
           <span className="font-medium">Yes</span>
         </label>
-        <label className="flex items-center gap-2 text-[14px] text-slate-700 cursor-pointer">
-          <input type="radio" name={name} checked={value === "No"} onChange={() => onChange("No")} className="w-4 h-4 text-blue-600 focus:ring-blue-500" />
+        <label className="flex items-center gap-2 text-[11px] text-slate-700 cursor-pointer">
+          <input type="radio" name={name} checked={value === "No"} onChange={() => onChange("No")} className="w-3.5 h-3.5 text-blue-600 focus:ring-blue-500" />
           <span className="font-medium">No</span>
         </label>
       </div>
-      {hasError && <p className="mt-1 text-[11px] text-red-500">Required</p>}
+      {hasError && <p className="mt-1 text-[10px] text-red-500">Required</p>}
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Modal — UNCHANGED logic, Pigmy grid/font/border styling            */
+/*  Modal — EXACTLY LIKE PIGMY CLOSING                               */
 /* ------------------------------------------------------------------ */
 
 interface BranchNonCBSModalProps {
@@ -204,14 +203,26 @@ interface BranchNonCBSModalProps {
 }
 
 export function BranchNonCBSModal({ open, initialData, onClose, onSave }: BranchNonCBSModalProps) {
-  const [formData, setFormData] = useState<BranchNonCBSFormData>(initialData);
+  const [formData, setFormData] = useState<BranchNonCBSFormData>({
+    ...initialData,
+    bankCode: "0100",
+    bankName: "State Bank of India",
+    branchCode: "0100",
+    branchName: "Ilkal Branch",
+  });
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof BranchNonCBSFormData, boolean>>>({});
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     if (open) {
-      setFormData(initialData);
+      setFormData({
+        ...initialData,
+        bankCode: "0100",
+        bankName: "State Bank of India",
+        branchCode: "0100",
+        branchName: "Ilkal Branch",
+      });
       setValidated(false);
       setErrors({});
       setShowSuccess(false);
@@ -294,10 +305,43 @@ export function BranchNonCBSModal({ open, initialData, onClose, onSave }: Branch
             descriptionHi="या Non-CBS मापदंडासाठी बँक व शाखा माहिती."
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              <TextField labelEn="Bank Code" labelHi="बँक कोड" icon={Landmark} placeholder="Enter Bank Code" value={formData.bankCode} onChange={(v) => handleChange("bankCode", v)} hasError={errors.bankCode} />
-              <TextField labelEn="Bank Name" labelHi="बँकेचे नाव" icon={Landmark} placeholder="Enter Bank Name" value={formData.bankName} onChange={(v) => handleChange("bankName", v)} hasError={errors.bankName} />
-              <TextField labelEn="Branch Code" labelHi="शाखा कोड" icon={Landmark} placeholder="Enter Branch Code" value={formData.branchCode} onChange={(v) => handleChange("branchCode", v)} hasError={errors.branchCode} readOnly />
-              <TextField labelEn="Branch Name" labelHi="शाखेचे नाव" icon={Landmark} placeholder="Enter Branch Name" value={formData.branchName} onChange={(v) => handleChange("branchName", v)} hasError={errors.branchName} />
+              <TextField 
+                labelEn="Bank Code" 
+                labelHi="बँक कोड" 
+                icon={Landmark} 
+                placeholder="Enter Bank Code" 
+                value={formData.bankCode} 
+                onChange={(v) => handleChange("bankCode", v)} 
+                hasError={errors.bankCode} 
+              />
+              <TextField 
+                labelEn="Bank Name" 
+                labelHi="बँकेचे नाव" 
+                icon={Landmark} 
+                placeholder="Enter Bank Name" 
+                value={formData.bankName} 
+                onChange={(v) => handleChange("bankName", v)} 
+                hasError={errors.bankName} 
+              />
+              <TextField 
+                labelEn="Branch Code" 
+                labelHi="शाखा कोड" 
+                icon={Landmark} 
+                placeholder="Enter Branch Code" 
+                value={formData.branchCode} 
+                onChange={(v) => handleChange("branchCode", v)} 
+                hasError={errors.branchCode} 
+                readOnly 
+              />
+              <TextField 
+                labelEn="Branch Name" 
+                labelHi="शाखेचे नाव" 
+                icon={Landmark} 
+                placeholder="Enter Branch Name" 
+                value={formData.branchName} 
+                onChange={(v) => handleChange("branchName", v)} 
+                hasError={errors.branchName} 
+              />
             </div>
           </CardSection>
 
@@ -311,15 +355,78 @@ export function BranchNonCBSModal({ open, initialData, onClose, onSave }: Branch
               descriptionHi="या शाखेसाठी दिवस-अखेर, व्याज पोस्टिंग व नूतनीकरण सेटिंग्ज."
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
-                <RadioField name="isDayBeginExecuted" labelEn="Is Day Begin Executed" labelHi="दिवस प्रारंभ" value={formData.isDayBeginExecuted} onChange={(v) => handleChange("isDayBeginExecuted", v)} hasError={errors.isDayBeginExecuted} />
-                <RadioField name="isDayEndExecuted" labelEn="Is Day End Executed" labelHi="दिवस समाप्त" value={formData.isDayEndExecuted} onChange={(v) => handleChange("isDayEndExecuted", v)} hasError={errors.isDayEndExecuted} />
-                <RadioField name="isDenominationRequired" labelEn="Is Denomination Required" labelHi="चलन तपशील" value={formData.isDenominationRequired} onChange={(v) => handleChange("isDenominationRequired", v)} hasError={errors.isDenominationRequired} />
-                <RadioField name="isYearAutoRenewalAtDayBegin" labelEn="Is Year Auto Renewal At Day Begin" labelHi="वर्ष नूतनीकरण" value={formData.isYearAutoRenewalAtDayBegin} onChange={(v) => handleChange("isYearAutoRenewalAtDayBegin", v)} hasError={errors.isYearAutoRenewalAtDayBegin} />
-                <RadioField name="isSBInterestPostAtDayEnd" labelEn="Is SB Interest Post At Day End" labelHi="एसबी व्याज पोस्ट" value={formData.isSBInterestPostAtDayEnd} onChange={(v) => handleChange("isSBInterestPostAtDayEnd", v)} hasError={errors.isSBInterestPostAtDayEnd} />
-                <RadioField name="isCAInterestPostAtDayEnd" labelEn="Is CA Interest Post At Day End" labelHi="सीए व्याज पोस्ट" value={formData.isCAInterestPostAtDayEnd} onChange={(v) => handleChange("isCAInterestPostAtDayEnd", v)} hasError={errors.isCAInterestPostAtDayEnd} />
-                <RadioField name="isTDInterestPostAtDayEnd" labelEn="Is TD Interest Post At Day End" labelHi="TD व्याज पोस्ट" value={formData.isTDInterestPostAtDayEnd} onChange={(v) => handleChange("isTDInterestPostAtDayEnd", v)} hasError={errors.isTDInterestPostAtDayEnd} />
-                <RadioField name="isTLInterestPostAtDayEnd" labelEn="Is TL Interest Post At Day End" labelHi="TL व्याज पोस्ट" value={formData.isTLInterestPostAtDayEnd} onChange={(v) => handleChange("isTLInterestPostAtDayEnd", v)} hasError={errors.isTLInterestPostAtDayEnd} />
-                <RadioField name="isCCInterestPostAtDayEnd" labelEn="Is CC Interest Post At Day End" labelHi="CC व्याज पोस्ट" value={formData.isCCInterestPostAtDayEnd} onChange={(v) => handleChange("isCCInterestPostAtDayEnd", v)} hasError={errors.isCCInterestPostAtDayEnd} />
+                <RadioField 
+                  name="isDayBeginExecuted" 
+                  labelEn="Is Day Begin Executed" 
+                  labelHi="दिवस प्रारंभ" 
+                  value={formData.isDayBeginExecuted} 
+                  onChange={(v) => handleChange("isDayBeginExecuted", v)} 
+                  hasError={errors.isDayBeginExecuted} 
+                />
+                <RadioField 
+                  name="isDayEndExecuted" 
+                  labelEn="Is Day End Executed" 
+                  labelHi="दिवस समाप्त" 
+                  value={formData.isDayEndExecuted} 
+                  onChange={(v) => handleChange("isDayEndExecuted", v)} 
+                  hasError={errors.isDayEndExecuted} 
+                />
+                <RadioField 
+                  name="isDenominationRequired" 
+                  labelEn="Is Denomination Required" 
+                  labelHi="चलन तपशील" 
+                  value={formData.isDenominationRequired} 
+                  onChange={(v) => handleChange("isDenominationRequired", v)} 
+                  hasError={errors.isDenominationRequired} 
+                />
+                <RadioField 
+                  name="isYearAutoRenewalAtDayBegin" 
+                  labelEn="Is Year Auto Renewal At Day Begin" 
+                  labelHi="वर्ष नूतनीकरण" 
+                  value={formData.isYearAutoRenewalAtDayBegin} 
+                  onChange={(v) => handleChange("isYearAutoRenewalAtDayBegin", v)} 
+                  hasError={errors.isYearAutoRenewalAtDayBegin} 
+                />
+                <RadioField 
+                  name="isSBInterestPostAtDayEnd" 
+                  labelEn="Is SB Interest Post At Day End" 
+                  labelHi="एसबी व्याज पोस्ट" 
+                  value={formData.isSBInterestPostAtDayEnd} 
+                  onChange={(v) => handleChange("isSBInterestPostAtDayEnd", v)} 
+                  hasError={errors.isSBInterestPostAtDayEnd} 
+                />
+                <RadioField 
+                  name="isCAInterestPostAtDayEnd" 
+                  labelEn="Is CA Interest Post At Day End" 
+                  labelHi="सीए व्याज पोस्ट" 
+                  value={formData.isCAInterestPostAtDayEnd} 
+                  onChange={(v) => handleChange("isCAInterestPostAtDayEnd", v)} 
+                  hasError={errors.isCAInterestPostAtDayEnd} 
+                />
+                <RadioField 
+                  name="isTDInterestPostAtDayEnd" 
+                  labelEn="Is TD Interest Post At Day End" 
+                  labelHi="TD व्याज पोस्ट" 
+                  value={formData.isTDInterestPostAtDayEnd} 
+                  onChange={(v) => handleChange("isTDInterestPostAtDayEnd", v)} 
+                  hasError={errors.isTDInterestPostAtDayEnd} 
+                />
+                <RadioField 
+                  name="isTLInterestPostAtDayEnd" 
+                  labelEn="Is TL Interest Post At Day End" 
+                  labelHi="TL व्याज पोस्ट" 
+                  value={formData.isTLInterestPostAtDayEnd} 
+                  onChange={(v) => handleChange("isTLInterestPostAtDayEnd", v)} 
+                  hasError={errors.isTLInterestPostAtDayEnd} 
+                />
+                <RadioField 
+                  name="isCCInterestPostAtDayEnd" 
+                  labelEn="Is CC Interest Post At Day End" 
+                  labelHi="CC व्याज पोस्ट" 
+                  value={formData.isCCInterestPostAtDayEnd} 
+                  onChange={(v) => handleChange("isCCInterestPostAtDayEnd", v)} 
+                  hasError={errors.isCCInterestPostAtDayEnd} 
+                />
               </div>
             </CardSection>
           </div>

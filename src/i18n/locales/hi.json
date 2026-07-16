@@ -23,7 +23,10 @@
     "services": "सेवाएं",
     "logout": "लॉगआउट",
     "modify": "संशोधित करें",
-    "fieldRequired": "यह फ़ील्ड आवश्यक है"
+    "fieldRequired": "यह फ़ील्ड आवश्यक है",
+    "apply": "लागू करें",
+    "calculate": "गणना करें",
+    "report": "रिपोर्ट"
   },
   "fields": {
     "accountCode": "खाता कोड",
@@ -356,6 +359,16 @@
     "comingSoon": "जल्द आ रहा है",
     "logoAlt": "लोगो"
   },
+  "supportUtility": {
+    "allMasters": "सभी मास्टर्स",
+    "recentlyUsed": "हाल ही में उपयोग किया गया",
+    "open": "खोलें",
+    "welcomeTitle": "सपोर्ट यूटिलिटी में आपका स्वागत है",
+    "welcomeSubtitle": "सभी मास्टर यूटिलिटीज़ को एक ही स्थान पर खोजें और प्रबंधित करें",
+    "searchPlaceholder": "यूटिलिटी खोजें...",
+    "show": "दिखाएं",
+    "noUtilitiesFound": "कोई यूटिलिटी नहीं मिली"
+  },
   "modifyBranchGlBalance": {
     "title": "शाखा जीएल शेष संशोधित करें",
     "successTitle": "शाखा जीएल शेष सफलतापूर्वक संशोधित किया गया"
@@ -398,6 +411,53 @@
       "rChange": "RChange",
       "p10": "P10",
       "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "ऋण ब्याज दर संशोधन",
+    "subtitle": "पैरामीटर जानकारी और संबंधित विवरण देखें.",
+    "successTitle": "ऋण ब्याज दर सफलतापूर्वक संशोधित की गई",
+    "successSubtitle": "कृपया अधिकृत करें",
+    "actions": {
+      "new": "नया"
+    },
+    "placeholders": {
+      "accountCode": "खाता कोड चुनें",
+      "accountName": "नाम"
+    },
+    "table": {
+      "check": "चेक",
+      "interestRate": "ब्याज दर",
+      "penalInterest": "दंड ब्याज",
+      "overdueInterest": "अतिदेय ब्याज",
+      "moratoriumInterest": "मोरेटोरियम ब्याज",
+      "dateOfApplication": "आवेदन की तारीख"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "पात्र जमा खातों के लिए ब्याज पोस्टिंग प्रक्रिया करें.",
+    "successTitle": "ब्याज पोस्टिंग सफलतापूर्वक संसाधित की गई",
+    "fields": {
+      "asOnDate": "आज की तारीख के अनुसार",
+      "interestRate": "ब्याज दर"
+    },
+    "placeholders": {
+      "fromDate": "From Date दर्ज करें",
+      "toDate": "To Date दर्ज करें"
+    },
+    "actions": {
+      "generateReports": "रिपोर्ट बनाएं"
+    }
+  },
+  "siInterestPosting": {
+    "title": "एसआई ब्याज पोस्टिंग",
+    "menuTitle": "एसआई ब्याज पोस्टिंग",
+    "postingParameter": "पोस्टिंग पैरामीटर",
+    "fields": {
+      "uptoDate": "अद्यतन तिथि"
+    },
+    "placeholders": {
+      "uptoDate": "अद्यतन तिथि दर्ज करें"
     }
   }
 }

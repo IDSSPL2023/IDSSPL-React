@@ -184,6 +184,8 @@ const AccountLookupTableModal = ({ masterKey, onClose, onSave }) => {
         </div>
 
         {/* Account picker */}
+        {/* <div className="mt-5 rounded-[20px] border-x border-b border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900"> */}
+          
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
@@ -212,7 +214,7 @@ const AccountLookupTableModal = ({ masterKey, onClose, onSave }) => {
             </div>
           </div>
 
-          <div>
+          <div className="sm:col-span-1">
             <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
               Account Name
             </label>
@@ -228,6 +230,7 @@ const AccountLookupTableModal = ({ masterKey, onClose, onSave }) => {
             </div>
           </div>
         </div>
+        {/* </div> */}
 
         {isAuditTrail ? (
           <div className="mt-5 space-y-4 rounded-xl border border-gray-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
@@ -469,10 +472,10 @@ const AccountLookupTableModal = ({ masterKey, onClose, onSave }) => {
             className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
               isAuditTrail
                 ? validated
-                  ? "bg-primary-100 text-primary hover:bg-primary-200"
+                  ? "bg-primary text-white hover:bg-primary-700"
                   : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
                 : validated
-                  ? "bg-primary-100 text-primary hover:bg-primary-200"
+                  ? "bg-primary text-white hover:bg-primary-700"
                   : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
             }`}
           >
@@ -480,16 +483,6 @@ const AccountLookupTableModal = ({ masterKey, onClose, onSave }) => {
           </button>
         </div>
       </div>
-
-      {successOpen && (
-        <SuccessModal
-          variant="success"
-          title={isAuditTrail ? "Support Audit Trail Generated" : "Interest Receivable Modified Successfully"}
-          subtitle={isAuditTrail ? "The report request has been processed successfully." : "The interest receivable records have been updated successfully."}
-          onClose={handleSuccessDone}
-          onDone={handleSuccessDone}
-        />
-      )}
 
       {/* Account picklist, opened via the three-dot button (or clicking the input) */}
       {pickerOpen && (
@@ -502,6 +495,16 @@ const AccountLookupTableModal = ({ masterKey, onClose, onSave }) => {
           rows={config.accounts}
           onSelect={handlePickAccount}
           onClose={() => setPickerOpen(false)}
+        />
+      )}
+
+      {successOpen && (
+        <SuccessModal
+          variant="success"
+          title={isAuditTrail ? "Support Audit Trail Generated" : "Interest Receivable Modified Successfully"}
+          subtitle={isAuditTrail ? "The report request has been processed successfully." : "The interest receivable records have been updated successfully."}
+          onClose={handleSuccessDone}
+          onDone={handleSuccessDone}
         />
       )}
     </div>

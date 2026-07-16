@@ -236,7 +236,7 @@ const ParameterModal = ({
                   onClick={() => validated && setSaveMenuOpen((o) => !o)}
                   className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
                     validated
-                      ? "bg-primary-100 text-primary hover:bg-primary-200"
+                      ? "bg-primary text-white hover:bg-primary-700"
                       : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
                   }`}
                 >

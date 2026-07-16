@@ -23,7 +23,10 @@
     "services": "Services",
     "logout": "Logout",
     "modify": "Modify",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "apply": "Apply",
+    "calculate": "Calculate",
+    "report": "Report"
   },
   "fields": {
     "accountCode": "Account Code",
@@ -357,6 +360,16 @@
     "moreMenusBelow": "More menus below",
     "logoAlt": "Logo"
   },
+  "supportUtility": {
+    "allMasters": "All Masters",
+    "recentlyUsed": "Recently Used",
+    "open": "Open",
+    "welcomeTitle": "Welcome to Support Utility",
+   "welcomeSubtitle": "",
+    "searchPlaceholder": "Search utilities...",
+    "show": "Show",
+    "noUtilitiesFound": "No utilities found"
+  },
   "modifyBranchGlBalance": {
     "title": "Modify Branch GL Balance",
     "successTitle": "Branch GL balance modified successfully"
@@ -399,6 +412,53 @@
       "rChange": "RChange",
       "p10": "P10",
       "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "Loan Interest Rate Modification",
+    "subtitle": "View the parameter information and associated details.",
+    "successTitle": "Loan interest rate modified successfully",
+    "successSubtitle": "Please Authorize",
+    "actions": {
+      "new": "New"
+    },
+    "placeholders": {
+      "accountCode": "Select Account Code",
+      "accountName": "name"
+    },
+    "table": {
+      "check": "Check",
+      "interestRate": "Interest Rate",
+      "penalInterest": "Penal Interest",
+      "overdueInterest": "Overdue Interest",
+      "moratoriumInterest": "Moratorium Interest",
+      "dateOfApplication": "Date of Application"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "successTitle": "Interest posting processed successfully",
+    "fields": {
+      "asOnDate": "As on Date",
+      "interestRate": "Interest Rate"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date"
+    },
+    "actions": {
+      "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
     }
   }
 }

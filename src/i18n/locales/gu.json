@@ -21,7 +21,10 @@
     "view": "જુઓ",
     "edit": "સંપાદિત કરો",
     "services": "સેવાઓ",
-    "logout": "લોગઆઉટ"
+    "logout": "લોગઆઉટ",
+    "apply": "લાગુ કરો",
+    "calculate": "ગણતરી કરો",
+    "report": "અહેવાલ"
   },
   "fields": {
     "accountCode": "ખાતા કોડ",
@@ -339,6 +342,16 @@
     "comingSoon": "ટૂંક સમયમાં આવે છે",
     "logoAlt": "લોગો"
   },
+  "supportUtility": {
+    "allMasters": "બધા માસ્ટર્સ",
+    "recentlyUsed": "તાજેતરમાં વપરાયેલ",
+    "open": "ખોલો",
+    "welcomeTitle": "સપોર્ટ યુટિલિટીમાં આપનું સ્વાગત છે",
+    "welcomeSubtitle": "બધી માસ્ટર યુટિલિટીઝ એક જ જગ્યાએ શોધો અને સંચાલિત કરો",
+    "searchPlaceholder": "યુટિલિટી શોધો...",
+    "show": "બતાવો",
+    "noUtilitiesFound": "કોઈ યુટિલિટી મળી નથી"
+  },
   "modifyBranchGlHistory": {
     "title": "Modify Branch GL History",
     "successTitle": "Branch GL history modified successfully",
@@ -377,6 +390,53 @@
       "rChange": "RChange",
       "p10": "P10",
       "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "Loan Interest Rate Modification",
+    "subtitle": "View the parameter information and associated details.",
+    "successTitle": "Loan interest rate modified successfully",
+    "successSubtitle": "Please Authorize",
+    "actions": {
+      "new": "New"
+    },
+    "placeholders": {
+      "accountCode": "Select Account Code",
+      "accountName": "name"
+    },
+    "table": {
+      "check": "Check",
+      "interestRate": "Interest Rate",
+      "penalInterest": "Penal Interest",
+      "overdueInterest": "Overdue Interest",
+      "moratoriumInterest": "Moratorium Interest",
+      "dateOfApplication": "Date of Application"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "successTitle": "Interest posting processed successfully",
+    "fields": {
+      "asOnDate": "As on Date",
+      "interestRate": "Interest Rate"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date"
+    },
+    "actions": {
+      "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
     }
   }
 }
