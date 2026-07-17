@@ -9,14 +9,16 @@ export interface AccountOperativeData {
   currentStatus?: "Operative" | "Inoperative";
 }
 
-
+export interface AccountOperativeSubmitPayload {
+  status: "Operative" | "Inoperative";
+  reason: string;
+}
 
 export interface AccountOperativeModalProps {
   data: AccountOperativeData;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit: (payload: AccountOperativeSubmitPayload) => void;
 }
-
 export default function AccountOperativeModal({
   data,
   onClose,
@@ -35,11 +37,10 @@ export default function AccountOperativeModal({
     setShowSuccess(true);
   };
 
-  const handleDone = () => {
-    setShowSuccess(false);
-    onSubmit();
-  };
-
+const handleDone = () => {
+  setShowSuccess(false);
+  onSubmit({ status, reason });
+};
   return (
     <>
       <div

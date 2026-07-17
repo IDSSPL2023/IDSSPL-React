@@ -4,9 +4,7 @@ import NavbarAM from "@/components/AccountMaster/NavbarAM";
 import AddAccountMaster from "@/components/AccountMaster/AddAccountMaster";
 import ViewAccountModal, { type AccountDetails } from "@/components/AccountMaster/ViewAccount";
 import AccountFreezeModal, { type AccountFreezeSubmitPayload } from "@/components/AccountMaster/AccountFreezeModal";
-import AccountOperativeModal, {
-  type AccountOperativeSubmitPayload,
-} from "@/components/AccountMaster/AccountOperativeModal";
+import AccountOperativeModal, {  type AccountOperativeSubmitPayload} from "@/components/AccountMaster/AccountOperativeModal";
 import { useBilingual } from "@/i18n/useBilingual";
 
 export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment";

@@ -9,7 +9,7 @@ interface ProductRow {
   productCode: string;
   description: string;
   interestApplyDate: string;
-  interestFlag: string;
+  interestFlag: "Yes" | "No";
 }
 
 const columns = [
@@ -169,7 +169,7 @@ const SetProductStatusTable = forwardRef<{ handleAdd: () => void }>((_, ref) => 
           productCode: selectedRow.productCode,
           productName: selectedRow.description,
           interestApplyDate: selectedRow.interestApplyDate,
-          interestFlag: selectedRow.interestFlag,
+          interestFlag: selectedRow.interestFlag as "Yes" | "No",
         } : undefined}
         onClose={handleModalClose}
         onSave={handleModalSave}

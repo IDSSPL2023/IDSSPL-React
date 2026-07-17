@@ -27,7 +27,6 @@ export const ICONS = {
   USER_CIRCLE: userCircle,
   USER_SQUARE: userSquare,
   MESSAGE_LANGUAGE: messageLanguage,
-  USER_CIRCLE: UserCircle,
 } as const;
 
 // Default export for convenience
