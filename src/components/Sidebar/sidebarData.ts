@@ -237,6 +237,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-bills",
         title: "Bills",
         icon: Receipt,
+        href: "/account-master/bill",
       },
       {
         id: "clerk-branch",
