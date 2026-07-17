@@ -606,6 +606,7 @@
     },
     "actions": {
       "postToAccount": "ખાતામાં પોસ્ટ કરો"
+  },
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",
@@ -734,4 +735,4 @@
       "name": "name"
     }
   }
-}
+}}

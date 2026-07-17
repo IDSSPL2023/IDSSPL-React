@@ -605,7 +605,7 @@
       "bounceNoOfInstruments": "బౌన్స్ అయిన ఇన్‌స్ట్రుమెంట్ల సంఖ్య"
     },
     "actions": {
-      "postToAccount": "ఖాతాలో పోస్ట్ చేయండి"
+      "postToAccount": "ఖాతాలో పోస్ట్ చేయండి"},
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",
@@ -734,4 +734,5 @@
       "name": "name"
     }
   }
+}
 }

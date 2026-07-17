@@ -605,7 +605,7 @@
       "bounceNoOfInstruments": "பவுன்ஸான கருவிகளின் எண்ணிக்கை"
     },
     "actions": {
-      "postToAccount": "கணக்கில் பதிவு செய்"
+      "postToAccount": "கணக்கில் பதிவு செய்"},
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",
@@ -734,4 +734,4 @@
       "name": "name"
     }
   }
-}
+  }}

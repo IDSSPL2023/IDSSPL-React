@@ -673,6 +673,7 @@
     "pickerTitle": "Select Product",
     "successTitle": "Product Status Saved Successfully",
     "successSubtitle": "The product status has been updated successfully."
+  },
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",
