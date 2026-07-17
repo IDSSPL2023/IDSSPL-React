@@ -504,6 +504,108 @@
       "description": "Description"
     }
   },
+  "clearing": {
+    "hero": {
+      "title": "ક્લિયરિંગ",
+      "welcomeTitle": "ક્લિયરિંગમાં આપનું સ્વાગત છે",
+      "searchPlaceholder": "ક્લિયરિંગ પ્રક્રિયાઓ શોધો...",
+      "show": "બતાવો",
+      "allMasters": "તમામ માસ્ટર્સ",
+      "recentlyUsed": "તાજેતરમાં વપરાયેલ",
+      "open": "ખોલો",
+      "noUtilitiesFound": "કોઈ સુવિધા મળી નથી",
+      "breadcrumbClerk": "ક્લર્ક"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "O/W Clearing Late Return Mark",
+        "cardDescription": "જાવક ક્લિયરિંગ બિલોનું વિલંબિત રિટર્ન નોંધો અને ચિહ્નિત કરો.",
+        "modalTitle": "જાવક બિલ વસૂલી નોંધ",
+        "modalSubtitle": "જાવક ક્લિયરિંગ બિલ પર મળેલ વિલંબિત રિટર્ન નોંધો.",
+        "successTitle": "જાવક ક્લિયરિંગ વિલંબિત રિટર્ન સફળતાપૂર્વક નોંધાયું"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "Sub Branch I/W CLG Return",
+        "cardDescription": "પેટા શાખા દ્વારા મોકલેલ આવક ક્લિયરિંગ રિટર્ન નોંધો.",
+        "modalTitle": "પેટા શાખા આવક રિટર્ન",
+        "modalSubtitle": "પેરામીટરની માહિતી અને સંબંધિત વિગતો જુઓ.",
+        "successTitle": "પેટા શાખા આવક રિટર્ન સફળતાપૂર્વક સાચવ્યું"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "O/W Clearing Posting Mark",
+        "cardDescription": "જાવક ક્લિયરિંગ શેડ્યૂલની પોસ્ટિંગ સ્થિતિ ચિહ્નિત કરો.",
+        "modalTitle": "જાવક ક્લિયરિંગ પોસ્ટિંગ ચિહ્ન",
+        "modalSubtitle": "પેરામીટરની માહિતી અને સંબંધિત વિગતો જુઓ.",
+        "successTitle": "જાવક ક્લિયરિંગ ખાતામાં સફળતાપૂર્વક નોંધાયું"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "શાખા માહિતી",
+        "subtitle": "જાવક બિલ વસૂલી માટે ખાતાની વિગતો દાખલ કરો."
+      },
+      "clearingDetails": {
+        "title": "ક્લિયરિંગ વિગતો",
+        "subtitle": "નોંધતા પહેલા શાખા અને વ્યવહારની વિગતો પસંદ કરો."
+      },
+      "customerAccountDetails": {
+        "title": "ગ્રાહક અને ખાતાની વિગતો",
+        "subtitle": "ગ્રાહક, ચૂકવણી મેળવનાર અને આહરણ બેંકની વિગતો દાખલ કરો."
+      },
+      "instrumentDetails": {
+        "title": "ઈન્સ્ટ્રુમેન્ટ વિગતો",
+        "subtitle": "ચેક/ઈન્સ્ટ્રુમેન્ટની વિગતો દાખલ કરો."
+      },
+      "returnDetails": {
+        "title": "રિટર્ન વિગતો",
+        "subtitle": "અસ્વીકાર અને શુલ્કની વિગતો દાખલ કરો."
+      },
+      "details": {
+        "title": "વિગતો",
+        "subtitle": "પેરામીટરની માહિતી અને સંબંધિત વિગતો જુઓ."
+      }
+    },
+    "fields": {
+      "bankCode": "બેંક કોડ",
+      "bankName": "બેંકનું નામ",
+      "branchCode": "શાખા કોડ",
+      "branchName": "શાખાનું નામ",
+      "date": "તારીખ",
+      "scrollNumber": "સ્ક્રોલ નંબર",
+      "clearingTypeId": "ક્લિયરિંગ પ્રકાર આઈડી",
+      "clearingTypeName": "ક્લિયરિંગ પ્રકાર નામ",
+      "dailyOutwardScheduleNo": "દૈનિક જાવક શેડ્યૂલ નં.",
+      "scheduleDate": "શેડ્યૂલ તારીખ",
+      "clearingSerialNumber": "ક્લિયરિંગ ક્રમ સંખ્યા",
+      "customerId": "ગ્રાહક આઈડી",
+      "customerName": "ગ્રાહકનું નામ",
+      "accountCode": "ખાતા કોડ",
+      "accountName": "ખાતાધારકનું નામ",
+      "payeeName": "ચૂકવણી મેળવનારનું નામ",
+      "drawerName": "આહરણકર્તાનું નામ",
+      "instrumentType": "ઈન્સ્ટ્રુમેન્ટ પ્રકાર",
+      "instrumentNumber": "ઈન્સ્ટ્રુમેન્ટ નંબર",
+      "instrumentDate": "ઈન્સ્ટ્રુમેન્ટ તારીખ",
+      "instrumentAmount": "ઈન્સ્ટ્રુમેન્ટ રકમ",
+      "outletSerialNo": "આઉટલેટ ક્રમ સંખ્યા",
+      "glOutletDescription": "જીએલ આઉટલેટ વર્ણન",
+      "glOutlistDocNo": "જીએલ આઉટલિસ્ટ દસ્તાવેજ નં.",
+      "rejectionTypeId": "અસ્વીકાર પ્રકાર આઈડી",
+      "rejectionDescription": "અસ્વીકાર વર્ણન",
+      "chequeReturnCharges": "ચેક રિટર્ન શુલ્ક",
+      "serviceTax": "સેવા કર",
+      "adviceNumber": "એડવાઈસ નંબર",
+      "adviceDate": "એડવાઈસ તારીખ",
+      "originalResponding": "મૂળ / પ્રતિભાવ",
+      "dailyInwardScheduleNo": "દૈનિક આવક શેડ્યૂલ નં.",
+      "amount": "રકમ",
+      "scheduleNumber": "શેડ્યૂલ નંબર",
+      "numberOfInstruments": "ઈન્સ્ટ્રુમેન્ટની સંખ્યા",
+      "totalAmount": "કુલ રકમ",
+      "bounceNoOfInstruments": "બાઉન્સ ઈન્સ્ટ્રુમેન્ટની સંખ્યા"
+    },
+    "actions": {
+      "postToAccount": "ખાતામાં પોસ્ટ કરો"
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",

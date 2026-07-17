@@ -249,6 +249,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-clearing",
         title: "Clearing",
         icon: ArrowLeftRight,
+        href: "/clerk/clearing",
       },
       {
         id: "clerk-customer",

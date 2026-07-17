@@ -543,6 +543,136 @@
       "balanceDate": "Enter Balance Date for Simple Deprection"
     }
   },
+  "clearing": {
+    "hero": {
+      "title": "Clearing",
+      "welcomeTitle": "Welcome to Clearing",
+      "searchPlaceholder": "Search clearing processes...",
+      "show": "Show",
+      "allMasters": "All Masters",
+      "recentlyUsed": "Recently Used",
+      "open": "Open",
+      "noUtilitiesFound": "No utilities found",
+      "breadcrumbClerk": "Clerk"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "O/W Clearing Late Return Mark",
+        "cardDescription": "Mark and record late returns for outward clearing bills.",
+        "modalTitle": "Outward Clearing Late Return",
+        "modalSubtitle": "Record a late return raised against an outward clearing bill.",
+        "successTitle": "Outward Clearing Late Return Marked Successfully"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "Sub Branch I/W CLG Return",
+        "cardDescription": "Record inward clearing returns raised by a sub branch.",
+        "modalTitle": "Sub Branch Inward Return",
+        "modalSubtitle": "View the parameter information and associated details.",
+        "successTitle": "Sub Branch Inward Return Saved Successfully"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "O/W Clearing Posting Mark",
+        "cardDescription": "Mark the posting status of an outward clearing schedule.",
+        "modalTitle": "Outward Clearing Posting Mark",
+        "modalSubtitle": "View the parameter information and associated details.",
+        "successTitle": "Outward Clearing Posted To Account Successfully"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "Branch Information",
+        "subtitle": "Enter the account details for outward bill collections."
+      },
+      "clearingDetails": {
+        "title": "Clearing Details",
+        "subtitle": "Select the branch and transaction details before recording."
+      },
+      "customerAccountDetails": {
+        "title": "Customer & Account Details",
+        "subtitle": "Enter the customer, payee and drawee bank details."
+      },
+      "instrumentDetails": {
+        "title": "Instrument Details",
+        "subtitle": "Enter the cheque / instrument details."
+      },
+      "returnDetails": {
+        "title": "Return Details",
+        "subtitle": "Enter the rejection and charges details."
+      },
+      "details": {
+        "title": "Details",
+        "subtitle": "View the parameter information and associated details."
+      }
+    },
+    "fields": {
+      "bankCode": "Bank Code",
+      "bankName": "Bank Name",
+      "branchCode": "Branch Code",
+      "branchName": "Branch Name",
+      "date": "Date",
+      "scrollNumber": "Scroll Number",
+      "clearingTypeId": "Clearing Type Id",
+      "clearingTypeName": "Clearing Type Name",
+      "dailyOutwardScheduleNo": "Daily Outward Schedule No.",
+      "scheduleDate": "Schedule Date",
+      "clearingSerialNumber": "Clearing Serial Number",
+      "customerId": "Customer Id",
+      "customerName": "Customer Name",
+      "accountCode": "Account Code",
+      "accountName": "Account Name",
+      "payeeName": "Payee Name",
+      "drawerName": "Drawer Name",
+      "instrumentType": "Instrument Type",
+      "instrumentNumber": "Instrument Number",
+      "instrumentDate": "Instrument Date",
+      "instrumentAmount": "Instrument Amount",
+      "outletSerialNo": "Outlet Serial No.",
+      "glOutletDescription": "GL Outlet Description",
+      "glOutlistDocNo": "GL OutList Doc. No.",
+      "rejectionTypeId": "Rejection Type ID",
+      "rejectionDescription": "Rejection Description",
+      "chequeReturnCharges": "Cheque Return Charges",
+      "serviceTax": "Service Tax",
+      "adviceNumber": "Advice Number",
+      "adviceDate": "Advice Date",
+      "originalResponding": "Original / Responding",
+      "dailyInwardScheduleNo": "Daily Inward Schedule No.",
+      "amount": "Amount",
+      "scheduleNumber": "Schedule Number",
+      "numberOfInstruments": "Number of Instruments",
+      "totalAmount": "Total Amount",
+      "bounceNoOfInstruments": "Bounce No of Instruments"
+    },
+    "actions": {
+      "postToAccount": "Post To Account"
+    }
+  },
+  "setProductStatus": {
+    "fields": {
+      "type": "Type",
+      "typeHi": "प्रकार",
+      "description": "Description",
+      "descriptionHi": "विवरण",
+      "productCode": "Product Code",
+      "productCodeHi": "उत्पाद कोड",
+      "productName": "Product Name",
+      "productNameHi": "उत्पादाचे नाव",
+      "interestApplyDate": "Interest Apply Date",
+      "interestApplyDateHi": "व्याज लागू तारीख",
+      "interestFlag": "Interest Flag",
+      "interestFlagHi": "व्याज ध्वज"
+    },
+    "errors": {
+      "typeRequired": "Type is required",
+      "descriptionRequired": "Description is required",
+      "productCodeRequired": "Product Code is required",
+      "productNameRequired": "Product Name is required",
+      "interestApplyDateRequired": "Interest Apply Date is required",
+      "interestFlagRequired": "Interest Flag is required"
+    },
+    "pickerTitle": "Select Product",
+    "successTitle": "Product Status Saved Successfully",
+    "successSubtitle": "The product status has been updated successfully."
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",
