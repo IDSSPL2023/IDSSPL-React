@@ -88,6 +88,8 @@ import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandli
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
+// import BillHero from "./components/Bill/BillHero";
+import BillUtilityPage from "./components/Bill/BillUtilityPage";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -131,6 +133,8 @@ export const router = createBrowserRouter([
       { path: "/account-closing/loan", element: <AccountClosingLoanPage /> },
       { path: "/account-closing/pigmy", element: <AccountClosingPigmyPage /> },
       { path: "/account-master", element: <AccountMasterLandingPage /> },
+      // { path: "/account-master/bill", element: <BillHero /> },
+      { path: "/account-master/bill", element: <BillUtilityPage /> },
       { path: "/account-master/ca-sa", element: <AccountMasterCaSaPage /> },
       { path: "/account-master/deposit", element: <AccountMasterDepositPage /> },
       { path: "/account-master/investment", element: <AccountMasterInvestmentPage /> },
