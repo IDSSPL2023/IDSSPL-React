@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import DataTable from "./DataTable";
 import { MASTERS, getMasterConfig } from "./masterConfig";
+import { useNavigate } from "react-router-dom";
 
 const ICON_MAP = {
   Wallet, UserCircle, ShieldCheck, GitBranch, SlidersHorizontal, CreditCard,
@@ -65,6 +66,7 @@ const Tab = ({ label, active, onClick }) => (
 const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filters }) => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
   const [query, setQuery] = useState("");
+  const navigate = useNavigate()
 
   const filteredMasters = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -75,6 +77,10 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
         m.titleHi.toLowerCase().includes(q)
     );
   }, [query]);
+
+  if (openMaster?.titleEn == "Branch Master" ) {
+   return navigate('/branchmaster');
+  }
 
   if (openMaster) {
     return (

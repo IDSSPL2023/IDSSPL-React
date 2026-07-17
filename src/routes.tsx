@@ -39,7 +39,7 @@ import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCc
 import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
 import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
 import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
-import BranchMasterPage from "@/pages/BranchMasterPage";
+import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
 import CustomerMasterPage from "@/pages/CustomerMasterPage";
 import DashboardPage from "@/pages/DashboardPage";
 import FutureModelsPage from "@/pages/futuremodels/FutureModelsPage";
@@ -194,7 +194,7 @@ export const router = createBrowserRouter([
 
       { path: "/financial-closing", element: <FinancialClosing /> },
       { path: "/financial-closing/set-product-status", element: <SetProductStatusPage /> },
-
+      { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
