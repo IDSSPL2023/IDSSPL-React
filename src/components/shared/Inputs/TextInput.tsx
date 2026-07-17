@@ -33,7 +33,7 @@ function TextInput({
     const borderClass = hasError ? "border-red-400" : "border-[#6A7282]";
 
     const stateClasses = readOnly
-      ? "bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+      ? "bg-[#F3F4F6] dark:border-slate-700 dark:bg-slate-800"
       : "bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700";
 
     return `${baseClasses} ${borderClass} ${stateClasses}`;

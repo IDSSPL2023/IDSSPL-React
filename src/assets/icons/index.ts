@@ -5,6 +5,7 @@ import pdf from "./pdf.svg";
 import xls from "./xsl.svg";
 import txt from "./txt.svg";
 import update from "./update.svg";
+import UserCircle from "../../../public/User.png"
 
 // Export as ICON object with properties
 export const ICONS = {
@@ -14,6 +15,7 @@ export const ICONS = {
   TXT: txt,
   ADD_PERSON: addPerson,
   UPDATE: update,
+  USER_CIRCLE: UserCircle,
 } as const;
 
 // Default export for convenience
