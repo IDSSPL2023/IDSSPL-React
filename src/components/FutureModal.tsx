@@ -4,6 +4,9 @@ import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanIn
 import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import StopChequePayment from "@/components/futuremodels/StopChequePayment";
 import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchParameterModal";
+import CombineAcceptPayCashMultiple from "@/components/futuremodels/CombineAcceptPayCashMultiple";
+import RecoverySummary from "@/components/futuremodels/RecoverySummary";
+import PayCash from "@/components/futuremodels/PayCash";
 
 interface FutureModelAction {
     label: string;
@@ -36,6 +39,9 @@ const FutureModalsPage = () => {
     const [showInterestPosting, setShowInterestPosting] = useState(false);
     const [showSiPosting, setShowSiPosting] = useState(false);
     const [showSetBranchParameter, setShowSetBranchParameter] = useState(false);
+    const [showCombineAcceptPayCash, setShowCombineAcceptPayCash] = useState(false);
+    const [showRecoverySummary, setShowRecoverySummary] = useState(false);
+    const [showPayCash, setShowPayCash] = useState(false);
 
     return (
         <div className="p-6">
@@ -88,6 +94,30 @@ const FutureModalsPage = () => {
                 >
                     SET BRANCH PARAMETER
                 </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowCombineAcceptPayCash(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    COMBINE ACCEPT PAY CASH MULTIPLE
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowRecoverySummary(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    RECOVERY SUMMARY
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowPayCash(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    PAY CASH
+                </button>
             </div>
 
             {showStopChequePayment && (
@@ -107,6 +137,18 @@ const FutureModalsPage = () => {
 
             {showSetBranchParameter && (
                 <SetBranchParameterModal onClose={() => setShowSetBranchParameter(false)} />
+            )}
+
+            {showCombineAcceptPayCash && (
+                <CombineAcceptPayCashMultiple onClose={() => setShowCombineAcceptPayCash(false)} />
+            )}
+
+            {showRecoverySummary && (
+                <RecoverySummary onClose={() => setShowRecoverySummary(false)} />
+            )}
+
+            {showPayCash && (
+                <PayCash onClose={() => setShowPayCash(false)} />
             )}
         </div>
     );

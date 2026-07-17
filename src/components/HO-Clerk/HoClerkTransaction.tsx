@@ -6,6 +6,9 @@ import Image from '@/components/ui/Image';
 import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import AddCashDeposit from '@/components/TransactionMaster/AddCashDeposit';
 import AddCashWithdrawal from '@/components/TransactionMaster/AddCashWithdrawal';
+import AddHoTransfer from '@/components/HO-Clerk/AddHoTransfer';
+import AddReconciliation from '@/components/HO-Clerk/AddReconciliation';
+import AddRtgsOutward from '@/components/HO-Clerk/AddRtgsOutward';
 import AddInvestmentAccountClose from '@/components/futuremodels/AddInvestmentAccountClose';
 
 const HO_CLERK_TRANSACTION_ITEMS = [
@@ -123,6 +126,9 @@ const HoClerkTransaction = () => {
   const router = useRouter();
   const [openHoCashDeposit, setOpenHoCashDeposit] = useState(false);
   const [openHoCashWithdrawal, setOpenHoCashWithdrawal] = useState(false);
+  const [openHoTransfer, setOpenHoTransfer] = useState(false);
+  const [openReconciliation, setOpenReconciliation] = useState(false);
+  const [openRtgsOutward, setOpenRtgsOutward] = useState(false);
   const [openInvestmentClosing, setOpenInvestmentClosing] = useState(false);
 
   const handleOpen = (key: string) => {
@@ -132,6 +138,18 @@ const HoClerkTransaction = () => {
     }
     if (key === 'ho-cash-withdrawal-entry') {
       setOpenHoCashWithdrawal(true);
+      return;
+    }
+    if (key === 'ho-transfer-entry') {
+      setOpenHoTransfer(true);
+      return;
+    }
+    if (key === 'reconciliation') {
+      setOpenReconciliation(true);
+      return;
+    }
+    if (key === 'rtgs-outward-file-generation') {
+      setOpenRtgsOutward(true);
       return;
     }
     if (key === 'investment-payment-closingmark') {
@@ -149,6 +167,15 @@ const HoClerkTransaction = () => {
   };
   const handleCloseHoCashWithdrawal = () => {
     setOpenHoCashWithdrawal(false);
+  };
+  const handleCloseHoTransfer = () => {
+    setOpenHoTransfer(false);
+  };
+  const handleCloseReconciliation = () => {
+    setOpenReconciliation(false);
+  };
+  const handleCloseRtgsOutward = () => {
+    setOpenRtgsOutward(false);
   };
   const handleCloseInvestmentClosing = () => {
     setOpenInvestmentClosing(false);
@@ -191,6 +218,33 @@ const HoClerkTransaction = () => {
           titleHi="HO रोख पैसे काढणे नोंद"
           subtitleEn="Fill in the HO cash withdrawal entry details."
           subtitleHi="HO रोख पैसे काढणे नोंद तपशील भरा."
+        />
+      )}
+      {openHoTransfer && (
+        <AddHoTransfer
+          onClose={handleCloseHoTransfer}
+          titleEn="Ho Transfer Entry"
+          titleHi="HO हस्तांतरण नोंद"
+          subtitleEn="Fill in the HO transfer entry details."
+          subtitleHi="HO हस्तांतरण नोंद तपशील भरा."
+        />
+      )}
+      {openReconciliation && (
+        <AddReconciliation
+          onClose={handleCloseReconciliation}
+          titleEn="Reconciliation"
+          titleHi="समायोजन"
+          subtitleEn="Fill in the reconciliation entry details."
+          subtitleHi="समायोजन नोंद तपशील भरा."
+        />
+      )}
+      {openRtgsOutward && (
+        <AddRtgsOutward
+          onClose={handleCloseRtgsOutward}
+          titleEn="RTGS Outward File Generation"
+          titleHi="RTGS आउटवर्ड फाइल जनरेशन"
+          subtitleEn="Fill in the RTGS outward file generation details."
+          subtitleHi="RTGS आउटवर्ड फाइल जनरेशन तपशील भरा."
         />
       )}
       {openInvestmentClosing && (
