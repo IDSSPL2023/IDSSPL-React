@@ -91,6 +91,7 @@ import TermDepositInterestPayment from "./components/TermDepositInterest/TermDep
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
 // import BillHero from "./components/Bill/BillHero";
 import BillUtilityPage from "./components/Bill/BillUtilityPage";
+import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -164,6 +165,10 @@ export const router = createBrowserRouter([
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
+      { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
+
+
+       
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
