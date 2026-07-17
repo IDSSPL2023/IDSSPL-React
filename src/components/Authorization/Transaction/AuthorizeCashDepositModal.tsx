@@ -37,6 +37,12 @@ export interface AuthorizeCashDepositModalProps {
   onClose: () => void;
   onAuthorize?: () => void;
   onReject?: (reason: string) => void;
+  titleEn?: string;
+  titleHi?: string;
+  subtitleEn?: string;
+  subtitleHi?: string;
+  successTitle?: string;
+  rejectedTitle?: string;
 }
 
 const SectionIcon = () => (
@@ -101,6 +107,12 @@ const AuthorizeCashDepositModal = ({
   onClose,
   onAuthorize,
   onReject,
+  titleEn = "Authorize Cash Deposit",
+  titleHi = "रोख जमा अधिकृत करा",
+  subtitleEn = "Check information related to the cash deposit and authorize it.",
+  subtitleHi = "रोख जमा व्यवहाराशी संबंधित माहिती तपासा आणि अधिकृत करा.",
+  successTitle = "Cash Deposit Authorized Successfully",
+  rejectedTitle = "Cash Deposit Authorization Rejected",
 }: AuthorizeCashDepositModalProps) => {
   const [data] = useState<CashDepositFormData>(() => ({
     ...DEFAULT_CASH_DEPOSIT_DATA,
@@ -135,10 +147,10 @@ const AuthorizeCashDepositModal = ({
     <>
       <FormModal
         onClose={onClose}
-        titleEn="Authorize Cash Deposit"
-        titleHi="रोख जमा अधिकृत करा"
-        subtitleEn="Check information related to the cash deposit and authorize it."
-        subtitleHi="रोख जमा व्यवहाराशी संबंधित माहिती तपासा आणि अधिकृत करा."
+        titleEn={titleEn}
+        titleHi={titleHi}
+        subtitleEn={subtitleEn}
+        subtitleHi={subtitleHi}
         headerIcon={
           <div className="flex h-12 w-12 items-center justify-center">
             <Image src="/Authorize User.png" alt="Authorize Cash Deposit" width={50} height={50} />
@@ -342,7 +354,7 @@ const AuthorizeCashDepositModal = ({
 
         {actionModal === "authorize" && (
           <SuccessModal
-            title="Cash Deposit Authorized Successfully"
+            title={successTitle}
             subtitle=""
             onClose={handleDone}
             onDone={handleDone}
@@ -352,7 +364,7 @@ const AuthorizeCashDepositModal = ({
 
         {actionModal === "rejected" && (
           <SuccessModal
-            title="Cash Deposit Authorization Rejected"
+            title={rejectedTitle}
             subtitle=""
             onClose={handleDone}
             onDone={handleDone}

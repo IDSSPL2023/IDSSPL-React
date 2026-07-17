@@ -9,6 +9,7 @@
     "validate": "प्रमाणित करा",
     "authorize": "अधिकृत करा",
     "revoke": "रद्द करा",
+    "reject": "नाकारा",
     "details": "तपशील",
     "accountDetails": "खात्याचा तपशील",
     "lienDetails": "बोजा तपशील",
@@ -105,7 +106,13 @@
       "createdBy": "तयार केले",
       "openingDate": "खाते उघडण्याची तारीख",
       "menuFreeze": "खाते फ्रीज / अनफ्रीज",
-      "menuCheque": "चेक बुक इश्यू"
+      "menuCheque": "चेक बुक इश्यू",
+      "menuFreezeUnfreeze": "खाते फ्रीज / अनफ्रीज",
+      "menuChequeBookIssue": "चेक बुक इश्यू / स्टॉप",
+      "menuStandingInstruction": "स्टँडिंग इन्स्ट्रक्शन",
+      "menuMemo": "मेमो",
+      "menuOperativeInoperative": "खाते कार्यरत/निष्क्रिय",
+      "menuLienMark": "लियन मार्क / स्टॉप"
     },
     "addForm": {
       "title": "खाते जोडा",
@@ -575,6 +582,62 @@
         "modalTitle": "जावक क्लिअरिंग नोंद चिन्हांकित करा",
         "modalSubtitle": "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
         "successTitle": "जावक क्लिअरिंग खात्यात यशस्वीरित्या नोंदवले"
+      },
+      "clearingTallyWithClearingHouse": {
+        "cardTitle": "क्लिअरिंग हाऊससोबत क्लिअरिंग ताळमेळ",
+        "cardDescription": "शाखेच्या क्लिअरिंग स्क्रोलचा क्लिअरिंग हाऊसच्या आकड्यांशी ताळमेळ घ्या.",
+        "modalTitle": "क्लिअरिंग हाऊससोबत क्लिअरिंग ताळमेळ",
+        "modalSubtitle": "समाप्तीपूर्वी स्क्रोल एकूण रक्कम क्लिअरिंग हाऊसशी पडताळा.",
+        "successTitle": "क्लिअरिंग हाऊससोबत ताळमेळ यशस्वीरित्या झाला"
+      },
+      "firstSecondClearingClosing": {
+        "cardTitle": "1ली व 2री क्लिअरिंग समाप्ती",
+        "cardDescription": "दिवसाच्या पहिल्या व दुसऱ्या क्लिअरिंग सत्रांची समाप्ती करा.",
+        "modalTitle": "1ली व 2री क्लिअरिंग समाप्ती",
+        "modalSubtitle": "शाखेसाठी निवडलेले क्लिअरिंग सत्र समाप्त करा.",
+        "successTitle": "क्लिअरिंग यशस्वीरित्या समाप्त झाले"
+      },
+      "generateInwardSchedule": {
+        "cardTitle": "आवक वेळापत्रक तयार करा",
+        "cardDescription": "दैनंदिन आवक क्लिअरिंग वेळापत्रक तयार करा.",
+        "modalTitle": "आवक वेळापत्रक तयार करा",
+        "modalSubtitle": "निवडलेल्या तारखेसाठी आवक क्लिअरिंग वेळापत्रक तयार करा.",
+        "successTitle": "आवक वेळापत्रक यशस्वीरित्या तयार झाले"
+      },
+      "generateOutwardSchedule": {
+        "cardTitle": "जावक वेळापत्रक तयार करा",
+        "cardDescription": "दैनंदिन जावक क्लिअरिंग वेळापत्रक तयार करा.",
+        "modalTitle": "जावक वेळापत्रक तयार करा",
+        "modalSubtitle": "निवडलेल्या तारखेसाठी जावक क्लिअरिंग वेळापत्रक तयार करा.",
+        "successTitle": "जावक वेळापत्रक यशस्वीरित्या तयार झाले"
+      },
+      "importDailyOutwardScheduleDetail": {
+        "cardTitle": "दैनंदिन जावक वेळापत्रक तपशील आयात करा",
+        "cardDescription": "दिवसासाठी प्राप्त झालेली जावक वेळापत्रक तपशील फाईल आयात करा.",
+        "modalTitle": "दैनंदिन जावक वेळापत्रक तपशील आयात करा",
+        "modalSubtitle": "निवडलेल्या वेळापत्रकासाठी जावक वेळापत्रक तपशील फाईल आयात करा.",
+        "successTitle": "दैनंदिन जावक वेळापत्रक तपशील यशस्वीरित्या आयात झाला"
+      },
+      "inwardClearingEntry": {
+        "cardTitle": "आवक क्लिअरिंग नोंद",
+        "cardDescription": "आवक क्लिअरिंगमध्ये प्राप्त उपकरणनिहाय नोंदी करा.",
+        "modalTitle": "आवक क्लिअरिंग नोंद",
+        "modalSubtitle": "आवक क्लिअरिंगसाठी शाखा, वेळापत्रक व उपकरण तपशील प्रविष्ट करा.",
+        "successTitle": "आवक क्लिअरिंग नोंद यशस्वीरित्या जतन झाली"
+      },
+      "owClearingBounceMark": {
+        "cardTitle": "जावक क्लिअरिंग बाउन्स चिन्ह",
+        "cardDescription": "जावक क्लिअरिंग उपकरण बाउन्स/परत आले म्हणून चिन्हांकित करा.",
+        "modalTitle": "जावक क्लिअरिंग बाउन्स चिन्ह",
+        "modalSubtitle": "बाउन्स झालेल्या उपकरणासाठी नकार व शुल्क नोंदवा.",
+        "successTitle": "जावक क्लिअरिंग बाउन्स यशस्वीरित्या चिन्हांकित झाले"
+      },
+      "outwardClearingEntry": {
+        "cardTitle": "जावक क्लिअरिंग नोंद",
+        "cardDescription": "जावक क्लिअरिंगमध्ये पाठवलेल्या उपकरणनिहाय नोंदी करा.",
+        "modalTitle": "जावक क्लिअरिंग नोंद",
+        "modalSubtitle": "जावक क्लिअरिंगसाठी शाखा, वेळापत्रक व उपकरण तपशील प्रविष्ट करा.",
+        "successTitle": "जावक क्लिअरिंग नोंद यशस्वीरित्या जतन झाली"
       }
     },
     "sections": {
@@ -640,11 +703,19 @@
       "scheduleNumber": "वेळापत्रक क्रमांक",
       "numberOfInstruments": "उपकरणांची संख्या",
       "totalAmount": "एकूण रक्कम",
-      "bounceNoOfInstruments": "बाउन्स झालेल्या उपकरणांची संख्या"
+      "bounceNoOfInstruments": "बाउन्स झालेल्या उपकरणांची संख्या",
+      "totalInstruments": "एकूण उपकरणे",
+      "closingRemark": "समाप्ती शेरा",
+      "fileName": "फाईल नाव"
     },
     "actions": {
-      "postToAccount": "खात्यात नोंदवा"
-    },
+      "postToAccount": "खात्यात नोंदवा",
+      "tally": "ताळमेळ",
+      "close": "समाप्त करा",
+      "generate": "तयार करा",
+      "import": "आयात करा"
+    }
+  },
   "pigmyInterestProvision": {
     "title": "दिवस प्रारंभ स्वयंचलित नूतनीकरण",
     "subtitle": "दिवसाच्या प्रारंभी स्वयंचलित नूतनीकरण प्रक्रिया करा.",
@@ -772,5 +843,17 @@
     "placeholders": {
       "name": "name"
     }
+  },
+  "clerkSms": {
+    "title": "एसएमएस",
+    "table": {
+      "srNo": "अ.क्र.",
+      "mobileNumber": "मोबाइल क्रमांक",
+      "customerName": "ग्राहकाचे नाव",
+      "message": "संदेश",
+      "type": "प्रकार",
+      "status": "स्थिती",
+      "sentDate": "पाठवल्याची तारीख"
+    }
   }
-}}
+}

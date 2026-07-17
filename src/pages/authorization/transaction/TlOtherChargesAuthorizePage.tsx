@@ -12,7 +12,9 @@ import TlOtherChargesFilterModal, {
   defaultTlOtherChargesFilters,
   type TlOtherChargesFilters,
 } from "@/components/Authorization/Transaction/TlOtherChargesFilterModal";
-import AuthorizeTlOtherChargesModal from "@/components/Authorization/Transaction/AuthorizeTlOtherChargesModal";
+import AuthorizeTlOtherChargesModal, {
+  DEFAULT_TL_OTHER_CHARGES_ROWS,
+} from "@/components/Authorization/Transaction/AuthorizeTlOtherChargesModal";
 import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
 
 const TABS = [
@@ -36,7 +38,7 @@ const TlOtherChargesAuthorizePage = () => {
     <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="TL Other Charges Authorize"
-        titleHi="टीएल इतर शुल्क मंजूर करणे"
+        titleHi="मुदत कर्जाचे इतर शुल्क अधिकृत करणे"
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "MIS Activity", href: "/" },
@@ -87,7 +89,10 @@ const TlOtherChargesAuthorizePage = () => {
           initialData={{
             scrollNumber: authorizeRow.scrollNo,
             accountCode: authorizeRow.accountCode,
-            amount: authorizeRow.amount,
+            particular: authorizeRow.particular,
+            chargeRows: DEFAULT_TL_OTHER_CHARGES_ROWS.map((row) =>
+              row.key === "transferGlHead" ? { ...row, totalAmount: authorizeRow.totalAmount } : row
+            ),
           }}
           onClose={closeAuthorizeModal}
         />
@@ -97,3 +102,4 @@ const TlOtherChargesAuthorizePage = () => {
 };
 
 export default TlOtherChargesAuthorizePage;
+

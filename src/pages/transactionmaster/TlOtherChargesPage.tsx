@@ -1,6 +1,6 @@
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
-import AddTransactionMaster from "@/components/TransactionMaster/AddTransactionMaster";
+import TlOtherChargesForm from "@/components/TransactionMaster/TlOtherChargesForm";
 
 const TlOtherChargesPage = () => {
   const router = useRouter();
@@ -19,9 +19,7 @@ const TlOtherChargesPage = () => {
         hideActions
       />
 
-      <div className="px-3 py-4">
-        <AddTransactionMaster onClose={() => router.back()} variant="page" />
-      </div>
+      <TlOtherChargesForm />
     </div>
   );
 };

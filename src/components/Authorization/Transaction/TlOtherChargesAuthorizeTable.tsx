@@ -14,6 +14,8 @@ export type TlOtherChargesAuthorizeRow = {
   accountCode: string;
   amount: string;
   userId: string;
+  totalAmount: string;
+  particular: string;
   createdBy: string;
   createdDate: string;
   tab: TlOtherChargesAuthorizeTab;
@@ -26,34 +28,46 @@ const columns = [
   { key: "accountCode", label: "Account Code", sortable: true, width: "220px" },
   { key: "amount", label: "Amount", sortable: true, width: "140px" },
   { key: "userId", label: "User ID", sortable: true, width: "140px" },
+  { key: "totalAmount", label: "Total Amount", sortable: true, width: "150px" },
+  { key: "particular", label: "Particular", sortable: true, width: "160px" },
   { key: "createdBy", label: "Created By", sortable: true, width: "160px" },
   { key: "createdDate", label: "Created Date", sortable: true, width: "160px" },
 ] as const;
 
 const SAMPLE_TL_OTHER_CHARGES: Omit<TlOtherChargesAuthorizeRow, "srNo" | "tab">[] = [
-  { scrollNo: "318", accountCode: "00025050002501", amount: "845.0", userId: "ABC", createdBy: "Admin", createdDate: "23-May-2026" },
-  { scrollNo: "319", accountCode: "00025050002502", amount: "620.0", userId: "ABC", createdBy: "Admin", createdDate: "24-May-2026" },
-  { scrollNo: "320", accountCode: "00025050002503", amount: "1,150.0", userId: "ABC", createdBy: "Admin", createdDate: "25-May-2026" },
-  { scrollNo: "321", accountCode: "00025050002504", amount: "430.0", userId: "ABC", createdBy: "Admin", createdDate: "26-May-2026" },
-  { scrollNo: "322", accountCode: "00025050002505", amount: "980.0", userId: "ABC", createdBy: "Admin", createdDate: "27-May-2026" },
-  { scrollNo: "323", accountCode: "00025050002506", amount: "560.0", userId: "ABC", createdBy: "Admin", createdDate: "28-May-2026" },
-  { scrollNo: "324", accountCode: "00025050002507", amount: "715.0", userId: "ABC", createdBy: "Admin", createdDate: "29-May-2026" },
-  { scrollNo: "325", accountCode: "00025050002508", amount: "290.0", userId: "ABC", createdBy: "Admin", createdDate: "30-May-2026" },
-  { scrollNo: "326", accountCode: "00025050002509", amount: "1,020.0", userId: "ABC", createdBy: "Admin", createdDate: "31-May-2026" },
-  { scrollNo: "327", accountCode: "00025050002510", amount: "505.0", userId: "ABC", createdBy: "Admin", createdDate: "01-Jun-2026" },
+  { scrollNo: "118", accountCode: "00025050002501", amount: "845.0", userId: "ABC", totalAmount: "1,250", particular: "By Cash", createdBy: "Admin", createdDate: "23-May-2026" },
+  { scrollNo: "119", accountCode: "00025050002502", amount: "620.0", userId: "ABC", totalAmount: "980", particular: "By Cash", createdBy: "Admin", createdDate: "24-May-2026" },
+  { scrollNo: "120", accountCode: "00025050002503", amount: "1,150.0", userId: "ABC", totalAmount: "2,400", particular: "By Transfer", createdBy: "Clerk1", createdDate: "25-May-2026" },
+  { scrollNo: "121", accountCode: "00025050002504", amount: "430.0", userId: "ABC", totalAmount: "560", particular: "By Cash", createdBy: "Clerk1", createdDate: "26-May-2026" },
+  { scrollNo: "122", accountCode: "00025050002505", amount: "980.0", userId: "ABC", totalAmount: "3,150", particular: "By Transfer", createdBy: "Admin", createdDate: "27-May-2026" },
+  { scrollNo: "123", accountCode: "00025050002506", amount: "560.0", userId: "ABC", totalAmount: "1,800", particular: "By Cash", createdBy: "Admin", createdDate: "28-May-2026" },
+  { scrollNo: "124", accountCode: "00025050002507", amount: "715.0", userId: "ABC", totalAmount: "720", particular: "By Cash", createdBy: "Clerk1", createdDate: "29-May-2026" },
+  { scrollNo: "125", accountCode: "00025050002508", amount: "290.0", userId: "ABC", totalAmount: "4,300", particular: "By Transfer", createdBy: "Admin", createdDate: "30-May-2026" },
+  { scrollNo: "126", accountCode: "00025050002509", amount: "1,020.0", userId: "ABC", totalAmount: "1,050", particular: "By Cash", createdBy: "Clerk1", createdDate: "31-May-2026" },
+  { scrollNo: "127", accountCode: "00025050002510", amount: "505.0", userId: "ABC", totalAmount: "2,900", particular: "By Cash", createdBy: "Admin", createdDate: "01-Jun-2026" },
+  { scrollNo: "128", accountCode: "00025050002511", amount: "845.0", userId: "ABC", totalAmount: "640", particular: "By Transfer", createdBy: "Clerk1", createdDate: "02-Jun-2026" },
+  { scrollNo: "129", accountCode: "00025050002512", amount: "620.0", userId: "ABC", totalAmount: "1,975", particular: "By Cash", createdBy: "Admin", createdDate: "03-Jun-2026" },
+  { scrollNo: "130", accountCode: "00025050002513", amount: "1,150.0", userId: "ABC", totalAmount: "3,600", particular: "By Cash", createdBy: "Clerk1", createdDate: "04-Jun-2026" },
+  { scrollNo: "131", accountCode: "00025050002514", amount: "430.0", userId: "ABC", totalAmount: "825", particular: "By Transfer", createdBy: "Admin", createdDate: "05-Jun-2026" },
+  { scrollNo: "132", accountCode: "00025050002515", amount: "980.0", userId: "ABC", totalAmount: "2,150", particular: "By Cash", createdBy: "Clerk1", createdDate: "06-Jun-2026" },
+  { scrollNo: "133", accountCode: "00025050002516", amount: "560.0", userId: "ABC", totalAmount: "1,400", particular: "By Cash", createdBy: "Admin", createdDate: "07-Jun-2026" },
+  { scrollNo: "134", accountCode: "00025050002517", amount: "715.0", userId: "ABC", totalAmount: "3,050", particular: "By Transfer", createdBy: "Clerk1", createdDate: "08-Jun-2026" },
+  { scrollNo: "135", accountCode: "00025050002518", amount: "290.0", userId: "ABC", totalAmount: "690", particular: "By Cash", createdBy: "Admin", createdDate: "09-Jun-2026" },
+  { scrollNo: "136", accountCode: "00025050002519", amount: "1,020.0", userId: "ABC", totalAmount: "2,725", particular: "By Cash", createdBy: "Clerk1", createdDate: "10-Jun-2026" },
+  { scrollNo: "137", accountCode: "00025050002520", amount: "505.0", userId: "ABC", totalAmount: "1,150", particular: "By Transfer", createdBy: "Admin", createdDate: "11-Jun-2026" },
 ];
 
 const buildRows = (tab: TlOtherChargesAuthorizeTab, count: number): TlOtherChargesAuthorizeRow[] =>
   Array.from({ length: count }, (_, i) => ({
     ...SAMPLE_TL_OTHER_CHARGES[i % SAMPLE_TL_OTHER_CHARGES.length],
-    scrollNo: String(318 + i + (tab === "rejected" ? 100 : 0)),
+    scrollNo: String(118 + i + (tab === "rejected" ? 100 : 0)),
     srNo: i + 1,
     tab,
   }));
 
 export const TL_OTHER_CHARGES_TAB_COUNTS: Record<TlOtherChargesAuthorizeTab, number> = {
-  new: 18,
-  rejected: 12,
+  new: 20,
+  rejected: 18,
 };
 
 const ALL_ROWS: TlOtherChargesAuthorizeRow[] = [
@@ -112,7 +126,7 @@ const TlOtherChargesAuthorizeTable = ({ activeTab, filters, onAuthorize }: TlOth
   return (
     <div className="w-full overflow-hidden rounded-xl bg-white shadow-sm dark:bg-slate-900">
       <div className="table-container relative overflow-x-auto no-scrollbar">
-        <table className="w-full min-w-[1100px] table-fixed border-collapse">
+        <table className="w-full min-w-[1150px] table-fixed border-collapse">
           <thead>
             <tr className="bg-primary">
               {columns.map((col) => (
@@ -163,6 +177,12 @@ const TlOtherChargesAuthorizeTable = ({ activeTab, filters, onAuthorize }: TlOth
                   </td>
                   <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "140px" }}>
                     {row.userId}
+                  </td>
+                  <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "150px" }}>
+                    {row.totalAmount}
+                  </td>
+                  <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "160px" }}>
+                    {row.particular}
                   </td>
                   <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "160px" }}>
                     {row.createdBy}
