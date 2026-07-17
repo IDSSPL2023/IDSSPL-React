@@ -11,6 +11,7 @@ import closeCircle from "./close-circle.svg";
 import userCircle from "./user-circle.svg";
 import userSquare from "./user-square.svg";
 import messageLanguage from "./message-language.svg";
+import UserCircle from "../../../public/User.png"
 
 // Export as ICON object with properties
 export const ICONS = {
@@ -26,6 +27,7 @@ export const ICONS = {
   USER_CIRCLE: userCircle,
   USER_SQUARE: userSquare,
   MESSAGE_LANGUAGE: messageLanguage,
+  USER_CIRCLE: UserCircle,
 } as const;
 
 // Default export for convenience
