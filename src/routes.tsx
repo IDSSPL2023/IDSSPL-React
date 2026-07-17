@@ -86,7 +86,10 @@ import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandli
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
-
+import Application from "./components/HO-Clerk/HoApplication";
+import HoClerkTransaction from "./components/HO-Clerk/HoClerkTransaction";
+import Cashier from "./components/Cashier/Cashier";
+import PagesAcceptCashPage from "@/pages/cashier/AcceptCashPage";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -204,6 +207,18 @@ export const router = createBrowserRouter([
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
       { path: "/tds", element: <TDSReportsPage /> },
+
+
+
+      // HO-Clerk Route
+      { path: "/ho-clerk-application", element: <Application /> },
+      { path: "/ho-clerk-transaction", element: <HoClerkTransaction /> },
+
+      // Cashier Route
+      { path: "/cashier", element: <Cashier /> },
+      { path: "/cashier/accept-cash", element: <PagesAcceptCashPage /> },
+
+
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },

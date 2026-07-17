@@ -213,10 +213,7 @@ const RadioOriginalResponding = ({
   onChange: (v: "Original" | "Responding") => void;
 }) => (
   <div className="last:mb-0 flex items-center gap-2">
-    <label className="large block text-sm font-medium text-[#1F2858]">
-      Original / Responding <span className="text-slate-600">/ मूळ / प्रतिसाद</span>
-    </label>
-    <div className="flex items-center gap-4 pt-1">
+    <div className="flex items-center gap-4 pt-3">
       {(["Original", "Responding"] as const).map((opt) => (
         <label key={opt} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
           <input
@@ -235,12 +232,26 @@ const RadioOriginalResponding = ({
 export interface AddCashDepositProps {
   onClose: () => void;
   onSave?: (data: CashDepositFormData) => void;
+  titleEn?: string;
+  titleHi?: string;
+  subtitleEn?: string;
+  subtitleHi?: string;
+  headerIcon?: React.ReactNode;
   /** "modal" (default) renders as a centered overlay dialog. "page" renders as a
    * plain inline card with no backdrop, for routes that host the form directly. */
   variant?: "modal" | "page";
 }
 
-const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositProps) => {
+const AddCashDeposit = ({
+  onClose,
+  onSave,
+  titleEn = "Cash Deposit",
+  titleHi = "रोख रक्कम जमा",
+  subtitleEn = "Fill in the cash deposit transaction details below.",
+  subtitleHi = "खालील रोख रक्कम जमा व्यवहाराचा तपशील भरा.",
+  headerIcon = <Image src="/cash deposite.png" alt="Cash Deposit" width={50} height={50} />,
+  variant = "modal",
+}: AddCashDepositProps) => {
   const [form, setForm] = useState<CashDepositFormData>(DEFAULT_CASH_DEPOSIT_DATA);
   const [isValidated, setIsValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof CashDepositFormData, boolean>>>({});
@@ -248,7 +259,7 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
   const [isSaving, setIsSaving] = useState(false);
   const [activePicker, setActivePicker] = useState<PickerField | null>(null);
 
-  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
+  const grid4 = "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3";
 
   const handlePlaceholderAction = (label: string) => {
     toast.info(`${label} will be implemented.`);
@@ -330,14 +341,14 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
   return (
     <FormModal
       onClose={onClose}
-      titleEn="Cash Deposit"
-      titleHi="रोख रक्कम जमा"
-      subtitleEn="Fill in the cash deposit transaction details below."
-      subtitleHi="खालील रोख रक्कम जमा व्यवहाराचा तपशील भरा."
-      headerIcon={<Image src="/cash deposite.png" alt="Cash Deposit" width={50} height={50} />}
+      titleEn={titleEn}
+      titleHi={titleHi}
+      subtitleEn={subtitleEn}
+      subtitleHi={subtitleHi}
+      headerIcon={headerIcon}
       tabs={[]}
       activeTab=""
-      onTabChange={() => {}}
+      onTabChange={() => { }}
       hideFooter
       variant={variant}
     >
@@ -349,12 +360,7 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
         icon={<SectionIcon />}
       >
         <div className={`${grid4} mt-2`}>
-          <RadioYesNo
-            label="Is HO Transaction"
-            labelHi="मुख्य कार्यालय व्यवहार आहे का"
-            value={form.isHoTransaction}
-            onChange={(v) => updateBoolField("isHoTransaction", v)}
-          />
+
 
           <FieldShell label="Account Type" labelHi="खात्याचा प्रकार" required error={errors.accountType}>
             <div className="flex items-center gap-2">
@@ -369,6 +375,20 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
               </div>
               <LookupTrigger onClick={() => setActivePicker("accountType")} />
             </div>
+          </FieldShell>
+          <FieldShell
+            label="Account Description"
+            labelHi="खाते वर्णन"
+            required
+            error={errors.accountName}
+          >
+            <TextInput
+              icon={<FileText size={16} />}
+              value={form.accountName}
+              onChange={() => { }}
+              readOnly
+              error={errors.accountName}
+            />
           </FieldShell>
 
           <FieldShell label="Account Code" labelHi="खाते कोड" required error={errors.accountCode}>
@@ -387,73 +407,51 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
           </FieldShell>
 
           <FieldShell label="Account Name" labelHi="खात्याचे नाव" required error={errors.accountName}>
-            <TextInput icon={<User size={16} />} value={form.accountName} onChange={() => {}} readOnly error={errors.accountName} />
+            <TextInput icon={<User size={16} />} value={form.accountName} onChange={() => { }} readOnly error={errors.accountName} />
           </FieldShell>
 
           <FieldShell label="GL Account Code" labelHi="जीएल खाते कोड" required error={errors.glAccountCode}>
-            <TextInput icon={<Landmark size={16} />} value={form.glAccountCode} onChange={() => {}} readOnly error={errors.glAccountCode} />
+            <TextInput icon={<Landmark size={16} />} value={form.glAccountCode} onChange={() => { }} readOnly error={errors.glAccountCode} />
           </FieldShell>
 
           <FieldShell label="GL Account Name" labelHi="जीएल खात्याचे नाव" required error={errors.glAccountName}>
-            <TextInput icon={<User size={16} />} value={form.glAccountName} onChange={() => {}} readOnly error={errors.glAccountName} />
+            <TextInput icon={<User size={16} />} value={form.glAccountName} onChange={() => { }} readOnly error={errors.glAccountName} />
           </FieldShell>
 
           <FieldShell label="Last Transaction Date" labelHi="शेवटची व्यवहार तारीख" required error={errors.lastTransactionDate}>
-            <DateInput value={form.lastTransactionDate} onChange={() => {}} readOnly error={errors.lastTransactionDate} />
+            <DateInput value={form.lastTransactionDate} onChange={() => { }} readOnly error={errors.lastTransactionDate} />
           </FieldShell>
 
           <FieldShell label="Account Review Date" labelHi="खाते पुनरावलोकन तारीख" required error={errors.accountReviewDate}>
-            <DateInput value={form.accountReviewDate} onChange={() => {}} readOnly error={errors.accountReviewDate} />
+            <DateInput value={form.accountReviewDate} onChange={() => { }} readOnly error={errors.accountReviewDate} />
           </FieldShell>
 
           <FieldShell label="Ledger Balance" labelHi="खातेवही शिल्लक" required error={errors.ledgerBalance}>
-            <TextInput icon={<IndianRupee size={16} />} value={form.ledgerBalance} onChange={() => {}} readOnly error={errors.ledgerBalance} />
+            <TextInput icon={<IndianRupee size={16} />} value={form.ledgerBalance} onChange={() => { }} readOnly error={errors.ledgerBalance} />
           </FieldShell>
 
           <FieldShell label="Available Balance" labelHi="उपलब्ध शिल्लक" required error={errors.availableBalance}>
-            <TextInput icon={<IndianRupee size={16} />} value={form.availableBalance} onChange={() => {}} readOnly error={errors.availableBalance} />
+            <TextInput icon={<IndianRupee size={16} />} value={form.availableBalance} onChange={() => { }} readOnly error={errors.availableBalance} />
           </FieldShell>
 
           <FieldShell label="New Ledger Balance" labelHi="नवीन खातेवही शिल्लक" required error={errors.newLedgerBalance}>
-            <TextInput icon={<IndianRupee size={16} />} value={form.newLedgerBalance} onChange={() => {}} readOnly error={errors.newLedgerBalance} />
+            <TextInput icon={<IndianRupee size={16} />} value={form.newLedgerBalance} onChange={() => { }} readOnly error={errors.newLedgerBalance} />
           </FieldShell>
 
           <FieldShell label="Uncleared Balance" labelHi="अस्पष्ट शिल्लक" required error={errors.unclearedBalance}>
-            <TextInput icon={<IndianRupee size={16} />} value={form.unclearedBalance} onChange={() => {}} readOnly error={errors.unclearedBalance} />
+            <TextInput icon={<IndianRupee size={16} />} value={form.unclearedBalance} onChange={() => { }} readOnly error={errors.unclearedBalance} />
           </FieldShell>
 
           <FieldShell label="Limit Amount" labelHi="मर्यादा रक्कम" required error={errors.limitAmount}>
-            <TextInput icon={<IndianRupee size={16} />} value={form.limitAmount} onChange={() => {}} readOnly error={errors.limitAmount} />
+            <TextInput icon={<IndianRupee size={16} />} value={form.limitAmount} onChange={() => { }} readOnly error={errors.limitAmount} />
           </FieldShell>
 
           <FieldShell label="Drawing Power" labelHi="कर्ज उचलण्याची क्षमता" required error={errors.drawingPower}>
-            <TextInput icon={<IndianRupee size={16} />} value={form.drawingPower} onChange={() => {}} readOnly error={errors.drawingPower} />
-          </FieldShell>
-
-          <FieldShell label="Last OD Date" labelHi="शेवटची ओडी तारीख" required error={errors.lastOdDate}>
-            <DateInput value={form.lastOdDate} onChange={() => {}} readOnly error={errors.lastOdDate} />
-          </FieldShell>
-
-          <FieldShell label="OD Interest" labelHi="ओडी व्याज" required error={errors.odInterest}>
-            <TextInput
-              icon={<IndianRupee size={16} />}
-              value={form.odInterest}
-              onChange={(v) => updateField("odInterest", v)}
-              placeholder="Enter OD Interest"
-              error={errors.odInterest}
-            />
+            <TextInput icon={<IndianRupee size={16} />} value={form.drawingPower} onChange={() => { }} readOnly error={errors.drawingPower} />
           </FieldShell>
 
           <FieldShell label="PAN Card Number" labelHi="पॅन कार्ड क्रमांक" required error={errors.panCardNumber}>
-            <TextInput icon={<IdCard size={16} />} value={form.panCardNumber} onChange={() => {}} readOnly error={errors.panCardNumber} />
-          </FieldShell>
-
-          <FieldShell label="Aadhaar Number" labelHi="आधार क्रमांक" required error={errors.aadhaarNumber}>
-            <TextInput icon={<Fingerprint size={16} />} value={form.aadhaarNumber} onChange={() => {}} readOnly error={errors.aadhaarNumber} />
-          </FieldShell>
-
-          <FieldShell label="Mobile Number" labelHi="मोबाईल क्रमांक" required error={errors.mobileNumber}>
-            <TextInput icon={<Phone size={16} />} value={form.mobileNumber} onChange={() => {}} readOnly error={errors.mobileNumber} />
+            <TextInput icon={<IdCard size={16} />} value={form.panCardNumber} onChange={() => { }} readOnly error={errors.panCardNumber} />
           </FieldShell>
         </div>
       </SectionCard>
@@ -477,32 +475,41 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
           </FieldShell>
 
           <FieldShell label="Amount in Words" labelHi="शब्दात रक्कम" required error={errors.amountInWords}>
-            <TextInput icon={<FileText size={16} />} value={form.amountInWords} onChange={() => {}} readOnly error={errors.amountInWords} />
+            <TextInput icon={<FileText size={16} />} value={form.amountInWords} onChange={() => { }} readOnly error={errors.amountInWords} />
           </FieldShell>
 
-          <RadioYesNo
-            label="Is Pigmy Collection"
-            labelHi="पिग्मी संकलन आहे का"
-            value={form.isPigmyCollection}
-            onChange={(v) => updateBoolField("isPigmyCollection", v)}
-          />
+          <FieldShell label="Is Pigmy Collection" labelHi="पिग्मी संकलन आहे का" required error={errors.isPigmyCollection}>
+            <RadioYesNo
+              label=""
+              labelHi=""
+              value={form.isPigmyCollection}
+              onChange={(v) => updateBoolField("isPigmyCollection", v)}
+            />
+          </FieldShell>
 
           <FieldShell label="Agent ID" labelHi="एजंट आयडी" required error={errors.agentId}>
             <div className="flex items-center gap-2">
               <div className="flex-1">
-                <TextInput icon={<Hash size={16} />} value={form.agentId} onChange={() => {}} readOnly error={errors.agentId} />
+                <TextInput icon={<Hash size={16} />} value={form.agentId} onChange={() => { }} readOnly error={errors.agentId} />
               </div>
               <LookupTrigger onClick={() => setActivePicker("agentId")} />
             </div>
           </FieldShell>
 
-          <RadioOriginalResponding
-            value={form.originalResponding}
-            onChange={(v) => {
-              markDirty("originalResponding");
-              setForm((f) => ({ ...f, originalResponding: v }));
-            }}
-          />
+          <FieldShell
+            label="Original / Responding"
+            labelHi="मूळ / प्रतिसाद"
+            required
+            error={errors.originalResponding}
+          >
+            <RadioOriginalResponding
+              value={form.originalResponding}
+              onChange={(v) => {
+                markDirty("originalResponding");
+                setForm((f) => ({ ...f, originalResponding: v }));
+              }}
+            />
+          </FieldShell>
 
           <FieldShell label="Outlist Serial" labelHi="आऊटलिस्ट अनुक्रमांक" required error={errors.outlistSerial}>
             <div className="flex items-center gap-2">
@@ -555,7 +562,7 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
           </FieldShell>
 
           <FieldShell label="Advice Date" labelHi="सल्ला तारीख" required error={errors.adviceDate}>
-            <DateInput value={form.adviceDate} onChange={() => {}} readOnly error={errors.adviceDate} />
+            <DateInput value={form.adviceDate} onChange={() => { }} readOnly error={errors.adviceDate} />
           </FieldShell>
 
           <FieldShell label="Particular" labelHi="तपशील" required error={errors.particular}>
@@ -610,11 +617,10 @@ const AddCashDeposit = ({ onClose, onSave, variant = "modal" }: AddCashDepositPr
           type="button"
           onClick={handleSave}
           disabled={!isValidated || isSaving}
-          className={`flex items-center gap-1.5 rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium transition-colors ${
-            isValidated && !isSaving
+          className={`flex items-center gap-1.5 rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium transition-colors ${isValidated && !isSaving
               ? "bg-primary text-white hover:bg-primary-700"
               : "cursor-not-allowed bg-slate-200 text-slate-400"
-          }`}
+            }`}
         >
           {isSaving ? "Saving..." : "Save"} <ChevronsDown size={16} />
         </button>
