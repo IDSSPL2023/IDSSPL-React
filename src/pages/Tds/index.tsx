@@ -3,10 +3,10 @@ import { useRouter } from "@/lib/navigation";
 import { Search, ChevronRight } from "lucide-react";
 import Image from "@/components/ui/Image";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
-import CustomerTDSFlagModal from "@/components/StashModal/Tds/FlagUpdation";
-import TDSReportAllModal from "@/components/StashModal/Tds/ReportAll";
-import TDSAppliedReportModal from "@/components/StashModal/Tds/AppliedReport";
-import ProvisonAndVlcc from "@/components/StashModal/Tds/ProvisonAndVlcc";
+import CustomerTDSFlagModal from "@/components/MisActivity/Tds/Modals/FlagUpdation";
+import TDSReportAllModal from "@/components/MisActivity/Tds/Modals/ReportAll";
+import TDSAppliedReportModal from "@/components/MisActivity/Tds/Modals/AppliedReport";
+import ProvisonAndVlcc from "@/components/MisActivity/Tds/Modals/ProvisonAndVlcc";
 
 // Modal imports
 

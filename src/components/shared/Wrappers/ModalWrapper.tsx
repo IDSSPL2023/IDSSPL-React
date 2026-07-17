@@ -1,6 +1,7 @@
 // components/shared/ModalWrapper.tsx
 import React from "react";
 import { X, LucideIcon } from "lucide-react";
+import { ICONS } from "@/assets";
 
 export interface ModalButton {
   label: string;
@@ -203,12 +204,12 @@ const ModalWrapper = ({
             </div>
           </div>
           {showCloseButton && (headerOnClose || onClose) && (
-            <button
-              type="button"
-              onClick={headerOnClose || onClose}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-            >
-              <X size={18} strokeWidth={2.5} />
+            <button type="button" onClick={headerOnClose || onClose}>
+              <img
+                src={ICONS.CLOSE_CIRCLE}
+                alt="icon"
+                className="h-12 aspect-square"
+              />
             </button>
           )}
         </div>
@@ -222,7 +223,7 @@ const ModalWrapper = ({
       onClick={onClose}
     >
       <div
-        className={`flex max-h-[92vh] w-full ${maxWidthClasses[maxWidth]} flex-col rounded-3xl bg-white shadow-2xl dark:bg-slate-900 ${className}`}
+        className={`border-t-4 border-primary flex max-h-[92vh] w-full ${maxWidthClasses[maxWidth]} flex-col rounded-2xl bg-white shadow-2xl dark:bg-slate-900 ${className}`}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}
