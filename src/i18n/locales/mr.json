@@ -644,6 +644,132 @@
     },
     "actions": {
       "postToAccount": "खात्यात नोंदवा"
+  "pigmyInterestProvision": {
+    "title": "दिवस प्रारंभ स्वयंचलित नूतनीकरण",
+    "subtitle": "दिवसाच्या प्रारंभी स्वयंचलित नूतनीकरण प्रक्रिया करा.",
+    "fields": {
+      "fromProductCode": "उत्पादन कोड",
+      "productDescription": "वर्णन",
+      "uptoDate": "दिनांकपर्यंत"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "interestNotApplied": {
+    "title": "दिवस प्रारंभ स्वयंचलित नूतनीकरण",
+    "subtitle": "दिवसाच्या प्रारंभी स्वयंचलित नूतनीकरण प्रक्रिया करा.",
+    "fields": {
+      "branchCode": "स्क्रोल क्रमांक",
+      "asOnDate": "दिनांकपर्यंत"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    }
+  },
+  "nFormBalancesheet": {
+    "title": "अहवाल मापदंड",
+    "fields": {
+      "productCode": "शाखा कोड",
+      "lastQuarterDate": "अंतिम तिमाहीची तारीख",
+      "select": "निवडा"
+    },
+    "placeholders": {
+      "enterToDate": "Enter To Date"
+    },
+    "options": {
+      "regular": "Regular",
+      "closing": "Closing"
+    },
+    "actions": {
+      "generateRecord": "Generate Record",
+      "generateNFormBalanceSheet": "Generate N form Balance Sheet",
+      "generatePnL": "Generate P&L A/C"
+    }
+  },
+  "detailTrialBalance": {
+    "title": "ठेव व्याज नोंदणी",
+    "fields": {
+      "branchCode": "स्क्रोल क्रमांक",
+      "branchName": "स्क्रोल क्रमांक",
+      "asOnDate": "दिनांकपर्यंत",
+      "select": "निवडा",
+      "reportType": "अहवाल प्रकार"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "modifyDepositDiary": {
+    "title": "ठेवीचे डायरी सुधारणा करा",
+    "fields": {
+      "productCode": "उत्पादन कोड",
+      "productDescription": "उत्पादनाचे वर्णन",
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक",
+      "reportFor": "साठी अहवाल",
+      "selectInterestFrequency": "व्याजाची वारंवारता निवडा"
+    },
+    "placeholders": {
+      "name": "name"
+    },
+    "options": {
+      "all": "All",
+      "si": "SI",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    }
+  },
+  "exceedCashLimitReport": {
+    "title": "ठेव व्याज नोंदणी",
+    "fields": {
+      "fromProductCode": "उत्पादन कोड",
+      "productDescription": "वर्णन",
+      "toProductCode": "उत्पादन कोड",
+      "asOnDate": "दिनांकपर्यंत"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "hoInterestReportBranch": {
+    "title": "एचओ व्याज पोस्टिंग",
+    "fields": {
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक"
+    }
+  },
+  "hoInterestReportHo": {
+    "title": "एचओ व्याज पोस्टिंग",
+    "fields": {
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक",
+      "fromAccountCode": "खाते कोड पासून",
+      "toAccountCode": "खाते कोड पासून",
+      "accountName": "आकाउंट नाव"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "hoInterestReportGl": {
+    "title": "एचओ व्याज अहवाल पोस्टिंग",
+    "fields": {
+      "glAccountCode": "GL अकाउंट कोड",
+      "accountName": "आकाउंट नाव",
+      "fromDate": "पासून दिनांक",
+      "toDate": "पर्यंत दिनांक"
+    },
+    "placeholders": {
+      "name": "name"
     }
   }
 }

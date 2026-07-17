@@ -14,6 +14,15 @@ import TdPostingConsistencyProcess from "./futuremodels/TdPostingConsistencyProc
 import TlccInterestPostingProcess from "./futuremodels/TlccInterestPostingProcess";
 import SiInterestPostingProcess from "./FinancialClosing/SiInterestPostingProcess";
 import SetBranchParameterModal from "./FinancialClosing/SetBranchParameterModal";
+import PigmyInterestProvisionProcess from "./FinancialClosing/PigmyInterestProvisionProcess";
+import InterestNotAppliedProcess from "./FinancialClosing/InterestNotAppliedProcess";
+import NFormBalancesheetProcess from "./futuremodels/NFormBalancesheetProcess";
+import DetailTrialBalanceProcess from "./futuremodels/DetailTrialBalanceProcess";
+import ModifyDepositDiaryProcess from "./futuremodels/ModifyDepositDiaryProcess";
+import ExceedCashLimitReportProcess from "./FinancialClosing/ExceedCashLimitReportProcess";
+import HoInterestReportBranchProcess from "./FinancialClosing/HoInterestReportBranchProcess";
+import HoInterestReportHoProcess from "./FinancialClosing/HoInterestReportHoProcess";
+import HoInterestReportGlProcess from "./FinancialClosing/HoInterestReportGlProcess";
 
 type ClosingCategory = "parameter" | "calculation" | "reports" | "export";
 
@@ -214,7 +223,21 @@ const FinancialClosing = () => {
     );
     const isReportsItem = activeItem?.category === "reports";
     const isSimpleReport = isReportsItem && SIMPLE_REPORT_IDS.has(activeItem!.id);
-    const isBranchReport = isReportsItem && !isSimpleReport;
+    const isNFormBalancesheet = activeModal === "n-form-balancesheet";
+    const isDetailTrialBalance = activeModal === "detail-trial-balance";
+    const isExceedCashLimitReport = activeModal === "exceed-cash-limit-report";
+    const isHoInterestReportBranch = activeModal === "ho-interest-report-branch";
+    const isHoInterestReportHo = activeModal === "ho-interest-report-ho";
+    const isHoInterestReportGl = activeModal === "ho-interest-report-gl";
+    const isBranchReport =
+        isReportsItem &&
+        !isSimpleReport &&
+        !isNFormBalancesheet &&
+        !isDetailTrialBalance &&
+        !isExceedCashLimitReport &&
+        !isHoInterestReportBranch &&
+        !isHoInterestReportHo &&
+        !isHoInterestReportGl;
 
     const handleOpen = (id: string) => {
         if (id === "set-product-status") {
@@ -286,11 +309,10 @@ const FinancialClosing = () => {
                             key={tab.id}
                             type="button"
                             onClick={() => setActiveTab(tab.id)}
-                            className={`-mb-px whitespace-nowrap border-b-2 pb-2.5 text-sm font-medium transition-colors ${
-                                activeTab === tab.id
+                            className={`-mb-px whitespace-nowrap border-b-2 pb-2.5 text-sm font-medium transition-colors ${activeTab === tab.id
                                     ? "border-primary text-primary"
                                     : "border-transparent text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
-                            }`}
+                                }`}
                         >
                             {tab.label}
                         </button>
@@ -375,30 +397,66 @@ const FinancialClosing = () => {
                 onClose={handleCloseModal}
             />
 
-          {activeItem && isSimpleReport && (
-  <ReportsParameterModal
-    open={isSimpleReport}
-    onClose={handleCloseModal}
-  />
-)}
+            {activeItem && isSimpleReport && (
+                <ReportsParameterModal
+                    open={isSimpleReport}
+                    onClose={handleCloseModal}
+                />
+            )}
 
-{activeItem && isBranchReport && (
-  <ReportsParameterBranchModal
-    open={isBranchReport}
-    onClose={handleCloseModal}
-  />
+            {activeItem && isBranchReport && (
+                <ReportsParameterBranchModal
+                    open={isBranchReport}
+                    onClose={handleCloseModal}
+                />
 
             )}
             <TlccInterestPostingProcess
                 open={activeModal === "tlcc-interest-posting"}
                 onClose={handleCloseModal}
             />
+            <PigmyInterestProvisionProcess
+                open={activeModal === "pigmy-interest-provision"}
+                onClose={handleCloseModal}
+            />
+            <InterestNotAppliedProcess
+                open={activeModal === "interest-not-applied"}
+                onClose={handleCloseModal}
+            />
+            <NFormBalancesheetProcess
+                open={isNFormBalancesheet}
+                onClose={handleCloseModal}
+            />
+            <DetailTrialBalanceProcess
+                open={isDetailTrialBalance}
+                onClose={handleCloseModal}
+            />
+            <ModifyDepositDiaryProcess
+                open={activeModal === "modify-deposit-diary"}
+                onClose={handleCloseModal}
+            />
+            <ExceedCashLimitReportProcess
+                open={isExceedCashLimitReport}
+                onClose={handleCloseModal}
+            />
+            <HoInterestReportBranchProcess
+                open={isHoInterestReportBranch}
+                onClose={handleCloseModal}
+            />
+            <HoInterestReportHoProcess
+                open={isHoInterestReportHo}
+                onClose={handleCloseModal}
+            />
+            <HoInterestReportGlProcess
+                open={isHoInterestReportGl}
+                onClose={handleCloseModal}
+            />
 
             {activeModal === "set-branch-parameters" && (
-    <SetBranchParameterModal
-        onClose={handleCloseModal}
-    />
-)}
+                <SetBranchParameterModal
+                    onClose={handleCloseModal}
+                />
+            )}
         </div>
     );
 };
