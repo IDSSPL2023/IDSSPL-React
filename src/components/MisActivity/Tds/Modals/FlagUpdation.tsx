@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Check, ThumbsUp, User, Landmark, Calendar } from "lucide-react";
-import TextInput from "../../shared/Inputs/TextInput";
-import DateInput from "../../shared/Inputs/DateInput";
+import TextInput from "../../../shared/Inputs/TextInput";
+import DateInput from "../../../shared/Inputs/DateInput";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
 import { ICONS } from "@/assets";

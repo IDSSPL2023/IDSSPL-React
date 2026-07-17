@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 
+
 type SidebarHeaderProps = {
   collapsed?: boolean;
   search?: string;

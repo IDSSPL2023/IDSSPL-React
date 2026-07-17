@@ -90,6 +90,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-interest-posting",
         title: "Interest Posting",
         icon: Percent,
+        href: "/interest-posting",
       },
       {
         id: "mis-master-mainenance-global",
@@ -237,6 +238,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-bills",
         title: "Bills",
         icon: Receipt,
+        href: "/account-master/bill",
       },
       {
         id: "clerk-branch",
@@ -248,6 +250,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-clearing",
         title: "Clearing",
         icon: ArrowLeftRight,
+        href: "/clerk/clearing",
       },
       {
         id: "clerk-customer",
@@ -259,6 +262,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-locker",
         title: "Locker",
         icon: KeyRound,
+        href: "/locker",
       },
       {
         id: "clerk-queries",

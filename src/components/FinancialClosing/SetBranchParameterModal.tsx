@@ -1,5 +1,5 @@
 import { useState, type FC, type ReactNode } from "react";
-import { X, Check, Landmark, ClipboardList, CalendarClock, MoreVertical } from "lucide-react";
+import { X, Check, Landmark, CalendarClock, MoreVertical } from "lucide-react";
 import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
 
@@ -34,7 +34,7 @@ export interface BranchParameterFormData {
   yearEndDate: string;
 }
 
-export const emptyBranchParameterFormData: BranchParameterFormData = {
+const emptyBranchParameterFormData: BranchParameterFormData = {
   bankCode: "",
   bankName: "",
   branchCode: "",
@@ -125,18 +125,6 @@ const TEXT_FIELDS: {
   { key: "branchName", labelEn: "Branch Name", labelHi: "शाखेचे नाव", placeholder: "Auto-filled", type: "readonly" },
 ];
 
-const TOGGLE_FIELDS: { key: keyof BranchParameterFormData; labelEn: string; labelHi: string }[] = [
-  { key: "isDayBeginExecuted", labelEn: "Is Day Begin Executed", labelHi: "दिवस प्रारंभ" },
-  { key: "isDayEndExecuted", labelEn: "Is Day End Executed", labelHi: "दिवस समाप्त" },
-  { key: "isDenominationRequired", labelEn: "Is Denomination Required", labelHi: "चलन तपशील" },
-  { key: "isYearAutoRenewalAtDayBegin", labelEn: "Is Year Auto Renewal At Day Begin", labelHi: "वर्ष नूतनीकरण" },
-  { key: "isSBInterestPostAtDayEnd", labelEn: "Is SB Interest Post At Day End", labelHi: "एसबी व्याज पोस्ट" },
-  { key: "isCAInterestPostAtDayEnd", labelEn: "Is CA Interest Post At Day End", labelHi: "सीए व्याज पोस्ट" },
-  { key: "isTDInterestPostAtDayEnd", labelEn: "Is TD Interest Post At Day End", labelHi: "TD व्याज पोस्ट" },
-  { key: "isTLInterestPostAtDayEnd", labelEn: "Is TL Interest Post At Day End", labelHi: "TL व्याज पोस्ट" },
-  { key: "isCCInterestPostAtDayEnd", labelEn: "Is CC Interest Post At Day End", labelHi: "CC व्याज पोस्ट" },
-];
-
 const DATE_FIELDS: { key: keyof BranchParameterFormData; labelEn: string; labelHi: string }[] = [
   { key: "sbNextInterestPostingDate", labelEn: "SB Next Interest Posting Date", labelHi: "SB पुढील व्याज तारीख" },
   { key: "caNextInterestPostingDate", labelEn: "CA Next Interest Posting Date", labelHi: "CA पुढील व्याज तारीख" },
@@ -152,9 +140,6 @@ const DATE_FIELDS: { key: keyof BranchParameterFormData; labelEn: string; labelH
   { key: "yearEndDate", labelEn: "Year End Date", labelHi: "वर्ष समाप्त तारीख" },
 ];
 
-// TOGGLE_FIELDS are left out of validation while the "Details" (Yes/No)
-// card below is commented out — its fields can't be filled, so requiring
-// them would keep Validate from ever passing and Save from ever enabling.
 const REQUIRED_FIELDS: (keyof BranchParameterFormData)[] = [
   ...TEXT_FIELDS.map((f) => f.key),
   ...DATE_FIELDS.map((f) => f.key),
@@ -249,42 +234,6 @@ const ReadOnlyField: FC<{ labelEn: string; labelHi: string; value: string; place
         className="ml-3 w-full bg-transparent text-[15px] text-slate-500 outline-none placeholder:text-[#7C879B] dark:text-slate-400"
       />
     </div>
-  </div>
-);
-
-const RadioField: FC<{
-  labelEn: string;
-  labelHi: string;
-  name: string;
-  value: YesNo;
-  hasError?: boolean;
-  onChange: (value: YesNo) => void;
-}> = ({ labelEn, labelHi, name, value, hasError, onChange }) => (
-  <div>
-    <FieldLabel labelEn={labelEn} labelHi={labelHi} />
-    <div className="flex items-center gap-6">
-      <label className="flex cursor-pointer items-center gap-2 text-[14px] font-medium text-slate-700 dark:text-slate-300">
-        <input
-          type="radio"
-          name={name}
-          checked={value === "Yes"}
-          onChange={() => onChange("Yes")}
-          className="h-4 w-4 text-primary focus:ring-primary"
-        />
-        Yes
-      </label>
-      <label className="flex cursor-pointer items-center gap-2 text-[14px] font-medium text-slate-700 dark:text-slate-300">
-        <input
-          type="radio"
-          name={name}
-          checked={value === "No"}
-          onChange={() => onChange("No")}
-          className="h-4 w-4 text-primary focus:ring-primary"
-        />
-        No
-      </label>
-    </div>
-    {hasError && <p className="mt-1 text-xs text-red-500">This field is required</p>}
   </div>
 );
 
@@ -429,9 +378,6 @@ const SetBranchParameterModal: FC<SetBranchParameterModalProps> = ({
               )}
             </div>
           </SectionCard>
-
-          {/* Details - Yes/No settings */}
-         
 
           {/* Details - Dates */}
           <SectionCard icon={CalendarClock} titleEn="Details" titleHi="तपशील">

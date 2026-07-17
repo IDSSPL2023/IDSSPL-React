@@ -4,22 +4,26 @@ import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanIn
 import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import StopChequePayment from "@/components/futuremodels/StopChequePayment";
 import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchParameterModal";
+import GeneratedInwardScheduleModal from "./Clerk/Modals/GenerateInwardSchedule";
+import GenerateOutwardScheduleModal from "./Clerk/Modals/GenerateOutwordSchedule";
+import ClearingTallyModal from "./Clerk/Modals/ClearingTallyAndHouse";
 import InwardClearingEntryModal from "./futuremodels/InwardClearingEntryModal";
 import OutwardClearingBounceModal from "./futuremodels/OutwardClearingBounceModal";
 import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal";
 
 interface FutureModelAction {
-    label: string;
-    path: string;
+  label: string;
+  path: string;
 }
 
 const FutureModalsPage = () => {
-    const navigate = useNavigate();
-    const [showStopChequePayment, setShowStopChequePayment] = useState(false);
-    const [showLoanInterestRate, setShowLoanInterestRate] = useState(false);
-    const [showInterestPosting, setShowInterestPosting] = useState(false);
-    const [showSiPosting, setShowSiPosting] = useState(false);
-    const [showSetBranchParameter, setShowSetBranchParameter] = useState(false);
+  const navigate = useNavigate();
+  const [showStopChequePayment, setShowStopChequePayment] = useState(false);
+  const [showLoanInterestRate, setShowLoanInterestRate] = useState(false);
+  const [showInterestPosting, setShowInterestPosting] = useState(false);
+  const [showSiPosting, setShowSiPosting] = useState(false);
+  const [showSetBranchParameter, setShowSetBranchParameter] = useState(false);
+  const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("tally");
     const [showInwardClearing, setShowInwardClearing] = useState(false);
     const [showOutwardBounce, setShowOutwardBounce] = useState(false);
     const [showOutwardClearing, setShowOutwardClearing] = useState(false);
@@ -35,13 +39,13 @@ const FutureModalsPage = () => {
                     STOP CHEQUE PAYMENT
                 </button>
 
-                <button
-                    type="button"
-                    onClick={() => setShowLoanInterestRate(true)}
-                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
-                >
-                    ADD/MODIFY LOAN INTEREST RATE
-                </button>
+        <button
+          type="button"
+          onClick={() => setShowLoanInterestRate(true)}
+          className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+        >
+          ADD/MODIFY LOAN INTEREST RATE
+        </button>
 
                 <button
                     type="button"
@@ -84,17 +88,33 @@ const FutureModalsPage = () => {
                 </button>
             </div>
 
-            {showStopChequePayment && (
-                <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
-            )}
+      {showStopChequePayment && (
+        <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
+      )}
 
             {showLoanInterestRate && (
                 <AddModifyLoanInterestRate onClose={() => setShowLoanInterestRate(false)} />
             )}
 
-            {showSetBranchParameter && (
-                <SetBranchParameterModal onClose={() => setShowSetBranchParameter(false)} />
-            )}
+      {showSetBranchParameter && (
+        <SetBranchParameterModal
+          onClose={() => setShowSetBranchParameter(false)}
+        />
+      )}
+
+
+        <GeneratedInwardScheduleModal open={clerkModal === "inward"}
+            onClose={() => setClerkModal("")}
+        />
+
+       <GenerateOutwardScheduleModal open={clerkModal === "outward"}
+            onClose={() => setClerkModal("")}
+
+        />
+
+        <ClearingTallyModal open={clerkModal === "tally"}
+            onClose={() => setClerkModal("")}
+        />
 
             {showInwardClearing && (
                 <InwardClearingEntryModal
@@ -116,8 +136,8 @@ const FutureModalsPage = () => {
                     onClose={() => setShowOutwardClearing(false)}
                 />
             )}
-        </div>
-    );
+    </div>
+  );
 };
 
 export default FutureModalsPage;
