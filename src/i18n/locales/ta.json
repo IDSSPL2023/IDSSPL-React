@@ -503,5 +503,109 @@
       "accountType": "Select Account Type",
       "description": "Description"
     }
+  },
+  "clearing": {
+    "hero": {
+      "title": "க்ளியரிங்",
+      "welcomeTitle": "க்ளியரிங்கிற்கு வரவேற்கிறோம்",
+      "searchPlaceholder": "க்ளியரிங் செயல்முறைகளைத் தேடுங்கள்...",
+      "show": "காட்டு",
+      "allMasters": "அனைத்து மாஸ்டர்கள்",
+      "recentlyUsed": "சமீபத்தில் பயன்படுத்தியவை",
+      "open": "திற",
+      "noUtilitiesFound": "எந்த வசதியும் கிடைக்கவில்லை",
+      "breadcrumbClerk": "கிளார்க்"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "O/W Clearing Late Return Mark",
+        "cardDescription": "வெளிச்செல் க்ளியரிங் பில்களுக்கான தாமத திரும்பியனுப்புதலைப் பதிவு செய்யவும்.",
+        "modalTitle": "வெளிச்செல் பில் வசூல் பதிவு",
+        "modalSubtitle": "வெளிச்செல் க்ளியரிங் பில் மீது வந்த தாமத திரும்பியனுப்புதலைப் பதிவு செய்யவும்.",
+        "successTitle": "வெளிச்செல் க்ளியரிங் தாமத திரும்பியனுப்புதல் வெற்றிகரமாக பதிவானது"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "Sub Branch I/W CLG Return",
+        "cardDescription": "துணைக் கிளை அனுப்பிய உள்வரும் க்ளியரிங் திரும்பியனுப்புதலைப் பதிவு செய்யவும்.",
+        "modalTitle": "துணைக் கிளை உள்வரும் திரும்பியனுப்புதல்",
+        "modalSubtitle": "அளவுருவின் தகவலையும் தொடர்புடைய விவரங்களையும் காண்க.",
+        "successTitle": "துணைக் கிளை உள்வரும் திரும்பியனுப்புதல் வெற்றிகரமாக சேமிக்கப்பட்டது"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "O/W Clearing Posting Mark",
+        "cardDescription": "வெளிச்செல் க்ளியரிங் அட்டவணையின் பதிவு நிலையைக் குறிக்கவும்.",
+        "modalTitle": "வெளிச்செல் க்ளியரிங் பதிவு குறியீடு",
+        "modalSubtitle": "அளவுருவின் தகவலையும் தொடர்புடைய விவரங்களையும் காண்க.",
+        "successTitle": "வெளிச்செல் க்ளியரிங் கணக்கில் வெற்றிகரமாக பதிவானது"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "கிளை தகவல்",
+        "subtitle": "வெளிச்செல் பில் வசூலுக்கான கணக்கு விவரங்களை உள்ளிடவும்."
+      },
+      "clearingDetails": {
+        "title": "க்ளியரிங் விவரங்கள்",
+        "subtitle": "பதிவு செய்யும் முன் கிளை மற்றும் பரிவர்த்தனை விவரங்களைத் தேர்ந்தெடுக்கவும்."
+      },
+      "customerAccountDetails": {
+        "title": "வாடிக்கையாளர் & கணக்கு விவரங்கள்",
+        "subtitle": "வாடிக்கையாளர், பணம் பெறுநர் மற்றும் வரைவு வங்கி விவரங்களை உள்ளிடவும்."
+      },
+      "instrumentDetails": {
+        "title": "கருவி விவரங்கள்",
+        "subtitle": "காசோலை / கருவி விவரங்களை உள்ளிடவும்."
+      },
+      "returnDetails": {
+        "title": "திரும்பியனுப்புதல் விவரங்கள்",
+        "subtitle": "நிராகரிப்பு மற்றும் கட்டணம் விவரங்களை உள்ளிடவும்."
+      },
+      "details": {
+        "title": "விவரங்கள்",
+        "subtitle": "அளவுருவின் தகவலையும் தொடர்புடைய விவரங்களையும் காண்க."
+      }
+    },
+    "fields": {
+      "bankCode": "வங்கி குறியீடு",
+      "bankName": "வங்கியின் பெயர்",
+      "branchCode": "கிளை குறியீடு",
+      "branchName": "கிளையின் பெயர்",
+      "date": "தேதி",
+      "scrollNumber": "ஸ்க்ரோல் எண்",
+      "clearingTypeId": "க்ளியரிங் வகை ஐடி",
+      "clearingTypeName": "க்ளியரிங் வகை பெயர்",
+      "dailyOutwardScheduleNo": "தினசரி வெளிச்செல் அட்டவணை எண்",
+      "scheduleDate": "அட்டவணை தேதி",
+      "clearingSerialNumber": "க்ளியரிங் வரிசை எண்",
+      "customerId": "வாடிக்கையாளர் ஐடி",
+      "customerName": "வாடிக்கையாளர் பெயர்",
+      "accountCode": "கணக்கு குறியீடு",
+      "accountName": "கணக்குதாரர் பெயர்",
+      "payeeName": "பணம் பெறுநர் பெயர்",
+      "drawerName": "வரைவாளர் பெயர்",
+      "instrumentType": "கருவி வகை",
+      "instrumentNumber": "கருவி எண்",
+      "instrumentDate": "கருவி தேதி",
+      "instrumentAmount": "கருவி தொகை",
+      "outletSerialNo": "அவுட்லெட் வரிசை எண்",
+      "glOutletDescription": "GL அவுட்லெட் விவரம்",
+      "glOutlistDocNo": "GL அவுட்லிஸ்ட் ஆவண எண்",
+      "rejectionTypeId": "நிராகரிப்பு வகை ஐடி",
+      "rejectionDescription": "நிராகரிப்பு விவரம்",
+      "chequeReturnCharges": "காசோலை திரும்பியனுப்பு கட்டணம்",
+      "serviceTax": "சேவை வரி",
+      "adviceNumber": "அறிவிப்பு எண்",
+      "adviceDate": "அறிவிப்பு தேதி",
+      "originalResponding": "மூலம் / பதில்",
+      "dailyInwardScheduleNo": "தினசரி உள்வரும் அட்டவணை எண்",
+      "amount": "தொகை",
+      "scheduleNumber": "அட்டவணை எண்",
+      "numberOfInstruments": "கருவிகளின் எண்ணிக்கை",
+      "totalAmount": "மொத்த தொகை",
+      "bounceNoOfInstruments": "பவுன்ஸான கருவிகளின் எண்ணிக்கை"
+    },
+    "actions": {
+      "postToAccount": "கணக்கில் பதிவு செய்"
+    }
   }
 }

@@ -63,6 +63,7 @@ import UnLeanPage from "@/pages/futuremodels/UnLeanPage";
 import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
 import SupportUtilityPage from "@/pages/SupportUtilityPage";
+import ClerkClearingPage from "@/pages/ClerkClearingPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
 import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
@@ -189,6 +190,7 @@ export const router = createBrowserRouter([
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
+      { path: "/clerk/clearing", element: <ClerkClearingPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
       { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },

@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Calendar, Printer, X } from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
-import { FieldShell, TextInput } from "@/components/shared/FormFields";
+import { FieldShell } from "@/components/shared/FormFields";
 
 export interface ReportsParameterModalProps {
   open: boolean;
@@ -22,8 +22,8 @@ export default function ReportsParameterModal({
   const handleIconClick = () => {
     const el = inputRef.current;
     if (!el) return;
-    if (typeof (el as any).showPicker === "function") {
-      (el as any).showPicker();
+    if (typeof el.showPicker === "function") {
+      el.showPicker();
     } else {
       el.focus();
     }

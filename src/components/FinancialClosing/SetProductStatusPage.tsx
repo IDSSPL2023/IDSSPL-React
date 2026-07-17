@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import NavbarAM from '@/components/UserMaster/NavbarAM';
 import SetProductStatusTable from './SetProductStatusTable';
 
@@ -9,6 +9,7 @@ interface Breadcrumb {
 
 const SetProductStatusPage = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const tableRef = useRef<{ handleAdd: () => void }>(null);
 
   const breadcrumbs: Breadcrumb[] = [
     { label: "Home", href: "/" },
@@ -17,6 +18,10 @@ const SetProductStatusPage = () => {
     { label: "Set Product Status", href: "#" },
   ];
 
+  const handleAdd = () => {
+    tableRef.current?.handleAdd();
+  };
+
   return (
     <div className="min-h-screen bg-[#F4F6FC] relative dark:bg-slate-950">
       <NavbarAM
@@ -24,7 +29,7 @@ const SetProductStatusPage = () => {
         titleHi="उत्पादनाची स्थिती सेट करा"
         breadcrumbs={breadcrumbs}
         onBack={() => window.history.back()}
-        onAdd={() => {}}
+        onAdd={handleAdd}
         isSearchVisible={isSearchVisible}
         onToggleSearch={() => setIsSearchVisible((prev) => !prev)}
         onOpenFilter={() => {}}
@@ -32,7 +37,7 @@ const SetProductStatusPage = () => {
       />
 
       <div className="px-3 py-2">
-        <SetProductStatusTable />
+        <SetProductStatusTable ref={tableRef} />
       </div>
     </div>
   );

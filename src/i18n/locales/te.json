@@ -503,5 +503,109 @@
       "accountType": "Select Account Type",
       "description": "Description"
     }
+  },
+  "clearing": {
+    "hero": {
+      "title": "క్లియరింగ్",
+      "welcomeTitle": "క్లియరింగ్‌కు స్వాగతం",
+      "searchPlaceholder": "క్లియరింగ్ ప్రక్రియలను వెతకండి...",
+      "show": "చూపించు",
+      "allMasters": "అన్ని మాస్టర్లు",
+      "recentlyUsed": "ఇటీవల ఉపయోగించినవి",
+      "open": "తెరవండి",
+      "noUtilitiesFound": "ఏ సౌకర్యాలు కనుగొనబడలేదు",
+      "breadcrumbClerk": "క్లర్క్"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "O/W Clearing Late Return Mark",
+        "cardDescription": "అవుట్‌వార్డ్ క్లియరింగ్ బిల్లుల ఆలస్య రిటర్న్‌ను నమోదు చేసి గుర్తించండి.",
+        "modalTitle": "అవుట్‌వార్డ్ బిల్ వసూలు నమోదు",
+        "modalSubtitle": "అవుట్‌వార్డ్ క్లియరింగ్ బిల్‌పై వచ్చిన ఆలస్య రిటర్న్‌ను నమోదు చేయండి.",
+        "successTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఆలస్య రిటర్న్ విజయవంతంగా నమోదైంది"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "Sub Branch I/W CLG Return",
+        "cardDescription": "సబ్ బ్రాంచ్ పంపిన ఇన్‌వార్డ్ క్లియరింగ్ రిటర్న్‌ను నమోదు చేయండి.",
+        "modalTitle": "సబ్ బ్రాంచ్ ఇన్‌వార్డ్ రిటర్న్",
+        "modalSubtitle": "పరామితి సమాచారం మరియు సంబంధిత వివరాలను చూడండి.",
+        "successTitle": "సబ్ బ్రాంచ్ ఇన్‌వార్డ్ రిటర్న్ విజయవంతంగా సేవ్ అయింది"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "O/W Clearing Posting Mark",
+        "cardDescription": "అవుట్‌వార్డ్ క్లియరింగ్ షెడ్యూల్ పోస్టింగ్ స్థితిని గుర్తించండి.",
+        "modalTitle": "అవుట్‌వార్డ్ క్లియరింగ్ పోస్టింగ్ మార్క్",
+        "modalSubtitle": "పరామితి సమాచారం మరియు సంబంధిత వివరాలను చూడండి.",
+        "successTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఖాతాలో విజయవంతంగా నమోదైంది"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "బ్రాంచ్ సమాచారం",
+        "subtitle": "అవుట్‌వార్డ్ బిల్ వసూలు కోసం ఖాతా వివరాలను నమోదు చేయండి."
+      },
+      "clearingDetails": {
+        "title": "క్లియరింగ్ వివరాలు",
+        "subtitle": "నమోదు చేయడానికి ముందు బ్రాంచ్ మరియు లావాదేవీ వివరాలను ఎంచుకోండి."
+      },
+      "customerAccountDetails": {
+        "title": "కస్టమర్ & ఖాతా వివరాలు",
+        "subtitle": "కస్టమర్, చెల్లింపుదారు మరియు డ్రావీ బ్యాంక్ వివరాలను నమోదు చేయండి."
+      },
+      "instrumentDetails": {
+        "title": "ఇన్‌స్ట్రుమెంట్ వివరాలు",
+        "subtitle": "చెక్ / ఇన్‌స్ట్రుమెంట్ వివరాలను నమోదు చేయండి."
+      },
+      "returnDetails": {
+        "title": "రిటర్న్ వివరాలు",
+        "subtitle": "తిరస్కరణ మరియు ఛార్జీల వివరాలను నమోదు చేయండి."
+      },
+      "details": {
+        "title": "వివరాలు",
+        "subtitle": "పరామితి సమాచారం మరియు సంబంధిత వివరాలను చూడండి."
+      }
+    },
+    "fields": {
+      "bankCode": "బ్యాంక్ కోడ్",
+      "bankName": "బ్యాంక్ పేరు",
+      "branchCode": "బ్రాంచ్ కోడ్",
+      "branchName": "బ్రాంచ్ పేరు",
+      "date": "తేదీ",
+      "scrollNumber": "స్క్రోల్ నంబర్",
+      "clearingTypeId": "క్లియరింగ్ టైప్ ఐడీ",
+      "clearingTypeName": "క్లియరింగ్ టైప్ పేరు",
+      "dailyOutwardScheduleNo": "రోజువారీ అవుట్‌వార్డ్ షెడ్యూల్ నం.",
+      "scheduleDate": "షెడ్యూల్ తేదీ",
+      "clearingSerialNumber": "క్లియరింగ్ సీరియల్ నంబర్",
+      "customerId": "కస్టమర్ ఐడీ",
+      "customerName": "కస్టమర్ పేరు",
+      "accountCode": "ఖాతా కోడ్",
+      "accountName": "ఖాతాదారు పేరు",
+      "payeeName": "చెల్లింపుదారు పేరు",
+      "drawerName": "డ్రాయర్ పేరు",
+      "instrumentType": "ఇన్‌స్ట్రుమెంట్ రకం",
+      "instrumentNumber": "ఇన్‌స్ట్రుమెంట్ నంబర్",
+      "instrumentDate": "ఇన్‌స్ట్రుమెంట్ తేదీ",
+      "instrumentAmount": "ఇన్‌స్ట్రుమెంట్ మొత్తం",
+      "outletSerialNo": "అవుట్‌లెట్ సీరియల్ నం.",
+      "glOutletDescription": "GL అవుట్‌లెట్ వివరణ",
+      "glOutlistDocNo": "GL అవుట్‌లిస్ట్ డాక్. నం.",
+      "rejectionTypeId": "తిరస్కరణ రకం ఐడీ",
+      "rejectionDescription": "తిరస్కరణ వివరణ",
+      "chequeReturnCharges": "చెక్ రిటర్న్ ఛార్జీలు",
+      "serviceTax": "సేవా పన్ను",
+      "adviceNumber": "అడ్వైస్ నంబర్",
+      "adviceDate": "అడ్వైస్ తేదీ",
+      "originalResponding": "ఒరిజినల్ / రెస్పాండింగ్",
+      "dailyInwardScheduleNo": "రోజువారీ ఇన్‌వార్డ్ షెడ్యూల్ నం.",
+      "amount": "మొత్తం",
+      "scheduleNumber": "షెడ్యూల్ నంబర్",
+      "numberOfInstruments": "ఇన్‌స్ట్రుమెంట్ల సంఖ్య",
+      "totalAmount": "మొత్తం రాశి",
+      "bounceNoOfInstruments": "బౌన్స్ అయిన ఇన్‌స్ట్రుమెంట్ల సంఖ్య"
+    },
+    "actions": {
+      "postToAccount": "ఖాతాలో పోస్ట్ చేయండి"
+    }
   }
 }

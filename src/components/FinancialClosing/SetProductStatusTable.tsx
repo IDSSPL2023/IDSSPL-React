@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Eye, SquarePenIcon } from "lucide-react";
+import { useState, forwardRef, useImperativeHandle } from "react";
+import { Eye, SquarePenIcon, Plus } from "lucide-react";
 import RowActionMenu, { type RowActionMenuItem } from "../shared/RowActionMenu";
 import SrNoBadge from "../shared/SrNoBadge";
+import SetProductStatusModal, { type ProductFormData } from "./SetProductStatusModal";
 
 interface ProductRow {
   sr: number;
@@ -20,8 +21,15 @@ const columns = [
   { key: "interestFlag", label: "Interest Flag" },
 ];
 
-const SetProductStatusTable = () => {
+const SetProductStatusTable = forwardRef<{ handleAdd: () => void }>((_, ref) => {
   const [accountType, setAccountType] = useState("loan");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<"add" | "view" | "edit">("add");
+  const [selectedRow, setSelectedRow] = useState<ProductRow | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    handleAdd
+  }));
 
   // Sample data - replace with actual data from API
   const products: ProductRow[] = [
@@ -32,12 +40,32 @@ const SetProductStatusTable = () => {
     { sr: 5, productCode: "L003", description: "Car Loan", interestApplyDate: "05-Jan-2026", interestFlag: "Yes" },
   ];
 
+  const handleAdd = () => {
+    setModalMode("add");
+    setSelectedRow(null);
+    setModalOpen(true);
+  };
+
   const handleView = (row: ProductRow) => {
-    console.log("View:", row);
+    setModalMode("view");
+    setSelectedRow(row);
+    setModalOpen(true);
   };
 
   const handleEdit = (row: ProductRow) => {
-    console.log("Edit:", row);
+    setModalMode("edit");
+    setSelectedRow(row);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setSelectedRow(null);
+  };
+
+  const handleModalSave = (data: ProductFormData) => {
+    console.log("Saved data:", data);
+    // Handle save logic here
   };
 
   const getMenuItems = (row: ProductRow): RowActionMenuItem[] => [
@@ -130,8 +158,26 @@ const SetProductStatusTable = () => {
           No products found for this account type.
         </div>
       )}
+
+      <SetProductStatusModal
+        open={modalOpen}
+        mode={modalMode}
+        accountType={accountType as "loan" | "deposit"}
+        initialData={selectedRow ? {
+          type: accountType === "loan" ? "TL" : "TD",
+          description: selectedRow.description,
+          productCode: selectedRow.productCode,
+          productName: selectedRow.description,
+          interestApplyDate: selectedRow.interestApplyDate,
+          interestFlag: selectedRow.interestFlag,
+        } : undefined}
+        onClose={handleModalClose}
+        onSave={handleModalSave}
+      />
     </div>
   );
-};
+});
+
+SetProductStatusTable.displayName = "SetProductStatusTable";
 
 export default SetProductStatusTable;
