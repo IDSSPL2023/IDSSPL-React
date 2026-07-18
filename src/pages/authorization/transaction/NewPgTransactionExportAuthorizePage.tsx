@@ -4,46 +4,44 @@ import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import AuthorizationTabs, {
   type AuthorizationTabKey,
 } from "@/components/Authorization/AuthorizationTabs";
-import TlOtherChargesAuthorizeTable, {
-  TL_OTHER_CHARGES_TAB_COUNTS,
-  type TlOtherChargesAuthorizeRow,
-} from "@/components/Authorization/Transaction/TlOtherChargesAuthorizeTable";
-import TlOtherChargesFilterModal, {
-  defaultTlOtherChargesFilters,
-  type TlOtherChargesFilters,
-} from "@/components/Authorization/Transaction/TlOtherChargesFilterModal";
-import AuthorizeTlOtherChargesModal, {
-  DEFAULT_TL_OTHER_CHARGES_ROWS,
-} from "@/components/Authorization/Transaction/AuthorizeTlOtherChargesModal";
+import NewPgTransactionExportAuthorizeTable, {
+  NEW_PG_TRANSACTION_EXPORT_TAB_COUNTS,
+  type NewPgTransactionExportAuthorizeRow,
+} from "@/components/Authorization/Transaction/NewPgTransactionExportAuthorizeTable";
+import NewPgTransactionExportFilterModal, {
+  defaultNewPgTransactionExportFilters,
+  type NewPgTransactionExportFilters,
+} from "@/components/Authorization/Transaction/NewPgTransactionExportFilterModal";
+import AuthorizeNewPgTransactionExportModal from "@/components/Authorization/Transaction/AuthorizeNewPgTransactionExportModal";
 import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
 
 const TABS = [
-  { key: "new" as const, labelKey: "authorizeAccount.tabs.newAuthorization", count: TL_OTHER_CHARGES_TAB_COUNTS.new },
-  { key: "rejected" as const, labelKey: "authorizeAccount.tabs.authorizeRejected", count: TL_OTHER_CHARGES_TAB_COUNTS.rejected },
+  { key: "new" as const, labelKey: "authorizeAccount.tabs.newAuthorization", count: NEW_PG_TRANSACTION_EXPORT_TAB_COUNTS.new },
+  { key: "rejected" as const, labelKey: "authorizeAccount.tabs.authorizeRejected", count: NEW_PG_TRANSACTION_EXPORT_TAB_COUNTS.rejected },
 ];
 
-const TlOtherChargesAuthorizePage = () => {
+const NewPgTransactionExportAuthorizePage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<AuthorizationTabKey>("new");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [filters, setFilters] = useState<TlOtherChargesFilters>(defaultTlOtherChargesFilters);
-  const [authorizeRow, setAuthorizeRow] = useState<TlOtherChargesAuthorizeRow | null>(null);
+  const [filters, setFilters] = useState<NewPgTransactionExportFilters>(defaultNewPgTransactionExportFilters);
+  const [authorizeRow, setAuthorizeRow] = useState<NewPgTransactionExportAuthorizeRow | null>(null);
 
-  const handleAuthorize = (row: TlOtherChargesAuthorizeRow) => setAuthorizeRow(row);
+  const handleAuthorize = (row: NewPgTransactionExportAuthorizeRow) => setAuthorizeRow(row);
   const closeAuthorizeModal = () => setAuthorizeRow(null);
-  const handleResetFilters = () => setFilters(defaultTlOtherChargesFilters);
+  const handleResetFilters = () => setFilters(defaultNewPgTransactionExportFilters);
 
   return (
     <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
       <GlobalNav
-        titleEn="TL Other Charges Authorize"
-        titleHi="मुदत कर्जाचे इतर शुल्क अधिकृत करणे"
+        titleEn="New PG Transaction Export"
+        titleHi="नवीन पीजी व्यवहार निर्यात अधिकृत करणे"
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "MIS Activity", href: "/" },
           { label: "Authorization", onClick: () => router.push("/authorization") },
-          { label: "TL Other Charges Authorize", href: "#" },
+          { label: "New PG Transaction Export", href: "#" },
         ]}
         onBack={() => router.back()}
       />
@@ -61,7 +59,7 @@ const TlOtherChargesAuthorizePage = () => {
           onResetFilters={handleResetFilters}
         />
 
-        <TlOtherChargesAuthorizeTable
+        <NewPgTransactionExportAuthorizeTable
           activeTab={activeTab === "rejected" ? "rejected" : "new"}
           filters={filters}
           onAuthorize={handleAuthorize}
@@ -74,7 +72,7 @@ const TlOtherChargesAuthorizePage = () => {
           onClick={() => setIsFilterOpen(false)}
         >
           <div onClick={(e) => e.stopPropagation()}>
-            <TlOtherChargesFilterModal
+            <NewPgTransactionExportFilterModal
               initialValues={filters}
               onClose={() => setIsFilterOpen(false)}
               onApply={(vals) => setFilters(vals)}
@@ -84,15 +82,12 @@ const TlOtherChargesAuthorizePage = () => {
       )}
 
       {authorizeRow && (
-        <AuthorizeTlOtherChargesModal
+        <AuthorizeNewPgTransactionExportModal
           open
           initialData={{
-            scrollNumber: authorizeRow.scrollNo,
-            accountCode: authorizeRow.accountCode,
-            particular: authorizeRow.particular,
-            chargeRows: DEFAULT_TL_OTHER_CHARGES_ROWS.map((row) =>
-              row.key === "transferGlHead" ? { ...row, totalAmount: authorizeRow.totalAmount } : row
-            ),
+            branchCode: authorizeRow.branchCode,
+            productCode: authorizeRow.productCode,
+            agentId: authorizeRow.agentId,
           }}
           onClose={closeAuthorizeModal}
         />
@@ -101,5 +96,4 @@ const TlOtherChargesAuthorizePage = () => {
   );
 };
 
-export default TlOtherChargesAuthorizePage;
-
+export default NewPgTransactionExportAuthorizePage;

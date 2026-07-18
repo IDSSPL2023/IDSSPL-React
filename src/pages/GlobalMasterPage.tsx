@@ -32,6 +32,7 @@ const GlobalMasterPage: React.FC = () => {
 
   const handleOpenMaster = useCallback((master: MasterItem) => {
     const config = getMasterConfig(master.key);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setOpenMaster(master);
     setTableRows([...config.rows]);
     setFilters({});

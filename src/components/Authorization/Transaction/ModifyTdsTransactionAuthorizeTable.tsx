@@ -4,21 +4,19 @@ import RowActionMenu from "@/components/shared/RowActionMenu";
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
 import Pagination from "@/components/shared/Pagination";
-import type { TlOtherChargesFilters } from "./TlOtherChargesFilterModal";
+import type { ModifyTdsTransactionFilters } from "./ModifyTdsTransactionFilterModal";
 
-export type TlOtherChargesAuthorizeTab = "new" | "rejected";
+export type ModifyTdsTransactionAuthorizeTab = "new" | "rejected";
 
-export type TlOtherChargesAuthorizeRow = {
+export type ModifyTdsTransactionAuthorizeRow = {
   srNo: number;
   scrollNo: string;
   accountCode: string;
   amount: string;
   userId: string;
-  totalAmount: string;
-  particular: string;
   createdBy: string;
   createdDate: string;
-  tab: TlOtherChargesAuthorizeTab;
+  tab: ModifyTdsTransactionAuthorizeTab;
 };
 
 const columns = [
@@ -28,64 +26,52 @@ const columns = [
   { key: "accountCode", label: "Account Code", sortable: true, width: "220px" },
   { key: "amount", label: "Amount", sortable: true, width: "140px" },
   { key: "userId", label: "User ID", sortable: true, width: "140px" },
-  { key: "totalAmount", label: "Total Amount", sortable: true, width: "150px" },
-  { key: "particular", label: "Particular", sortable: true, width: "160px" },
   { key: "createdBy", label: "Created By", sortable: true, width: "160px" },
   { key: "createdDate", label: "Created Date", sortable: true, width: "160px" },
 ] as const;
 
-const SAMPLE_TL_OTHER_CHARGES: Omit<TlOtherChargesAuthorizeRow, "srNo" | "tab">[] = [
-  { scrollNo: "118", accountCode: "00025050002501", amount: "845.0", userId: "ABC", totalAmount: "1,250", particular: "By Cash", createdBy: "Admin", createdDate: "23-May-2026" },
-  { scrollNo: "119", accountCode: "00025050002502", amount: "620.0", userId: "ABC", totalAmount: "980", particular: "By Cash", createdBy: "Admin", createdDate: "24-May-2026" },
-  { scrollNo: "120", accountCode: "00025050002503", amount: "1,150.0", userId: "ABC", totalAmount: "2,400", particular: "By Transfer", createdBy: "Clerk1", createdDate: "25-May-2026" },
-  { scrollNo: "121", accountCode: "00025050002504", amount: "430.0", userId: "ABC", totalAmount: "560", particular: "By Cash", createdBy: "Clerk1", createdDate: "26-May-2026" },
-  { scrollNo: "122", accountCode: "00025050002505", amount: "980.0", userId: "ABC", totalAmount: "3,150", particular: "By Transfer", createdBy: "Admin", createdDate: "27-May-2026" },
-  { scrollNo: "123", accountCode: "00025050002506", amount: "560.0", userId: "ABC", totalAmount: "1,800", particular: "By Cash", createdBy: "Admin", createdDate: "28-May-2026" },
-  { scrollNo: "124", accountCode: "00025050002507", amount: "715.0", userId: "ABC", totalAmount: "720", particular: "By Cash", createdBy: "Clerk1", createdDate: "29-May-2026" },
-  { scrollNo: "125", accountCode: "00025050002508", amount: "290.0", userId: "ABC", totalAmount: "4,300", particular: "By Transfer", createdBy: "Admin", createdDate: "30-May-2026" },
-  { scrollNo: "126", accountCode: "00025050002509", amount: "1,020.0", userId: "ABC", totalAmount: "1,050", particular: "By Cash", createdBy: "Clerk1", createdDate: "31-May-2026" },
-  { scrollNo: "127", accountCode: "00025050002510", amount: "505.0", userId: "ABC", totalAmount: "2,900", particular: "By Cash", createdBy: "Admin", createdDate: "01-Jun-2026" },
-  { scrollNo: "128", accountCode: "00025050002511", amount: "845.0", userId: "ABC", totalAmount: "640", particular: "By Transfer", createdBy: "Clerk1", createdDate: "02-Jun-2026" },
-  { scrollNo: "129", accountCode: "00025050002512", amount: "620.0", userId: "ABC", totalAmount: "1,975", particular: "By Cash", createdBy: "Admin", createdDate: "03-Jun-2026" },
-  { scrollNo: "130", accountCode: "00025050002513", amount: "1,150.0", userId: "ABC", totalAmount: "3,600", particular: "By Cash", createdBy: "Clerk1", createdDate: "04-Jun-2026" },
-  { scrollNo: "131", accountCode: "00025050002514", amount: "430.0", userId: "ABC", totalAmount: "825", particular: "By Transfer", createdBy: "Admin", createdDate: "05-Jun-2026" },
-  { scrollNo: "132", accountCode: "00025050002515", amount: "980.0", userId: "ABC", totalAmount: "2,150", particular: "By Cash", createdBy: "Clerk1", createdDate: "06-Jun-2026" },
-  { scrollNo: "133", accountCode: "00025050002516", amount: "560.0", userId: "ABC", totalAmount: "1,400", particular: "By Cash", createdBy: "Admin", createdDate: "07-Jun-2026" },
-  { scrollNo: "134", accountCode: "00025050002517", amount: "715.0", userId: "ABC", totalAmount: "3,050", particular: "By Transfer", createdBy: "Clerk1", createdDate: "08-Jun-2026" },
-  { scrollNo: "135", accountCode: "00025050002518", amount: "290.0", userId: "ABC", totalAmount: "690", particular: "By Cash", createdBy: "Admin", createdDate: "09-Jun-2026" },
-  { scrollNo: "136", accountCode: "00025050002519", amount: "1,020.0", userId: "ABC", totalAmount: "2,725", particular: "By Cash", createdBy: "Clerk1", createdDate: "10-Jun-2026" },
-  { scrollNo: "137", accountCode: "00025050002520", amount: "505.0", userId: "ABC", totalAmount: "1,150", particular: "By Transfer", createdBy: "Admin", createdDate: "11-Jun-2026" },
+const SAMPLE_MODIFY_TDS: Omit<ModifyTdsTransactionAuthorizeRow, "srNo" | "tab">[] = [
+  { scrollNo: "218", accountCode: "00000000105087", amount: "5,000.0", userId: "ABC", createdBy: "Admin", createdDate: "23-May-2026" },
+  { scrollNo: "219", accountCode: "00000000105088", amount: "3,500.0", userId: "ABC", createdBy: "Admin", createdDate: "24-May-2026" },
+  { scrollNo: "220", accountCode: "00000000105089", amount: "7,200.0", userId: "ABC", createdBy: "Admin", createdDate: "25-May-2026" },
+  { scrollNo: "221", accountCode: "00000000105090", amount: "2,100.0", userId: "ABC", createdBy: "Admin", createdDate: "26-May-2026" },
+  { scrollNo: "222", accountCode: "00000000105091", amount: "9,800.0", userId: "ABC", createdBy: "Admin", createdDate: "27-May-2026" },
+  { scrollNo: "223", accountCode: "00000000105092", amount: "4,650.0", userId: "ABC", createdBy: "Admin", createdDate: "28-May-2026" },
+  { scrollNo: "224", accountCode: "00000000105093", amount: "6,300.0", userId: "ABC", createdBy: "Admin", createdDate: "29-May-2026" },
+  { scrollNo: "225", accountCode: "00000000105094", amount: "1,750.0", userId: "ABC", createdBy: "Admin", createdDate: "30-May-2026" },
+  { scrollNo: "226", accountCode: "00000000105095", amount: "8,400.0", userId: "ABC", createdBy: "Admin", createdDate: "31-May-2026" },
+  { scrollNo: "227", accountCode: "00000000105096", amount: "3,900.0", userId: "ABC", createdBy: "Admin", createdDate: "01-Jun-2026" },
 ];
 
-const buildRows = (tab: TlOtherChargesAuthorizeTab, count: number): TlOtherChargesAuthorizeRow[] =>
+const buildRows = (tab: ModifyTdsTransactionAuthorizeTab, count: number): ModifyTdsTransactionAuthorizeRow[] =>
   Array.from({ length: count }, (_, i) => ({
-    ...SAMPLE_TL_OTHER_CHARGES[i % SAMPLE_TL_OTHER_CHARGES.length],
-    scrollNo: String(118 + i + (tab === "rejected" ? 100 : 0)),
+    ...SAMPLE_MODIFY_TDS[i % SAMPLE_MODIFY_TDS.length],
+    scrollNo: String(218 + i + (tab === "rejected" ? 100 : 0)),
     srNo: i + 1,
     tab,
   }));
 
-export const TL_OTHER_CHARGES_TAB_COUNTS: Record<TlOtherChargesAuthorizeTab, number> = {
-  new: 20,
-  rejected: 18,
+export const MODIFY_TDS_TRANSACTION_TAB_COUNTS: Record<ModifyTdsTransactionAuthorizeTab, number> = {
+  new: 16,
+  rejected: 10,
 };
 
-const ALL_ROWS: TlOtherChargesAuthorizeRow[] = [
-  ...buildRows("new", TL_OTHER_CHARGES_TAB_COUNTS.new),
-  ...buildRows("rejected", TL_OTHER_CHARGES_TAB_COUNTS.rejected),
+const ALL_ROWS: ModifyTdsTransactionAuthorizeRow[] = [
+  ...buildRows("new", MODIFY_TDS_TRANSACTION_TAB_COUNTS.new),
+  ...buildRows("rejected", MODIFY_TDS_TRANSACTION_TAB_COUNTS.rejected),
 ];
 
 const PAGE_SIZE = 15;
 
 type SortKey = Exclude<(typeof columns)[number]["key"], "action">;
 
-type TlOtherChargesAuthorizeTableProps = {
-  activeTab: TlOtherChargesAuthorizeTab;
-  filters?: TlOtherChargesFilters;
-  onAuthorize?: (row: TlOtherChargesAuthorizeRow) => void;
+type ModifyTdsTransactionAuthorizeTableProps = {
+  activeTab: ModifyTdsTransactionAuthorizeTab;
+  filters?: ModifyTdsTransactionFilters;
+  onAuthorize?: (row: ModifyTdsTransactionAuthorizeRow) => void;
 };
 
-const TlOtherChargesAuthorizeTable = ({ activeTab, filters, onAuthorize }: TlOtherChargesAuthorizeTableProps) => {
+const ModifyTdsTransactionAuthorizeTable = ({ activeTab, filters, onAuthorize }: ModifyTdsTransactionAuthorizeTableProps) => {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
@@ -126,7 +112,7 @@ const TlOtherChargesAuthorizeTable = ({ activeTab, filters, onAuthorize }: TlOth
   return (
     <div className="w-full overflow-hidden rounded-xl bg-white shadow-sm dark:bg-slate-900">
       <div className="table-container relative overflow-x-auto no-scrollbar">
-        <table className="w-full min-w-[1150px] table-fixed border-collapse">
+        <table className="w-full min-w-[1100px] table-fixed border-collapse">
           <thead>
             <tr className="bg-primary">
               {columns.map((col) => (
@@ -178,12 +164,6 @@ const TlOtherChargesAuthorizeTable = ({ activeTab, filters, onAuthorize }: TlOth
                   <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "140px" }}>
                     {row.userId}
                   </td>
-                  <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "150px" }}>
-                    {row.totalAmount}
-                  </td>
-                  <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "160px" }}>
-                    {row.particular}
-                  </td>
                   <td className="truncate px-6 py-3 text-[16px] text-gray-700 dark:text-slate-400" style={{ width: "160px" }}>
                     {row.createdBy}
                   </td>
@@ -202,4 +182,4 @@ const TlOtherChargesAuthorizeTable = ({ activeTab, filters, onAuthorize }: TlOth
   );
 };
 
-export default TlOtherChargesAuthorizeTable;
+export default ModifyTdsTransactionAuthorizeTable;

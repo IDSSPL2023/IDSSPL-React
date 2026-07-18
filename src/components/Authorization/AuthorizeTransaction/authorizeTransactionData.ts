@@ -86,4 +86,25 @@ export const AUTHORIZE_TRANSACTION_ITEMS: AuthorizeTransactionItem[] = [
     route: "/authorization/transaction/transfer",
     icon: ICON,
   },
+  {
+    id: "modify-tds-transaction",
+    title: "Modify TDS Transaction Authorize",
+    marathiTitle: "टीडीएस व्यवहार सुधारणे",
+    route: "/authorization/transaction/modify-tds-transaction",
+    icon: ICON,
+  },
+  {
+    id: "new-pg-transaction-import",
+    title: "New PG Transaction Import Authorize",
+    marathiTitle: "नवीन पीजी व्यवहार आयात",
+    route: "/authorization/transaction/new-pg-transaction-import",
+    icon: ICON,
+  },
+  {
+    id: "new-pg-transaction-export",
+    title: "New PG Transaction Export Authorize",
+    marathiTitle: "नवीन पीजी व्यवहार निर्यात",
+    route: "/authorization/transaction/new-pg-transaction-export",
+    icon: ICON,
+  },
 ];

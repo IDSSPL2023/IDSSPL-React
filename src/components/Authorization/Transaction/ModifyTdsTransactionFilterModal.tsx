@@ -31,28 +31,28 @@ const filterOptions = [
 
 type FilterKey = (typeof filterOptions)[number]["id"];
 
-export type TlOtherChargesFilters = Record<FilterKey, string>;
+export type ModifyTdsTransactionFilters = Record<FilterKey, string>;
 
-type TlOtherChargesFilterModalProps = {
+type ModifyTdsTransactionFilterModalProps = {
   onClose: () => void;
-  onApply: (filters: TlOtherChargesFilters) => void;
-  initialValues?: TlOtherChargesFilters;
+  onApply: (filters: ModifyTdsTransactionFilters) => void;
+  initialValues?: ModifyTdsTransactionFilters;
 };
 
-export const defaultTlOtherChargesFilters: TlOtherChargesFilters = {
+export const defaultModifyTdsTransactionFilters: ModifyTdsTransactionFilters = {
   accountCode: "",
   scrollNo: "",
   amount: "",
   userId: "",
 };
 
-export default function TlOtherChargesFilterModal({
+export default function ModifyTdsTransactionFilterModal({
   onClose,
   onApply,
-  initialValues = defaultTlOtherChargesFilters,
-}: TlOtherChargesFilterModalProps) {
+  initialValues = defaultModifyTdsTransactionFilters,
+}: ModifyTdsTransactionFilterModalProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("accountCode");
-  const [values, setValues] = useState<TlOtherChargesFilters>(initialValues);
+  const [values, setValues] = useState<ModifyTdsTransactionFilters>(initialValues);
 
   const active = filterOptions.find((f) => f.id === activeFilter);
 
@@ -61,8 +61,8 @@ export default function TlOtherChargesFilterModal({
   };
 
   const handleClearAll = () => {
-    setValues(defaultTlOtherChargesFilters);
-    onApply(defaultTlOtherChargesFilters);
+    setValues(defaultModifyTdsTransactionFilters);
+    onApply(defaultModifyTdsTransactionFilters);
     onClose();
   };
 
