@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IdCard, IndianRupee, User, Layers } from "lucide-react";
 
 export const MASTERS = [

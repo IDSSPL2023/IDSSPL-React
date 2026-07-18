@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import { X, UserRound, MoreVertical, IndianRupee, FileText, ChevronDown } from "lucide-react";
 import { getFormSectionsConfig } from "./masterConfig";

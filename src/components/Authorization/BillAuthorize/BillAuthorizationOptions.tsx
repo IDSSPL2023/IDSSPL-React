@@ -4,10 +4,10 @@ import { Landmark, ArrowLeftRight, Banknote, History, Search, X } from "lucide-r
 import { useBilingual } from "@/i18n/useBilingual";
 
 // Import all 4 modals
-import IBCAuthorizeModal from "./IBCauthorize";
-import IBCRealizeUnrealizeAuthorizeModal from "./IBCrealizeunrealizeauthorize";
-import OBCAuthorizeModal from "./OBCauthorize";
-import OBCRealizeUnrealizeAuthorizeModal from "./OBCrealizeunrealizeauthorize";
+import IBCAuthorizeModal from "./IBCAuthorize";
+import IBCRealizeUnrealizeAuthorizeModal from "./IBCRealizeUnrealizeAuthorize";
+import OBCAuthorizeModal from "./OBCAuthorize";
+import OBCRealizeUnrealizeAuthorizeModal from "./OBCRealizeUnrealizeAuthorize";
 
 const ICON_MAP = {
   Landmark,

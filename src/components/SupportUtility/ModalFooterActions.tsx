@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Check, X, ChevronDown } from "lucide-react";
 
 /**

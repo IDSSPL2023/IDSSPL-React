@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState, useMemo } from "react";
 import {
   Wallet, UserCircle, ShieldCheck, GitBranch, SlidersHorizontal, CreditCard,

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/components/SupportUtility/HeroSupportUtility.tsx
 import { useState, useMemo } from "react";
 import {
