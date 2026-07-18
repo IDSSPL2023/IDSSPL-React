@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, SquarePen, UserRoundCog, ShieldCheck } from "lucide-react";
+import { Eye, SquarePen, UserRoundCog } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 import { type AccountFilters } from "../shared/FilterModal";
 import RowActionMenu, { type RowActionMenuItem } from "../shared/RowActionMenu";

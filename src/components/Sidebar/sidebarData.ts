@@ -222,18 +222,20 @@ export const menuItems: NavItemData[] = [
         id: "clerk-account",
         title: "Account",
         icon: Landmark,
+         href: "/account-master",
+      },
+      {
+        id: "clerk-account-opening",
+        title: "Account Clsoing",
+        icon: Landmark,
+        href: "/account-closing"
       },
       // {
-      //   id: "clerk-account-opening",
-      //   title: "Account Opening",
-      //   icon: Landmark,
+      //   id: "clerk-application",
+      //   title: "Application",
+      //   icon: FileText,
+      //   // href: "/account-master",
       // },
-      {
-        id: "clerk-application",
-        title: "Application",
-        icon: FileText,
-        href: "/account-master",
-      },
       {
         id: "clerk-bills",
         title: "Bills",
@@ -271,6 +273,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-sms",
         title: "SMS",
         icon: MessageSquare,
+        href: "/clerk/sms",
       },
       {
         id: "clerk-transaction",

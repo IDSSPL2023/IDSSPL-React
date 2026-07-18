@@ -20,6 +20,7 @@ import AccountMasterCaSaPage from "@/pages/account-master/AccountMasterCaSaPage"
 import AccountMasterDepositPage from "@/pages/account-master/AccountMasterDepositPage";
 import AccountMasterInvestmentPage from "@/pages/account-master/AccountMasterInvestmentPage";
 import AccountMasterLoanPage from "@/pages/account-master/AccountMasterLoanPage";
+import AccountMasterFixedAssetPage from "@/pages/account-master/AccountMasterFixedAssetPage";
 import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
@@ -28,6 +29,7 @@ import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
+import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearingPage";
 import AuthorizeTransactionPage from "@/pages/authorization/transaction/AuthorizeTransactionPage";
 import CashDepositAuthorizePage from "@/pages/authorization/transaction/CashDepositAuthorizePage";
 import CashWithdrawalAuthorizePage from "@/pages/authorization/transaction/CashWithdrawalAuthorizePage";
@@ -65,6 +67,7 @@ import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
 import SupportUtilityPage from "@/pages/SupportUtilityPage";
 import ClerkClearingPage from "@/pages/ClerkClearingPage";
+import ClerkSmsPage from "@/pages/ClerkSmsPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
 import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
@@ -135,6 +138,7 @@ export const router = createBrowserRouter([
       { path: "/account-master/deposit", element: <AccountMasterDepositPage /> },
       { path: "/account-master/investment", element: <AccountMasterInvestmentPage /> },
       { path: "/account-master/loan", element: <AccountMasterLoanPage /> },
+      { path: "/account-master/fixed-asset", element: <AccountMasterFixedAssetPage /> },
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
@@ -145,6 +149,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
       { path: "/authorization/authorizeaccountmain/authorizeaccount", element: <AuthorizeAccountPage /> },
       { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
+      { path: "/authorization/clearing", element: <AuthorizeClearingPage /> },
       { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
       { path: "/authorization/transaction/cash-deposit", element: <CashDepositAuthorizePage /> },
       { path: "/authorization/transaction/cash-withdrawal", element: <CashWithdrawalAuthorizePage /> },
@@ -168,8 +173,8 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
       { path: "/futuremodels/investment-account", element: <InvestmentAccountPage /> },
       { path: "/futuremodels/investment-account-close", element: <InvestmentAccountClosePage /> },
-      { path: "/futuremodels/lean", element: <LeanPage /> },
-      { path: "/futuremodels/memo", element: <MemoPage /> },
+      // { path: "/futuremodels/lean", element: <LeanPage /> },
+      // { path: "/futuremodels/memo", element: <MemoPage /> },
       { path: "/futuremodels/pigmy-deposit-details", element: <PigmyDepositDetailsPage /> },
       { path: "/futuremodels/PigmyDetails", element: <PigmyDetailsPage /> },
       { path: "/futuremodels/standing-instructions", element: <StandingInstructionsPage /> },
@@ -194,6 +199,7 @@ export const router = createBrowserRouter([
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
+      { path: "/clerk/sms", element: <ClerkSmsPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
       { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },
