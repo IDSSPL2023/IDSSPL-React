@@ -632,6 +632,7 @@ export const menuItems: NavItemData[] = [
         id: "dd-printing",
         title: "Printing",
         icon: FileText,
+        href: "/dd",
       },
       {
         id: "dd-report",

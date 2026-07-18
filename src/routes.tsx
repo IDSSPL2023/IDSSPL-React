@@ -89,6 +89,9 @@ import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandli
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
+import DDPage from "./pages/dd/DDPage";
+import DDMaintenancePage from "./pages/dd/DDMaintenancePage";
+import DDPrintingPage from "./pages/dd/DDPrintingPage";
 // import BillHero from "./components/Bill/BillHero";
 import BillUtilityPage from "./components/Bill/BillUtilityPage";
 import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
@@ -145,7 +148,10 @@ export const router = createBrowserRouter([
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/day-begin-end", element: <DayBeginEndPage /> },
-{ path: "/interest-posting", element: <InterestPostingPage /> },
+      { path: "/dd", element: <DDPage /> },
+      { path: "/dd/maintenance", element: <DDMaintenancePage /> },
+      { path: "/dd/printing", element: <DDPrintingPage /> },
+      { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
