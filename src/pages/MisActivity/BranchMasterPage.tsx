@@ -21,6 +21,7 @@ import BranchChequeBookLotModal, {
 import { BranchNonCBSModal, rowToBranchNonCBSFormData, emptyBranchNonCBSFormData, type BranchNonCBSFormData } from "@/components/BranchMaster/BranchNonCBS";
 import { BranchTdReceiptLotModal, rowToTdReceiptLotFormData, emptyTdReceiptLotFormData, type TdReceiptLotFormData } from "@/components/BranchMaster/BranchTDReciptLot";
 import { useBilingual } from "@/i18n/useBilingual";
+import AddParameterModal from "@/components/BranchMaster/Modals/AddNewParameter";
 
 export default function BranchMasterPage() {
   const { t, en } = useBilingual();
@@ -140,12 +141,10 @@ export default function BranchMasterPage() {
       </div>
 
       {/* Add Branch Modal */}
-      <AddBranchModal
+      <AddParameterModal
         open={showAdd}
-        mode="add"
         initialData={emptyBranchFormData}
         onClose={() => setShowAdd(false)}
-        onSave={handleAddSave}
       />
 
       {/* View Branch Modal */}
