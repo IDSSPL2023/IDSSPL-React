@@ -275,7 +275,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-sms",
         title: "SMS",
         icon: MessageSquare,
-        href: "/clerk/sms",
+        href: "/sms",
       },
       {
         id: "clerk-transaction",
