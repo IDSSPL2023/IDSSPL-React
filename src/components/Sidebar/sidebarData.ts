@@ -275,7 +275,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-sms",
         title: "SMS",
         icon: MessageSquare,
-        href: "/clerk/sms",
+        href: "/sms",
       },
       {
         id: "clerk-transaction",
@@ -638,6 +638,7 @@ export const menuItems: NavItemData[] = [
         id: "dd-printing",
         title: "Printing",
         icon: FileText,
+        href: "/dd",
       },
       {
         id: "dd-report",
@@ -665,9 +666,10 @@ export const menuItems: NavItemData[] = [
     icon: PlayCircle,
     children: [
       {
-        id: "branch-activity-day-begin",
+        id: "branch-activity",
         title: "Day Begin",
         icon: PlayCircle,
+        href:"/branch-activity",
       },
     ],
   },

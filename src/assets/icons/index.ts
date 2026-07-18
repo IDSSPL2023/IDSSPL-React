@@ -11,7 +11,8 @@ import closeCircle from "./close-circle.svg";
 import userCircle from "./user-circle.svg";
 import userSquare from "./user-square.svg";
 import messageLanguage from "./message-language.svg";
-import UserCircle from "../../../public/User.png"
+import personEdit from "./person-edit.svg"
+
 
 // Export as ICON object with properties
 export const ICONS = {
@@ -20,6 +21,7 @@ export const ICONS = {
   XLS: xls,
   TXT: txt,
   ADD_PERSON: addPerson,
+  EDIT_PERSON: personEdit,
   UPDATE: update,
   CALENDAR: calendar,
   CALENDAR_STATS: calendarStats,

@@ -1,25 +1,25 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { Hash, IndianRupee, X, Filter as FilterIcon, User } from "lucide-react";
+import { Landmark, Hash, IndianRupee, X, Filter as FilterIcon, User } from "lucide-react";
 
 const filterOptions = [
   {
-    id: "accountCode",
-    label: "Account Code",
-    icon: <Hash size={18} className="text-primary" />,
-    placeholder: "Account Code",
+    id: "branchCode",
+    label: "Branch Code",
+    icon: <Landmark size={18} className="text-primary" />,
+    placeholder: "Branch Code",
   },
   {
-    id: "scrollNo",
-    label: "Scroll No",
+    id: "adviceNo",
+    label: "Advice No",
     icon: <Hash size={18} className="text-primary" />,
-    placeholder: "Scroll No",
+    placeholder: "Advice No",
   },
   {
     id: "amount",
-    label: "Amount",
+    label: "Total Amount",
     icon: <IndianRupee size={18} className="text-primary" />,
-    placeholder: "Amount",
+    placeholder: "Total Amount",
   },
   {
     id: "userId",
@@ -31,28 +31,28 @@ const filterOptions = [
 
 type FilterKey = (typeof filterOptions)[number]["id"];
 
-export type TlOtherChargesFilters = Record<FilterKey, string>;
+export type NewPgTransactionImportFilters = Record<FilterKey, string>;
 
-type TlOtherChargesFilterModalProps = {
+type NewPgTransactionImportFilterModalProps = {
   onClose: () => void;
-  onApply: (filters: TlOtherChargesFilters) => void;
-  initialValues?: TlOtherChargesFilters;
+  onApply: (filters: NewPgTransactionImportFilters) => void;
+  initialValues?: NewPgTransactionImportFilters;
 };
 
-export const defaultTlOtherChargesFilters: TlOtherChargesFilters = {
-  accountCode: "",
-  scrollNo: "",
+export const defaultNewPgTransactionImportFilters: NewPgTransactionImportFilters = {
+  branchCode: "",
+  adviceNo: "",
   amount: "",
   userId: "",
 };
 
-export default function TlOtherChargesFilterModal({
+export default function NewPgTransactionImportFilterModal({
   onClose,
   onApply,
-  initialValues = defaultTlOtherChargesFilters,
-}: TlOtherChargesFilterModalProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterKey>("accountCode");
-  const [values, setValues] = useState<TlOtherChargesFilters>(initialValues);
+  initialValues = defaultNewPgTransactionImportFilters,
+}: NewPgTransactionImportFilterModalProps) {
+  const [activeFilter, setActiveFilter] = useState<FilterKey>("branchCode");
+  const [values, setValues] = useState<NewPgTransactionImportFilters>(initialValues);
 
   const active = filterOptions.find((f) => f.id === activeFilter);
 
@@ -61,8 +61,8 @@ export default function TlOtherChargesFilterModal({
   };
 
   const handleClearAll = () => {
-    setValues(defaultTlOtherChargesFilters);
-    onApply(defaultTlOtherChargesFilters);
+    setValues(defaultNewPgTransactionImportFilters);
+    onApply(defaultNewPgTransactionImportFilters);
     onClose();
   };
 

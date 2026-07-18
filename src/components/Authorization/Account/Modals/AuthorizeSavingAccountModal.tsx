@@ -11,34 +11,22 @@ import {
   FileText,
   Wallet,
   Calendar,
-  CalendarClock,
   ShieldAlert,
   CodeIcon,
   UserCheck,
   DollarSign,
-  Percent,
-  Coins,
-  CreditCard,
-  Wrench,
-  ArrowLeftRight,
-  Hexagon,
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
 import Image from "@/components/ui/Image";
-import FormModal from "../../shared/FormModal";
-import {
-  FieldShell,
-  RadioDayMonth,
-  SelectField,
-  TextInput,
-} from "../../shared/FormFields";
+import FormModal from "../../../shared/FormModal";
+import { FieldShell, SelectField, TextInput } from "../../../shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import RejectReasonModal from "@/components/shared/RejectReasonModal";
 
 /* ===================== Shared types ===================== */
 
-export interface AuthorizeDepositAccountData {
+export interface AuthorizeSavingAccountData {
   applicationNumber: string;
   customerId: string;
   customerName: string;
@@ -49,24 +37,6 @@ export interface AuthorizeDepositAccountData {
   dateOfApplication: string;
   accountOperationCapacityId: string;
   minBalanceId: string;
-  // Deposit specific fields
-  accountType?: string;
-  accountOpenDate?: string;
-  unitOfPeriodDay?: boolean;
-  periodDeposit?: string;
-  interestRate?: string;
-  maturityDate?: string;
-  interestPaidInCashDay?: boolean;
-  rateDiscountedDay?: boolean;
-  interestPaymentFrequency?: string;
-  depositAmount?: string;
-  depositAmountWords?: string;
-  cash?: string;
-  clearing?: string;
-  transfer?: string;
-  creditAccountCode?: string;
-  creditAccountName?: string;
-  maturityAmount?: string;
   // Nominee specific fields
   salutationCode?: string;
   nomineeCustomerId?: string;
@@ -85,13 +55,13 @@ export interface AuthorizeDepositAccountData {
 
 const CONFIG = {
   icon: "/shield-check.png",
-  titleEn: "Authorize Deposit Account",
-  titleHi: "ठेवीचे खाते अधिकृत करा",
+  titleEn: "Authorize Saving Account",
+  titleHi: "सेव्हिंग अकाउंटसाठी परवाना द्या",
   descEn: "Check information related to the Account and Authorize them.",
   descHi: "कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती",
 };
 
-const DEFAULT_DATA: AuthorizeDepositAccountData = {
+const DEFAULT_DATA: AuthorizeSavingAccountData = {
   applicationNumber: "12",
   customerId: "00012",
   customerName: "Akshay Om More",
@@ -102,24 +72,6 @@ const DEFAULT_DATA: AuthorizeDepositAccountData = {
   dateOfApplication: "27-Feb-2026",
   accountOperationCapacityId: "Self",
   minBalanceId: "200",
-  // Deposit defaults
-  accountType: "TD",
-  accountOpenDate: "23-May-2026",
-  unitOfPeriodDay: true,
-  periodDeposit: "7",
-  interestRate: "1.2",
-  maturityDate: "23-May-2026",
-  interestPaidInCashDay: true,
-  rateDiscountedDay: true,
-  interestPaymentFrequency: "Monthly",
-  depositAmount: "100",
-  depositAmountWords: "One Hundred",
-  cash: "100",
-  clearing: "0",
-  transfer: "0",
-  creditAccountCode: "2001",
-  creditAccountName: "Akshay Om More",
-  maturityAmount: "23,990",
   // Nominee defaults
   salutationCode: "MR",
   nomineeCustomerId: "00012",
@@ -136,22 +88,22 @@ const DEFAULT_DATA: AuthorizeDepositAccountData = {
 
 /* ===================== UserDetailsModal ===================== */
 
-export interface AuthorizeDepositAccountProps {
+export interface AuthorizeSavingAccountProps {
   open: boolean;
-  initialData?: Partial<AuthorizeDepositAccountData>;
+  initialData?: Partial<AuthorizeSavingAccountData>;
   onClose?: () => void;
   onAuthorize?: () => void;
   onReject?: (reason: string) => void;
 }
 
-function AuthorizeDepositAccountModal({
+function AuthorizeSavingAccountModal({
   open,
   initialData,
   onClose,
   onAuthorize,
   onReject,
-}: AuthorizeDepositAccountProps) {
-  const [data, setData] = useState<AuthorizeDepositAccountData>({
+}: AuthorizeSavingAccountProps) {
+  const [data, setData] = useState<AuthorizeSavingAccountData>({
     ...DEFAULT_DATA,
     ...initialData,
   });
@@ -161,7 +113,7 @@ function AuthorizeDepositAccountModal({
   >(null);
   const [showRejectReason, setShowRejectReason] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("Details");
-  const TABS = ["Details", "Deposit", "Nominee", "Joint Holder"] as const;
+  const TABS = ["Details", "Nominee", "Joint Holder"] as const;
 
   useEffect(() => {
     if (open) {
@@ -177,13 +129,6 @@ function AuthorizeDepositAccountModal({
     if (idx < TABS.length - 1) setActiveTab(TABS[idx + 1]);
   };
 
-  type TabKey = (typeof TABS)[number];
-
-  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
-  const grid3 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3";
-
-  const isLastStep = activeTab === "Joint Holder";
-
   const handleAuthorize = () => {
     setActionModel("authorize");
     onAuthorize && onAuthorize();
@@ -198,6 +143,13 @@ function AuthorizeDepositAccountModal({
     setActionModel("rejected");
     onReject && onReject(reason);
   };
+
+  type TabKey = (typeof TABS)[number];
+
+  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
+  const grid3 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3";
+
+  const isLastStep = activeTab === "Joint Holder";
 
   const CustomFooterButton = () => {
     return (
@@ -398,197 +350,6 @@ function AuthorizeDepositAccountModal({
             value={data.minBalanceId}
             onChange={() => {}}
           />
-        </div>
-      </div>
-    );
-  };
-
-  const DepositForm = () => {
-    return (
-      <div className="bg-white rounded-[20px] border border-t-4 border-primary p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] no-scrollbar">
-        <div className={grid3}>
-          <FieldShell label="Account Type" labelHi="आकाउंट प्रकार" required>
-            <TextInput
-              icon={<User size={16} />}
-              value={data.accountType || "TD"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell
-            label="Account Open Date"
-            labelHi="खाते उघडण्याची तारीख"
-            required
-          >
-            <TextInput
-              icon={<Calendar size={16} />}
-              value={data.accountOpenDate || "23-May-2026"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <RadioDayMonth
-            label="Unit Of Period"
-            value={!!data.unitOfPeriodDay}
-            onChange={() => {}}
-            disabled
-          />
-        </div>
-
-        <div className={`${grid3} mt-4`}>
-          <FieldShell label="Period Deposit" labelHi="काळजी ठेव" required>
-            <TextInput
-              icon={<CalendarClock size={16} />}
-              value={data.periodDeposit || "7"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell label="Interest Rate" labelHi="व्याज दर" required>
-            <TextInput
-              icon={<Percent size={16} />}
-              value={data.interestRate || "1.2"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell label="Maturity Date" labelHi="परिपक्वता तारीख" required>
-            <TextInput
-              icon={<Calendar size={16} />}
-              value={data.maturityDate || "23-May-2026"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-        </div>
-
-        <div className={`${grid3} mt-4`}>
-          <RadioDayMonth
-            label="Interest Paid in Cash"
-            value={!!data.interestPaidInCashDay}
-            onChange={() => {}}
-            disabled
-          />
-
-          <RadioDayMonth
-            label="Rate Discounted"
-            value={!!data.rateDiscountedDay}
-            onChange={() => {}}
-            disabled
-          />
-
-          <SelectField
-            labelEn="Interest Payment Frequency"
-            labelMr="व्याज भरण्याची वारंवारिता"
-            editable={false}
-            icon={Calendar}
-            value={data.interestPaymentFrequency || "Monthly"}
-            onChange={() => {}}
-          />
-        </div>
-
-        <div className={`${grid3} mt-4`}>
-          <FieldShell label="Deposit Amount" labelHi="ठेव रक्कम" required>
-            <TextInput
-              icon={<Coins size={16} />}
-              value={data.depositAmount || "100"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell
-            label="Deposit Amount in words"
-            labelHi="ठेव रक्कम शब्दांमध्ये"
-            required
-            className="md:col-span-2"
-          >
-            <TextInput
-              icon={<Coins size={16} />}
-              value={data.depositAmountWords || "One Hundred"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-        </div>
-
-        <div className={`${grid3} mt-4`}>
-          <FieldShell label="Cash" labelHi="रोख" required>
-            <TextInput
-              icon={<CreditCard size={16} />}
-              value={data.cash || "100"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell label="Clearing" labelHi="क्लीअरिंग" required>
-            <TextInput
-              icon={<Wrench size={16} />}
-              value={data.clearing || "0"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell label="Transfer" labelHi="हस्तांतरण" required>
-            <TextInput
-              icon={<ArrowLeftRight size={16} />}
-              value={data.transfer || "0"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-        </div>
-
-        <div className={`${grid3} mt-4`}>
-          <FieldShell
-            label="Credit Account Code"
-            labelHi="क्रेडिट अकाउंट कोड"
-            required
-          >
-            <div className="flex items-center gap-2">
-              <div className="min-w-0 flex-1">
-                <TextInput
-                  icon={<Hexagon size={16} />}
-                  value={data.creditAccountCode || "2001"}
-                  onChange={() => {}}
-                  readOnly
-                />
-              </div>
-              <ToolPick onClick={() => {}} />
-            </div>
-          </FieldShell>
-
-          <FieldShell
-            label="Credit Account Name"
-            labelHi="क्रेडिट खाते नाव"
-            required
-          >
-            <TextInput
-              icon={<User size={16} />}
-              value={data.creditAccountName || "Akshay Om More"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
-
-          <FieldShell
-            label="Maturity Amount"
-            labelHi="परिपक्वतेची रक्कम"
-            required
-          >
-            <TextInput
-              icon={<Coins size={16} />}
-              value={data.maturityAmount || "23,990"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
         </div>
       </div>
     );
@@ -870,8 +631,6 @@ function AuthorizeDepositAccountModal({
         {/* User Details */}
         {activeTab === "Details" ? (
           <DetailsForm />
-        ) : activeTab === "Deposit" ? (
-          <DepositForm />
         ) : activeTab === "Nominee" ? (
           <NomineeForm />
         ) : (
@@ -898,6 +657,7 @@ function AuthorizeDepositAccountModal({
             variant="success"
           />
         )}
+
         {actionModel === "rejected" && (
           <SuccessModal
             title="Account Authorization is Rejected"
@@ -916,4 +676,4 @@ function AuthorizeDepositAccountModal({
   );
 }
 
-export default AuthorizeDepositAccountModal;
+export default AuthorizeSavingAccountModal;
