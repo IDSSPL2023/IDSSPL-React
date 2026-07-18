@@ -1,13 +1,23 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import AccountMasterTable, { type RowData } from "@/components/AccountMaster/AccountMasterTable";
 import NavbarAM from "@/components/AccountMaster/NavbarAM";
 import AddAccountMaster from "@/components/AccountMaster/AddAccountMaster";
+import AddInvestmentAccountMaster from "@/components/futuremodels/AddInvestmentAccountMaster";
+import AddTermLoanMaster from "@/components/futuremodels/AddTermLoanMaster";
+import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
 import ViewAccountModal, { type AccountDetails } from "@/components/AccountMaster/ViewAccount";
 import AccountFreezeModal, { type AccountFreezeSubmitPayload } from "@/components/AccountMaster/AccountFreezeModal";
+import AccountOperativeModal from "@/components/AccountMaster/AccountOperativeModal";
+import ChequeBookIssue from "@/components/AccountMaster/Cheque/cheque-issue";
+import AddSI from "@/components/StandingInstruction/AddSI";
+import MemoModal from "../../pages/futuremodels/MemoPage";
+import LeanPage from "../../pages/futuremodels/LeanPage";
+import { getMenuItemsForAccountType } from "@/components/AccountMaster/accountTypeMenuConfig";
 import AccountOperativeModal, {  type AccountOperativeSubmitPayload} from "@/components/AccountMaster/AccountOperativeModal";
 import { useBilingual } from "@/i18n/useBilingual";
 
-export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment";
+export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment" | "fixed-asset";
 
 type AccountMasterPageProps = {
   accountType: AccountMasterType;
@@ -19,7 +29,7 @@ function toI18nId(id: string): string {
 }
 
 const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
-  const { en, t } = useBilingual();
+  const { en, t, tRaw } = useBilingual();
   const titleKey = `accountMaster.options.${toI18nId(accountType)}.title`;
   const titleEn = en(titleKey);
   const titleHi = t(titleKey);
@@ -29,6 +39,10 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
   const [selectedAccountRow, setSelectedAccountRow] = useState<RowData | null>(null);
   const [freezeRow, setFreezeRow] = useState<RowData | null>(null);
   const [operativeRow, setOperativeRow] = useState<RowData | null>(null);
+  const [chequeBookIssueRow, setChequeBookIssueRow] = useState<RowData | null>(null);
+  const [standingInstructionRow, setStandingInstructionRow] = useState<RowData | null>(null);
+  const [memoRow, setMemoRow] = useState<RowData | null>(null);
+  const [leanRow, setLeanRow] = useState<RowData | null>(null);
 
   const handleView = (row: RowData) => {
     setSelectedAccountRow(row);
@@ -57,12 +71,21 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
     setFreezeRow(null);
   };
 
-  const handleOperativeSubmit = (payload: AccountOperativeSubmitPayload) => {
-    window.alert(
-      `Account ${operativeRow?.accountId ?? "-"} status changed to ${payload.status}.\nReason: ${payload.reason}`
-    );
+  const handleOperativeSubmit = () => {
     setOperativeRow(null);
   };
+
+  const getMenuItems = (row: RowData) =>
+    getMenuItemsForAccountType(accountType, row, tRaw, {
+      onView: handleView,
+      onEdit: handleEdit,
+      onFreeze: (r) => setFreezeRow(r),
+      onOperative: (r) => setOperativeRow(r),
+      onChequeBookIssue: (r) => setChequeBookIssueRow(r),
+      onStandingInstruction: (r) => setStandingInstructionRow(r),
+      onMemo: (r) => setMemoRow(r),
+      onLienMark: (r) => setLeanRow(r),
+    });
 
   return (
     <div className="min-h-screen bg-[#F4F6FC] relative">
@@ -80,15 +103,24 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
       />
 
       <div className="px-3 py-2">
-        <AccountMasterTable
-          onView={handleView}
-          onEdit={handleEdit}
-          onFreeze={(row) => setFreezeRow(row)}
-          onOperative={(row) => setOperativeRow(row)}
-        />
+        <AccountMasterTable renderMenuItems={getMenuItems} />
       </div>
 
-      {openAddModal && <AddAccountMaster onClose={() => setOpenAddModal(false)} />}
+      {openAddModal && accountType === "investment" && (
+        <AddInvestmentAccountMaster onClose={() => setOpenAddModal(false)} />
+      )}
+
+      {openAddModal && accountType === "loan" && (
+        <AddTermLoanMaster onClose={() => setOpenAddModal(false)} />
+      )}
+
+      {openAddModal && accountType === "fixed-asset" && (
+        <FixedAssetPage onClose={() => setOpenAddModal(false)} />
+      )}
+
+      {openAddModal && (accountType === "ca-sa" || accountType === "deposit") && (
+        <AddAccountMaster onClose={() => setOpenAddModal(false)} />
+      )}
 
       {viewMode && selectedAccountRow && (
         <ViewAccountModal
@@ -115,6 +147,28 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
           }}
           onClose={() => setOperativeRow(null)}
           onSubmit={handleOperativeSubmit}
+        />
+      )}
+
+      {chequeBookIssueRow && <ChequeBookIssue onClose={() => setChequeBookIssueRow(null)} />}
+
+      {standingInstructionRow && (
+        <AddSI
+          onClose={() => setStandingInstructionRow(null)}
+          debitAccountCode={standingInstructionRow.accountId}
+          debitName={standingInstructionRow.accountName}
+        />
+      )}
+
+      {memoRow && (
+        <MemoModal
+          onClose={() => setMemoRow(null)}
+        />
+      )}
+
+      {leanRow && (
+        <LeanPage
+          onClose={() => setLeanRow(null)}
         />
       )}
     </div>

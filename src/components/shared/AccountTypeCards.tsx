@@ -7,6 +7,7 @@ import {
   HandCoins,
   TrendingUp,
   PiggyBank,
+  Building2,
 } from "lucide-react";
 
 export interface OptionCardData {
@@ -149,6 +150,24 @@ export const accountMasterOptions: OptionCardData[] = [
     description: "Enter the Investment application details.",
     href: "/account-master/investment",
     icon: TrendingUp,
+    iconBg: ICON_BG,
+  },
+  {
+    id: "fixed-asset",
+    title: "Fixed Asset",
+    titleMr: "स्थायी मालमत्ता",
+    description: "Enter the Fixed Asset application details.",
+    href: "/account-master/fixed-asset",
+    icon: Building2,
+    iconBg: ICON_BG,
+  },
+    {
+    id: "pigmy",
+    title: "Pigmy",
+    titleMr: "पिग्मी",
+    description: "Enter the Pigmy account closing details.",
+    href: "/account-closing/pigmy",
+    icon: PiggyBank,
     iconBg: ICON_BG,
   },
 ];

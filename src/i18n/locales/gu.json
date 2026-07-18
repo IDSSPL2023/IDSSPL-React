@@ -9,6 +9,7 @@
     "validate": "વેલિડેટ કરો",
     "authorize": "અધિકૃત કરો",
     "revoke": "રદબાતલ કરો",
+    "reject": "નકારો",
     "details": "વિગતો",
     "accountDetails": "ખાતાની વિગતો",
     "lienDetails": "બોજાની વિગતો",
@@ -92,7 +93,13 @@
       "createdBy": "બનાવનાર",
       "openingDate": "ખાતું ખોલવાની તારીખ",
       "menuFreeze": "ખાતું ફ્રીઝ / અનફ્રીઝ",
-      "menuCheque": "ચેક બુક ઈશ્યુ"
+      "menuCheque": "ચેક બુક ઈશ્યુ",
+      "menuFreezeUnfreeze": "ખાતું ફ્રીઝ / અનફ્રીઝ",
+      "menuChequeBookIssue": "ચેક બુક ઈશ્યુ / સ્ટોપ",
+      "menuStandingInstruction": "સ્ટેન્ડિંગ ઈન્સ્ટ્રક્શન",
+      "menuMemo": "મેમો",
+      "menuOperativeInoperative": "ખાતું કાર્યરત/નિષ્ક્રિય",
+      "menuLienMark": "લિયન માર્ક / સ્ટોપ"
     },
     "addForm": {
       "title": "ખાતું ઉમેરો",
@@ -537,6 +544,62 @@
         "modalTitle": "જાવક ક્લિયરિંગ પોસ્ટિંગ ચિહ્ન",
         "modalSubtitle": "પેરામીટરની માહિતી અને સંબંધિત વિગતો જુઓ.",
         "successTitle": "જાવક ક્લિયરિંગ ખાતામાં સફળતાપૂર્વક નોંધાયું"
+      },
+      "clearingTallyWithClearingHouse": {
+        "cardTitle": "ક્લિયરિંગ હાઉસ સાથે ક્લિયરિંગ સરભર",
+        "cardDescription": "શાખાના ક્લિયરિંગ સ્ક્રોલને ક્લિયરિંગ હાઉસના આંકડા સાથે સરભર કરો.",
+        "modalTitle": "ક્લિયરિંગ હાઉસ સાથે ક્લિયરિંગ સરભર",
+        "modalSubtitle": "બંધ કરતા પહેલા સ્ક્રોલ કુલ રકમ ક્લિયરિંગ હાઉસ સાથે ચકાસો.",
+        "successTitle": "ક્લિયરિંગ હાઉસ સાથે સરભર સફળતાપૂર્વક થયું"
+      },
+      "firstSecondClearingClosing": {
+        "cardTitle": "1લી અને 2જી ક્લિયરિંગ સમાપ્તિ",
+        "cardDescription": "દિવસના પહેલા અને બીજા ક્લિયરિંગ સત્રની સમાપ્તિ કરો.",
+        "modalTitle": "1લી અને 2જી ક્લિયરિંગ સમાપ્તિ",
+        "modalSubtitle": "શાખા માટે પસંદ કરેલ ક્લિયરિંગ સત્ર બંધ કરો.",
+        "successTitle": "ક્લિયરિંગ સફળતાપૂર્વક બંધ થયું"
+      },
+      "generateInwardSchedule": {
+        "cardTitle": "આવક શેડ્યૂલ જનરેટ કરો",
+        "cardDescription": "દૈનિક આવક ક્લિયરિંગ શેડ્યૂલ જનરેટ કરો.",
+        "modalTitle": "આવક શેડ્યૂલ જનરેટ કરો",
+        "modalSubtitle": "પસંદ કરેલ તારીખ માટે આવક ક્લિયરિંગ શેડ્યૂલ જનરેટ કરો.",
+        "successTitle": "આવક શેડ્યૂલ સફળતાપૂર્વક જનરેટ થયું"
+      },
+      "generateOutwardSchedule": {
+        "cardTitle": "જાવક શેડ્યૂલ જનરેટ કરો",
+        "cardDescription": "દૈનિક જાવક ક્લિયરિંગ શેડ્યૂલ જનરેટ કરો.",
+        "modalTitle": "જાવક શેડ્યૂલ જનરેટ કરો",
+        "modalSubtitle": "પસંદ કરેલ તારીખ માટે જાવક ક્લિયરિંગ શેડ્યૂલ જનરેટ કરો.",
+        "successTitle": "જાવક શેડ્યૂલ સફળતાપૂર્વક જનરેટ થયું"
+      },
+      "importDailyOutwardScheduleDetail": {
+        "cardTitle": "દૈનિક જાવક શેડ્યૂલ વિગત આયાત કરો",
+        "cardDescription": "દિવસ માટે મળેલ જાવક શેડ્યૂલ વિગત ફાઈલ આયાત કરો.",
+        "modalTitle": "દૈનિક જાવક શેડ્યૂલ વિગત આયાત કરો",
+        "modalSubtitle": "પસંદ કરેલ શેડ્યૂલ માટે જાવક શેડ્યૂલ વિગત ફાઈલ આયાત કરો.",
+        "successTitle": "દૈનિક જાવક શેડ્યૂલ વિગત સફળતાપૂર્વક આયાત થઈ"
+      },
+      "inwardClearingEntry": {
+        "cardTitle": "આવક ક્લિયરિંગ એન્ટ્રી",
+        "cardDescription": "આવક ક્લિયરિંગમાં મળેલ ઈન્સ્ટ્રુમેન્ટ-વાર એન્ટ્રી નોંધો.",
+        "modalTitle": "આવક ક્લિયરિંગ એન્ટ્રી",
+        "modalSubtitle": "આવક ક્લિયરિંગ માટે શાખા, શેડ્યૂલ અને ઈન્સ્ટ્રુમેન્ટ વિગતો દાખલ કરો.",
+        "successTitle": "આવક ક્લિયરિંગ એન્ટ્રી સફળતાપૂર્વક સાચવી"
+      },
+      "owClearingBounceMark": {
+        "cardTitle": "જાવક ક્લિયરિંગ બાઉન્સ ચિહ્ન",
+        "cardDescription": "જાવક ક્લિયરિંગ ઈન્સ્ટ્રુમેન્ટને બાઉન્સ/પરત તરીકે ચિહ્નિત કરો.",
+        "modalTitle": "જાવક ક્લિયરિંગ બાઉન્સ ચિહ્ન",
+        "modalSubtitle": "બાઉન્સ થયેલ ઈન્સ્ટ્રુમેન્ટ માટે અસ્વીકાર અને શુલ્ક નોંધો.",
+        "successTitle": "જાવક ક્લિયરિંગ બાઉન્સ સફળતાપૂર્વક ચિહ્નિત થયું"
+      },
+      "outwardClearingEntry": {
+        "cardTitle": "જાવક ક્લિયરિંગ એન્ટ્રી",
+        "cardDescription": "જાવક ક્લિયરિંગમાં મોકલેલ ઈન્સ્ટ્રુમેન્ટ-વાર એન્ટ્રી નોંધો.",
+        "modalTitle": "જાવક ક્લિયરિંગ એન્ટ્રી",
+        "modalSubtitle": "જાવક ક્લિયરિંગ માટે શાખા, શેડ્યૂલ અને ઈન્સ્ટ્રુમેન્ટ વિગતો દાખલ કરો.",
+        "successTitle": "જાવક ક્લિયરિંગ એન્ટ્રી સફળતાપૂર્વક સાચવી"
       }
     },
     "sections": {
@@ -602,10 +665,18 @@
       "scheduleNumber": "શેડ્યૂલ નંબર",
       "numberOfInstruments": "ઈન્સ્ટ્રુમેન્ટની સંખ્યા",
       "totalAmount": "કુલ રકમ",
-      "bounceNoOfInstruments": "બાઉન્સ ઈન્સ્ટ્રુમેન્ટની સંખ્યા"
+      "bounceNoOfInstruments": "બાઉન્સ ઈન્સ્ટ્રુમેન્ટની સંખ્યા",
+      "totalInstruments": "કુલ ઈન્સ્ટ્રુમેન્ટ",
+      "closingRemark": "સમાપ્તિ શેરો",
+      "fileName": "ફાઈલ નામ"
     },
     "actions": {
-      "postToAccount": "ખાતામાં પોસ્ટ કરો"
+      "postToAccount": "ખાતામાં પોસ્ટ કરો",
+      "tally": "સરભર",
+      "close": "બંધ કરો",
+      "generate": "જનરેટ કરો",
+      "import": "આયાત કરો"
+    }
   },
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
@@ -734,5 +805,17 @@
     "placeholders": {
       "name": "name"
     }
+  },
+  "clerkSms": {
+    "title": "એસએમએસ",
+    "table": {
+      "srNo": "અ.નં.",
+      "mobileNumber": "મોબાઈલ નંબર",
+      "customerName": "ગ્રાહકનું નામ",
+      "message": "સંદેશ",
+      "type": "પ્રકાર",
+      "status": "સ્થિતિ",
+      "sentDate": "મોકલવાની તારીખ"
+    }
   }
-}}
+}

@@ -13,7 +13,32 @@ import {
 import Image from "@/components/ui/Image"
 import { useBilingual } from '@/i18n/useBilingual'
 
-const LeanPage = () => {
+export interface LienMarkFormData {
+  loanAccountCode: string;
+  loanAccountName: string;
+  lienAmount: string;
+  remark: string;
+}
+
+export interface LienMarkModalProps {
+  onClose: () => void;
+  onSave?: (data: LienMarkFormData) => void;
+
+  accountCode?: string;
+  accountName?: string;
+  ledgerBalance?: string;
+  availableBalance?: string;
+}
+
+
+const LeanPage = ({
+  onClose,
+  onSave,
+  accountCode = "1234567890",
+  accountName = "Akshay Om More",
+  ledgerBalance = "408493.50",
+  availableBalance = "408493.50",
+}: LienMarkModalProps) => {
   const { t, en } = useBilingual()
   const [remark, setRemark] = useState('')
 

@@ -1,5 +1,19 @@
 import { useMemo, useState, type FC } from "react";
-import { Search, Landmark, ScrollText, ArrowLeftRight, Banknote } from "lucide-react";
+import {
+  Search,
+  Landmark,
+  ScrollText,
+  ArrowLeftRight,
+  Banknote,
+  ClipboardList,
+  CalendarCheck,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  FileInput,
+  Inbox,
+  AlertTriangle,
+  Send,
+} from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 import { CLEARING_MASTERS } from "./masterConfig";
 
@@ -8,6 +22,14 @@ const ICON_MAP: Record<string, FC<{ size?: number; strokeWidth?: number; classNa
   ArrowLeftRight,
   Banknote,
   Landmark,
+  ClipboardList,
+  CalendarCheck,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  FileInput,
+  Inbox,
+  AlertTriangle,
+  Send,
 };
 
 interface HeroClearingProps {
