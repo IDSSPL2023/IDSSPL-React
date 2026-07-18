@@ -130,7 +130,7 @@ function SelectInput({
           >
             {Icon && (
               <Icon
-                className="h-4 w-4 shrink-0 text-slate-400"
+                className="w-5 text-[#6B7280] dark:text-slate-400"
                 strokeWidth={1.8}
               />
             )}
