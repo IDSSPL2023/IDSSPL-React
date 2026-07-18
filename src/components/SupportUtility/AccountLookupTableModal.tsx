@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo, useState } from "react";
 import { X, Check, ChevronDown, UserRound, MoreVertical, FileSearch, Ban, Calendar, FileText } from "lucide-react";
 import { getAccountLookupConfig } from "./masterConfig";

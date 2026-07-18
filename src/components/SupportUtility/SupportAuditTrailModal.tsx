@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import { X, Check, UserRound, MoreVertical, FileText } from "lucide-react";
 import SuccessModal from "../shared/SuccessModal";

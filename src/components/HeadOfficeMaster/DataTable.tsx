@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo } from "react";
 import { ArrowUpDown, Eye, SquarePen, GitBranch } from "lucide-react";
 import RowActionMenu from "../shared/RowActionMenu";

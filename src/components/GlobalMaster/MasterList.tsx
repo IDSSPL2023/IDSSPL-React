@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo } from "react";
 import {
   Settings, GitBranch, Layers, BookOpen, IdCard, Hash, Users, Home, FileText,

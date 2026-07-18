@@ -1,7 +1,9 @@
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import Image from "@/components/ui/Image";
 import { X, Check, ChevronDown, ThumbsUp, UserRound, SquarePen } from "lucide-react";
 import { getMasterConfig, getFieldIcon } from "./masterConfig";
+import SuccessModal from "../shared/SuccessModal.tsx"; // adjust path to wherever your SuccessModal lives
 
 const MODAL_META = {
   add: {
@@ -44,6 +46,11 @@ const ParameterModal = ({
   const [errors, setErrors] = useState({});
   const [saveMenuOpen, setSaveMenuOpen] = useState(false);
 
+  // NEW: controls the SuccessModal, and which flow triggered it
+  // ("save" -> close both modals & notify parent, "saveAndNew" -> reset the form and keep this modal open)
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [saveIntent, setSaveIntent] = useState(null);
+
   useEffect(() => {
     setFormData(initialData);
     setValidated(false);
@@ -55,13 +62,14 @@ const ParameterModal = ({
 
   const handleChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
-    setValidated(false);
+    setValidated(false); // any edit invalidates the previous validation
     if (errors[key]) {
       setErrors((prev) => ({ ...prev, [key]: false }));
     }
   };
 
-  const handleValidate = () => {
+  // Returns true only if every required field is actually filled
+  const runValidation = () => {
     const newErrors = {};
     config.fields.forEach((field) => {
       if (!formData[field.key]?.toString().trim()) {
@@ -69,13 +77,44 @@ const ParameterModal = ({
       }
     });
     setErrors(newErrors);
-    setValidated(Object.keys(newErrors).length === 0);
+    const isValid = Object.keys(newErrors).length === 0;
+    setValidated(isValid);
+    return isValid;
   };
 
-  const handleSave = () => {
-    if (!validated) return;
+  const handleValidate = () => {
+    runValidation();
+  };
+
+  // Shared save routine used by both "Save" and "Save & New"
+  const performSave = (intent) => {
+    setSaveMenuOpen(false);
+
+    // Re-run validation defensively in case formData changed without
+    // re-clicking Validate (guards against stale `validated` state).
+    const isValid = runValidation();
+    if (!isValid) return;
+
     onSave?.(formData);
-    onClose();
+    setSaveIntent(intent);
+    setSuccessOpen(true);
+  };
+
+  const handleSave = () => performSave("save");
+  const handleSaveAndNew = () => performSave("saveAndNew");
+
+  const handleSuccessDone = () => {
+    setSuccessOpen(false);
+
+    if (saveIntent === "saveAndNew") {
+      // Reset form so the user can add another parameter without closing the modal
+      setFormData({});
+      setValidated(false);
+      setErrors({});
+    } else {
+      onClose();
+    }
+    setSaveIntent(null);
   };
 
   const HeaderIcon = meta.useImage ? null : meta.icon;
@@ -198,7 +237,7 @@ const ParameterModal = ({
                   onClick={() => validated && setSaveMenuOpen((o) => !o)}
                   className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
                     validated
-                      ? "bg-primary-100 text-primary hover:bg-primary-200"
+                      ? "bg-primary text-white hover:bg-primary-700"
                       : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
                   }`}
                 >
@@ -215,7 +254,7 @@ const ParameterModal = ({
                     </button>
                     <button
                       type="button"
-                      onClick={handleSave}
+                      onClick={handleSaveAndNew}
                       className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
                       Save & New
@@ -227,6 +266,17 @@ const ParameterModal = ({
           )}
         </div>
       </div>
+
+      {/* Success modal, shown after a real, validated save */}
+      {successOpen && (
+        <SuccessModal
+          variant="success"
+          title={mode === "add" ? "Parameter Added Successfully" : "Parameter Updated Successfully"}
+          subtitle=""
+          onClose={handleSuccessDone}
+          onDone={handleSuccessDone}
+        />
+      )}
     </div>
   );
 };

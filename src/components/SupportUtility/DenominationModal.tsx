@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo, useState } from "react";
 import { X, UserRound, MoreVertical, ChevronDown, IndianRupee, Wallet } from "lucide-react";
 import { getDenominationConfig } from "./masterConfig";

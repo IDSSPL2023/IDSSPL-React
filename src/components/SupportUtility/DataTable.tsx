@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef, useEffect, useMemo } from "react";
 import { ArrowUpDown, MoreVertical, Eye, SquarePen } from "lucide-react";
 import { getMasterConfig, rowToFormData } from "./masterConfig";

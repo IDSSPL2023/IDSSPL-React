@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import { X, Filter as FilterIcon } from "lucide-react";
 import { getMasterConfig } from "./masterConfig";

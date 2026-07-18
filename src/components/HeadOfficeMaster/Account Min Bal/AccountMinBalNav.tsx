@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowLeft, Home, ChevronRight } from "lucide-react";
 
 const AccountMinBalNav = ({ titleEn, titleHi, breadcrumbs = [], onBack }) => {

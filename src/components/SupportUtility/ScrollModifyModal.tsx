@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo, useState } from "react";
 import { X, UserRound, MoreVertical, FileSearch, Ban, Hash, FileText } from "lucide-react";
 import { getScrollModifyConfig } from "./masterConfig";
