@@ -42,9 +42,6 @@ import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCc
 import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
 import TlOtherChargesAuthorizePage from "@/pages/authorization/transaction/TlOtherChargesAuthorizePage";
 import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
-import ModifyTdsTransactionAuthorizePage from "@/pages/authorization/transaction/ModifyTdsTransactionAuthorizePage";
-import NewPgTransactionImportAuthorizePage from "@/pages/authorization/transaction/NewPgTransactionImportAuthorizePage";
-import NewPgTransactionExportAuthorizePage from "@/pages/authorization/transaction/NewPgTransactionExportAuthorizePage";
 import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
 import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
 import CustomerMasterPage from "@/pages/CustomerMasterPage";
@@ -55,8 +52,6 @@ import CasaClosingPage from "@/pages/futuremodels/CasaClosingPage";
 import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
 import InvestmentAccountPage from "@/pages/futuremodels/InvestmentAccountPage";
 import InvestmentAccountClosePage from "@/pages/futuremodels/InvestmentAccountClosePage";
-import LeanPage from "@/pages/futuremodels/LeanPage";
-import MemoPage from "@/pages/futuremodels/MemoPage";
 import PigmyDepositDetailsPage from "@/pages/futuremodels/PigmyDepositDetailsPage";
 import PigmyDetailsPage from "@/pages/futuremodels/PigmyDetailsPage";
 import StandingInstructionsPage from "@/pages/futuremodels/StandingInstructionsPage";
@@ -83,11 +78,8 @@ import TdInterestPaymentPage from "@/pages/transactionmaster/TdInterestPaymentPa
 import TdsTransactionPage from "@/pages/transactionmaster/TdsTransactionPage";
 import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
 import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
-import TlOtherChargesPage from "@/pages/transactionmaster/TlOtherChargesPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
 import ModifyTdsTransactionPage from "@/pages/transactionmaster/ModifyTdsTransactionPage";
-import NewPgTransactionImportPage from "@/pages/transactionmaster/NewPgTransactionImportPage";
-import NewPgTransactionExportPage from "@/pages/transactionmaster/NewPgTransactionExportPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
@@ -121,7 +113,6 @@ import PayrollMaster from "./components/Payroll/PayrollMaster";
 import PayrollTransaction from "./components/Payroll/PayrollTransaction";
 
 import SMSRegistrationPage from "@/components/SMS/SMSRegistrationPage ";
-import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAuthorize";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -197,7 +188,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
       { path: "/authorization/authorizecustomer", element: <TLOtherChargesPage /> },
       { path: "/interest-posting", element: <InterestPostingPage /> },
-      { path: "/sms", element: <SMSRegistrationPage/> },
+      { path: "/sms", element: <SMSRegistrationPage /> },
       {
         path: "/authorization",
         children: [
@@ -376,32 +367,13 @@ export const router = createBrowserRouter([
 
       // Payroll
       { path: "/payroll/master", element: <PayrollMaster /> },
-      { path: "/payroll/transaction", element: <PayrollTransaction /> }
-
-      {
-        path: "/ho-officer/ho-cash-deposit-entry",
-        element: <HoCashDepositAuthorizePage />,
-      },
-      {
-        path: "/ho-officer/ho-cash-withdrawal-entry",
-        element: <HoCashWithdrawalAuthorizePage />,
-      },
-      {
-        path: "/ho-officer/ho-transfer-entry",
-        element: <HoTransferAuthorizePage />,
-      },
-      {
-        path: "/ho-officer/investment-payment-closingmark",
-        element: <InvestmentPaymentClosingAuthorizePage />,
-      },
-      {
-        path: "/ho-officer/rtgs-outward-file-generation",
-        element: <RtgsOutwardAuthorizePage />,
-      },
-      {
-        path: "/ho-officer/reconciliation",
-        element: <ReconciliationAuthorizePage />,
-      },
+      { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage />, },
+      { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage />, },
+      { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage />, },
+      { path: "/ho-officer/investment-payment-closingmark", element: <InvestmentPaymentClosingAuthorizePage />, },
+      { path: "/ho-officer/rtgs-outward-file-generation", element: <RtgsOutwardAuthorizePage />, },
+      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage />, },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
