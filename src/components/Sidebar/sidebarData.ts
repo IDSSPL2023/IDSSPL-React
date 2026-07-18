@@ -84,7 +84,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-financial-closing",
         title: "Financial Closing",
         icon: FileText,
-        href:"/financial-closing",
+        href: "/financial-closing",
       },
       {
         id: "mis-interest-posting",
@@ -104,7 +104,7 @@ export const menuItems: NavItemData[] = [
         icon: Database,
         href: "/headofficemaster",
       },
-     {
+      {
         id: "mis-master-maintanance-user",
         title: "Master Maintenance - User",
         icon: Database,
@@ -222,7 +222,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-account",
         title: "Account",
         icon: Landmark,
-         href: "/account-master",
+        href: "/account-master",
       },
       {
         id: "clerk-account-opening",
@@ -311,7 +311,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-transaction",
         title: "Transaction",
         icon: ArrowLeftRight,
-        href:"/ho-clerk-transaction"
+        href: "/ho-clerk-transaction"
       },
     ],
   },
@@ -325,7 +325,7 @@ export const menuItems: NavItemData[] = [
         id: "cashier-cash-handling",
         title: "Cash Handling",
         icon: Wallet,
-        href:"/cashier"
+        href: "/cashier"
       },
       {
         id: "cashier-cash-handling-report",
@@ -655,7 +655,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-officer-transaction-authorize",
         title: "Transaction Authorize",
         icon: ShieldCheck,
-        href:"/ho-officer"
+        href: "/ho-officer"
       },
     ],
   },
@@ -680,6 +680,7 @@ export const menuItems: NavItemData[] = [
         id: "payroll-master",
         title: "Master",
         icon: Database,
+        href: "/payroll/master"
       },
       {
         id: "payroll-report",
@@ -690,6 +691,7 @@ export const menuItems: NavItemData[] = [
         id: "payroll-transaction",
         title: "Transaction",
         icon: ArrowLeftRight,
+        href: "/payroll/transaction"
       },
       {
         id: "payroll-transaction-entry",
@@ -873,7 +875,7 @@ export const menuItems: NavItemData[] = [
   },
 
   // General / future items not tied to a specific role menu in the sheet.
-   { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href:"/futuremodals" },
+  { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href: "/futuremodals" },
 ];
 
 export const user = {

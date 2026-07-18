@@ -107,6 +107,8 @@ import ReconciliationAuthorizePage from "@/pages/ho-officer/ReconciliationAuthor
 // import BillHero from "./components/Bill/BillHero";
 import BillUtilityPage from "./components/Bill/BillUtilityPage";
 import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
+import PayrollMaster from "./components/Payroll/PayrollMaster";
+import PayrollTransaction from "./components/Payroll/PayrollTransaction";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -161,7 +163,7 @@ export const router = createBrowserRouter([
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/day-begin-end", element: <DayBeginEndPage /> },
-{ path: "/interest-posting", element: <InterestPostingPage /> },
+      { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
@@ -185,7 +187,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
 
 
-       
+
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
@@ -257,6 +259,9 @@ export const router = createBrowserRouter([
       { path: "/ho-officer/rtgs-outward-file-generation", element: <RtgsOutwardAuthorizePage /> },
       { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage /> },
 
+      // Payroll
+      { path: "/payroll/master", element: <PayrollMaster /> },
+      { path: "/payroll/transaction", element: <PayrollTransaction /> }
 
     ],
   },
