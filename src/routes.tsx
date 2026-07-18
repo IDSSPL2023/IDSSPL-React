@@ -27,7 +27,7 @@ import AssignUserRolePage from "@/pages/AssignUserRolePage";
 import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
 import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
-import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
+import AuthorizeAccountPage from "@/pages/authorization/account/AuthorizeAccountPage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
 import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearingPage";
 import AuthorizeTransactionPage from "@/pages/authorization/transaction/AuthorizeTransactionPage";
@@ -108,7 +108,6 @@ import ReconciliationAuthorizePage from "@/pages/ho-officer/ReconciliationAuthor
 import BillUtilityPage from "./components/Bill/BillUtilityPage";
 import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
 
-
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
   return <RoleAuthorizationFlow onClose={() => router.back()} />;
@@ -146,46 +145,136 @@ export const router = createBrowserRouter([
       { path: "/account-closing", element: <AccountClosingPage /> },
       { path: "/account-closing/ca-sa", element: <AccountClosingCaSaPage /> },
       { path: "/account-closing/deposit", element: <DepositClosingPage /> },
-      { path: "/account-closing/investment", element: <AccountClosingInvestmentPage /> },
+      {
+        path: "/account-closing/investment",
+        element: <AccountClosingInvestmentPage />,
+      },
       { path: "/account-closing/loan", element: <AccountClosingLoanPage /> },
       { path: "/account-closing/pigmy", element: <AccountClosingPigmyPage /> },
       { path: "/account-master", element: <AccountMasterLandingPage /> },
       // { path: "/account-master/bill", element: <BillHero /> },
       { path: "/account-master/bill", element: <BillUtilityPage /> },
       { path: "/account-master/ca-sa", element: <AccountMasterCaSaPage /> },
-      { path: "/account-master/deposit", element: <AccountMasterDepositPage /> },
-      { path: "/account-master/investment", element: <AccountMasterInvestmentPage /> },
+      {
+        path: "/account-master/deposit",
+        element: <AccountMasterDepositPage />,
+      },
+      {
+        path: "/account-master/investment",
+        element: <AccountMasterInvestmentPage />,
+      },
       { path: "/account-master/loan", element: <AccountMasterLoanPage /> },
-      { path: "/account-master/fixed-asset", element: <AccountMasterFixedAssetPage /> },
+      {
+        path: "/account-master/fixed-asset",
+        element: <AccountMasterFixedAssetPage />,
+      },
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/day-begin-end", element: <DayBeginEndPage /> },
-{ path: "/interest-posting", element: <InterestPostingPage /> },
-      { path: "/authorization", element: <AuthorizationPage /> },
-      { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
-      { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
-      { path: "/authorization/authorizeaccountmain/authorizeaccount", element: <AuthorizeAccountPage /> },
-      { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
+      { path: "/interest-posting", element: <InterestPostingPage /> },
+      {
+        path: "/authorization",
+        children: [
+          {
+            index: true,
+            element: <AuthorizationPage />,
+          },
+          {
+            path: "authorizeaccountmain",
+            children: [
+              {
+                index: true,
+                element: <AuthorizeAccountMainPage />,
+              },
+              {
+                path: "casa",
+                element: <AuthorizeAccountPage accountType="casa" />,
+              },
+              {
+                path: "deposite",
+                element: <AuthorizeAccountPage accountType="deposite" />,
+              },
+              {
+                path: "loan",
+                element: <AuthorizeAccountPage accountType="loan" />,
+              },
+              {
+                path: "fixed",
+                element: <AuthorizeAccountPage accountType="fixed" />,
+              },
+              {
+                path: "investment",
+                element: <AuthorizeAccountPage accountType="investment" />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/authorization/authorizerole",
+        element: <RoleAuthorizationFlowRoute />,
+      },
+      {
+        path: "/authorization/authorizecustomer",
+        element: <AuthorizationCustomerPage />,
+      },
       { path: "/authorization/clearing", element: <AuthorizeClearingPage /> },
-      { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
-      { path: "/authorization/transaction/cash-deposit", element: <CashDepositAuthorizePage /> },
-      { path: "/authorization/transaction/cash-withdrawal", element: <CashWithdrawalAuthorizePage /> },
-      { path: "/authorization/transaction/recurring-installment", element: <RecurringInstallmentAuthorizePage /> },
-      { path: "/authorization/transaction/rtgs", element: <RtgsAuthorizePage /> },
-      { path: "/authorization/transaction/td-interest-payment", element: <TdInterestPaymentAuthorizePage /> },
-      { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
-      { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
-      { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
-      { path: "/authorization/transaction/tl-other-charges", element: <TlOtherChargesAuthorizePage /> },
-      { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
+      {
+        path: "/authorization/transaction",
+        element: <AuthorizeTransactionPage />,
+      },
+      {
+        path: "/authorization/transaction/cash-deposit",
+        element: <CashDepositAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/cash-withdrawal",
+        element: <CashWithdrawalAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/recurring-installment",
+        element: <RecurringInstallmentAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/rtgs",
+        element: <RtgsAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/td-interest-payment",
+        element: <TdInterestPaymentAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/tds-transaction",
+        element: <TdsTransactionAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/tl-cc-installment",
+        element: <TlCcInstallmentAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/tl-disbursement",
+        element: <TlDisbursementAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/tl-other-charges",
+        element: <TlOtherChargesAuthorizePage />,
+      },
+      {
+        path: "/authorization/transaction/transfer",
+        element: <TransferAuthorizePage />,
+      },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
-      { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
+      {
+        path: "/authorization/transaction/term-deposit-interest-payment",
+        element: <TermDepositInterestPayment />,
+      },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
-      { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
+      {
+        path: "/authorization/BillAuthorize",
+        element: <BillAuthorizationOptions />,
+      },
 
-
-       
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
@@ -193,29 +282,62 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       { path: "/futuremodels/casa-closing", element: <CasaClosingPage /> },
       { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
-      { path: "/futuremodels/investment-account", element: <InvestmentAccountPage /> },
-      { path: "/futuremodels/investment-account-close", element: <InvestmentAccountClosePage /> },
+      {
+        path: "/futuremodels/investment-account",
+        element: <InvestmentAccountPage />,
+      },
+      {
+        path: "/futuremodels/investment-account-close",
+        element: <InvestmentAccountClosePage />,
+      },
       // { path: "/futuremodels/lean", element: <LeanPage /> },
       // { path: "/futuremodels/memo", element: <MemoPage /> },
-      { path: "/futuremodels/pigmy-deposit-details", element: <PigmyDepositDetailsPage /> },
+      {
+        path: "/futuremodels/pigmy-deposit-details",
+        element: <PigmyDepositDetailsPage />,
+      },
       { path: "/futuremodels/PigmyDetails", element: <PigmyDetailsPage /> },
-      { path: "/futuremodels/standing-instructions", element: <StandingInstructionsPage /> },
+      {
+        path: "/futuremodels/standing-instructions",
+        element: <StandingInstructionsPage />,
+      },
       { path: "/futuremodels/td-calculate", element: <TdCalculatePage /> },
       { path: "/futuremodels/td-close", element: <TermDepositClosePage /> },
       { path: "/futuremodels/td-open", element: <TdOpenPage /> },
-      { path: "/futuremodels/TDClosingReinvest", element: <TDClosingReinvestPage /> },
+      {
+        path: "/futuremodels/TDClosingReinvest",
+        element: <TDClosingReinvestPage />,
+      },
       { path: "/futuremodels/tl-close", element: <TlClosePage /> },
       { path: "/futuremodels/tl-open", element: <TermLoanOpenPage /> },
-      { path: "/futuremodels/tl-other-charges", element: <TLOtherChargesPage /> },
+      {
+        path: "/futuremodels/tl-other-charges",
+        element: <TLOtherChargesPage />,
+      },
       { path: "/futuremodels/un-lean", element: <UnLeanPage /> },
 
-      { path: "/futuremodels/modifyaccountbalance", element: <ModifyAccountBalancePage /> },
-      { path: "/futuremodels/modifybranchglbalance", element: <ModifyBranchGlBalance /> },
-      { path: "/futuremodels/modifybranchglhistory", element: <ModifyBranchGlHistory /> },
-      { path: "/futuremodels/modifycashhandlingrecord", element: <ModifyCashHandlingRecord /> },
+      {
+        path: "/futuremodels/modifyaccountbalance",
+        element: <ModifyAccountBalancePage />,
+      },
+      {
+        path: "/futuremodels/modifybranchglbalance",
+        element: <ModifyBranchGlBalance />,
+      },
+      {
+        path: "/futuremodels/modifybranchglhistory",
+        element: <ModifyBranchGlHistory />,
+      },
+      {
+        path: "/futuremodels/modifycashhandlingrecord",
+        element: <ModifyCashHandlingRecord />,
+      },
 
       { path: "/financial-closing", element: <FinancialClosing /> },
-      { path: "/financial-closing/set-product-status", element: <SetProductStatusPage /> },
+      {
+        path: "/financial-closing/set-product-status",
+        element: <SetProductStatusPage />,
+      },
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
@@ -225,20 +347,39 @@ export const router = createBrowserRouter([
       { path: "/locker", element: <LockerPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
-      { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },
-      { path: "/transactionmaster/recurring-installment", element: <RecurringInstallmentPage /> },
+      {
+        path: "/transactionmaster/cash-withdrawal",
+        element: <CashWithdrawalPage />,
+      },
+      {
+        path: "/transactionmaster/recurring-installment",
+        element: <RecurringInstallmentPage />,
+      },
       { path: "/transactionmaster/rtgs", element: <RtgsPage /> },
-      { path: "/transactionmaster/td-interest-payment", element: <TdInterestPaymentPage /> },
-      { path: "/transactionmaster/tds-transaction", element: <TdsTransactionPage /> },
-      { path: "/transactionmaster/tl-cc-installment", element: <TlCcInstallmentPage /> },
-      { path: "/transactionmaster/tl-disbursement", element: <TlDisbursementPage /> },
+      {
+        path: "/transactionmaster/td-interest-payment",
+        element: <TdInterestPaymentPage />,
+      },
+      {
+        path: "/transactionmaster/tds-transaction",
+        element: <TdsTransactionPage />,
+      },
+      {
+        path: "/transactionmaster/tl-cc-installment",
+        element: <TlCcInstallmentPage />,
+      },
+      {
+        path: "/transactionmaster/tl-disbursement",
+        element: <TlDisbursementPage />,
+      },
       { path: "/transactionmaster/transfer", element: <TransferPage /> },
-      { path: "/transactionmaster/modify-tds-transaction", element: <ModifyTdsTransactionPage /> },
+      {
+        path: "/transactionmaster/modify-tds-transaction",
+        element: <ModifyTdsTransactionPage />,
+      },
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
       { path: "/tds", element: <TDSReportsPage /> },
-
-
 
       // HO-Clerk Route
       { path: "/ho-clerk-application", element: <Application /> },
@@ -250,14 +391,30 @@ export const router = createBrowserRouter([
 
       // Ho Officer
       { path: "/ho-officer", element: <HoOfficer /> },
-      { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage /> },
-      { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage /> },
-      { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage /> },
-      { path: "/ho-officer/investment-payment-closingmark", element: <InvestmentPaymentClosingAuthorizePage /> },
-      { path: "/ho-officer/rtgs-outward-file-generation", element: <RtgsOutwardAuthorizePage /> },
-      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage /> },
-
-
+      {
+        path: "/ho-officer/ho-cash-deposit-entry",
+        element: <HoCashDepositAuthorizePage />,
+      },
+      {
+        path: "/ho-officer/ho-cash-withdrawal-entry",
+        element: <HoCashWithdrawalAuthorizePage />,
+      },
+      {
+        path: "/ho-officer/ho-transfer-entry",
+        element: <HoTransferAuthorizePage />,
+      },
+      {
+        path: "/ho-officer/investment-payment-closingmark",
+        element: <InvestmentPaymentClosingAuthorizePage />,
+      },
+      {
+        path: "/ho-officer/rtgs-outward-file-generation",
+        element: <RtgsOutwardAuthorizePage />,
+      },
+      {
+        path: "/ho-officer/reconciliation",
+        element: <ReconciliationAuthorizePage />,
+      },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },

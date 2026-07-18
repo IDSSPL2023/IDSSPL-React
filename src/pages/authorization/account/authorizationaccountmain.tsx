@@ -30,7 +30,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "casaAuthorization",
     icon: Users,
     cardKey: "casaAuthorization",
-    href: "/authorization/authorizeaccountmain/authorizeaccount",
+    href: "/authorization/authorizeaccountmain/casa",
   },
   {
     key: "casaAuthorizationClosing",
@@ -41,6 +41,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "depositAuthorization",
     icon: ShieldCheck,
     cardKey: "depositAuthorization",
+    href: "/authorization/authorizeaccountmain/deposite",
   },
   {
     key: "depositAuthorizationClosing",
@@ -51,6 +52,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "loanAuthorization",
     icon: Power,
     cardKey: "loanAuthorization",
+    href: "/authorization/authorizeaccountmain/loan",
   },
   {
     key: "loanClosing",
@@ -61,6 +63,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "fixedAssetAuthorization",
     icon: Building2,
     cardKey: "fixedAssetAuthorization",
+    href: "/authorization/authorizeaccountmain/fixed",
   },
   {
     key: "fixedAssetClosing",
@@ -71,6 +74,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "investmentAuthorization",
     icon: CreditCard,
     cardKey: "investmentAuthorization",
+    href: "/authorization/authorizeaccountmain/investment",
   },
   {
     key: "investmentClosing",
