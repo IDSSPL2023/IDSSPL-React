@@ -86,8 +86,8 @@ CATALOG: dict[str, dict[str, str]] = {
     "accountMaster.options.investment.title":      {"en": "Investment",  "hi": "निवेश",     "mr": "गुंतवणूक"},
     "accountMaster.options.investment.description":{"en": "Enter the Investment application details.",  "hi": "निवेश आवेदन विवरण दर्ज करें.",         "mr": "गुंतवणूक अर्जाचा तपशील भरा."},
 
-    "application.title":       {"en": "Application", "hi": "आवेदन", "mr": "अर्ज"},
-    "application.breadcrumb":  {"en": "Application", "hi": "आवेदन", "mr": "अर्ज"},
+    "application.title":       {"en": "Account", "hi": "आवेदन", "mr": "अर्ज"},
+    "application.breadcrumb":  {"en": "Account", "hi": "आवेदन", "mr": "अर्ज"},
 
     # ---- user master -------------------------------------------------------
     "userMaster.title":      {"en": "User Master", "hi": "यूज़र मास्टर", "mr": "युझर मास्टर"},

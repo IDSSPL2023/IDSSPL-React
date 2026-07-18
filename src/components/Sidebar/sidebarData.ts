@@ -222,18 +222,20 @@ export const menuItems: NavItemData[] = [
         id: "clerk-account",
         title: "Account",
         icon: Landmark,
+         href: "/account-master",
+      },
+      {
+        id: "clerk-account-opening",
+        title: "Account Clsoing",
+        icon: Landmark,
+        href: "/account-closing"
       },
       // {
-      //   id: "clerk-account-opening",
-      //   title: "Account Opening",
-      //   icon: Landmark,
+      //   id: "clerk-application",
+      //   title: "Application",
+      //   icon: FileText,
+      //   // href: "/account-master",
       // },
-      {
-        id: "clerk-application",
-        title: "Application",
-        icon: FileText,
-        href: "/account-master",
-      },
       {
         id: "clerk-bills",
         title: "Bills",
@@ -293,6 +295,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-application",
         title: "Application",
         icon: FileText,
+        href: "/ho-clerk-application"
       },
       {
         id: "ho-clerk-legal-section",
@@ -308,6 +311,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-transaction",
         title: "Transaction",
         icon: ArrowLeftRight,
+        href:"/ho-clerk-transaction"
       },
     ],
   },
@@ -321,6 +325,7 @@ export const menuItems: NavItemData[] = [
         id: "cashier-cash-handling",
         title: "Cash Handling",
         icon: Wallet,
+        href:"/cashier"
       },
       {
         id: "cashier-cash-handling-report",
@@ -633,6 +638,7 @@ export const menuItems: NavItemData[] = [
         id: "dd-printing",
         title: "Printing",
         icon: FileText,
+        href: "/dd",
       },
       {
         id: "dd-report",
@@ -650,6 +656,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-officer-transaction-authorize",
         title: "Transaction Authorize",
         icon: ShieldCheck,
+        href:"/ho-officer"
       },
     ],
   },

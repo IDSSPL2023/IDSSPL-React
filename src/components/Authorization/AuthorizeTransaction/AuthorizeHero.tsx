@@ -4,9 +4,10 @@ import { Search } from "lucide-react";
 type AuthorizeHeroProps = {
   query: string;
   onQueryChange: (value: string) => void;
+  title?: string;
 };
 
-const AuthorizeHero = ({ query, onQueryChange }: AuthorizeHeroProps) => {
+const AuthorizeHero = ({ query, onQueryChange, title = "Authorize Transaction" }: AuthorizeHeroProps) => {
   return (
     <div className="relative isolate overflow-hidden rounded-2xl">
       <Image
@@ -20,7 +21,7 @@ const AuthorizeHero = ({ query, onQueryChange }: AuthorizeHeroProps) => {
 
       <div className="relative flex flex-col items-center gap-6 px-6 py-12 text-center sm:py-16">
         <h1 className="text-2xl font-bold text-white sm:text-3xl md:text-[34px]">
-          Authorize Transaction
+          {title}
         </h1>
 
         <div className="flex w-full max-w-xl items-center rounded-full bg-white py-1.5 pl-5 pr-1.5 shadow-lg">

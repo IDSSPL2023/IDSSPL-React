@@ -1,4 +1,4 @@
-import { useState, type FC, type ReactNode } from "react";
+import { useEffect, useState, type FC, type ReactNode } from "react";
 import {
   X,
   Check,
@@ -10,9 +10,19 @@ import {
   ClipboardList,
   ArrowLeftRight,
   Banknote,
+  CalendarCheck,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  FileInput,
+  Inbox,
+  AlertTriangle,
+  Send,
+  ThumbsUp,
+  ThumbsDown,
 } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 import SuccessModal from "@/components/shared/SuccessModal";
+import RejectReasonModal from "@/components/shared/RejectReasonModal";
 import ListModal from "@/components/AccountMaster/ListModal";
 import {
   CLEARING_PICKERS,
@@ -27,6 +37,14 @@ const ICON_MAP: Record<string, FC<{ size?: number }>> = {
   ArrowLeftRight,
   Banknote,
   Landmark,
+  ClipboardList,
+  CalendarCheck,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  FileInput,
+  Inbox,
+  AlertTriangle,
+  Send,
 };
 
 const SECTION_ICON_MAP: Record<string, FC<{ size?: number }>> = {
@@ -78,38 +96,68 @@ const SectionCard: FC<{ titleKey: string; subtitleKey?: string; children: ReactN
 
 interface ClearingFormModalProps {
   masterKey: string;
+  mode?: "entry" | "authorize";
+  initialData?: Record<string, string>;
   onClose: () => void;
   onSave?: (data: Record<string, string>) => void;
+  onAuthorize?: (data: Record<string, string>) => void;
+  onReject?: (data: Record<string, string>, reason: string) => void;
 }
 
-const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onSave }) => {
+const ClearingFormModal: FC<ClearingFormModalProps> = ({
+  masterKey,
+  mode = "entry",
+  initialData,
+  onClose,
+  onSave,
+  onAuthorize,
+  onReject,
+}) => {
   const { en, t } = useBilingual();
   const master = getClearingMaster(masterKey);
+  const isAuthorize = mode === "authorize";
 
   const allFields: ClearingField[] = master ? master.sections.flatMap((s) => s.fields) : [];
 
-  const [formData, setFormData] = useState<Record<string, string>>(() => {
+  const buildDefaults = (): Record<string, string> => {
     const defaults: Record<string, string> = {};
     allFields.forEach((field) => {
       defaults[field.key] = "";
     });
-    return defaults;
-  });
+    return { ...defaults, ...initialData };
+  };
+
+  const [formData, setFormData] = useState<Record<string, string>>(buildDefaults);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [validated, setValidated] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
+  const [showRejectReason, setShowRejectReason] = useState(false);
+  const [authorizeResult, setAuthorizeResult] = useState<"authorized" | "rejected" | null>(null);
   const [activePicker, setActivePicker] = useState<ClearingPickerKey | null>(null);
   const [activePickerFieldKey, setActivePickerFieldKey] = useState<string | null>(null);
+
+  // Reload form state whenever the master/mode/initialData changes — e.g.
+  // reusing one mounted modal instance for different rows from a table.
+  useEffect(() => {
+    setFormData(buildDefaults());
+    setErrors({});
+    setValidated(false);
+    setActivePicker(null);
+    setActivePickerFieldKey(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [masterKey, mode, initialData]);
 
   if (!master) return null;
 
   const handleChange = (key: string, value: string) => {
+    if (isAuthorize) return; // authorize mode is strictly read-only
     setFormData((prev) => ({ ...prev, [key]: value }));
     setValidated(false);
     setErrors((prev) => (prev[key] ? { ...prev, [key]: false } : prev));
   };
 
   const openPicker = (field: ClearingField) => {
+    if (isAuthorize) return; // no picking in authorize mode
     if (!field.picker) return;
     setActivePicker(field.picker);
     setActivePickerFieldKey(field.key);
@@ -167,10 +215,32 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
     onClose();
   };
 
+  const handleAuthorize = () => {
+    onAuthorize?.(formData);
+    setAuthorizeResult("authorized");
+  };
+
+  const handleReject = () => setShowRejectReason(true);
+
+  const handleConfirmReject = (reason: string) => {
+    setShowRejectReason(false);
+    onReject?.(formData, reason);
+    setAuthorizeResult("rejected");
+  };
+
+  const handleAuthorizeDone = () => {
+    setAuthorizeResult(null);
+    onClose();
+  };
+
   const renderField = (field: ClearingField) => {
     const value = formData[field.key] ?? "";
     const hasError = errors[field.key];
 
+    // "readonly"-type fields (derived/lookup values) are always displayed
+    // via ReadOnlyField, in every mode. Everything else keeps its normal
+    // component but goes into a disabled/locked state during Authorize —
+    // same layout, value still visible, just not editable.
     switch (field.type) {
       case "readonly":
         return <ReadOnlyField key={field.key} labelKey={field.labelKey} value={value} />;
@@ -181,6 +251,7 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
             labelKey={field.labelKey}
             value={value}
             hasError={hasError}
+            disabled={isAuthorize}
             onOpen={() => openPicker(field)}
           />
         );
@@ -191,6 +262,7 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
             labelKey={field.labelKey}
             value={value}
             hasError={hasError}
+            disabled={isAuthorize}
             onChange={(v) => handleChange(field.key, v)}
           />
         );
@@ -201,6 +273,7 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
             labelKey={field.labelKey}
             value={value}
             hasError={hasError}
+            disabled={isAuthorize}
             onChange={(v) => handleChange(field.key, v)}
           />
         );
@@ -211,6 +284,7 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
             labelKey={field.labelKey}
             value={value}
             hasError={hasError}
+            disabled={isAuthorize}
             onChange={(v) => handleChange(field.key, v)}
           />
         );
@@ -263,32 +337,60 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
 
           {/* Footer */}
           <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
-            <button
-              type="button"
-              onClick={handleValidate}
-              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-            >
-              {en("common.validate")} <Check size={16} />
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-            >
-              {en("common.cancel")} <X size={16} />
-            </button>
-            <button
-              type="button"
-              disabled={!validated}
-              onClick={handleSave}
-              className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                validated
-                  ? "bg-primary text-white hover:bg-primary-700"
-                  : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
-              }`}
-            >
-              {en(master.primaryActionLabelKey)} <Check size={16} />
-            </button>
+            {isAuthorize ? (
+              <>
+                <button
+                  type="button"
+                  onClick={handleReject}
+                  className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+                >
+                  {en("Reject")} <ThumbsDown size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+                >
+                  {en("common.cancel")} <X size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAuthorize}
+                  className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                >
+                  {en("common.authorize")} <ThumbsUp size={16} />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={handleValidate}
+                  className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                >
+                  {en("common.validate")} <Check size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+                >
+                  {en("common.cancel")} <X size={16} />
+                </button>
+                <button
+                  type="button"
+                  disabled={!validated}
+                  onClick={handleSave}
+                  className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+                    validated
+                      ? "bg-primary text-white hover:bg-primary-700"
+                      : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
+                  }`}
+                >
+                  {en(master.primaryActionLabelKey)} <Check size={16} />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -313,6 +415,33 @@ const ClearingFormModal: FC<ClearingFormModalProps> = ({ masterKey, onClose, onS
           subtitle=""
           onClose={handleSuccessDone}
           onDone={handleSuccessDone}
+        />
+      )}
+
+      {showRejectReason && (
+        <RejectReasonModal
+          onClose={() => setShowRejectReason(false)}
+          onConfirm={handleConfirmReject}
+        />
+      )}
+
+      {authorizeResult === "authorized" && (
+        <SuccessModal
+          variant="success"
+          title={`${en(master.cardTitleKey)} Authorized Successfully`}
+          subtitle=""
+          onClose={handleAuthorizeDone}
+          onDone={handleAuthorizeDone}
+        />
+      )}
+
+      {authorizeResult === "rejected" && (
+        <SuccessModal
+          variant="critical"
+          title={`${en(master.cardTitleKey)} Authorization Rejected`}
+          subtitle=""
+          onClose={handleAuthorizeDone}
+          onDone={handleAuthorizeDone}
         />
       )}
     </>
