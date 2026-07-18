@@ -300,6 +300,8 @@ export interface SectionCardProps {
   subtitleEn?: string;
   subtitleHi?: string;
   icon?: string | ReactNode;
+  /** Optional control (e.g. an "+ Add" button) rendered at the right edge of the header row. */
+  headerAction?: ReactNode;
   children: ReactNode;
 }
 
@@ -309,30 +311,34 @@ export const SectionCard = ({
   subtitleEn,
   subtitleHi,
   icon,
+  headerAction,
   children,
 }: SectionCardProps) => (
   <div className="bg-white rounded-[20px] border border-t-4 border-primary p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] no-scrollbar">
-    <div className="mb-3 flex items-center gap-3 border-b border-primary-100 pb-3">
-      {icon && (
-        <div className="flex h-10 w-10 items-center justify-center">
-          {typeof icon === "string" ? (
+    <div className="mb-3 flex items-center justify-between gap-3 border-b border-primary-100 pb-3">
+      <div className="flex items-center gap-3">
+        {icon && (
+          <div className="flex h-10 w-10 items-center justify-center">
+            {typeof icon === "string" ? (
   <img src={icon} alt="" className="h-8 w-8" />
 ) : (
   icon
 )}
-        </div>
-      )}
-      <div>
-        <h3 className="text-lg font-semibold leading-none text-[#1F2858]">
-          {titleEn} / <span className="text-slate-600">{titleHi}</span>
-        </h3>
-        {(subtitleEn || subtitleHi) && (
-          <p className="mt-0.5 text-xs text-[#64748B]">
-            {subtitleEn}
-            {subtitleHi && ` / ${subtitleHi}`}
-          </p>
+          </div>
         )}
+        <div>
+          <h3 className="text-lg font-semibold leading-none text-[#1F2858]">
+            {titleEn} / <span className="text-slate-600">{titleHi}</span>
+          </h3>
+          {(subtitleEn || subtitleHi) && (
+            <p className="mt-0.5 text-xs text-[#64748B]">
+              {subtitleEn}
+              {subtitleHi && ` / ${subtitleHi}`}
+            </p>
+          )}
+        </div>
       </div>
+      {headerAction}
     </div>
     {children}
   </div>

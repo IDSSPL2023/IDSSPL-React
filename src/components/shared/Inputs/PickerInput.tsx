@@ -4,7 +4,7 @@ import { MouseEventHandler, useId } from "react";
 interface PickerInputProps {
   labelEn: string;
   labelHi: string;
-  icon: LucideIcon;
+  icon: LucideIcon | string;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
@@ -57,11 +57,15 @@ function PickerInput({
         </label>
 
         <div className={getContainerClasses()}>
-          <Icon
-            size={18}
-            className="shrink-0 text-[#6B7280] dark:text-slate-400"
-            aria-hidden="true"
-          />
+          {typeof Icon === "string" ? (
+            <img src={Icon} alt="icon" className="h-5 aspect-square" />
+          ) : (
+            <Icon
+              size={20}
+              className="shrink-0 text-[#6B7280] dark:text-slate-400"
+              aria-hidden="true"
+            />
+          )}
 
           {readOnly ? (
             <span

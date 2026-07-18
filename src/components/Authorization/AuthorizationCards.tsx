@@ -73,6 +73,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
+    href: "/authorization/clearing",
   },
   {
     key: "locker",
@@ -91,6 +92,17 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
+  },
+
+  {
+    key: "bill",
+    iconSrc: "/bill.png",
+    titleEn: "Authorize Bill",
+    titleHi: "बिल अधिकृत करा",
+    badge: "New",
+    description: "The newly created record is awaiting authorization.",
+    count: 56,
+    href: "/authorization/BillAuthorize",
   },
 ];
 

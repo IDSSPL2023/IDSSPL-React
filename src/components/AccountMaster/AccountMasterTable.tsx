@@ -61,7 +61,8 @@ type AccountMasterTableProps = {
   onView?: (row: RowData) => void;
   onEdit?: (row: RowData) => void;
   onFreeze?: (row: RowData) => void;
-  /** Overrides the default View/Edit/Freeze-Unfreeze row menu (e.g. for an Authorize/Reject workflow). */
+  onOperative?: (row: RowData) => void;
+  /** Overrides the default View/Edit/Freeze-Unfreeze/Operative-Inoperative row menu (e.g. for an Authorize/Reject workflow). */
   renderMenuItems?: (row: RowData) => RowActionMenuItem[];
 };
 
@@ -72,6 +73,7 @@ const AccountMasterTable = ({
   onView,
   onEdit,
   onFreeze,
+  onOperative,
   renderMenuItems,
 }: AccountMasterTableProps) => {
   const { tRaw } = useBilingual();
@@ -112,6 +114,7 @@ const AccountMasterTable = ({
           { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => onView?.(row) },
           { key: "edit", label: tRaw("common.edit"), icon: SquarePen, onClick: () => onEdit?.(row) },
           { key: "freeze", label: tRaw("accountMaster.table.menuFreeze"), icon: UserRoundCog, onClick: () => onFreeze?.(row) },
+          { key: "operative", label: "Account Operative/Inoperative", icon: UserRoundCog, onClick: () => onOperative?.(row) },
         ];
 
   return (

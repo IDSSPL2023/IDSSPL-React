@@ -9,6 +9,7 @@
     "validate": "ధృవీకరించండి",
     "authorize": "అధికారం ఇవ్వండి",
     "revoke": "ఉపసంహరించండి",
+    "reject": "తిరస్కరించండి",
     "details": "వివరాలు",
     "accountDetails": "ఖాతా వివరాలు",
     "lienDetails": "లియన్ వివరాలు",
@@ -92,7 +93,13 @@
       "createdBy": "సృష్టించినవారు",
       "openingDate": "ప్రారంభ తేదీ",
       "menuFreeze": "ఖాతా ఫ్రీజ్ / అన్‌ఫ్రీజ్",
-      "menuCheque": "చెక్ బుక్ జారీ"
+      "menuCheque": "చెక్ బుక్ జారీ",
+      "menuFreezeUnfreeze": "ఖాతా ఫ్రీజ్ / అన్‌ఫ్రీజ్",
+      "menuChequeBookIssue": "చెక్ బుక్ జారీ / స్టాప్",
+      "menuStandingInstruction": "స్టాండింగ్ ఇన్‌స్ట్రక్షన్",
+      "menuMemo": "మెమో",
+      "menuOperativeInoperative": "ఖాతా ఆపరేటివ్/ఇనాపరేటివ్",
+      "menuLienMark": "లీన్ మార్క్ / స్టాప్"
     },
     "addForm": {
       "title": "ఖాతా జోడించండి",
@@ -504,6 +511,173 @@
       "description": "Description"
     }
   },
+  "clearing": {
+    "hero": {
+      "title": "క్లియరింగ్",
+      "welcomeTitle": "క్లియరింగ్‌కు స్వాగతం",
+      "searchPlaceholder": "క్లియరింగ్ ప్రక్రియలను వెతకండి...",
+      "show": "చూపించు",
+      "allMasters": "అన్ని మాస్టర్లు",
+      "recentlyUsed": "ఇటీవల ఉపయోగించినవి",
+      "open": "తెరవండి",
+      "noUtilitiesFound": "ఏ సౌకర్యాలు కనుగొనబడలేదు",
+      "breadcrumbClerk": "క్లర్క్"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "O/W Clearing Late Return Mark",
+        "cardDescription": "అవుట్‌వార్డ్ క్లియరింగ్ బిల్లుల ఆలస్య రిటర్న్‌ను నమోదు చేసి గుర్తించండి.",
+        "modalTitle": "అవుట్‌వార్డ్ బిల్ వసూలు నమోదు",
+        "modalSubtitle": "అవుట్‌వార్డ్ క్లియరింగ్ బిల్‌పై వచ్చిన ఆలస్య రిటర్న్‌ను నమోదు చేయండి.",
+        "successTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఆలస్య రిటర్న్ విజయవంతంగా నమోదైంది"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "Sub Branch I/W CLG Return",
+        "cardDescription": "సబ్ బ్రాంచ్ పంపిన ఇన్‌వార్డ్ క్లియరింగ్ రిటర్న్‌ను నమోదు చేయండి.",
+        "modalTitle": "సబ్ బ్రాంచ్ ఇన్‌వార్డ్ రిటర్న్",
+        "modalSubtitle": "పరామితి సమాచారం మరియు సంబంధిత వివరాలను చూడండి.",
+        "successTitle": "సబ్ బ్రాంచ్ ఇన్‌వార్డ్ రిటర్న్ విజయవంతంగా సేవ్ అయింది"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "O/W Clearing Posting Mark",
+        "cardDescription": "అవుట్‌వార్డ్ క్లియరింగ్ షెడ్యూల్ పోస్టింగ్ స్థితిని గుర్తించండి.",
+        "modalTitle": "అవుట్‌వార్డ్ క్లియరింగ్ పోస్టింగ్ మార్క్",
+        "modalSubtitle": "పరామితి సమాచారం మరియు సంబంధిత వివరాలను చూడండి.",
+        "successTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఖాతాలో విజయవంతంగా నమోదైంది"
+      },
+      "clearingTallyWithClearingHouse": {
+        "cardTitle": "క్లియరింగ్ హౌస్‌తో క్లియరింగ్ టాలీ",
+        "cardDescription": "బ్రాంచ్ క్లియరింగ్ స్క్రోల్‌ను క్లియరింగ్ హౌస్ గణాంకాలతో సరిపోల్చండి.",
+        "modalTitle": "క్లియరింగ్ హౌస్‌తో క్లియరింగ్ టాలీ",
+        "modalSubtitle": "మూసివేయడానికి ముందు స్క్రోల్ మొత్తాన్ని క్లియరింగ్ హౌస్‌తో ధృవీకరించండి.",
+        "successTitle": "క్లియరింగ్ హౌస్‌తో టాలీ విజయవంతంగా పూర్తయింది"
+      },
+      "firstSecondClearingClosing": {
+        "cardTitle": "1వ & 2వ క్లియరింగ్ ముగింపు",
+        "cardDescription": "రోజు యొక్క మొదటి మరియు రెండవ క్లియరింగ్ సెషన్‌లను ముగించండి.",
+        "modalTitle": "1వ & 2వ క్లియరింగ్ ముగింపు",
+        "modalSubtitle": "బ్రాంచ్ కోసం ఎంచుకున్న క్లియరింగ్ సెషన్‌ను ముగించండి.",
+        "successTitle": "క్లియరింగ్ విజయవంతంగా ముగిసింది"
+      },
+      "generateInwardSchedule": {
+        "cardTitle": "ఇన్‌వార్డ్ షెడ్యూల్ జనరేట్ చేయండి",
+        "cardDescription": "రోజువారీ ఇన్‌వార్డ్ క్లియరింగ్ షెడ్యూల్‌ను జనరేట్ చేయండి.",
+        "modalTitle": "ఇన్‌వార్డ్ షెడ్యూల్ జనరేట్ చేయండి",
+        "modalSubtitle": "ఎంచుకున్న తేదీ కోసం ఇన్‌వార్డ్ క్లియరింగ్ షెడ్యూల్‌ను జనరేట్ చేయండి.",
+        "successTitle": "ఇన్‌వార్డ్ షెడ్యూల్ విజయవంతంగా జనరేట్ అయింది"
+      },
+      "generateOutwardSchedule": {
+        "cardTitle": "అవుట్‌వార్డ్ షెడ్యూల్ జనరేట్ చేయండి",
+        "cardDescription": "రోజువారీ అవుట్‌వార్డ్ క్లియరింగ్ షెడ్యూల్‌ను జనరేట్ చేయండి.",
+        "modalTitle": "అవుట్‌వార్డ్ షెడ్యూల్ జనరేట్ చేయండి",
+        "modalSubtitle": "ఎంచుకున్న తేదీ కోసం అవుట్‌వార్డ్ క్లియరింగ్ షెడ్యూల్‌ను జనరేట్ చేయండి.",
+        "successTitle": "అవుట్‌వార్డ్ షెడ్యూల్ విజయవంతంగా జనరేట్ అయింది"
+      },
+      "importDailyOutwardScheduleDetail": {
+        "cardTitle": "రోజువారీ అవుట్‌వార్డ్ షెడ్యూల్ వివరాలను దిగుమతి చేయండి",
+        "cardDescription": "రోజుకు అందిన అవుట్‌వార్డ్ షెడ్యూల్ వివరాల ఫైల్‌ను దిగుమతి చేయండి.",
+        "modalTitle": "రోజువారీ అవుట్‌వార్డ్ షెడ్యూల్ వివరాలను దిగుమతి చేయండి",
+        "modalSubtitle": "ఎంచుకున్న షెడ్యూల్ కోసం అవుట్‌వార్డ్ షెడ్యూల్ వివరాల ఫైల్‌ను దిగుమతి చేయండి.",
+        "successTitle": "రోజువారీ అవుట్‌వార్డ్ షెడ్యూల్ వివరాలు విజయవంతంగా దిగుమతి అయ్యాయి"
+      },
+      "inwardClearingEntry": {
+        "cardTitle": "ఇన్‌వార్డ్ క్లియరింగ్ ఎంట్రీ",
+        "cardDescription": "ఇన్‌వార్డ్ క్లియరింగ్‌లో అందిన ఇన్‌స్ట్రుమెంట్ వారీ ఎంట్రీలను నమోదు చేయండి.",
+        "modalTitle": "ఇన్‌వార్డ్ క్లియరింగ్ ఎంట్రీ",
+        "modalSubtitle": "ఇన్‌వార్డ్ క్లియరింగ్ కోసం బ్రాంచ్, షెడ్యూల్ మరియు ఇన్‌స్ట్రుమెంట్ వివరాలను నమోదు చేయండి.",
+        "successTitle": "ఇన్‌వార్డ్ క్లియరింగ్ ఎంట్రీ విజయవంతంగా సేవ్ అయింది"
+      },
+      "owClearingBounceMark": {
+        "cardTitle": "అవుట్‌వార్డ్ క్లియరింగ్ బౌన్స్ మార్క్",
+        "cardDescription": "అవుట్‌వార్డ్ క్లియరింగ్ ఇన్‌స్ట్రుమెంట్‌ను బౌన్స్/రిటర్న్‌గా గుర్తించండి.",
+        "modalTitle": "అవుట్‌వార్డ్ క్లియరింగ్ బౌన్స్ మార్క్",
+        "modalSubtitle": "బౌన్స్ అయిన ఇన్‌స్ట్రుమెంట్ కోసం తిరస్కరణ మరియు ఛార్జీలను నమోదు చేయండి.",
+        "successTitle": "అవుట్‌వార్డ్ క్లియరింగ్ బౌన్స్ విజయవంతంగా గుర్తించబడింది"
+      },
+      "outwardClearingEntry": {
+        "cardTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఎంట్రీ",
+        "cardDescription": "అవుట్‌వార్డ్ క్లియరింగ్‌లో పంపిన ఇన్‌స్ట్రుమెంట్ వారీ ఎంట్రీలను నమోదు చేయండి.",
+        "modalTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఎంట్రీ",
+        "modalSubtitle": "అవుట్‌వార్డ్ క్లియరింగ్ కోసం బ్రాంచ్, షెడ్యూల్ మరియు ఇన్‌స్ట్రుమెంట్ వివరాలను నమోదు చేయండి.",
+        "successTitle": "అవుట్‌వార్డ్ క్లియరింగ్ ఎంట్రీ విజయవంతంగా సేవ్ అయింది"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "బ్రాంచ్ సమాచారం",
+        "subtitle": "అవుట్‌వార్డ్ బిల్ వసూలు కోసం ఖాతా వివరాలను నమోదు చేయండి."
+      },
+      "clearingDetails": {
+        "title": "క్లియరింగ్ వివరాలు",
+        "subtitle": "నమోదు చేయడానికి ముందు బ్రాంచ్ మరియు లావాదేవీ వివరాలను ఎంచుకోండి."
+      },
+      "customerAccountDetails": {
+        "title": "కస్టమర్ & ఖాతా వివరాలు",
+        "subtitle": "కస్టమర్, చెల్లింపుదారు మరియు డ్రావీ బ్యాంక్ వివరాలను నమోదు చేయండి."
+      },
+      "instrumentDetails": {
+        "title": "ఇన్‌స్ట్రుమెంట్ వివరాలు",
+        "subtitle": "చెక్ / ఇన్‌స్ట్రుమెంట్ వివరాలను నమోదు చేయండి."
+      },
+      "returnDetails": {
+        "title": "రిటర్న్ వివరాలు",
+        "subtitle": "తిరస్కరణ మరియు ఛార్జీల వివరాలను నమోదు చేయండి."
+      },
+      "details": {
+        "title": "వివరాలు",
+        "subtitle": "పరామితి సమాచారం మరియు సంబంధిత వివరాలను చూడండి."
+      }
+    },
+    "fields": {
+      "bankCode": "బ్యాంక్ కోడ్",
+      "bankName": "బ్యాంక్ పేరు",
+      "branchCode": "బ్రాంచ్ కోడ్",
+      "branchName": "బ్రాంచ్ పేరు",
+      "date": "తేదీ",
+      "scrollNumber": "స్క్రోల్ నంబర్",
+      "clearingTypeId": "క్లియరింగ్ టైప్ ఐడీ",
+      "clearingTypeName": "క్లియరింగ్ టైప్ పేరు",
+      "dailyOutwardScheduleNo": "రోజువారీ అవుట్‌వార్డ్ షెడ్యూల్ నం.",
+      "scheduleDate": "షెడ్యూల్ తేదీ",
+      "clearingSerialNumber": "క్లియరింగ్ సీరియల్ నంబర్",
+      "customerId": "కస్టమర్ ఐడీ",
+      "customerName": "కస్టమర్ పేరు",
+      "accountCode": "ఖాతా కోడ్",
+      "accountName": "ఖాతాదారు పేరు",
+      "payeeName": "చెల్లింపుదారు పేరు",
+      "drawerName": "డ్రాయర్ పేరు",
+      "instrumentType": "ఇన్‌స్ట్రుమెంట్ రకం",
+      "instrumentNumber": "ఇన్‌స్ట్రుమెంట్ నంబర్",
+      "instrumentDate": "ఇన్‌స్ట్రుమెంట్ తేదీ",
+      "instrumentAmount": "ఇన్‌స్ట్రుమెంట్ మొత్తం",
+      "outletSerialNo": "అవుట్‌లెట్ సీరియల్ నం.",
+      "glOutletDescription": "GL అవుట్‌లెట్ వివరణ",
+      "glOutlistDocNo": "GL అవుట్‌లిస్ట్ డాక్. నం.",
+      "rejectionTypeId": "తిరస్కరణ రకం ఐడీ",
+      "rejectionDescription": "తిరస్కరణ వివరణ",
+      "chequeReturnCharges": "చెక్ రిటర్న్ ఛార్జీలు",
+      "serviceTax": "సేవా పన్ను",
+      "adviceNumber": "అడ్వైస్ నంబర్",
+      "adviceDate": "అడ్వైస్ తేదీ",
+      "originalResponding": "ఒరిజినల్ / రెస్పాండింగ్",
+      "dailyInwardScheduleNo": "రోజువారీ ఇన్‌వార్డ్ షెడ్యూల్ నం.",
+      "amount": "మొత్తం",
+      "scheduleNumber": "షెడ్యూల్ నంబర్",
+      "numberOfInstruments": "ఇన్‌స్ట్రుమెంట్ల సంఖ్య",
+      "totalAmount": "మొత్తం రాశి",
+      "bounceNoOfInstruments": "బౌన్స్ అయిన ఇన్‌స్ట్రుమెంట్ల సంఖ్య",
+      "totalInstruments": "మొత్తం ఇన్‌స్ట్రుమెంట్లు",
+      "closingRemark": "ముగింపు వ్యాఖ్య",
+      "fileName": "ఫైల్ పేరు"
+    },
+    "actions": {
+      "postToAccount": "ఖాతాలో పోస్ట్ చేయండి",
+      "tally": "టాలీ",
+      "close": "మూసివేయండి",
+      "generate": "జనరేట్ చేయండి",
+      "import": "దిగుమతి చేయండి"
+    }
+  },
   "pigmyInterestProvision": {
     "title": "Pigmy Interest Provision/Posting",
     "subtitle": "Process automatic renewal at the beginning of the day.",
@@ -630,6 +804,18 @@
     },
     "placeholders": {
       "name": "name"
+    }
+  },
+  "clerkSms": {
+    "title": "ఎస్‌ఎంఎస్",
+    "table": {
+      "srNo": "క్ర.సం.",
+      "mobileNumber": "మొబైల్ నంబర్",
+      "customerName": "కస్టమర్ పేరు",
+      "message": "సందేశం",
+      "type": "రకం",
+      "status": "స్థితి",
+      "sentDate": "పంపిన తేదీ"
     }
   }
 }

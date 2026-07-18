@@ -7,30 +7,17 @@ import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchPara
 import CombineAcceptPayCashMultiple from "@/components/futuremodels/CombineAcceptPayCashMultiple";
 import RecoverySummary from "@/components/futuremodels/RecoverySummary";
 import PayCash from "@/components/futuremodels/PayCash";
+import GeneratedInwardScheduleModal from "./Clerk/Modals/GenerateInwardSchedule";
+import GenerateOutwardScheduleModal from "./Clerk/Modals/GenerateOutwordSchedule";
+import ClearingTallyModal from "./Clerk/Modals/ClearingTallyAndHouse";
+import InwardClearingEntryModal from "./futuremodels/InwardClearingEntryModal";
+import OutwardClearingBounceModal from "./futuremodels/OutwardClearingBounceModal";
+import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal";
 
 interface FutureModelAction {
-    label: string;
-    path: string;
+  label: string;
+  path: string;
 }
-
-// const FUTURE_MODEL_ACTIONS: FutureModelAction[] = [
-//     {
-//         label: "MODIFY ACCOUNT BALANCE",
-//         path: "/futuremodels/modifyaccountbalance",
-//     },
-//     {
-//         label: "MODIFY BRANCH GL BALANCE",
-//         path: "/futuremodels/modifybranchglbalance",
-//     },
-//     {
-//         label: "MODIFY BRANCH GL HISTORY",
-//         path: "/futuremodels/modifybranchglhistory",
-//     },
-//     {
-//         label: "MODIFY CASHHANDLING RECORD",
-//         path: "/futuremodels/modifycashhandlingrecord",
-//     },
-// ];
 
 const FutureModalsPage = () => {
     const navigate = useNavigate();
@@ -42,21 +29,14 @@ const FutureModalsPage = () => {
     const [showCombineAcceptPayCash, setShowCombineAcceptPayCash] = useState(false);
     const [showRecoverySummary, setShowRecoverySummary] = useState(false);
     const [showPayCash, setShowPayCash] = useState(false);
+  const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("tally");
+    const [showInwardClearing, setShowInwardClearing] = useState(false);
+    const [showOutwardBounce, setShowOutwardBounce] = useState(false);
+    const [showOutwardClearing, setShowOutwardClearing] = useState(false);
 
     return (
         <div className="p-6">
             <div className="flex flex-wrap gap-4">
-                {/* {FUTURE_MODEL_ACTIONS.map(({ label, path }) => (
-                    <button
-                        key={path}
-                        type="button"
-                        onClick={() => navigate(path)}
-                        className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
-                    >
-                        {label}
-                    </button>
-                ))} */}
-
                 <button
                     type="button"
                     onClick={() => setShowStopChequePayment(true)}
@@ -65,13 +45,13 @@ const FutureModalsPage = () => {
                     STOP CHEQUE PAYMENT
                 </button>
 
-                <button
-                    type="button"
-                    onClick={() => setShowLoanInterestRate(true)}
-                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
-                >
-                    ADD/MODIFY LOAN INTEREST RATE
-                </button>
+        <button
+          type="button"
+          onClick={() => setShowLoanInterestRate(true)}
+          className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+        >
+          ADD/MODIFY LOAN INTEREST RATE
+        </button>
 
                 <button
                     type="button"
@@ -80,19 +60,37 @@ const FutureModalsPage = () => {
                 >
                     MATURED TD
                 </button>
-                {/* <button
-                    type="button"
-                    onClick={() => setShowSiPosting(true)}
-                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
-                >
-                    SI INTREST POSTING
-                </button> */}
+
                 <button
                     type="button"
                     onClick={() => setShowSetBranchParameter(true)}
                     className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
                 >
                     SET BRANCH PARAMETER
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowInwardClearing(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-green-700"
+                >
+                    INWARD CLEARING ENTRY
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowOutwardBounce(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-orange-700"
+                >
+                    OUTWARD CLEARING BOUNCE
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowOutwardClearing(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-purple-700"
+                >
+                    OUTWARD CLEARING ENTRY
                 </button>
 
                 <button
@@ -120,23 +118,53 @@ const FutureModalsPage = () => {
                 </button>
             </div>
 
-            {showStopChequePayment && (
-                <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
-            )}
+      {showStopChequePayment && (
+        <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
+      )}
 
             {showLoanInterestRate && (
                 <AddModifyLoanInterestRate onClose={() => setShowLoanInterestRate(false)} />
             )}
 
-            {/* {showInterestPosting && (
-                <InterestPostingProcess onClose={() => setShowInterestPosting(false)} />
-            )}
-            {showSiPosting && (
-                <SiIntrest/>
-            )} */}
+      {showSetBranchParameter && (
+        <SetBranchParameterModal
+          onClose={() => setShowSetBranchParameter(false)}
+        />
+      )}
 
-            {showSetBranchParameter && (
-                <SetBranchParameterModal onClose={() => setShowSetBranchParameter(false)} />
+
+        <GeneratedInwardScheduleModal open={clerkModal === "inward"}
+            onClose={() => setClerkModal("")}
+        />
+
+       <GenerateOutwardScheduleModal open={clerkModal === "outward"}
+            onClose={() => setClerkModal("")}
+
+        />
+
+        <ClearingTallyModal open={clerkModal === "tally"}
+            onClose={() => setClerkModal("")}
+        />
+
+            {showInwardClearing && (
+                <InwardClearingEntryModal
+                    open={showInwardClearing}
+                    onClose={() => setShowInwardClearing(false)}
+                />
+            )}
+
+            {showOutwardBounce && (
+                <OutwardClearingBounceModal
+                    open={showOutwardBounce}
+                    onClose={() => setShowOutwardBounce(false)}
+                />
+            )}
+
+            {showOutwardClearing && (
+                <OutwardClearingEntryModal
+                    open={showOutwardClearing}
+                    onClose={() => setShowOutwardClearing(false)}
+                />
             )}
 
             {showCombineAcceptPayCash && (
@@ -152,6 +180,8 @@ const FutureModalsPage = () => {
             )}
         </div>
     );
+    </div>
+  );
 };
 
 export default FutureModalsPage;

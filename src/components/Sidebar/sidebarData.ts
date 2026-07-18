@@ -90,6 +90,7 @@ export const menuItems: NavItemData[] = [
         id: "mis-interest-posting",
         title: "Interest Posting",
         icon: Percent,
+        href: "/interest-posting",
       },
       {
         id: "mis-master-mainenance-global",
@@ -221,22 +222,25 @@ export const menuItems: NavItemData[] = [
         id: "clerk-account",
         title: "Account",
         icon: Landmark,
+         href: "/account-master",
+      },
+      {
+        id: "clerk-account-opening",
+        title: "Account Clsoing",
+        icon: Landmark,
+        href: "/account-closing"
       },
       // {
-      //   id: "clerk-account-opening",
-      //   title: "Account Opening",
-      //   icon: Landmark,
+      //   id: "clerk-application",
+      //   title: "Application",
+      //   icon: FileText,
+      //   // href: "/account-master",
       // },
-      {
-        id: "clerk-application",
-        title: "Application",
-        icon: FileText,
-        href: "/account-master",
-      },
       {
         id: "clerk-bills",
         title: "Bills",
         icon: Receipt,
+        href: "/account-master/bill",
       },
       {
         id: "clerk-branch",
@@ -248,6 +252,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-clearing",
         title: "Clearing",
         icon: ArrowLeftRight,
+        href: "/clerk/clearing",
       },
       {
         id: "clerk-customer",
@@ -259,6 +264,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-locker",
         title: "Locker",
         icon: KeyRound,
+        href: "/locker",
       },
       {
         id: "clerk-queries",
@@ -269,6 +275,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-sms",
         title: "SMS",
         icon: MessageSquare,
+        href: "/clerk/sms",
       },
       {
         id: "clerk-transaction",
