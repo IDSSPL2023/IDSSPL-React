@@ -41,7 +41,7 @@ import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCc
 import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
 import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
 import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
-import BranchMasterPage from "@/pages/BranchMasterPage";
+import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
 import CustomerMasterPage from "@/pages/CustomerMasterPage";
 import DashboardPage from "@/pages/DashboardPage";
 import FutureModelsPage from "@/pages/futuremodels/FutureModelsPage";
@@ -68,6 +68,7 @@ import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
 import SupportUtilityPage from "@/pages/SupportUtilityPage";
 import ClerkClearingPage from "@/pages/ClerkClearingPage";
 import ClerkSmsPage from "@/pages/ClerkSmsPage";
+import LockerPage from "@/pages/LockerPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
 import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
@@ -91,6 +92,9 @@ import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandli
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
+// import BillHero from "./components/Bill/BillHero";
+import BillUtilityPage from "./components/Bill/BillUtilityPage";
+import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -134,6 +138,8 @@ export const router = createBrowserRouter([
       { path: "/account-closing/loan", element: <AccountClosingLoanPage /> },
       { path: "/account-closing/pigmy", element: <AccountClosingPigmyPage /> },
       { path: "/account-master", element: <AccountMasterLandingPage /> },
+      // { path: "/account-master/bill", element: <BillHero /> },
+      { path: "/account-master/bill", element: <BillUtilityPage /> },
       { path: "/account-master/ca-sa", element: <AccountMasterCaSaPage /> },
       { path: "/account-master/deposit", element: <AccountMasterDepositPage /> },
       { path: "/account-master/investment", element: <AccountMasterInvestmentPage /> },
@@ -164,6 +170,10 @@ export const router = createBrowserRouter([
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
+      { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
+
+
+       
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
@@ -194,12 +204,13 @@ export const router = createBrowserRouter([
 
       { path: "/financial-closing", element: <FinancialClosing /> },
       { path: "/financial-closing/set-product-status", element: <SetProductStatusPage /> },
-
+      { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
       { path: "/clerk/sms", element: <ClerkSmsPage /> },
+      { path: "/locker", element: <LockerPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
       { path: "/transactionmaster/cash-withdrawal", element: <CashWithdrawalPage /> },

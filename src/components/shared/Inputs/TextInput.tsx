@@ -4,7 +4,7 @@ import { useId } from "react";
 interface TextInputProps {
   labelEn: string;
   labelHi: string;
-  icon: LucideIcon;
+  icon: LucideIcon | string;
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
@@ -33,7 +33,7 @@ function TextInput({
     const borderClass = hasError ? "border-red-400" : "border-[#6A7282]";
 
     const stateClasses = readOnly
-      ? "bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+      ? "bg-[#F3F4F6] dark:border-slate-700 dark:bg-slate-800"
       : "bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700";
 
     return `${baseClasses} ${borderClass} ${stateClasses}`;
@@ -66,11 +66,15 @@ function TextInput({
       </label>
 
       <div className={getContainerClasses()}>
-        <Icon
-          size={18}
-          className="shrink-0 text-[#6B7280] dark:text-slate-400"
-          aria-hidden="true"
-        />
+        {typeof Icon === "string" ? (
+          <img src={Icon} alt="icon" className="h-5 aspect-square" />
+        ) : (
+          <Icon
+            size={20}
+            className="shrink-0 text-[#6B7280] dark:text-slate-400"
+            aria-hidden="true"
+          />
+        )}
 
         {readOnly ? (
           <span className={getTextClasses()}>{value || placeholder}</span>

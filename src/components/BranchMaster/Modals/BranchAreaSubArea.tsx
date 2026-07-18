@@ -7,9 +7,9 @@ import {
   Landmark,
   Building2,
 } from "lucide-react";
-import TextInput from "../shared/Inputs/TextInput";
-import PickerInput from "../shared/Inputs/PickerInput";
-import ListModal, { type ListModalItem } from "./ListModal";
+import TextInput from "../../shared/Inputs/TextInput";
+import PickerInput from "../../shared/Inputs/PickerInput";
+import ListModal, { type ListModalItem } from "../../shared/Modals/ListModal";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
 import { ICONS } from "@/assets";

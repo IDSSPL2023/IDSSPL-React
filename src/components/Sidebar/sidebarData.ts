@@ -240,6 +240,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-bills",
         title: "Bills",
         icon: Receipt,
+        href: "/account-master/bill",
       },
       {
         id: "clerk-branch",
@@ -263,6 +264,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-locker",
         title: "Locker",
         icon: KeyRound,
+        href: "/locker",
       },
       {
         id: "clerk-queries",

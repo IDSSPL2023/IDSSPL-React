@@ -4,7 +4,7 @@ import { useId, useRef, useEffect, useState } from "react";
 interface DateInputProps {
   labelEn: string;
   labelHi?: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon | string;
   value: string;
   onChange: (value: string) => void;
   hasError?: boolean;
@@ -124,11 +124,15 @@ function DateInput({
       </label>
 
       <div ref={containerRef} className={getContainerClasses()}>
-        <Icon
-          size={18}
-          className="shrink-0 text-[#6B7280] dark:text-slate-400"
-          aria-hidden="true"
-        />
+        {typeof Icon === "string" ? (
+          <img src={Icon} alt="icon" className="h-5 aspect-square" />
+        ) : (
+          <Icon
+            size={20}
+            className="shrink-0 text-[#6B7280] dark:text-slate-400"
+            aria-hidden="true"
+          />
+        )}
 
         <input
           ref={inputRef}

@@ -14,6 +14,7 @@ import AddSI from "@/components/StandingInstruction/AddSI";
 import MemoModal from "../../pages/futuremodels/MemoPage";
 import LeanPage from "../../pages/futuremodels/LeanPage";
 import { getMenuItemsForAccountType } from "@/components/AccountMaster/accountTypeMenuConfig";
+import AccountOperativeModal, {  type AccountOperativeSubmitPayload} from "@/components/AccountMaster/AccountOperativeModal";
 import { useBilingual } from "@/i18n/useBilingual";
 
 export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment" | "fixed-asset";
