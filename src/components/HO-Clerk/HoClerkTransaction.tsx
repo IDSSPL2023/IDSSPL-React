@@ -87,7 +87,7 @@ const TransactionCard = ({ item, onOpen }: TransactionCardProps) => (
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") onOpen(item.key);
       }}
-      className="flex cursor-pointer items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:border-primary-300 hover:shadow-[0_4px_20px_rgba(11,99,193,0.15)] dark:border-slate-800 dark:bg-slate-900 sm:p-5"
+      className="flex cursor-pointer items-center gap-4 rounded-2xl border border-l-5 border-primary bg-white p-4 transition-all duration-200 hover:border-primary-300 hover:shadow-[0_4px_20px_rgba(11,99,193,0.15)] dark:border-slate-800 dark:bg-slate-900 sm:p-5"
     >
       <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full">
         <Image

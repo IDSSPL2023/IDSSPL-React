@@ -648,6 +648,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-officer-transaction-authorize",
         title: "Transaction Authorize",
         icon: ShieldCheck,
+        href:"/ho-officer"
       },
     ],
   },

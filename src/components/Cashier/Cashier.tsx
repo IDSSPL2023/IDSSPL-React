@@ -5,12 +5,12 @@ import CashierActions from './CashierActions'
 import { type CashierActionItem } from './CashierActionCard'
 
 const actions: CashierActionItem[] = [
-  { key: 'accept-cash', iconSrc: '/note1.png', titleEn: 'ACCEPT CASH', titleHi: 'रोख स्वीकृती', route: '/cashier/accept-cash' },
+  { key: 'accept-cash', iconSrc: '/money.png', titleEn: 'ACCEPT CASH', titleHi: 'रोख स्वीकृती', route: '/cashier/accept-cash' },
   { key: 'change-cash', iconSrc: '/note1.png', titleEn: 'CHANGE CASH', titleHi: 'रोख बदल' },
-  { key: 'cash-handling-entry', iconSrc: '/note1.png', titleEn: 'CASH HANDLING ENTRY', titleHi: 'रोख हाताळणी नोंद' },
+  { key: 'cash-handling-entry', iconSrc: '/hand.png', titleEn: 'CASH HANDLING ENTRY', titleHi: 'रोख हाताळणी नोंद' },
   { key: 'combine-accept-pay-cash-multiple', iconSrc: '/note1.png', titleEn: 'COMBINE ACCEPT PAY CASH MULTIPLE', titleHi: 'एकत्रित रोख स्वीकृती व प्रदान' },
-  { key: 'exchange-money', iconSrc: '/note1.png', titleEn: 'EXCHANGE MONEY', titleHi: 'पैसे विनिमय' },
-  { key: 'pay-cash', iconSrc: '/note1.png', titleEn: 'PAY CASH', titleHi: 'रोख प्रदान' },
+  { key: 'exchange-money', iconSrc: '/contact.png', titleEn: 'EXCHANGE MONEY', titleHi: 'पैसे विनिमय' },
+  { key: 'pay-cash', iconSrc: '/message.png"', titleEn: 'PAY CASH', titleHi: 'रोख प्रदान' },
 ]
 
 const Cashier = () => {

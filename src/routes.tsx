@@ -36,6 +36,7 @@ import TdInterestPaymentAuthorizePage from "@/pages/authorization/transaction/Td
 import TdsTransactionAuthorizePage from "@/pages/authorization/transaction/TdsTransactionAuthorizePage";
 import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCcInstallmentAuthorizePage";
 import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
+import TlOtherChargesAuthorizePage from "@/pages/authorization/transaction/TlOtherChargesAuthorizePage";
 import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
 import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
 import BranchMasterPage from "@/pages/BranchMasterPage";
@@ -90,6 +91,13 @@ import Application from "./components/HO-Clerk/HoApplication";
 import HoClerkTransaction from "./components/HO-Clerk/HoClerkTransaction";
 import Cashier from "./components/Cashier/Cashier";
 import PagesAcceptCashPage from "@/pages/cashier/AcceptCashPage";
+import HoOfficer from "./components/Ho-Officer/HoOfficer";
+import HoCashDepositAuthorizePage from "@/pages/ho-officer/HoCashDepositAuthorizePage";
+import HoCashWithdrawalAuthorizePage from "@/pages/ho-officer/HoCashWithdrawalAuthorizePage";
+import HoTransferAuthorizePage from "@/pages/ho-officer/HoTransferAuthorizePage";
+import InvestmentPaymentClosingAuthorizePage from "@/pages/ho-officer/InvestmentPaymentClosingAuthorizePage";
+import RtgsOutwardAuthorizePage from "@/pages/ho-officer/RtgsOutwardAuthorizePage";
+import ReconciliationAuthorizePage from "@/pages/ho-officer/ReconciliationAuthorizePage";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -154,7 +162,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
       { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
-      { path: "/authorization/transaction/tl-other-charges", element: <TLOtherChargesPage /> },
+      { path: "/authorization/transaction/tl-other-charges", element: <TlOtherChargesAuthorizePage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
@@ -217,6 +225,15 @@ export const router = createBrowserRouter([
       // Cashier Route
       { path: "/cashier", element: <Cashier /> },
       { path: "/cashier/accept-cash", element: <PagesAcceptCashPage /> },
+
+      // Ho Officer
+      { path: "/ho-officer", element: <HoOfficer /> },
+      { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage /> },
+      { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage /> },
+      { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage /> },
+      { path: "/ho-officer/investment-payment-closingmark", element: <InvestmentPaymentClosingAuthorizePage /> },
+      { path: "/ho-officer/rtgs-outward-file-generation", element: <RtgsOutwardAuthorizePage /> },
+      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage /> },
 
 
     ],
