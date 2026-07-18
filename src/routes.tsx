@@ -42,6 +42,9 @@ import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCc
 import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
 import TlOtherChargesAuthorizePage from "@/pages/authorization/transaction/TlOtherChargesAuthorizePage";
 import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
+import ModifyTdsTransactionAuthorizePage from "@/pages/authorization/transaction/ModifyTdsTransactionAuthorizePage";
+import NewPgTransactionImportAuthorizePage from "@/pages/authorization/transaction/NewPgTransactionImportAuthorizePage";
+import NewPgTransactionExportAuthorizePage from "@/pages/authorization/transaction/NewPgTransactionExportAuthorizePage";
 import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
 import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
 import CustomerMasterPage from "@/pages/CustomerMasterPage";
@@ -80,8 +83,11 @@ import TdInterestPaymentPage from "@/pages/transactionmaster/TdInterestPaymentPa
 import TdsTransactionPage from "@/pages/transactionmaster/TdsTransactionPage";
 import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
 import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
+import TlOtherChargesPage from "@/pages/transactionmaster/TlOtherChargesPage";
 import TransferPage from "@/pages/transactionmaster/TransferPage";
 import ModifyTdsTransactionPage from "@/pages/transactionmaster/ModifyTdsTransactionPage";
+import NewPgTransactionImportPage from "@/pages/transactionmaster/NewPgTransactionImportPage";
+import NewPgTransactionExportPage from "@/pages/transactionmaster/NewPgTransactionExportPage";
 import UserMasterPage from "@/pages/UserMasterPage";
 import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
@@ -105,10 +111,14 @@ import HoTransferAuthorizePage from "@/pages/ho-officer/HoTransferAuthorizePage"
 import InvestmentPaymentClosingAuthorizePage from "@/pages/ho-officer/InvestmentPaymentClosingAuthorizePage";
 import RtgsOutwardAuthorizePage from "@/pages/ho-officer/RtgsOutwardAuthorizePage";
 import ReconciliationAuthorizePage from "@/pages/ho-officer/ReconciliationAuthorizePage";
+import DDPage from "./pages/dd/DDPage";
+import DDMaintenancePage from "./pages/dd/DDMaintenancePage";
+import DDPrintingPage from "./pages/dd/DDPrintingPage";
 // import BillHero from "./components/Bill/BillHero";
 import BillUtilityPage from "./components/Bill/BillUtilityPage";
 import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
-
+import SMSRegistrationPage from "@/components/SMS/SMSRegistrationPage ";
+import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAuthorize";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -162,6 +172,9 @@ export const router = createBrowserRouter([
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
       { path: "/day-begin-end", element: <DayBeginEndPage /> },
+      { path: "/dd", element: <DDPage /> },
+      { path: "/dd/maintenance", element: <DDMaintenancePage /> },
+      { path: "/dd/printing", element: <DDPrintingPage /> },
       { path: "/branch-activity", element: <BranchActivityPage /> },
 { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
@@ -177,17 +190,21 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/rtgs", element: <RtgsAuthorizePage /> },
       { path: "/authorization/transaction/td-interest-payment", element: <TdInterestPaymentAuthorizePage /> },
       { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
-      { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
+      { path: "/authorization\/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
-      { path: "/authorization/transaction/tl-other-charges", element: <TlOtherChargesAuthorizePage /> },
+    { path: "/authorization/transaction/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
+      { path: "/authorization/transaction/modify-tds-transaction", element: <ModifyTdsTransactionAuthorizePage /> },
+      { path: "/authorization/transaction/new-pg-transaction-import", element: <NewPgTransactionImportAuthorizePage /> },
+      { path: "/authorization/transaction/new-pg-transaction-export", element: <NewPgTransactionExportAuthorizePage /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
-
-
+      { path: "/sms", element: <SMSRegistrationPage/> },
+      { path: "/authorization/sms-authorize", element: <SMSAuthorize /> },
        
+      
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
@@ -234,8 +251,11 @@ export const router = createBrowserRouter([
       { path: "/transactionmaster/tds-transaction", element: <TdsTransactionPage /> },
       { path: "/transactionmaster/tl-cc-installment", element: <TlCcInstallmentPage /> },
       { path: "/transactionmaster/tl-disbursement", element: <TlDisbursementPage /> },
+      { path: "/transactionmaster/tl-other-charges", element: <TlOtherChargesPage /> },
       { path: "/transactionmaster/transfer", element: <TransferPage /> },
       { path: "/transactionmaster/modify-tds-transaction", element: <ModifyTdsTransactionPage /> },
+      { path: "/transactionmaster/new-pg-transaction-import", element: <NewPgTransactionImportPage /> },
+      { path: "/transactionmaster/new-pg-transaction-export", element: <NewPgTransactionExportPage /> },
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
       { path: "/tds", element: <TDSReportsPage /> },

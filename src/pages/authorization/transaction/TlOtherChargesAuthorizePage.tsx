@@ -91,7 +91,7 @@ const TlOtherChargesAuthorizePage = () => {
             accountCode: authorizeRow.accountCode,
             particular: authorizeRow.particular,
             chargeRows: DEFAULT_TL_OTHER_CHARGES_ROWS.map((row) =>
-              row.key === "grandTotal" ? { ...row, totalAmount: authorizeRow.totalAmount } : row
+              row.key === "transferGlHead" ? { ...row, totalAmount: authorizeRow.totalAmount } : row
             ),
           }}
           onClose={closeAuthorizeModal}
@@ -102,3 +102,4 @@ const TlOtherChargesAuthorizePage = () => {
 };
 
 export default TlOtherChargesAuthorizePage;
+

@@ -4,7 +4,7 @@ import {
   User,
   CreditCard,
   FileText,
-  Hash,
+  Calendar,
   MoreVertical,
   ThumbsUp,
   ThumbsDown,
@@ -19,6 +19,8 @@ export interface TlOtherChargesChargeRow {
   key: string;
   type: string;
   typeHi: string;
+  charge: string;
+  chargeHi: string;
   glHeadCode: string;
   glDescription: string;
   totalAmount: string;
@@ -28,25 +30,33 @@ export interface TlOtherChargesFormData {
   scrollNumber: string;
   particular: string;
   accountCode: string;
-  accountName: string;
+  insuranceDate: string;
+  recoveryAmt: string;
+  insuranceFireAmt: string;
+  abnFeesAmt: string;
+  executionFeesAmt: string;
   chargeRows: TlOtherChargesChargeRow[];
 }
 
 export const DEFAULT_TL_OTHER_CHARGES_ROWS: TlOtherChargesChargeRow[] = [
-  { key: "insurance", type: "Insurance", typeHi: "विमा", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
-  { key: "recovery", type: "Recovery", typeHi: "वसुली", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
-  { key: "insuranceFire", type: "Insurance Fire", typeHi: "आग विमा", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
-  { key: "abnFees", type: "ABN Fees", typeHi: "एबीएन शुल्क", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
-  { key: "executionFees", type: "Execution Fees", typeHi: "अंमलबजावणी शुल्क", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
-  { key: "otherCharges", type: "Other Charges", typeHi: "इतर आकार", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
-  { key: "grandTotal", type: "Grand Total", typeHi: "एकूण रक्कम", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "insurance", type: "Insurance", typeHi: "विमा", charge: "Insurance", chargeHi: "विमा", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "recovery", type: "Recovery", typeHi: "वसुली", charge: "Recovery", chargeHi: "वसुली", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "insuranceFire", type: "Insurance Fire", typeHi: "आग विमा", charge: "Insurance Fire", chargeHi: "आग विमा", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "abnFees", type: "ABN Fees", typeHi: "एबीएन शुल्क", charge: "ABN Fees", chargeHi: "एबीएन शुल्क", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "executionFees", type: "Execution Fees", typeHi: "अंमलबजावणी शुल्क", charge: "Execution Fees", chargeHi: "अंमलबजावणी शुल्क", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "otherCharges", type: "Other Charges", typeHi: "इतर आकार", charge: "Other Charges", chargeHi: "इतर आकार", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
+  { key: "transferGlHead", type: "Transfer GL Head", typeHi: "इतर आकार", charge: "Grand Total", chargeHi: "एकूण रक्कम", glHeadCode: "", glDescription: "", totalAmount: "0.0" },
 ];
 
 export const DEFAULT_TL_OTHER_CHARGES_DATA: TlOtherChargesFormData = {
   scrollNumber: "",
   particular: "By Cash",
   accountCode: "00025050002501",
-  accountName: "",
+  insuranceDate: "2026-05-23",
+  recoveryAmt: "500.0",
+  insuranceFireAmt: "250.0",
+  abnFeesAmt: "150.0",
+  executionFeesAmt: "100.0",
   chargeRows: DEFAULT_TL_OTHER_CHARGES_ROWS,
 };
 
@@ -195,10 +205,10 @@ const AuthorizeTlOtherChargesModal = ({
         >
           <div className="border border-slate-200 dark:border-slate-800 rounded-[10px] overflow-hidden shadow-sm">
             <div className="overflow-x-auto [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
-              <table className="w-full border-collapse min-w-[700px]">
+              <table className="w-full border-collapse min-w-[760px]">
                 <thead>
                   <tr className="bg-[#1e1b4b]">
-                    {["Type", "GL Head Code", "GL Description", "Total Amount"].map((label) => (
+                    {["Type", "GI Head Code", "GI Description", "Charges", "Total Amount", "Tallied"].map((label) => (
                       <th
                         key={label}
                         className="whitespace-nowrap px-4 py-2.5 text-left text-[11px] font-bold text-white"
@@ -221,9 +231,14 @@ const AuthorizeTlOtherChargesModal = ({
                       <td className="px-4 py-2 align-middle text-sm text-slate-600 dark:text-slate-300">
                         {row.glDescription || "-"}
                       </td>
+                      <td className="px-4 py-2 align-middle">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100">{row.charge}</div>
+                        <div className="text-[10px] text-slate-400 dark:text-slate-500">{row.chargeHi}</div>
+                      </td>
                       <td className="px-4 py-2 align-middle text-sm font-medium text-slate-700 dark:text-slate-300">
                         {row.totalAmount}
                       </td>
+                      <td className="px-4 py-2 align-middle text-sm text-slate-600 dark:text-slate-300">0.0</td>
                     </tr>
                   ))}
                 </tbody>
@@ -255,12 +270,24 @@ const AuthorizeTlOtherChargesModal = ({
               </div>
             </FieldShell>
 
-            <FieldShell label="Account Name" labelHi="खात्याचे नाव" required>
-              <TextInput icon={<User size={16} />} value={data.accountName} onChange={() => {}} readOnly />
+            <FieldShell label="Insurance" labelHi="विमा" required>
+              <TextInput type="date" icon={<Calendar size={16} />} value={data.insuranceDate} onChange={() => {}} readOnly />
             </FieldShell>
 
-            <FieldShell label="Scroll Number" labelHi="स्कोल क्रमांक" required>
-              <TextInput icon={<Hash size={16} />} value={data.scrollNumber} onChange={() => {}} readOnly />
+            <FieldShell label="Recovery" labelHi="वसुली" required>
+              <TextInput icon={<CreditCard size={16} />} value={data.recoveryAmt} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="Insurance Fire" labelHi="आग विमा" required>
+              <TextInput icon={<CreditCard size={16} />} value={data.insuranceFireAmt} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="ABN Fees" labelHi="एबीएन शुल्क" required>
+              <TextInput icon={<CreditCard size={16} />} value={data.abnFeesAmt} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="Execution Fees" labelHi="अंमलबजावणी शुल्क" required>
+              <TextInput icon={<CreditCard size={16} />} value={data.executionFeesAmt} onChange={() => {}} readOnly />
             </FieldShell>
           </div>
         </SectionCard>

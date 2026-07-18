@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { Hash, IndianRupee, X, Filter as FilterIcon } from "lucide-react";
+import { Hash, IndianRupee, X, Filter as FilterIcon, User } from "lucide-react";
 
 const filterOptions = [
   {
@@ -17,9 +17,15 @@ const filterOptions = [
   },
   {
     id: "amount",
-    label: "Total Amount",
+    label: "Amount",
     icon: <IndianRupee size={18} className="text-primary" />,
-    placeholder: "Total Amount",
+    placeholder: "Amount",
+  },
+  {
+    id: "userId",
+    label: "User ID",
+    icon: <User size={18} className="text-primary" />,
+    placeholder: "User ID",
   },
 ] as const;
 
@@ -37,6 +43,7 @@ export const defaultTlOtherChargesFilters: TlOtherChargesFilters = {
   accountCode: "",
   scrollNo: "",
   amount: "",
+  userId: "",
 };
 
 export default function TlOtherChargesFilterModal({
