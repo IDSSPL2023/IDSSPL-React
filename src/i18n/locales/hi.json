@@ -9,6 +9,7 @@
     "validate": "सत्यापित करें",
     "authorize": "प्राधिकृत करें",
     "revoke": "निरस्त करें",
+    "reject": "अस्वीकार करें",
     "details": "विवरण",
     "accountDetails": "खाता विवरण",
     "lienDetails": "ग्रहणाधिकार विवरण",
@@ -87,6 +88,10 @@
       "investment": {
         "title": "निवेश",
         "description": "निवेश आवेदन विवरण दर्ज करें."
+      },
+      "fixedAsset": {
+        "title": "स्थायी मालमत्ता",
+        "description": "स्थायी मालमत्ता आवेदन विवरण दर्ज करें."
       }
     },
     "filters": {
@@ -104,8 +109,20 @@
       "customerId": "ग्राहक आईडी",
       "createdBy": "द्वारा बनाया गया",
       "openingDate": "खाता खोलने की तारीख",
-      "menuFreeze": "खाता फ्रीज / अनफ्रीज",
-      "menuCheque": "चेक बुक जारी करना"
+      "menuFreeze": "खाता फ्रीज",
+      "menuUnfreeze": "खाता अनफ्रीज",
+      "menuCheque": "चेक बुक जारी करना",
+      "menuInterestCalculation": "व्याज गणना",
+      "menuEmiCalculation": "ईएमआई गणना",
+      "menuDisbursement": "वितरण",
+      "menuValuation": "मूल्यांकन",
+      "menuDepreciation": "मूल्यह्रास",
+      "menuFreezeUnfreeze": "खाता फ्रीज / अनफ्रीज",
+      "menuChequeBookIssue": "चेक बुक जारी / रोक",
+      "menuStandingInstruction": "स्टैंडिंग इंस्ट्रक्शन",
+      "menuMemo": "मेमो",
+      "menuOperativeInoperative": "खाता सक्रिय/निष्क्रिय",
+      "menuLienMark": "लियन मार्क / रोक"
     },
     "addForm": {
       "title": "खाता जोड़ें",
@@ -575,6 +592,62 @@
         "modalTitle": "जावक क्लियरिंग पोस्टिंग चिन्हांकन",
         "modalSubtitle": "पैरामीटर की जानकारी और संबंधित विवरण देखें.",
         "successTitle": "जावक क्लियरिंग खाते में सफलतापूर्वक पोस्ट हुई"
+      },
+      "clearingTallyWithClearingHouse": {
+        "cardTitle": "क्लियरिंग हाउस के साथ क्लियरिंग तालमेल",
+        "cardDescription": "शाखा के क्लियरिंग स्क्रॉल का क्लियरिंग हाउस के आंकड़ों से तालमेल करें.",
+        "modalTitle": "क्लियरिंग हाउस के साथ क्लियरिंग तालमेल",
+        "modalSubtitle": "समापन से पहले स्क्रॉल कुल राशि को क्लियरिंग हाउस से सत्यापित करें.",
+        "successTitle": "क्लियरिंग हाउस के साथ तालमेल सफलतापूर्वक हुआ"
+      },
+      "firstSecondClearingClosing": {
+        "cardTitle": "पहली व दूसरी क्लियरिंग समापन",
+        "cardDescription": "दिन के पहले व दूसरे क्लियरिंग सत्र का समापन करें.",
+        "modalTitle": "पहली व दूसरी क्लियरिंग समापन",
+        "modalSubtitle": "शाखा के लिए चयनित क्लियरिंग सत्र समाप्त करें.",
+        "successTitle": "क्लियरिंग सफलतापूर्वक समाप्त हुई"
+      },
+      "generateInwardSchedule": {
+        "cardTitle": "आवक शेड्यूल जनरेट करें",
+        "cardDescription": "दैनिक आवक क्लियरिंग शेड्यूल जनरेट करें.",
+        "modalTitle": "आवक शेड्यूल जनरेट करें",
+        "modalSubtitle": "चयनित तारीख के लिए आवक क्लियरिंग शेड्यूल जनरेट करें.",
+        "successTitle": "आवक शेड्यूल सफलतापूर्वक जनरेट हुआ"
+      },
+      "generateOutwardSchedule": {
+        "cardTitle": "जावक शेड्यूल जनरेट करें",
+        "cardDescription": "दैनिक जावक क्लियरिंग शेड्यूल जनरेट करें.",
+        "modalTitle": "जावक शेड्यूल जनरेट करें",
+        "modalSubtitle": "चयनित तारीख के लिए जावक क्लियरिंग शेड्यूल जनरेट करें.",
+        "successTitle": "जावक शेड्यूल सफलतापूर्वक जनरेट हुआ"
+      },
+      "importDailyOutwardScheduleDetail": {
+        "cardTitle": "दैनिक जावक शेड्यूल विवरण आयात करें",
+        "cardDescription": "दिन के लिए प्राप्त जावक शेड्यूल विवरण फ़ाइल आयात करें.",
+        "modalTitle": "दैनिक जावक शेड्यूल विवरण आयात करें",
+        "modalSubtitle": "चयनित शेड्यूल के लिए जावक शेड्यूल विवरण फ़ाइल आयात करें.",
+        "successTitle": "दैनिक जावक शेड्यूल विवरण सफलतापूर्वक आयात हुआ"
+      },
+      "inwardClearingEntry": {
+        "cardTitle": "आवक क्लियरिंग प्रविष्टि",
+        "cardDescription": "आवक क्लियरिंग में प्राप्त इंस्ट्रूमेंट-वार प्रविष्टियाँ दर्ज करें.",
+        "modalTitle": "आवक क्लियरिंग प्रविष्टि",
+        "modalSubtitle": "आवक क्लियरिंग के लिए शाखा, शेड्यूल व इंस्ट्रूमेंट विवरण दर्ज करें.",
+        "successTitle": "आवक क्लियरिंग प्रविष्टि सफलतापूर्वक सहेजी गई"
+      },
+      "owClearingBounceMark": {
+        "cardTitle": "जावक क्लियरिंग बाउंस चिन्ह",
+        "cardDescription": "जावक क्लियरिंग इंस्ट्रूमेंट को बाउंस/वापस के रूप में चिन्हित करें.",
+        "modalTitle": "जावक क्लियरिंग बाउंस चिन्ह",
+        "modalSubtitle": "बाउंस हुए इंस्ट्रूमेंट के लिए अस्वीकृति व शुल्क दर्ज करें.",
+        "successTitle": "जावक क्लियरिंग बाउंस सफलतापूर्वक चिन्हित हुआ"
+      },
+      "outwardClearingEntry": {
+        "cardTitle": "जावक क्लियरिंग प्रविष्टि",
+        "cardDescription": "जावक क्लियरिंग में भेजी गई इंस्ट्रूमेंट-वार प्रविष्टियाँ दर्ज करें.",
+        "modalTitle": "जावक क्लियरिंग प्रविष्टि",
+        "modalSubtitle": "जावक क्लियरिंग के लिए शाखा, शेड्यूल व इंस्ट्रूमेंट विवरण दर्ज करें.",
+        "successTitle": "जावक क्लियरिंग प्रविष्टि सफलतापूर्वक सहेजी गई"
       }
     },
     "sections": {
@@ -640,10 +713,17 @@
       "scheduleNumber": "शेड्यूल नंबर",
       "numberOfInstruments": "इंस्ट्रूमेंट की संख्या",
       "totalAmount": "कुल राशि",
-      "bounceNoOfInstruments": "बाउंस इंस्ट्रूमेंट की संख्या"
+      "bounceNoOfInstruments": "बाउंस इंस्ट्रूमेंट की संख्या",
+      "totalInstruments": "कुल इंस्ट्रूमेंट",
+      "closingRemark": "समापन टिप्पणी",
+      "fileName": "फ़ाइल नाम"
     },
     "actions": {
-      "postToAccount": "खाते में पोस्ट करें"
+      "postToAccount": "खाते में पोस्ट करें",
+      "tally": "तालमेल",
+      "close": "समाप्त करें",
+      "generate": "जनरेट करें",
+      "import": "आयात करें"
     }
   },
   "setProductStatus": {
@@ -798,6 +878,18 @@
     },
     "placeholders": {
       "name": "name"
+    }
+  },
+  "clerkSms": {
+    "title": "एसएमएस",
+    "table": {
+      "srNo": "क्र.सं.",
+      "mobileNumber": "मोबाइल नंबर",
+      "customerName": "ग्राहक का नाम",
+      "message": "संदेश",
+      "type": "प्रकार",
+      "status": "स्थिति",
+      "sentDate": "भेजने की तारीख"
     }
   }
 }

@@ -1,26 +1,42 @@
 // app/branch-master/page.tsx or components/BranchMaster/BranchMasterPage.tsx
 import { useCallback, useMemo, useState } from "react";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
-import BranchMasterTable, { 
-  DEFAULT_BRANCH_ROWS, 
-  rowToBranchFormData, 
-  type BranchRow 
+import BranchMasterTable, {
+  DEFAULT_BRANCH_ROWS,
+  rowToBranchFormData,
+  type BranchRow,
 } from "@/components/BranchMaster/BranchMasterTable";
-import AddBranchModal, { 
-  emptyBranchFormData, 
-  type BranchFormData 
+import AddBranchModal, {
+  emptyBranchFormData,
+  type BranchFormData,
 } from "@/components/BranchMaster/AddBranchModal";
-import FilterModal, { 
-  defaultBranchFilterValues, 
-  type BranchFilters 
+import FilterModal, {
+  defaultBranchFilterValues,
+  type BranchFilters,
 } from "@/components/BranchMaster/FilterModal";
-import BranchChequeBookLotModal, { 
-  rowToChequeBookLotFormData, 
-  type ChequeBookLotFormData 
+import BranchChequeBookLotModal, {
+  rowToChequeBookLotFormData,
+  type ChequeBookLotFormData,
 } from "@/components/BranchMaster/BranchChequeBookLotModal";
-import { BranchNonCBSModal, rowToBranchNonCBSFormData, emptyBranchNonCBSFormData, type BranchNonCBSFormData } from "@/components/BranchMaster/BranchNonCBS";
-import { BranchTdReceiptLotModal, rowToTdReceiptLotFormData, emptyTdReceiptLotFormData, type TdReceiptLotFormData } from "@/components/BranchMaster/BranchTDReciptLot";
+import {
+  BranchNonCBSModal,
+  rowToBranchNonCBSFormData,
+  emptyBranchNonCBSFormData,
+  type BranchNonCBSFormData,
+} from "@/components/BranchMaster/BranchNonCBS";
+import {
+  BranchTdReceiptLotModal,
+  rowToTdReceiptLotFormData,
+  emptyTdReceiptLotFormData,
+  type TdReceiptLotFormData,
+} from "@/components/BranchMaster/BranchTDReciptLot";
 import { useBilingual } from "@/i18n/useBilingual";
+import AddParameterModal from "@/components/BranchMaster/Modals/AddNewParameter";
+import ParameterModal, {
+  ParameterFormData,
+  ParameterModalMode,
+} from "@/components/BranchMaster/Modals/ViewAndEditParameter";
+import ViewEditParameterModal from "@/components/BranchMaster/Modals/ViewAndEditParameter";
 
 export default function BranchMasterPage() {
   const { t, en } = useBilingual();
@@ -42,11 +58,19 @@ export default function BranchMasterPage() {
   const [showAdd, setShowAdd] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [viewRow, setViewRow] = useState<BranchRow | null>(null);
-  const [chequeBookLotRow, setChequeBookLotRow] = useState<BranchRow | null>(null);
-  const [branchNonCbsRow, setBranchNonCbsRow] = useState<BranchRow | null>(null);
-  const [tdReceiptLotRow, setTdReceiptLotRow] = useState<BranchRow | null>(null);
+  const [chequeBookLotRow, setChequeBookLotRow] = useState<BranchRow | null>(
+    null,
+  );
+  const [branchNonCbsRow, setBranchNonCbsRow] = useState<BranchRow | null>(
+    null,
+  );
+  const [tdReceiptLotRow, setTdReceiptLotRow] = useState<BranchRow | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState<BranchFilters>(defaultBranchFilterValues);
+  const [filters, setFilters] = useState<BranchFilters>(
+    defaultBranchFilterValues,
+  );
 
   const filteredRows = useMemo(() => {
     let result = rows;
@@ -54,21 +78,31 @@ export default function BranchMasterPage() {
     if (activeEntries.length > 0) {
       result = result.filter((row) =>
         activeEntries.every(([key, value]) =>
-          String(row[key as keyof BranchRow] ?? "").toLowerCase().includes(value.toLowerCase())
-        )
+          String(row[key as keyof BranchRow] ?? "")
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        ),
       );
     }
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      result = result.filter((row) => Object.values(row).some((v) => String(v).toLowerCase().includes(q)));
+      result = result.filter((row) =>
+        Object.values(row).some((v) => String(v).toLowerCase().includes(q)),
+      );
     }
     return result;
   }, [rows, filters, searchQuery]);
 
-  const activeFilterCount = useMemo(() => Object.values(filters).filter((v) => v?.trim()).length, [filters]);
+  const activeFilterCount = useMemo(
+    () => Object.values(filters).filter((v) => v?.trim()).length,
+    [filters],
+  );
 
   const filterSummary = useMemo(() => {
-    const entries = Object.entries(filters).filter(([, v]) => v?.trim()) as [keyof BranchFilters, string][];
+    const entries = Object.entries(filters).filter(([, v]) => v?.trim()) as [
+      keyof BranchFilters,
+      string,
+    ][];
     if (entries.length === 0) return "";
     const [firstKey, firstVal] = entries[0];
     const extra = entries.length > 1 ? ` +${entries.length - 1} more` : "";
@@ -84,7 +118,9 @@ export default function BranchMasterPage() {
         ifscCode: "",
         branchName: formData.branchName,
         shortName: formData.shortName,
-        address: [formData.address1, formData.address2, formData.address3].filter(Boolean).join(", "),
+        address: [formData.address1, formData.address2, formData.address3]
+          .filter(Boolean)
+          .join(", "),
         cityCode: formData.cityCode,
         emailId: formData.emailId,
         phoneNo: formData.phoneNumber1,
@@ -109,6 +145,76 @@ export default function BranchMasterPage() {
     setTdReceiptLotRow(null);
   }, []);
 
+  // Sample data for View/Edit modes
+  const sampleParameterData: ParameterFormData = {
+    branchCode: "0100",
+    branchName: "Ilkal Branch",
+    shortName: "Ilkal",
+    address1: "Gongada Shetti Building",
+    address2: "Gongada Shetti Building",
+    address3: "Gongada Shetti Building",
+    zipCode: "400001",
+    cityCode: "Ilkal",
+    state: "Maharashtra",
+    country: "India",
+    emailId: "ilkal@gmail.com",
+    phoneNumber1: "9876543210",
+    phoneNumber2: "9876543210",
+    phoneNumber3: "9876543210",
+    isImplemented: "Yes",
+  };
+
+  // Sample data with different values
+  const sampleParameterData2: ParameterFormData = {
+    branchCode: "0200",
+    branchName: "Mumbai Main Branch",
+    shortName: "MMB",
+    address1: "123 Marine Drive",
+    address2: "Near Gateway of India",
+    address3: "Colaba",
+    zipCode: "400005",
+    cityCode: "MUM",
+    state: "Maharashtra",
+    country: "India",
+    emailId: "mumbai@branch.com",
+    phoneNumber1: "9876543211",
+    phoneNumber2: "9876543212",
+    phoneNumber3: "9876543213",
+    isImplemented: "No",
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<ParameterModalMode>("view");
+  const [currentData, setCurrentData] =
+    useState<ParameterFormData>(sampleParameterData);
+
+  const handleOpenView = (mode:ParameterModalMode) => {
+    setModalMode(mode);
+    setCurrentData(sampleParameterData);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditViewParameter = (mode:ParameterModalMode) => {
+    setModalMode(mode);
+    setCurrentData(sampleParameterData);
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSave = (data: ParameterFormData) => {
+    console.log("Saved data:", data);
+    setCurrentData(data);
+    // Here you would typically make an API call to save the data
+  };
+
+  const handleValidate = (data: ParameterFormData) => {
+    console.log("Validated data:", data);
+    // Here you would typically perform additional validation
+  };
+
   return (
     <div className="min-h-screen bg-[#E7EAEF] dark:bg-slate-950">
       <GlobalNav
@@ -128,58 +234,71 @@ export default function BranchMasterPage() {
         activeFilterCount={activeFilterCount}
         filterSummary={filterSummary}
       />
-
       <div className="p-4">
         <BranchMasterTable
           rows={filteredRows}
-          onView={setViewRow}
+          handleOpenEditViewParameter={handleOpenEditViewParameter}
           onBranchNonCbsParameter={setBranchNonCbsRow}
           onBranchChequeBookLot={setChequeBookLotRow}
           onBranchTdReceiptLot={setTdReceiptLotRow}
         />
       </div>
-
       {/* Add Branch Modal */}
-      <AddBranchModal
+      <AddParameterModal
         open={showAdd}
-        mode="add"
         initialData={emptyBranchFormData}
         onClose={() => setShowAdd(false)}
-        onSave={handleAddSave}
       />
-
+      <ViewEditParameterModal
+        open={isModalOpen}
+        mode={modalMode}
+        initialData={currentData}
+        onClose={handleClose}
+        onSave={handleSave}
+        onValidate={handleValidate}
+      />
       {/* View Branch Modal */}
       <AddBranchModal
         open={!!viewRow}
         mode="view"
-        initialData={viewRow ? rowToBranchFormData(viewRow) : emptyBranchFormData}
+        initialData={
+          viewRow ? rowToBranchFormData(viewRow) : emptyBranchFormData
+        }
         onClose={() => setViewRow(null)}
       />
-
       {/* Branch Cheque Book Lot Modal */}
       <BranchChequeBookLotModal
         open={!!chequeBookLotRow}
-        initialData={chequeBookLotRow ? rowToChequeBookLotFormData(chequeBookLotRow) : undefined}
+        initialData={
+          chequeBookLotRow
+            ? rowToChequeBookLotFormData(chequeBookLotRow)
+            : undefined
+        }
         onClose={() => setChequeBookLotRow(null)}
         onSave={handleChequeBookLotSave}
       />
-
       {/* Branch Non-CBS Modal */}
       <BranchNonCBSModal
         open={!!branchNonCbsRow}
-        initialData={branchNonCbsRow ? rowToBranchNonCBSFormData(branchNonCbsRow) : emptyBranchNonCBSFormData}
+        initialData={
+          branchNonCbsRow
+            ? rowToBranchNonCBSFormData(branchNonCbsRow)
+            : emptyBranchNonCBSFormData
+        }
         onClose={() => setBranchNonCbsRow(null)}
         onSave={handleBranchNonCbsSave}
       />
-
       {/* Branch TD Receipt Lot Modal */}
       <BranchTdReceiptLotModal
         open={!!tdReceiptLotRow}
-        initialData={tdReceiptLotRow ? rowToTdReceiptLotFormData(tdReceiptLotRow) : emptyTdReceiptLotFormData}
+        initialData={
+          tdReceiptLotRow
+            ? rowToTdReceiptLotFormData(tdReceiptLotRow)
+            : emptyTdReceiptLotFormData
+        }
         onClose={() => setTdReceiptLotRow(null)}
         onSave={handleTdReceiptLotSave}
       />
-
       {/* Filter Modal */}
       {showFilter && (
         <div

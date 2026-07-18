@@ -327,10 +327,10 @@ function TDSReportAllModal({
         footerButtons={getFooterButtons()}
         footerAlign="right"
         showDefaultClose={false}
-        maxWidth="full"
+        maxWidth="7xl"
       >
         <SectionWrapper>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {/* Account Type */}
             <PickerInput
               labelEn="Account Type"

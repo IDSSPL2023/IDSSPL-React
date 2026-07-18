@@ -21,7 +21,7 @@ interface BilingualLabelProps {
 
 const BilingualLabel = ({ en, mr, required }: BilingualLabelProps) => (
   <label
-    className="mb-1.5 block truncate whitespace-nowrap text-sm font-medium text-[#1F2858]"
+    className="mb-1.5 block text-[1rem] font-medium text-black dark:text-slate-100"
     title={mr ? `${en} / ${mr}` : en}
   >
     {en}
@@ -119,7 +119,7 @@ function SelectInput({
             disabled={!editable}
             onClick={() => setIsOpen((prev) => !prev)}
             className={`
-              flex h-12 w-full items-center rounded-lg border px-3 text-left transition-all
+              flex h-12 w-full items-center rounded-xl border px-3 text-left transition-all
               ${
                 isOpen
                   ? "border-primary ring-2 ring-primary/10"
@@ -130,7 +130,7 @@ function SelectInput({
           >
             {Icon && (
               <Icon
-                className="h-4 w-4 shrink-0 text-slate-400"
+                className="w-5 text-[#6B7280] dark:text-slate-400"
                 strokeWidth={1.8}
               />
             )}

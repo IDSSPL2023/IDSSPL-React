@@ -18,6 +18,8 @@ export interface FormModalProps {
   onSave?: () => void;
   isLastTab?: boolean;
   headerIcon?: ReactNode;
+  /** Optional content rendered in the header row, to the left of the close button. */
+  headerActions?: ReactNode;
   tabActions?: ReactNode;
   maxWidth?: string;
   hideFooter?: boolean;
@@ -42,8 +44,9 @@ const FormModal = ({
   onSave,
   isLastTab = false,
   headerIcon,
+  headerActions,
   tabActions,
-  maxWidth = "max-w-6xl",
+  maxWidth = "max-w-7xl",
   hideFooter = false,
   variant = "modal",
   customFooter,
@@ -56,7 +59,7 @@ const FormModal = ({
       className={
         isPage
           ? "w-full rounded-2xl bg-white p-6 shadow-2xl"
-          : `max-h-[92vh] w-full ${maxWidth} overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl`
+          : `max-h-[96vh] w-full ${maxWidth} overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl`
       }
     >
         {/* Header */}
@@ -80,15 +83,18 @@ const FormModal = ({
               )}
             </div>
           </div>
-          {!isPage && (
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100"
-            >
-              <X size={18} strokeWidth={2.5} />
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {headerActions}
+            {!isPage && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100"
+              >
+                <X size={18} strokeWidth={2.5} />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Tabs */}

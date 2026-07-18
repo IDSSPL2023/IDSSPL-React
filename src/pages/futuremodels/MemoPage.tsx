@@ -1,125 +1,201 @@
-import React, { useState } from 'react'
-import { X, CreditCard, User, FileText, Upload, Settings } from 'lucide-react'
-import { useBilingual } from '@/i18n/useBilingual'
+import { useState } from "react";
+import { CreditCard, User, FileText, Settings, Check, X } from "lucide-react";
+import { toast } from "react-toastify";
 
-const MemoPage = () => {
-  const { t, en, tRaw } = useBilingual()
-  const [memo, setMemo] = useState('')
-  const maxChars = 200
+import FormModal from "@/components/shared/FormModal";
+import SuccessModal from "@/components/shared/SuccessModal";
+import {
+  FieldShell,
+  TextInput,
+  SectionCard,
+} from "@/components/shared/FormFields";
 
-  const handleMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.length <= maxChars) {
-      setMemo(e.target.value)
+export interface MemoModalProps {
+  onClose: () => void;
+  onSubmit?: (memo: string) => void;
+  accountCode?: string;
+  accountName?: string;
+}
+
+const MAX_CHARACTERS = 200;
+
+const MemoModal = ({
+  onClose,
+  onSubmit,
+  accountCode = "7208076812",
+  accountName = "Akshay Om More",
+}: MemoModalProps) => {
+  const [memo, setMemo] = useState("");
+  const [validated, setValidated] = useState(false);
+  const [error, setError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleMemoChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.target.value.length <= MAX_CHARACTERS) {
+      setMemo(e.target.value);
+
+      if (error) setError(false);
+      setValidated(false);
     }
+  };
+
+  const handleValidate = () => {
+    if (!memo.trim()) {
+      setError(true);
+      setValidated(false);
+      toast.error("Please enter Memo Details.");
+      return;
+    }
+
+    setError(false);
+    setValidated(true);
+    toast.success("Memo validated successfully.");
+  };
+
+  const handleSave = () => {
+    if (!validated) return;
+    setShowSuccess(true);
+  };
+
+  const handleSuccessDone = () => {
+    onSubmit?.(memo);
+    setShowSuccess(false);
+    onClose();
+  };
+
+  if (showSuccess) {
+    return (
+      <SuccessModal
+        title="Memo Added Successfully"
+        subtitle="Please Authorize"
+        onClose={() => setShowSuccess(false)}
+        onDone={handleSuccessDone}
+      />
+    );
   }
 
   return (
-    <div className="relative mt-10  w-full max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-lg overflow-hidden">
-      {/* Decorative background blobs */}
-      <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full" />
-      <div className="absolute -bottom-16 -left-16 w-52 h-52 bg-primary/10 rounded-full" />
+    <FormModal
+      onClose={onClose}
+      titleEn="Memo"
+      titleHi="मेमो"
+      headerIcon={<Settings size={24} className="text-primary" />}
+      tabs={[]}
+      activeTab=""
+      onTabChange={() => {}}
+      hideFooter
+    >
+      <SectionCard
+        titleEn="Account Details"
+        titleHi="खात्याचा तपशील"
+        icon={<User size={16} />}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-      <div className="relative p-8">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-full border-2 border-primary flex items-center justify-center bg-gradient-to-br from-primary-100 to-white">
-              <Settings className="w-10 h-10 text-primary"  />
-            </div>
-            <h2 className="text-[24px] font-bold text-black dark:text-slate-100">
-              {en('memo.title')}
-              {t('memo.title') ? <span className="text-gray-500 dark:text-slate-400 font-semibold">/ {t('memo.title')}</span> : null}
-            </h2>
-          </div>
-          <button
-            type="button"
-            className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+          <FieldShell
+            label="Account Code"
+            labelHi="खाते क्रमांक"
+            required
           >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+            <TextInput
+              icon={<CreditCard size={16} />}
+              value={accountCode}
+              readOnly
+              onChange={() => {}}
+            />
+          </FieldShell>
 
-        {/* Account Code + Name */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label className="block text-[16px] font-medium text-black dark:text-slate-100 mb-2">
-              {en('memo.accountCode')}
-              {t('memo.accountCode') ? <span className="text-gray-500 dark:text-slate-400"> / {t('memo.accountCode')}</span> : null}
-              <span className="text-red-500 ml-0.5">*</span>
-            </label>
-            <div className="flex items-center gap-3 rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 dark:border-slate-700 dark:bg-slate-800">
-              <CreditCard className="w-5 h-5 text-gray-500 dark:text-slate-400 shrink-0" />
-              <input
-                type="text"
-                readOnly
-                defaultValue="7208076812"
-                className="w-full bg-transparent text-gray-600 dark:text-slate-400 outline-none "
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[16px] font-medium text-black dark:text-slate-100 mb-2">
-              {en('memo.name')}
-              {t('memo.name') ? <span className="text-gray-500 dark:text-slate-400"> / {t('memo.name')}</span> : null}
-              <span className="text-red-500 ml-0.5">*</span>
-            </label>
-            <div className="flex items-center gap-3 rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 dark:border-slate-700 dark:bg-slate-800">
-              <User className="w-5 h-5 text-gray-500 dark:text-slate-400 shrink-0" />
-              <input
-                type="text"
-                readOnly
-                defaultValue="Akshay Om More"
-                className="w-full bg-transparent text-gray-600 dark:text-slate-400 outline-none "
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Memo Details */}
-        <div className="mb-2">
-          <label className="block text-[16px] font-medium text-black dark:text-slate-100 mb-2">
-            {en('memo.memoDetails')}
-            {t('memo.memoDetails') ? <span className="text-gray-500 dark:text-slate-400"> / {t('memo.memoDetails')}</span> : null}
-            <span className="text-red-500 ml-0.5">*</span>
-          </label>
-          <div className="rounded-xl border-2 border-primary px-4 py-3">
-            <div className="flex items-start gap-3">
-              <FileText className="w-5 h-5 text-gray-500 dark:text-slate-400 shrink-0 mt-0.5" />
-              <textarea
-                value={memo}
-                onChange={handleMemoChange}
-                placeholder={tRaw('memo.detailsPlaceholder')}
-                rows={10}
-                className="w-full resize-none bg-transparent outline-none text-gray-700 placeholder-gray-400 dark:text-slate-300 dark:placeholder-slate-500"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Character count */}
-        <div className="text-right text-[16px] text-gray-700 dark:text-slate-400 mb-6">
-          {en('memo.charactersOnly', { count: maxChars })}<span className="text-red-500">*</span>
-        </div>
-
-        {/* Actions */}
-        <div className="flex justify-center gap-4">
-          <button
-            type="button"
-            className="flex items-center gap-2 px-8 py-3 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-colors dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+          <FieldShell
+            label="Name"
+            labelHi="नाव"
+            required
           >
-            {en('common.cancel')} <X className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-[#0a58ac] transition-colors"
-          >
-            {en('common.submit')} <Upload className="w-4 h-4" />
-          </button>
+            <TextInput
+              icon={<User size={16} />}
+              value={accountName}
+              readOnly
+              onChange={() => {}}
+            />
+          </FieldShell>
+
         </div>
+      </SectionCard>
+
+      <SectionCard
+        titleEn="Memo Details"
+        titleHi="मेमो तपशील"
+        icon={<FileText size={16} />}
+      >
+        <FieldShell
+          label="Memo Details"
+          labelHi="मेमो तपशील"
+          required
+          error={error}
+        >
+          <div
+            className={`rounded-lg border ${
+              error
+                ? "border-red-500"
+                : "border-slate-300 dark:border-slate-700"
+            }`}
+          >
+            <textarea
+              rows={8}
+              value={memo}
+              onChange={handleMemoChange}
+              placeholder="Enter Memo Details..."
+              className="w-full resize-none rounded-lg bg-transparent p-3 outline-none dark:text-white"
+            />
+          </div>
+        </FieldShell>
+
+        <div className="mt-2 flex justify-between text-sm text-slate-500">
+          <span>Maximum 200 characters</span>
+          <span>
+            {memo.length}/{MAX_CHARACTERS}
+          </span>
+        </div>
+      </SectionCard>
+
+      <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+
+        <button
+          type="button"
+          onClick={handleValidate}
+          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700"
+        >
+          Validate
+          <Check size={16} />
+        </button>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex items-center gap-2 rounded-lg border border-primary px-4 py-2.5 text-sm font-medium text-primary hover:bg-primary-50"
+        >
+          Cancel
+          <X size={16} />
+        </button>
+
+        <button
+          type="button"
+          disabled={!validated}
+          onClick={handleSave}
+          className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium ${
+            validated
+              ? "bg-primary text-white hover:bg-primary-700"
+              : "cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-800 dark:text-slate-500"
+          }`}
+        >
+          Submit
+          <Check size={16} />
+        </button>
+
       </div>
-    </div>
-  )
-}
+    </FormModal>
+  );
+};
 
-export default MemoPage;
+export default MemoModal;
