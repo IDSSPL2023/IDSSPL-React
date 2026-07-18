@@ -8,7 +8,7 @@ import AddTermLoanMaster from "@/components/futuremodels/AddTermLoanMaster";
 import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
 import ViewAccountModal, { type AccountDetails } from "@/components/AccountMaster/ViewAccount";
 import AccountFreezeModal, { type AccountFreezeSubmitPayload } from "@/components/AccountMaster/AccountFreezeModal";
-import AccountOperativeModal from "@/components/AccountMaster/AccountOperativeModal";
+// import AccountOperativeModal from "@/components/AccountMaster/AccountOperativeModal";
 import ChequeBookIssue from "@/components/AccountMaster/Cheque/cheque-issue";
 import AddSI from "@/components/StandingInstruction/AddSI";
 import MemoModal from "../../pages/futuremodels/MemoPage";

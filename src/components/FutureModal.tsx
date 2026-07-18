@@ -180,8 +180,8 @@ const FutureModalsPage = () => {
             )}
         </div>
     );
-    </div>
-  );
+    // </div>
+//   );
 };
 
 export default FutureModalsPage;
