@@ -223,7 +223,7 @@ const ModalWrapper = ({
       onClick={onClose}
     >
       <div
-        className={`border-t-4 border-primary flex max-h-[92vh] w-full ${maxWidthClasses[maxWidth]} flex-col rounded-2xl bg-white shadow-2xl dark:bg-slate-900 ${className}`}
+        className={`flex max-h-[92vh] w-full ${maxWidthClasses[maxWidth]} flex-col rounded-2xl bg-white shadow-2xl dark:bg-slate-900 ${className}`}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}

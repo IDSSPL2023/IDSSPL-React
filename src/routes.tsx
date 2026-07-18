@@ -25,6 +25,7 @@ import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
 import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
+import BranchActivityPage from "@/pages/branch-activity/BranchActivity";
 import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/account/AuthorizeAccountPage";
@@ -186,6 +187,7 @@ export const router = createBrowserRouter([
       { path: "/dd", element: <DDPage /> },
       { path: "/dd/maintenance", element: <DDMaintenancePage /> },
       { path: "/dd/printing", element: <DDPrintingPage /> },
+      { path: "/branch-activity", element: <BranchActivityPage /> },
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },

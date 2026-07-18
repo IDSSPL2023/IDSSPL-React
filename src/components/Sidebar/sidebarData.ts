@@ -666,9 +666,10 @@ export const menuItems: NavItemData[] = [
     icon: PlayCircle,
     children: [
       {
-        id: "branch-activity-day-begin",
+        id: "branch-activity",
         title: "Day Begin",
         icon: PlayCircle,
+        href:"/branch-activity",
       },
     ],
   },
