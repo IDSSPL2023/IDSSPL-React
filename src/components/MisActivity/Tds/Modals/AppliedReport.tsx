@@ -232,7 +232,7 @@ function TDSAppliedReportModal({
         footerButtons={getFooterButtons()}
         footerAlign="right"
         showDefaultClose={false}
-        maxWidth="5xl"
+        maxWidth="4xl"
       >
         <SectionWrapper>
           <div className="grid grid-cols-2 gap-4">
