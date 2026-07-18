@@ -26,14 +26,14 @@ import {
   Users,
 } from "lucide-react";
 import Image from "@/components/ui/Image";
-import FormModal from "../../shared/FormModal";
+import FormModal from "../../../shared/FormModal";
 import {
   FieldShell,
   RadioDayMonth,
   SectionCard,
   SelectField,
   TextInput,
-} from "../../shared/FormFields";
+} from "../../../shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import RejectReasonModal from "@/components/shared/RejectReasonModal";
 
