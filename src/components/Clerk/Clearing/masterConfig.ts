@@ -293,6 +293,117 @@ const postingMarkDetailsSection: ClearingSection = {
   ],
 };
 
+const tallySection: ClearingSection = {
+  titleKey: "clearing.sections.details.title",
+  subtitleKey: "clearing.sections.details.subtitle",
+  columns: 4,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "scrollNumber", labelKey: "clearing.fields.scrollNumber", type: "text" },
+    { key: "numberOfInstruments", labelKey: "clearing.fields.numberOfInstruments", type: "text" },
+    { key: "totalAmount", labelKey: "clearing.fields.totalAmount", type: "amount" },
+  ],
+};
+
+const closingSection: ClearingSection = {
+  titleKey: "clearing.sections.details.title",
+  subtitleKey: "clearing.sections.details.subtitle",
+  columns: 2,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "scrollNumber", labelKey: "clearing.fields.scrollNumber", type: "text" },
+    { key: "closingRemark", labelKey: "clearing.fields.closingRemark", type: "text" },
+  ],
+};
+
+const generateInwardScheduleSection: ClearingSection = {
+  titleKey: "clearing.sections.details.title",
+  subtitleKey: "clearing.sections.details.subtitle",
+  columns: 2,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "dailyInwardScheduleNo", labelKey: "clearing.fields.dailyInwardScheduleNo", type: "picker", picker: "schedule" },
+    { key: "scheduleDate", labelKey: "clearing.fields.scheduleDate", type: "date" },
+  ],
+};
+
+const generateOutwardScheduleSection: ClearingSection = {
+  titleKey: "clearing.sections.details.title",
+  subtitleKey: "clearing.sections.details.subtitle",
+  columns: 2,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "dailyOutwardScheduleNo", labelKey: "clearing.fields.dailyOutwardScheduleNo", type: "picker", picker: "schedule" },
+    { key: "scheduleDate", labelKey: "clearing.fields.scheduleDate", type: "date" },
+  ],
+};
+
+const importOutwardScheduleDetailSection: ClearingSection = {
+  titleKey: "clearing.sections.details.title",
+  subtitleKey: "clearing.sections.details.subtitle",
+  columns: 2,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "dailyOutwardScheduleNo", labelKey: "clearing.fields.dailyOutwardScheduleNo", type: "picker", picker: "schedule" },
+    { key: "scheduleDate", labelKey: "clearing.fields.scheduleDate", type: "date" },
+    { key: "fileName", labelKey: "clearing.fields.fileName", type: "text" },
+  ],
+};
+
+const inwardEntryScheduleSection: ClearingSection = {
+  titleKey: "clearing.sections.clearingDetails.title",
+  subtitleKey: "clearing.sections.clearingDetails.subtitle",
+  columns: 4,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "dailyInwardScheduleNo", labelKey: "clearing.fields.dailyInwardScheduleNo", type: "picker", picker: "schedule" },
+    { key: "scheduleDate", labelKey: "clearing.fields.scheduleDate", type: "date" },
+    { key: "scrollNumber", labelKey: "clearing.fields.scrollNumber", type: "text" },
+  ],
+};
+
+const outwardEntryScheduleSection: ClearingSection = {
+  titleKey: "clearing.sections.clearingDetails.title",
+  subtitleKey: "clearing.sections.clearingDetails.subtitle",
+  columns: 4,
+  fields: [
+    { key: "date", labelKey: "clearing.fields.date", type: "date" },
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "dailyOutwardScheduleNo", labelKey: "clearing.fields.dailyOutwardScheduleNo", type: "picker", picker: "schedule" },
+    { key: "scheduleDate", labelKey: "clearing.fields.scheduleDate", type: "date" },
+    { key: "scrollNumber", labelKey: "clearing.fields.scrollNumber", type: "text" },
+  ],
+};
+
+const bounceMarkSection: ClearingSection = {
+  titleKey: "clearing.sections.returnDetails.title",
+  subtitleKey: "clearing.sections.returnDetails.subtitle",
+  columns: 4,
+  fields: [
+    { key: "clearingTypeId", labelKey: "clearing.fields.clearingTypeId", type: "picker", picker: "clearingType" },
+    { key: "clearingTypeName", labelKey: "clearing.fields.clearingTypeName", type: "readonly" },
+    { key: "scrollNumber", labelKey: "clearing.fields.scrollNumber", type: "text" },
+    { key: "adviceNumber", labelKey: "clearing.fields.adviceNumber", type: "text" },
+    { key: "adviceDate", labelKey: "clearing.fields.adviceDate", type: "date" },
+    { key: "rejectionTypeId", labelKey: "clearing.fields.rejectionTypeId", type: "picker", picker: "rejectionType" },
+    { key: "rejectionDescription", labelKey: "clearing.fields.rejectionDescription", type: "readonly" },
+    { key: "chequeReturnCharges", labelKey: "clearing.fields.chequeReturnCharges", type: "amount" },
+  ],
+};
+
 export const CLEARING_MASTERS: ClearingMaster[] = [
   {
     key: "owClearingLateReturn",
@@ -332,6 +443,94 @@ export const CLEARING_MASTERS: ClearingMaster[] = [
     successTitleKey: "clearing.masters.owClearingPostingMark.successTitle",
     sections: [postingMarkDetailsSection],
     primaryActionLabelKey: "clearing.actions.postToAccount",
+  },
+  {
+    key: "clearingTallyWithClearingHouse",
+    icon: "ClipboardList",
+    cardTitleKey: "clearing.masters.clearingTallyWithClearingHouse.cardTitle",
+    cardDescriptionKey: "clearing.masters.clearingTallyWithClearingHouse.cardDescription",
+    modalTitleKey: "clearing.masters.clearingTallyWithClearingHouse.modalTitle",
+    modalSubtitleKey: "clearing.masters.clearingTallyWithClearingHouse.modalSubtitle",
+    successTitleKey: "clearing.masters.clearingTallyWithClearingHouse.successTitle",
+    sections: [tallySection],
+    primaryActionLabelKey: "clearing.actions.tally",
+  },
+  {
+    key: "firstSecondClearingClosing",
+    icon: "CalendarCheck",
+    cardTitleKey: "clearing.masters.firstSecondClearingClosing.cardTitle",
+    cardDescriptionKey: "clearing.masters.firstSecondClearingClosing.cardDescription",
+    modalTitleKey: "clearing.masters.firstSecondClearingClosing.modalTitle",
+    modalSubtitleKey: "clearing.masters.firstSecondClearingClosing.modalSubtitle",
+    successTitleKey: "clearing.masters.firstSecondClearingClosing.successTitle",
+    sections: [closingSection],
+    primaryActionLabelKey: "clearing.actions.close",
+  },
+  {
+    key: "generateInwardSchedule",
+    icon: "ArrowDownToLine",
+    cardTitleKey: "clearing.masters.generateInwardSchedule.cardTitle",
+    cardDescriptionKey: "clearing.masters.generateInwardSchedule.cardDescription",
+    modalTitleKey: "clearing.masters.generateInwardSchedule.modalTitle",
+    modalSubtitleKey: "clearing.masters.generateInwardSchedule.modalSubtitle",
+    successTitleKey: "clearing.masters.generateInwardSchedule.successTitle",
+    sections: [generateInwardScheduleSection],
+    primaryActionLabelKey: "clearing.actions.generate",
+  },
+  {
+    key: "generateOutwardSchedule",
+    icon: "ArrowUpFromLine",
+    cardTitleKey: "clearing.masters.generateOutwardSchedule.cardTitle",
+    cardDescriptionKey: "clearing.masters.generateOutwardSchedule.cardDescription",
+    modalTitleKey: "clearing.masters.generateOutwardSchedule.modalTitle",
+    modalSubtitleKey: "clearing.masters.generateOutwardSchedule.modalSubtitle",
+    successTitleKey: "clearing.masters.generateOutwardSchedule.successTitle",
+    sections: [generateOutwardScheduleSection],
+    primaryActionLabelKey: "clearing.actions.generate",
+  },
+  {
+    key: "importDailyOutwardScheduleDetail",
+    icon: "FileInput",
+    cardTitleKey: "clearing.masters.importDailyOutwardScheduleDetail.cardTitle",
+    cardDescriptionKey: "clearing.masters.importDailyOutwardScheduleDetail.cardDescription",
+    modalTitleKey: "clearing.masters.importDailyOutwardScheduleDetail.modalTitle",
+    modalSubtitleKey: "clearing.masters.importDailyOutwardScheduleDetail.modalSubtitle",
+    successTitleKey: "clearing.masters.importDailyOutwardScheduleDetail.successTitle",
+    sections: [importOutwardScheduleDetailSection],
+    primaryActionLabelKey: "clearing.actions.import",
+  },
+  {
+    key: "inwardClearingEntry",
+    icon: "Inbox",
+    cardTitleKey: "clearing.masters.inwardClearingEntry.cardTitle",
+    cardDescriptionKey: "clearing.masters.inwardClearingEntry.cardDescription",
+    modalTitleKey: "clearing.masters.inwardClearingEntry.modalTitle",
+    modalSubtitleKey: "clearing.masters.inwardClearingEntry.modalSubtitle",
+    successTitleKey: "clearing.masters.inwardClearingEntry.successTitle",
+    sections: [branchInformationSection, inwardEntryScheduleSection, instrumentDetailsSection],
+    primaryActionLabelKey: "common.save",
+  },
+  {
+    key: "owClearingBounceMark",
+    icon: "AlertTriangle",
+    cardTitleKey: "clearing.masters.owClearingBounceMark.cardTitle",
+    cardDescriptionKey: "clearing.masters.owClearingBounceMark.cardDescription",
+    modalTitleKey: "clearing.masters.owClearingBounceMark.modalTitle",
+    modalSubtitleKey: "clearing.masters.owClearingBounceMark.modalSubtitle",
+    successTitleKey: "clearing.masters.owClearingBounceMark.successTitle",
+    sections: [bounceMarkSection],
+    primaryActionLabelKey: "common.modify",
+  },
+  {
+    key: "outwardClearingEntry",
+    icon: "Send",
+    cardTitleKey: "clearing.masters.outwardClearingEntry.cardTitle",
+    cardDescriptionKey: "clearing.masters.outwardClearingEntry.cardDescription",
+    modalTitleKey: "clearing.masters.outwardClearingEntry.modalTitle",
+    modalSubtitleKey: "clearing.masters.outwardClearingEntry.modalSubtitle",
+    successTitleKey: "clearing.masters.outwardClearingEntry.successTitle",
+    sections: [branchInformationSection, outwardEntryScheduleSection, instrumentDetailsSection],
+    primaryActionLabelKey: "common.save",
   },
 ];
 

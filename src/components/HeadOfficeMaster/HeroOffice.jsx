@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Wallet, UserCircle, ShieldCheck, GitBranch, SlidersHorizontal, CreditCard,
   ShieldAlert, Keyboard, Package, Share2, FileText, Coins, IndianRupee, Users,

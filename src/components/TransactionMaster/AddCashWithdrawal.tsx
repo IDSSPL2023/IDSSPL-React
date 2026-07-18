@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
 import {
@@ -11,6 +11,8 @@ import {
   Check,
   ChevronsDown,
   X,
+  Landmark,
+  IdCard,
 } from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
 import {
@@ -108,7 +110,7 @@ export interface CashWithdrawalFormData {
   limitAmount: string;
   drawingPower: string;
   checkBookStatus: string;
-
+  lastTransactionDate: string;
   // Section 2 — Transaction Identification
   originalResponding: "Original" | "Responding";
   outlistSeries: string;
@@ -118,18 +120,18 @@ export interface CashWithdrawalFormData {
   amount: string;
   amountInWords: string;
   particular: string;
-  tokenNumber: string;
   chequeType: string;
   chequeSeries: string;
   chequeNumber: string;
   chequeDate: string;
+  descriptionGl: string;
+  adviceNumber: string;
+  adviceDate: string;
+  chequeStatus: string;
 
   // Section 3 — GL / Accounting Information
   glOutlistNo: string;
   glOutlistDocNo: string;
-  descriptionGl: string;
-  adviceNumber: string;
-  adviceDate: string;
   accountTypeGl: string;
   cashLimit: string;
   tdsOnLimit: string;
@@ -139,6 +141,7 @@ export interface CashWithdrawalFormData {
   glAccountName: string;
   transactionViewFromDate: string;
   toDate: string;
+
 }
 
 /** Reusable dummy data — read-only fields are pre-filled (system data), the
@@ -162,6 +165,7 @@ export const DEFAULT_CASH_WITHDRAWAL_DATA: CashWithdrawalFormData = {
   limitAmount: "500000",
   drawingPower: "500000",
   checkBookStatus: "Issued",
+  lastTransactionDate: "2026-05-12",
 
   originalResponding: "Original",
   outlistSeries: "Outlist",
@@ -171,11 +175,11 @@ export const DEFAULT_CASH_WITHDRAWAL_DATA: CashWithdrawalFormData = {
   amount: "",
   amountInWords: "Two Lakh Fifty Thousand Only",
   particular: "Self",
-  tokenNumber: "101",
   chequeType: "CHEQUE",
   chequeSeries: "CHEQUE",
   chequeNumber: "CHEQUE",
   chequeDate: "2026-01-12",
+  chequeStatus: "",
 
   glOutlistNo: "12",
   glOutlistDocNo: "11",
@@ -211,13 +215,13 @@ const TEXT_FIELD_KEYS: (keyof CashWithdrawalFormData)[] = [
   "limitAmount",
   "drawingPower",
   "checkBookStatus",
+  "lastTransactionDate",
   "outlistSeries",
   "glOutlistDescription",
   "glOutlistDocumentNumber",
   "amount",
   "amountInWords",
   "particular",
-  "tokenNumber",
   "chequeType",
   "chequeSeries",
   "chequeNumber",
@@ -311,12 +315,26 @@ const RadioTwoOption = ({
 export interface AddCashWithdrawalProps {
   onClose: () => void;
   onSave?: (data: CashWithdrawalFormData) => void;
+  titleEn?: string;
+  titleHi?: string;
+  subtitleEn?: string;
+  subtitleHi?: string;
+  headerIcon?: ReactNode;
   /** "modal" (default) renders as a centered overlay dialog. "page" renders as a
    * plain inline card with no backdrop, for routes that host the form directly. */
   variant?: "modal" | "page";
 }
 
-const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdrawalProps) => {
+const AddCashWithdrawal = ({
+  onClose,
+  onSave,
+  titleEn = "Cash Withdrawal",
+  titleHi = "कॅश काढणे",
+  subtitleEn = "All Information's are related to Interest Payment Mark.",
+  subtitleHi = "सर्व माहिती व्याज भरण्याच्या मार्कशी संबंधित आहे.",
+  headerIcon = <Image src="/Cash Withdrawal form icon.png" alt="Cash Withdrawal" width={50} height={50} />,
+  variant = "modal",
+}: AddCashWithdrawalProps) => {
   const [form, setForm] = useState<CashWithdrawalFormData>(DEFAULT_CASH_WITHDRAWAL_DATA);
   const [isValidated, setIsValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof CashWithdrawalFormData, boolean>>>({});
@@ -324,11 +342,7 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
   const [isSaving, setIsSaving] = useState(false);
   const [activePicker, setActivePicker] = useState<PickerField | null>(null);
 
-  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
-
-  const handlePlaceholderAction = (label: string) => {
-    toast.info(`${label} will be implemented.`);
-  };
+  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3";
 
   const markDirty = (field: keyof CashWithdrawalFormData) => {
     setIsValidated(false);
@@ -399,65 +413,35 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
   return (
     <FormModal
       onClose={onClose}
-      titleEn="Cash Withdrawal"
-      titleHi="कॅश काढणे"
-      subtitleEn="All Information's are related to Interest Payment Mark."
-      subtitleHi="सर्व माहिती व्याज भरण्याच्या मार्कशी संबंधित आहे."
-      headerIcon={<Image src="/Cash Withdrawal form icon.png" alt="Cash Withdrawal" width={50} height={50} />}
+      titleEn={titleEn}
+      titleHi={titleHi}
+      subtitleEn={subtitleEn}
+      subtitleHi={subtitleHi}
+      headerIcon={headerIcon}
       tabs={[]}
       activeTab=""
-      onTabChange={() => {}}
+      onTabChange={() => { }}
       hideFooter
       variant={variant}
     >
       <div className="relative">
-        <div className="absolute right-6 top-6 z-10 flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => handlePlaceholderAction("Customer Display")}
-            className="flex items-center gap-1.5 rounded-lg border border-transparent bg-primary px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          >
-            Customer Display
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePlaceholderAction("Display Joint Holder")}
-            className="flex items-center gap-1.5 rounded-lg border border-transparent bg-primary px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          >
-            Display Joint Holder
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePlaceholderAction("Mini Statement")}
-            className="flex items-center gap-1.5 rounded-lg border border-transparent bg-primary px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          >
-            Mini Statement
-          </button>
-        </div>
-
         <SectionCard
           titleEn="Account Details"
           titleHi="खाते तपशील"
-          subtitleEn="Manage customer's personal and identity information."
-          subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
+          subtitleEn="Search and verify the account before processing the cash deposit."
+          subtitleHi="रोख रक्कम जमा करण्यापूर्वी खात्याची माहिती तपासा."
           icon={<SectionIcon />}
         >
           <div className={`${grid4} mt-2`}>
-            <RadioYesNo
-              label="Is Ho Transaction"
-              labelHi="अतिरिक्त व्याज गणना"
-              value={form.isHoTransaction}
-              onChange={(v) => updateBoolField("isHoTransaction", v)}
-            />
 
-            <FieldShell label="Account Type" labelHi="आकाउंट प्रकार" required error={errors.accountType}>
+
+            <FieldShell label="Account Type" labelHi="खात्याचा प्रकार" required error={errors.accountType}>
               <div className="flex items-center gap-2">
                 <div className="flex-1">
                   <TextInput
                     icon={<CreditCard size={16} />}
                     value={form.accountType}
-                    onChange={() => {}}
-                    readOnly
+                    onChange={(v) => updateField("accountType", v)}
                     placeholder="Enter Account Type"
                     error={errors.accountType}
                   />
@@ -465,26 +449,28 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
                 <LookupTrigger onClick={() => setActivePicker("accountType")} />
               </div>
             </FieldShell>
-
-            <FieldShell label="Description" labelHi="वर्णन" required error={errors.description}>
+            <FieldShell
+              label="Account Description"
+              labelHi="खाते वर्णन"
+              required
+              error={errors.description}
+            >
               <TextInput
-                icon={<User size={16} />}
+                icon={<FileText size={16} />}
                 value={form.description}
-                onChange={() => {}}
-                readOnly
-                placeholder="Description"
+                onChange={(v) => updateField("description", v)}
+                placeholder="Enter Account Description"
                 error={errors.description}
               />
             </FieldShell>
 
-            <FieldShell label="Account Code" labelHi="आकाउंट कोड" required error={errors.accountCode}>
+            <FieldShell label="Account Code" labelHi="खाते कोड" required error={errors.accountCode}>
               <div className="flex items-center gap-2">
                 <div className="flex-1">
                   <TextInput
                     icon={<CreditCard size={16} />}
                     value={form.accountCode}
-                    onChange={() => {}}
-                    readOnly
+                    onChange={(v) => updateField("accountCode", v)}
                     placeholder="Enter Account Code"
                     error={errors.accountCode}
                   />
@@ -494,122 +480,51 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
             </FieldShell>
 
             <FieldShell label="Account Name" labelHi="खात्याचे नाव" required error={errors.accountName}>
-              <TextInput icon={<User size={16} />} value={form.accountName} onChange={() => {}} readOnly error={errors.accountName} />
+              <TextInput icon={<User size={16} />} value={form.accountName} onChange={() => { }} readOnly error={errors.accountName} />
             </FieldShell>
 
-            <FieldShell label="Account Review Date" labelHi="" error={errors.accountReviewDate}>
-              <DateInput value={form.accountReviewDate} onChange={() => {}} readOnly error={errors.accountReviewDate} />
+            <FieldShell label="GL Account Code" labelHi="जीएल खाते कोड" required error={errors.glAccountCode}>
+              <TextInput icon={<Landmark size={16} />} value={form.glAccountCode} onChange={() => { }} readOnly error={errors.glAccountCode} />
             </FieldShell>
 
-            <FieldShell label="Mobile Number" labelHi="" required error={errors.mobileNumber}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.mobileNumber}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Mobile Number"
-                error={errors.mobileNumber}
-              />
+            <FieldShell label="GL Account Name" labelHi="जीएल खात्याचे नाव" required error={errors.glAccountName}>
+              <TextInput icon={<User size={16} />} value={form.glAccountName} onChange={() => { }} readOnly error={errors.glAccountName} />
             </FieldShell>
 
-            <FieldShell label="Aadhar number" labelHi="" required error={errors.aadharNumber}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.aadharNumber}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Aadhar Number"
-                error={errors.aadharNumber}
-              />
+            <FieldShell label="Last Transaction Date" labelHi="शेवटची व्यवहार तारीख" required error={errors.lastTransactionDate}>
+              <DateInput value={form.lastTransactionDate} onChange={() => { }} readOnly error={errors.lastTransactionDate} />
             </FieldShell>
 
-            <FieldShell label="PAN Code" labelHi="" required error={errors.panCode}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.panCode}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter PAN Code"
-                error={errors.panCode}
-              />
+            <FieldShell label="Account Review Date" labelHi="खाते पुनरावलोकन तारीख" required error={errors.accountReviewDate}>
+              <DateInput value={form.accountReviewDate} onChange={() => { }} readOnly error={errors.accountReviewDate} />
             </FieldShell>
 
-            <FieldShell label="Account Operation ID" labelHi="" required error={errors.accountOperationId}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.accountOperationId}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Operation ID"
-                error={errors.accountOperationId}
-              />
+            <FieldShell label="Ledger Balance" labelHi="खातेवही शिल्लक" required error={errors.ledgerBalance}>
+              <TextInput icon={<IndianRupee size={16} />} value={form.ledgerBalance} onChange={() => { }} readOnly error={errors.ledgerBalance} />
             </FieldShell>
 
-            <FieldShell label="Ledger Balance" labelHi="खाते शिल्लक" error={errors.ledgerBalance}>
-              <TextInput icon={<IndianRupee size={16} />} value={form.ledgerBalance} onChange={() => {}} readOnly error={errors.ledgerBalance} />
+            <FieldShell label="Available Balance" labelHi="उपलब्ध शिल्लक" required error={errors.availableBalance}>
+              <TextInput icon={<IndianRupee size={16} />} value={form.availableBalance} onChange={() => { }} readOnly error={errors.availableBalance} />
             </FieldShell>
 
-            <FieldShell label="Available Balance" labelHi="उपलब्ध शिल्लक" error={errors.availableBalance}>
-              <TextInput icon={<IndianRupee size={16} />} value={form.availableBalance} onChange={() => {}} readOnly error={errors.availableBalance} />
+            <FieldShell label="New Ledger Balance" labelHi="नवीन खातेवही शिल्लक" required error={errors.newLedgerBalance}>
+              <TextInput icon={<IndianRupee size={16} />} value={form.newLedgerBalance} onChange={() => { }} readOnly error={errors.newLedgerBalance} />
             </FieldShell>
 
-            <FieldShell label="New Ledger Balance" labelHi="नवीन लेजर शिल्लक" required error={errors.newLedgerBalance}>
-              <TextInput icon={<IndianRupee size={16} />} value={form.newLedgerBalance} onChange={() => {}} readOnly error={errors.newLedgerBalance} />
+            <FieldShell label="Uncleared Balance" labelHi="अस्पष्ट शिल्लक" required error={errors.unclearBalance}>
+              <TextInput icon={<IndianRupee size={16} />} value={form.unclearBalance} onChange={() => { }} readOnly error={errors.unclearBalance} />
             </FieldShell>
 
-            <FieldShell label="Last Transaction ID" labelHi="" required error={errors.lastTransactionId}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.lastTransactionId}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Last Transaction ID"
-                error={errors.lastTransactionId}
-              />
+            <FieldShell label="Limit Amount" labelHi="मर्यादा रक्कम" required error={errors.limitAmount}>
+              <TextInput icon={<IndianRupee size={16} />} value={form.limitAmount} onChange={() => { }} readOnly error={errors.limitAmount} />
             </FieldShell>
 
-            <FieldShell label="Unclear Balance" labelHi="" required error={errors.unclearBalance}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.unclearBalance}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Unclear Balance"
-                error={errors.unclearBalance}
-              />
+            <FieldShell label="Drawing Power" labelHi="कर्ज उचलण्याची क्षमता" required error={errors.drawingPower}>
+              <TextInput icon={<IndianRupee size={16} />} value={form.drawingPower} onChange={() => { }} readOnly error={errors.drawingPower} />
             </FieldShell>
 
-            <FieldShell label="Limit Amount" labelHi="" required error={errors.limitAmount}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.limitAmount}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Amount Limit"
-                error={errors.limitAmount}
-              />
-            </FieldShell>
-
-            <FieldShell label="Drawing Power" labelHi="" required error={errors.drawingPower}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.drawingPower}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Drawing Power"
-                error={errors.drawingPower}
-              />
-            </FieldShell>
-
-            <FieldShell label="Check Book Status" labelHi="" required error={errors.checkBookStatus}>
-              <TextInput
-                icon={<User size={16} />}
-                value={form.checkBookStatus}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Check Book Status"
-                error={errors.checkBookStatus}
-              />
+            <FieldShell label="PAN Card Number" labelHi="पॅन कार्ड क्रमांक" required error={errors.panCode}>
+              <TextInput icon={<IdCard size={16} />} value={form.panCode} onChange={() => { }} readOnly error={errors.panCode} />
             </FieldShell>
           </div>
         </SectionCard>
@@ -640,7 +555,7 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
                 <TextInput
                   icon={<User size={16} />}
                   value={form.outlistSeries}
-                  onChange={() => {}}
+                  onChange={() => { }}
                   readOnly
                   placeholder="Enter Outlist Series"
                   error={errors.outlistSeries}
@@ -669,7 +584,25 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
               error={errors.glOutlistDocumentNumber}
             />
           </FieldShell>
+          <FieldShell label="Advice Number" labelHi="" required error={errors.adviceNumber}>
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <TextInput
+                  icon={<Hash size={16} />}
+                  value={form.adviceNumber}
+                  onChange={() => { }}
+                  readOnly
+                  placeholder="Advice Number"
+                  error={errors.adviceNumber}
+                />
+              </div>
+              <LookupTrigger onClick={() => setActivePicker("adviceNumber")} />
+            </div>
+          </FieldShell>
 
+          <FieldShell label="Advice Date" labelHi="" required error={errors.adviceDate}>
+            <DateInput value={form.adviceDate} onChange={() => { }} readOnly error={errors.adviceDate} />
+          </FieldShell>
           <RadioTwoOption
             label="Withdrawal By"
             labelHi="काढण्याची पद्धत"
@@ -695,7 +628,7 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
             <TextInput
               icon={<User size={16} />}
               value={form.amountInWords}
-              onChange={() => {}}
+              onChange={() => { }}
               readOnly
               placeholder="Amount in words"
               error={errors.amountInWords}
@@ -703,18 +636,7 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
           </FieldShell>
 
           <FieldShell label="Particular" labelHi="" required error={errors.particular}>
-            <TextInput icon={<User size={16} />} value={form.particular} onChange={() => {}} readOnly error={errors.particular} />
-          </FieldShell>
-
-          <FieldShell label="Token Number" labelHi="" required error={errors.tokenNumber}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.tokenNumber}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter Token Number"
-              error={errors.tokenNumber}
-            />
+            <TextInput icon={<User size={16} />} value={form.particular} onChange={() => { }} readOnly error={errors.particular} />
           </FieldShell>
 
           <FieldShell label="Cheque Type" labelHi="चेक प्रकार" required error={errors.chequeType}>
@@ -723,7 +645,7 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
                 <TextInput
                   icon={<FileText size={16} />}
                   value={form.chequeType}
-                  onChange={() => {}}
+                  onChange={() => { }}
                   readOnly
                   placeholder="Enter Cheque Type"
                   error={errors.chequeType}
@@ -734,169 +656,52 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
           </FieldShell>
 
           <FieldShell label="Cheque Series" labelHi="चेक प्रकार" required error={errors.chequeSeries}>
-            <TextInput icon={<FileText size={16} />} value={form.chequeSeries} onChange={() => {}} readOnly error={errors.chequeSeries} />
+            <TextInput icon={<FileText size={16} />} value={form.chequeSeries} onChange={() => { }} readOnly error={errors.chequeSeries} />
           </FieldShell>
 
           <FieldShell label="Cheque Number" labelHi="चेक नंबर" required error={errors.chequeNumber}>
-            <TextInput icon={<FileText size={16} />} value={form.chequeNumber} onChange={() => {}} readOnly error={errors.chequeNumber} />
+            <TextInput icon={<FileText size={16} />} value={form.chequeNumber} onChange={() => { }} readOnly error={errors.chequeNumber} />
           </FieldShell>
 
           <FieldShell label="Cheque Date" labelHi="चेकची तारीख" required error={errors.chequeDate}>
             <div className="flex items-center gap-2">
               <div className="flex-1">
-                <DateInput value={form.chequeDate} onChange={() => {}} readOnly error={errors.chequeDate} />
+                <DateInput value={form.chequeDate} onChange={() => { }} readOnly error={errors.chequeDate} />
               </div>
               <LookupTrigger onClick={() => setActivePicker("chequeDate")} />
             </div>
           </FieldShell>
-        </div>
-      </SectionCard>
 
-      <SectionCard
-        titleEn="GL / Accounting Information"
-        titleHi="जीएल / लेखापरीक्षा माहिती"
-        subtitleEn="Add your details."
-        subtitleHi="तुमचे तपशील जोडा."
-        icon={<SectionIcon />}
-      >
-        <div className={`${grid4} mt-2`}>
-          <FieldShell label="GL Outlist No" labelHi="" required error={errors.glOutlistNo}>
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
-                <TextInput
-                  icon={<User size={16} />}
-                  value={form.glOutlistNo}
-                  onChange={() => {}}
-                  readOnly
-                  placeholder="Enter Outlist Number"
-                  error={errors.glOutlistNo}
-                />
-              </div>
-              <LookupTrigger onClick={() => setActivePicker("glOutlistNo")} />
-            </div>
-          </FieldShell>
-
-          <FieldShell label="GL Outlist Doc No" labelHi="" required error={errors.glOutlistDocNo}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.glOutlistDocNo}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter Outlist No"
-              error={errors.glOutlistDocNo}
-            />
-          </FieldShell>
-
-          <FieldShell label="Description" labelHi="" required error={errors.descriptionGl}>
-            <TextInput
-              icon={<FileText size={16} />}
-              value={form.descriptionGl}
-              onChange={() => {}}
-              readOnly
-              placeholder="Description of GL"
-              error={errors.descriptionGl}
-            />
-          </FieldShell>
-
-          <FieldShell label="Advice Number" labelHi="" required error={errors.adviceNumber}>
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
-                <TextInput
-                  icon={<Hash size={16} />}
-                  value={form.adviceNumber}
-                  onChange={() => {}}
-                  readOnly
-                  placeholder="Advice Number"
-                  error={errors.adviceNumber}
-                />
-              </div>
-              <LookupTrigger onClick={() => setActivePicker("adviceNumber")} />
-            </div>
-          </FieldShell>
-
-          <FieldShell label="Advice Date" labelHi="" required error={errors.adviceDate}>
-            <DateInput value={form.adviceDate} onChange={() => {}} readOnly error={errors.adviceDate} />
-          </FieldShell>
-
-          <FieldShell label="Account Type" labelHi="" required error={errors.accountTypeGl}>
-            <TextInput icon={<User size={16} />} value={form.accountTypeGl} onChange={() => {}} readOnly error={errors.accountTypeGl} />
-          </FieldShell>
-
-          <FieldShell label="Cash limit" labelHi="" required error={errors.cashLimit}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.cashLimit}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter Cash limit"
-              error={errors.cashLimit}
-            />
-          </FieldShell>
-
-          <FieldShell label="TDS on limit Pan Card/ Customer ID" labelHi="" required error={errors.tdsOnLimit}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.tdsOnLimit}
-              onChange={() => {}}
-              readOnly
-              placeholder="TDS on limit"
-              error={errors.tdsOnLimit}
-            />
-          </FieldShell>
-
-          <FieldShell label="Total Transaction on Customer ID" labelHi="" required error={errors.totalTransactionCustomerId}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.totalTransactionCustomerId}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter Transaction Customer ID"
-              error={errors.totalTransactionCustomerId}
-            />
-          </FieldShell>
-
-          <FieldShell label="Total Transaction on PAN Card" labelHi="" required error={errors.totalTransactionPanCard}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.totalTransactionPanCard}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter Transaction PAN Card"
-              error={errors.totalTransactionPanCard}
-            />
-          </FieldShell>
-
-          <FieldShell label="GL Account Code" labelHi="" required error={errors.glAccountCode}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.glAccountCode}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter GL Account Code"
-              error={errors.glAccountCode}
-            />
-          </FieldShell>
-
-          <FieldShell label="GL Account Name" labelHi="" required error={errors.glAccountName}>
-            <TextInput
-              icon={<User size={16} />}
-              value={form.glAccountName}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter GL Account Name"
-              error={errors.glAccountName}
-            />
-          </FieldShell>
-
-          <FieldShell label="Transaction View From Date" labelHi="" required error={errors.transactionViewFromDate}>
-            <DateInput value={form.transactionViewFromDate} onChange={() => {}} readOnly error={errors.transactionViewFromDate} />
-          </FieldShell>
-
-          <FieldShell label="To Date" labelHi="" required error={errors.toDate}>
-            <DateInput value={form.toDate} onChange={() => {}} readOnly error={errors.toDate} />
+          <FieldShell
+            label="Cheque Status"
+            labelHi="चेकची स्थिती"
+            required
+            error={errors.chequeStatus}
+          >
+            <select
+              value={form.chequeStatus}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  chequeStatus: e.target.value,
+                }))
+              }
+              className={`w-full rounded-lg border px-3 py-3 ${errors.chequeStatus
+                  ? "border-red-500"
+                  : "border-gray-300"
+                }`}
+            >
+              <option value="">Select Status</option>
+              <option value="Issued">Issued</option>
+              <option value="Presented">Presented</option>
+              <option value="Cleared">Cleared</option>
+              <option value="Returned">Returned</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
           </FieldShell>
         </div>
       </SectionCard>
+
 
       <div className="mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
         <button
@@ -906,27 +711,7 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
         >
           Validate <Check size={16} />
         </button>
-        <button
-          type="button"
-          onClick={() => handlePlaceholderAction("Account Details")}
-          className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-        >
-          Account Details
-        </button>
-        <button
-          type="button"
-          onClick={() => handlePlaceholderAction("Print Vouchers")}
-          className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-        >
-          Print Vouchers
-        </button>
-        <button
-          type="button"
-          onClick={() => handlePlaceholderAction("Display Vouchers")}
-          className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-        >
-          Display Vouchers
-        </button>
+        
         <button
           type="button"
           onClick={onClose}
@@ -938,9 +723,8 @@ const AddCashWithdrawal = ({ onClose, onSave, variant = "modal" }: AddCashWithdr
           type="button"
           onClick={handleSave}
           disabled={!isValidated || isSaving}
-          className={`flex items-center gap-1.5 rounded-lg border border-transparent bg-primary-100 px-4 py-2.5 text-sm font-medium text-primary transition-colors ${
-            isValidated && !isSaving ? "hover:bg-primary-200" : "cursor-not-allowed opacity-60"
-          }`}
+          className={`flex items-center gap-1.5 rounded-lg border border-transparent bg-primary-100 px-4 py-2.5 text-sm font-medium text-primary transition-colors ${isValidated && !isSaving ? "hover:bg-primary-200" : "cursor-not-allowed opacity-60"
+            }`}
         >
           {isSaving ? "Saving..." : "Save"} <ChevronsDown size={16} />
         </button>

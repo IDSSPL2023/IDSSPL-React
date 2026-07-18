@@ -33,6 +33,12 @@ export interface AuthorizeCashWithdrawalModalProps {
   onClose: () => void;
   onAuthorize?: () => void;
   onReject?: (reason: string) => void;
+  titleEn?: string;
+  titleHi?: string;
+  subtitleEn?: string;
+  subtitleHi?: string;
+  successTitle?: string;
+  rejectedTitle?: string;
 }
 
 const SectionIcon = () => (
@@ -97,6 +103,12 @@ const AuthorizeCashWithdrawalModal = ({
   onClose,
   onAuthorize,
   onReject,
+  titleEn = "Authorize Cash Withdrawal",
+  titleHi = "रोख रक्कम काढणे अधिकृत करा",
+  subtitleEn = "Check information related to the cash withdrawal and authorize it.",
+  subtitleHi = "रोख रक्कम काढण्याशी संबंधित माहिती तपासा आणि अधिकृत करा.",
+  successTitle = "Cash Withdrawal Authorized Successfully",
+  rejectedTitle = "Cash Withdrawal Authorization Rejected",
 }: AuthorizeCashWithdrawalModalProps) => {
   const [data] = useState<CashWithdrawalFormData>(() => ({
     ...DEFAULT_CASH_WITHDRAWAL_DATA,
@@ -131,10 +143,10 @@ const AuthorizeCashWithdrawalModal = ({
     <>
       <FormModal
         onClose={onClose}
-        titleEn="Authorize Cash Withdrawal"
-        titleHi="रोख रक्कम काढणे अधिकृत करा"
-        subtitleEn="Check information related to the cash withdrawal and authorize it."
-        subtitleHi="रोख रक्कम काढण्याशी संबंधित माहिती तपासा आणि अधिकृत करा."
+        titleEn={titleEn}
+        titleHi={titleHi}
+        subtitleEn={subtitleEn}
+        subtitleHi={subtitleHi}
         headerIcon={
           <div className="flex h-12 w-12 items-center justify-center">
             <Image src="/Authorize User.png" alt="Authorize Cash Withdrawal" width={50} height={50} />
@@ -301,7 +313,7 @@ const AuthorizeCashWithdrawalModal = ({
             </FieldShell>
 
             <FieldShell label="Token Number" labelHi="टोकन क्रमांक" required>
-              <TextInput icon={<User size={16} />} value={data.tokenNumber} onChange={() => {}} readOnly />
+              <TextInput icon={<User size={16} />} value={data.chequeStatus} onChange={() => {}} readOnly />
             </FieldShell>
 
             <FieldShell label="Cheque Type" labelHi="धनादेश प्रकार" required>
@@ -419,7 +431,7 @@ const AuthorizeCashWithdrawalModal = ({
 
         {actionModal === "authorize" && (
           <SuccessModal
-            title="Cash Withdrawal Authorized Successfully"
+            title={successTitle}
             subtitle=""
             onClose={handleDone}
             onDone={handleDone}
@@ -429,7 +441,7 @@ const AuthorizeCashWithdrawalModal = ({
 
         {actionModal === "rejected" && (
           <SuccessModal
-            title="Cash Withdrawal Authorization Rejected"
+            title={rejectedTitle}
             subtitle=""
             onClose={handleDone}
             onDone={handleDone}

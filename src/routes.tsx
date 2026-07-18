@@ -20,6 +20,7 @@ import AccountMasterCaSaPage from "@/pages/account-master/AccountMasterCaSaPage"
 import AccountMasterDepositPage from "@/pages/account-master/AccountMasterDepositPage";
 import AccountMasterInvestmentPage from "@/pages/account-master/AccountMasterInvestmentPage";
 import AccountMasterLoanPage from "@/pages/account-master/AccountMasterLoanPage";
+import AccountMasterFixedAssetPage from "@/pages/account-master/AccountMasterFixedAssetPage";
 import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
@@ -28,6 +29,7 @@ import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
+import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearingPage";
 import AuthorizeTransactionPage from "@/pages/authorization/transaction/AuthorizeTransactionPage";
 import CashDepositAuthorizePage from "@/pages/authorization/transaction/CashDepositAuthorizePage";
 import CashWithdrawalAuthorizePage from "@/pages/authorization/transaction/CashWithdrawalAuthorizePage";
@@ -37,6 +39,7 @@ import TdInterestPaymentAuthorizePage from "@/pages/authorization/transaction/Td
 import TdsTransactionAuthorizePage from "@/pages/authorization/transaction/TdsTransactionAuthorizePage";
 import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCcInstallmentAuthorizePage";
 import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
+import TlOtherChargesAuthorizePage from "@/pages/authorization/transaction/TlOtherChargesAuthorizePage";
 import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
 import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
 import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
@@ -65,6 +68,7 @@ import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
 import SupportUtilityPage from "@/pages/SupportUtilityPage";
 import ClerkClearingPage from "@/pages/ClerkClearingPage";
+import ClerkSmsPage from "@/pages/ClerkSmsPage";
 import LockerPage from "@/pages/LockerPage";
 import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
 import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
@@ -89,6 +93,17 @@ import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandli
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
+import Application from "./components/HO-Clerk/HoApplication";
+import HoClerkTransaction from "./components/HO-Clerk/HoClerkTransaction";
+import Cashier from "./components/Cashier/Cashier";
+import PagesAcceptCashPage from "@/pages/cashier/AcceptCashPage";
+import HoOfficer from "./components/Ho-Officer/HoOfficer";
+import HoCashDepositAuthorizePage from "@/pages/ho-officer/HoCashDepositAuthorizePage";
+import HoCashWithdrawalAuthorizePage from "@/pages/ho-officer/HoCashWithdrawalAuthorizePage";
+import HoTransferAuthorizePage from "@/pages/ho-officer/HoTransferAuthorizePage";
+import InvestmentPaymentClosingAuthorizePage from "@/pages/ho-officer/InvestmentPaymentClosingAuthorizePage";
+import RtgsOutwardAuthorizePage from "@/pages/ho-officer/RtgsOutwardAuthorizePage";
+import ReconciliationAuthorizePage from "@/pages/ho-officer/ReconciliationAuthorizePage";
 import DDPage from "./pages/dd/DDPage";
 import DDMaintenancePage from "./pages/dd/DDMaintenancePage";
 import DDPrintingPage from "./pages/dd/DDPrintingPage";
@@ -144,6 +159,7 @@ export const router = createBrowserRouter([
       { path: "/account-master/deposit", element: <AccountMasterDepositPage /> },
       { path: "/account-master/investment", element: <AccountMasterInvestmentPage /> },
       { path: "/account-master/loan", element: <AccountMasterLoanPage /> },
+      { path: "/account-master/fixed-asset", element: <AccountMasterFixedAssetPage /> },
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
@@ -157,6 +173,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
       { path: "/authorization/authorizeaccountmain/authorizeaccount", element: <AuthorizeAccountPage /> },
       { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
+      { path: "/authorization/clearing", element: <AuthorizeClearingPage /> },
       { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
       { path: "/authorization/transaction/cash-deposit", element: <CashDepositAuthorizePage /> },
       { path: "/authorization/transaction/cash-withdrawal", element: <CashWithdrawalAuthorizePage /> },
@@ -166,7 +183,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
       { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
-      { path: "/authorization/transaction/tl-other-charges", element: <TLOtherChargesPage /> },
+      { path: "/authorization/transaction/tl-other-charges", element: <TlOtherChargesAuthorizePage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
@@ -184,8 +201,8 @@ export const router = createBrowserRouter([
       { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
       { path: "/futuremodels/investment-account", element: <InvestmentAccountPage /> },
       { path: "/futuremodels/investment-account-close", element: <InvestmentAccountClosePage /> },
-      { path: "/futuremodels/lean", element: <LeanPage /> },
-      { path: "/futuremodels/memo", element: <MemoPage /> },
+      // { path: "/futuremodels/lean", element: <LeanPage /> },
+      // { path: "/futuremodels/memo", element: <MemoPage /> },
       { path: "/futuremodels/pigmy-deposit-details", element: <PigmyDepositDetailsPage /> },
       { path: "/futuremodels/PigmyDetails", element: <PigmyDetailsPage /> },
       { path: "/futuremodels/standing-instructions", element: <StandingInstructionsPage /> },
@@ -210,6 +227,7 @@ export const router = createBrowserRouter([
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
+      { path: "/clerk/sms", element: <ClerkSmsPage /> },
       { path: "/locker", element: <LockerPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },
       { path: "/transactionmaster/cash-deposit", element: <CashDepositPage /> },
@@ -225,6 +243,27 @@ export const router = createBrowserRouter([
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
       { path: "/tds", element: <TDSReportsPage /> },
+
+
+
+      // HO-Clerk Route
+      { path: "/ho-clerk-application", element: <Application /> },
+      { path: "/ho-clerk-transaction", element: <HoClerkTransaction /> },
+
+      // Cashier Route
+      { path: "/cashier", element: <Cashier /> },
+      { path: "/cashier/accept-cash", element: <PagesAcceptCashPage /> },
+
+      // Ho Officer
+      { path: "/ho-officer", element: <HoOfficer /> },
+      { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage /> },
+      { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage /> },
+      { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage /> },
+      { path: "/ho-officer/investment-payment-closingmark", element: <InvestmentPaymentClosingAuthorizePage /> },
+      { path: "/ho-officer/rtgs-outward-file-generation", element: <RtgsOutwardAuthorizePage /> },
+      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage /> },
+
+
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },
