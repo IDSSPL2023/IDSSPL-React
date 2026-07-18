@@ -117,6 +117,9 @@ import DDPrintingPage from "./pages/dd/DDPrintingPage";
 // import BillHero from "./components/Bill/BillHero";
 import BillUtilityPage from "./components/Bill/BillUtilityPage";
 import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
+import PayrollMaster from "./components/Payroll/PayrollMaster";
+import PayrollTransaction from "./components/Payroll/PayrollTransaction";
+
 import SMSRegistrationPage from "@/components/SMS/SMSRegistrationPage ";
 import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAuthorize";
 
@@ -262,7 +265,7 @@ export const router = createBrowserRouter([
       { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
 
 
-       
+
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
@@ -364,6 +367,17 @@ export const router = createBrowserRouter([
 
       // Ho Officer
       { path: "/ho-officer", element: <HoOfficer /> },
+      { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage /> },
+      { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage /> },
+      { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage /> },
+      { path: "/ho-officer/investment-payment-closingmark", element: <InvestmentPaymentClosingAuthorizePage /> },
+      { path: "/ho-officer/rtgs-outward-file-generation", element: <RtgsOutwardAuthorizePage /> },
+      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage /> },
+
+      // Payroll
+      { path: "/payroll/master", element: <PayrollMaster /> },
+      { path: "/payroll/transaction", element: <PayrollTransaction /> }
+
       {
         path: "/ho-officer/ho-cash-deposit-entry",
         element: <HoCashDepositAuthorizePage />,

@@ -17,7 +17,6 @@ type NavbarCMProps = {
   onToggleSearch?: () => void;
   onOpenFilter?: () => void;
   onResetFilters?: () => void;
-  /** Hide the Filter/Add action buttons for routes that only need the breadcrumb header. */
   hideActions?: boolean;
 };
 
