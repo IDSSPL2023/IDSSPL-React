@@ -330,7 +330,7 @@ function TDSReportAllModal({
         maxWidth="full"
       >
         <SectionWrapper>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {/* Account Type */}
             <PickerInput
               labelEn="Account Type"
