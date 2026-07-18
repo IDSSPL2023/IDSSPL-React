@@ -18,7 +18,9 @@ import PickerInput from "../../../shared/Inputs/PickerInput";
 import DateInput from "../../../shared/Inputs/DateInput";
 import SelectInput from "../../../shared/Inputs/SelectInput";
 import RadioInput from "../../../shared/Inputs/RadioInput";
-import ListModal, { type ListModalItem } from "../../../shared/Modals/ListModal";
+import ListModal, {
+  type ListModalItem,
+} from "../../../shared/Modals/ListModal";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
 import { ICONS } from "@/assets";
@@ -325,7 +327,7 @@ function ProvisonAndVlcc({
         footerButtons={getFooterButtons()}
         footerAlign="right"
         showDefaultClose={false}
-        maxWidth="full"
+        maxWidth="7xl"
       >
         <SectionWrapper>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
