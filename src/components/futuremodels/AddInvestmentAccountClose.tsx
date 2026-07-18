@@ -24,8 +24,6 @@ import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
 
 const PAYMENT_MODE_OPTIONS = ["Cash", "Transfer"];
-const ACCOUNT_CLOSE_OPTIONS = ["Yes", "No"];
-const TRANSFER_BY_CHEQUE_OPTIONS = ["Yes", "No"];
 
 const ACCOUNT_CODE_ROWS = [
   { code: "401", name: "Sample Account" },
@@ -207,8 +205,8 @@ const AddInvestmentAccountClose = ({
   const [principalAccountPickerOpen, setPrincipalAccountPickerOpen] = useState(false);
   const [chequeTypePickerOpen, setChequeTypePickerOpen] = useState(false);
 
-  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
-  const grid3 = "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3";
+  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3";
+
 
   const updateField = (field: keyof InvestmentAccountCloseFormData, value: string) => {
     setErrors((prev) => (prev[field] ? { ...prev, [field]: false } : prev));

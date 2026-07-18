@@ -6,43 +6,26 @@ import {
   IndianRupee,
   FileText,
   Hash,
-  IdCard,
-  Fingerprint,
-  Phone,
-  Landmark,
   MoreVertical,
   ThumbsUp,
   ThumbsDown,
   X,
 } from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
-import {
-  FieldShell,
-  TextInput,
-  DateInput,
-  SectionCard,
-  RadioYesNo,
-  RadioDayMonth,
-} from "@/components/shared/FormFields";
+import { FieldShell, TextInput, DateInput, SectionCard, RadioDayMonth } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import RejectReasonModal from "@/components/shared/RejectReasonModal";
 import {
-  DEFAULT_CASH_DEPOSIT_DATA,
-  type CashDepositFormData,
-} from "@/components/TransactionMaster/AddCashDeposit";
+  DEFAULT_HO_TRANSFER_DATA,
+  type HoTransferFormData,
+} from "@/components/HO-Clerk/AddHoTransfer";
 
-export interface AuthorizeCashDepositModalProps {
+export interface AuthorizeHoTransferModalProps {
   open: boolean;
-  initialData?: Partial<CashDepositFormData>;
+  initialData?: Partial<HoTransferFormData>;
   onClose: () => void;
   onAuthorize?: () => void;
   onReject?: (reason: string) => void;
-  titleEn?: string;
-  titleHi?: string;
-  subtitleEn?: string;
-  subtitleHi?: string;
-  successTitle?: string;
-  rejectedTitle?: string;
 }
 
 const SectionIcon = () => (
@@ -62,7 +45,7 @@ const DisabledLookupTrigger = () => (
   </button>
 );
 
-const AuthorizeCashDepositFooter = ({
+const AuthorizeHoTransferFooter = ({
   onReject,
   onCancel,
   onAuthorize,
@@ -101,21 +84,15 @@ const AuthorizeCashDepositFooter = ({
   </div>
 );
 
-const AuthorizeCashDepositModal = ({
+const AuthorizeHoTransferModal = ({
   open,
   initialData,
   onClose,
   onAuthorize,
   onReject,
-  titleEn = "Authorize Cash Deposit",
-  titleHi = "रोख जमा अधिकृत करा",
-  subtitleEn = "Check information related to the cash deposit and authorize it.",
-  subtitleHi = "रोख जमा व्यवहाराशी संबंधित माहिती तपासा आणि अधिकृत करा.",
-  successTitle = "Cash Deposit Authorized Successfully",
-  rejectedTitle = "Cash Deposit Authorization Rejected",
-}: AuthorizeCashDepositModalProps) => {
-  const [data] = useState<CashDepositFormData>(() => ({
-    ...DEFAULT_CASH_DEPOSIT_DATA,
+}: AuthorizeHoTransferModalProps) => {
+  const [data] = useState<HoTransferFormData>(() => ({
+    ...DEFAULT_HO_TRANSFER_DATA,
     ...initialData,
   }));
   const [actionModal, setActionModal] = useState<"authorize" | "rejected" | null>(null);
@@ -147,13 +124,13 @@ const AuthorizeCashDepositModal = ({
     <>
       <FormModal
         onClose={onClose}
-        titleEn={titleEn}
-        titleHi={titleHi}
-        subtitleEn={subtitleEn}
-        subtitleHi={subtitleHi}
+        titleEn="Authorize HO Transfer Entry"
+        titleHi="HO हस्तांतरण नोंद अधिकृत करा"
+        subtitleEn="Check information related to the HO transfer entry and authorize it."
+        subtitleHi="HO हस्तांतरण नोंदीशी संबंधित माहिती तपासा आणि अधिकृत करा."
         headerIcon={
           <div className="flex h-12 w-12 items-center justify-center">
-            <Image src="/Authorize User.png" alt="Authorize Cash Deposit" width={50} height={50} />
+            <Image src="/Authorize User.png" alt="Authorize HO Transfer Entry" width={50} height={50} />
           </div>
         }
         tabs={[]}
@@ -162,32 +139,45 @@ const AuthorizeCashDepositModal = ({
         hideFooter
         maxWidth="max-w-7/8"
         customFooter={
-          <AuthorizeCashDepositFooter onReject={handleReject} onCancel={onClose} onAuthorize={handleAuthorize} />
+          <AuthorizeHoTransferFooter onReject={handleReject} onCancel={onClose} onAuthorize={handleAuthorize} />
         }
       >
         <SectionCard
           titleEn="Account Details"
           titleHi="खाते तपशील"
-          subtitleEn="Account information for the cash deposit being authorized."
-          subtitleHi="अधिकृत करावयाच्या रोख जमा व्यवहाराची खाते माहिती."
+          subtitleEn="Account information for the HO transfer being authorized."
+          subtitleHi="अधिकृत करावयाच्या हस्तांतरणाची खाते माहिती."
           icon={<SectionIcon />}
         >
           <div className={`${grid4} mt-2`}>
-            <RadioYesNo
-              label="Is HO Transaction"
-              labelHi="मुख्य कार्यालय व्यवहार आहे का"
-              value={data.isHoTransaction}
-              onChange={() => {}}
-              disabled
-            />
-
-            <FieldShell label="Account Type" labelHi="खात्याचा प्रकार" required>
+            <FieldShell label="Scroll Number" labelHi="स्क्रोल क्रमांक" required>
               <div className="flex items-center gap-2">
                 <div className="flex-1">
-                  <TextInput icon={<CreditCard size={16} />} value={data.accountType} onChange={() => {}} readOnly />
+                  <TextInput icon={<Hash size={16} />} value={data.scrollNumber} onChange={() => {}} readOnly />
                 </div>
                 <DisabledLookupTrigger />
               </div>
+            </FieldShell>
+
+            <FieldShell label="Sub Scroll No" labelHi="उप स्क्रोल क्रमांक" required>
+              <TextInput icon={<Hash size={16} />} value={data.subScrollNo} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <RadioDayMonth
+              label="Debit / Credit"
+              labelHi="डेबिट / क्रेडिट"
+              value={data.debitCreditMode === "Debit"}
+              onChange={() => {}}
+              options={["Debit", "Credit"]}
+              disabled
+            />
+
+            <FieldShell label="Debit Amount" labelHi="डेबिट रक्कम" required>
+              <TextInput icon={<IndianRupee size={16} />} value={data.debitAmount} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="Credit Amount" labelHi="क्रेडिट रक्कम" required>
+              <TextInput icon={<IndianRupee size={16} />} value={data.creditAmount} onChange={() => {}} readOnly />
             </FieldShell>
 
             <FieldShell label="Account Code" labelHi="खाते कोड" required>
@@ -204,19 +194,23 @@ const AuthorizeCashDepositModal = ({
             </FieldShell>
 
             <FieldShell label="GL Account Code" labelHi="जीएल खाते कोड" required>
-              <TextInput icon={<Landmark size={16} />} value={data.glAccountCode} onChange={() => {}} readOnly />
+              <TextInput icon={<CreditCard size={16} />} value={data.glAccountCode} onChange={() => {}} readOnly />
             </FieldShell>
 
             <FieldShell label="GL Account Name" labelHi="जीएल खात्याचे नाव" required>
               <TextInput icon={<User size={16} />} value={data.glAccountName} onChange={() => {}} readOnly />
             </FieldShell>
 
-            <FieldShell label="Last Transaction Date" labelHi="शेवटची व्यवहार तारीख" required>
-              <DateInput value={data.lastTransactionDate} onChange={() => {}} readOnly />
+            <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required>
+              <TextInput icon={<Hash size={16} />} value={data.customerId} onChange={() => {}} readOnly />
             </FieldShell>
 
-            <FieldShell label="Account Review Date" labelHi="खाते पुनरावलोकन तारीख" required>
-              <DateInput value={data.accountReviewDate} onChange={() => {}} readOnly />
+            <FieldShell label="Customer Name" labelHi="ग्राहकाचे नाव" required>
+              <TextInput icon={<User size={16} />} value={data.customerName} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="Last Transaction Date" labelHi="शेवटची व्यवहार तारीख" required>
+              <DateInput value={data.lastTransactionDate} onChange={() => {}} readOnly />
             </FieldShell>
 
             <FieldShell label="Ledger Balance" labelHi="खातेवही शिल्लक" required>
@@ -232,35 +226,7 @@ const AuthorizeCashDepositModal = ({
             </FieldShell>
 
             <FieldShell label="Uncleared Balance" labelHi="अस्पष्ट शिल्लक" required>
-              <TextInput icon={<IndianRupee size={16} />} value={data.unclearedBalance} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="Limit Amount" labelHi="मर्यादा रक्कम" required>
-              <TextInput icon={<IndianRupee size={16} />} value={data.limitAmount} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="Drawing Power" labelHi="कर्ज उचलण्याची क्षमता" required>
-              <TextInput icon={<IndianRupee size={16} />} value={data.drawingPower} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="Last OD Date" labelHi="शेवटची ओडी तारीख" required>
-              <DateInput value={data.lastOdDate} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="OD Interest" labelHi="ओडी व्याज" required>
-              <TextInput icon={<IndianRupee size={16} />} value={data.odInterest} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="PAN Card Number" labelHi="पॅन कार्ड क्रमांक" required>
-              <TextInput icon={<IdCard size={16} />} value={data.panCardNumber} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="Aadhaar Number" labelHi="आधार क्रमांक" required>
-              <TextInput icon={<Fingerprint size={16} />} value={data.aadhaarNumber} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="Mobile Number" labelHi="मोबाईल क्रमांक" required>
-              <TextInput icon={<Phone size={16} />} value={data.mobileNumber} onChange={() => {}} readOnly />
+              <TextInput icon={<IndianRupee size={16} />} value={data.unclearBalance} onChange={() => {}} readOnly />
             </FieldShell>
           </div>
         </SectionCard>
@@ -268,34 +234,26 @@ const AuthorizeCashDepositModal = ({
         <SectionCard
           titleEn="Transaction Details"
           titleHi="व्यवहाराचा तपशील"
-          subtitleEn="Deposit amount and outlist related information."
-          subtitleHi="जमा रक्कम व आऊटलिस्ट संबंधित माहिती."
+          subtitleEn="Outlist, advice and instrument details for the transfer."
+          subtitleHi="हस्तांतरणाचा आऊटलिस्ट, सल्ला व साधन तपशील."
           icon={<SectionIcon />}
         >
           <div className={`${grid4} mt-2`}>
-            <FieldShell label="Amount" labelHi="रक्कम" required>
-              <TextInput icon={<IndianRupee size={16} />} value={data.amount} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="Amount in Words" labelHi="शब्दात रक्कम" required>
-              <TextInput icon={<FileText size={16} />} value={data.amountInWords} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <RadioYesNo
-              label="Is Pigmy Collection"
-              labelHi="पिग्मी संकलन आहे का"
-              value={data.isPigmyCollection}
-              onChange={() => {}}
-              disabled
-            />
-
-            <FieldShell label="Agent ID" labelHi="एजंट आयडी" required>
+            <FieldShell label="Outlist Serial" labelHi="आऊटलिस्ट अनुक्रमांक" required>
               <div className="flex items-center gap-2">
                 <div className="flex-1">
-                  <TextInput icon={<Hash size={16} />} value={data.agentId} onChange={() => {}} readOnly />
+                  <TextInput icon={<Hash size={16} />} value={data.outlistSerial} onChange={() => {}} readOnly />
                 </div>
                 <DisabledLookupTrigger />
               </div>
+            </FieldShell>
+
+            <FieldShell label="GL Outlist Description" labelHi="जीएल आऊटलिस्ट वर्णन" required>
+              <TextInput icon={<FileText size={16} />} value={data.glOutlistDesc} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="GL Outlist Doc No" labelHi="जीएल आऊटलिस्ट दस्तऐवज क्रमांक" required>
+              <TextInput icon={<FileText size={16} />} value={data.glOutListDocNo} onChange={() => {}} readOnly />
             </FieldShell>
 
             <RadioDayMonth
@@ -306,23 +264,6 @@ const AuthorizeCashDepositModal = ({
               options={["Original", "Responding"]}
               disabled
             />
-
-            <FieldShell label="Outlist Serial" labelHi="आऊटलिस्ट अनुक्रमांक" required>
-              <div className="flex items-center gap-2">
-                <div className="flex-1">
-                  <TextInput icon={<Hash size={16} />} value={data.outlistSerial} onChange={() => {}} readOnly />
-                </div>
-                <DisabledLookupTrigger />
-              </div>
-            </FieldShell>
-
-            <FieldShell label="Description" labelHi="वर्णन" required>
-              <TextInput icon={<FileText size={16} />} value={data.description} onChange={() => {}} readOnly />
-            </FieldShell>
-
-            <FieldShell label="GL Out List Doc No" labelHi="जीएल आऊटलिस्ट दस्तऐवज क्रमांक" required>
-              <TextInput icon={<FileText size={16} />} value={data.glOutListDocNo} onChange={() => {}} readOnly />
-            </FieldShell>
 
             <FieldShell label="Advice Number" labelHi="सल्ला क्रमांक" required>
               <div className="flex items-center gap-2">
@@ -337,8 +278,29 @@ const AuthorizeCashDepositModal = ({
               <DateInput value={data.adviceDate} onChange={() => {}} readOnly />
             </FieldShell>
 
+            <FieldShell label="Amount" labelHi="रक्कम" required>
+              <TextInput icon={<IndianRupee size={16} />} value={data.amount} onChange={() => {}} readOnly />
+            </FieldShell>
+
             <FieldShell label="Particular" labelHi="तपशील" required>
               <TextInput icon={<FileText size={16} />} value={data.particular} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="Instrument Type" labelHi="साधन प्रकार" required>
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <TextInput icon={<FileText size={16} />} value={data.instrumentType} onChange={() => {}} readOnly />
+                </div>
+                <DisabledLookupTrigger />
+              </div>
+            </FieldShell>
+
+            <FieldShell label="Instrument Number" labelHi="साधन क्रमांक" required>
+              <TextInput icon={<Hash size={16} />} value={data.instrumentNumber} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="Instrument Date" labelHi="साधन तारीख" required>
+              <DateInput value={data.instrumentDate} onChange={() => {}} readOnly />
             </FieldShell>
           </div>
         </SectionCard>
@@ -354,7 +316,7 @@ const AuthorizeCashDepositModal = ({
 
         {actionModal === "authorize" && (
           <SuccessModal
-            title={successTitle}
+            title="HO Transfer Entry Authorized Successfully"
             subtitle=""
             onClose={handleDone}
             onDone={handleDone}
@@ -364,7 +326,7 @@ const AuthorizeCashDepositModal = ({
 
         {actionModal === "rejected" && (
           <SuccessModal
-            title={rejectedTitle}
+            title="HO Transfer Entry Authorization Rejected"
             subtitle=""
             onClose={handleDone}
             onDone={handleDone}
@@ -376,4 +338,4 @@ const AuthorizeCashDepositModal = ({
   );
 };
 
-export default AuthorizeCashDepositModal;
+export default AuthorizeHoTransferModal;

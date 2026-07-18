@@ -101,7 +101,7 @@ export const TextInput = ({
         onChange={(e) => onChange(e.target.value)}
         className={
           isFilledReadOnly
-            ? `w-full h-12 rounded-lg border ${READONLY_FILLED_BG} py-3 ${icon ? "pl-[38px]" : "pl-[14px]"} pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-10 rounded-lg border ${READONLY_FILLED_BG}  ${icon ? "pl-[38px]" : "pl-[14px]"} pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
             : `w-full rounded-lg border bg-white py-2.5 ${icon ? "pl-9" : "pl-3"} ${trailing ? "pr-11" : "pr-3"} text-sm text-slate-700 outline-none transition-colors focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
@@ -153,7 +153,7 @@ export const SelectInput = ({
         tabIndex={readOnly ? -1 : undefined}
         className={
           isFilledReadOnly
-            ? `w-full h-12 appearance-none rounded-lg border pointer-events-none ${READONLY_FILLED_BG} py-3 ${icon ? "pl-[38px]" : "pl-[14px]"} pr-9 text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-12 appearance-none rounded-lg border pointer-events-none ${READONLY_FILLED_BG} ${icon ? "pl-[38px]" : "pl-[14px]"} pr-9 text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
             : `w-full appearance-none rounded-lg border bg-white py-2.5 ${icon ? "pl-9" : "pl-3"} pr-9 text-sm text-slate-700 outline-none transition-colors focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
@@ -203,7 +203,7 @@ export const DateInput = ({ value, onChange, placeholder, error, readOnly }: Dat
         tabIndex={readOnly ? -1 : undefined}
         className={
           isFilledReadOnly
-            ? `w-full h-12 rounded-lg border pointer-events-none ${READONLY_FILLED_BG} py-3 pl-[38px] pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-12 rounded-lg border pointer-events-none ${READONLY_FILLED_BG}  pl-[38px] pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
             : `w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${

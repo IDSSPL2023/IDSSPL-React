@@ -295,6 +295,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-application",
         title: "Application",
         icon: FileText,
+        href: "/ho-clerk-application"
       },
       {
         id: "ho-clerk-legal-section",
@@ -310,6 +311,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-transaction",
         title: "Transaction",
         icon: ArrowLeftRight,
+        href:"/ho-clerk-transaction"
       },
     ],
   },
@@ -323,6 +325,7 @@ export const menuItems: NavItemData[] = [
         id: "cashier-cash-handling",
         title: "Cash Handling",
         icon: Wallet,
+        href:"/cashier"
       },
       {
         id: "cashier-cash-handling-report",
@@ -652,6 +655,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-officer-transaction-authorize",
         title: "Transaction Authorize",
         icon: ShieldCheck,
+        href:"/ho-officer"
       },
     ],
   },

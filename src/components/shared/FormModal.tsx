@@ -43,7 +43,7 @@ const FormModal = ({
   isLastTab = false,
   headerIcon,
   tabActions,
-  maxWidth = "max-w-6xl",
+  maxWidth = "max-w-7xl",
   hideFooter = false,
   variant = "modal",
   customFooter,
@@ -56,7 +56,7 @@ const FormModal = ({
       className={
         isPage
           ? "w-full rounded-2xl bg-white p-6 shadow-2xl"
-          : `max-h-[92vh] w-full ${maxWidth} overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl`
+          : `max-h-[96vh] w-full ${maxWidth} overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl`
       }
     >
         {/* Header */}
