@@ -190,8 +190,9 @@ export const router = createBrowserRouter([
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
-      { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
+      { path: "/authorization/authorizecustomer", element: <TLOtherChargesPage /> },
       { path: "/interest-posting", element: <InterestPostingPage /> },
+      { path: "/sms", element: <SMSRegistrationPage/> },
       {
         path: "/authorization",
         children: [
