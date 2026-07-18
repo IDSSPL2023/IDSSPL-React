@@ -16,9 +16,9 @@ import AuthorizationSummaryCards, {
 import AuthorizationTabs, {
   type AuthorizationTabKey,
 } from "@/components/Authorization/AuthorizationTabs";
-import AuthorizeSavingAccountModal from "@/components/Authorization/Account/AuthorizeSavingAccountModal";
-import AuthorizeLoanAccountModal from "@/components/Authorization/Account/AuthorizeLoanAccountModal";
-import AuthorizeDepositAccountModal from "@/components/Authorization/Account/AuthorizeDepositAccountModal";
+import AuthorizeSavingAccountModal from "@/components/Authorization/Account/Modals/AuthorizeSavingAccountModal";
+import AuthorizeLoanAccountModal from "@/components/Authorization/Account/Modals/AuthorizeLoanAccountModal";
+import AuthorizeDepositAccountModal from "@/components/Authorization/Account/Modals/AuthorizeDepositAccountModal";
 
 const authorizeColumns: ColumnConfig[] = [
   {
