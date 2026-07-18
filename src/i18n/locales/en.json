@@ -9,7 +9,6 @@
     "validate": "Validate",
     "authorize": "Authorize",
     "revoke": "Revoke",
-    "reject": "Reject",
     "details": "Details",
     "accountDetails": "Account Details",
     "lienDetails": "Lien Details",
@@ -92,6 +91,10 @@
       "fixedAsset": {
         "title": "Fixed Asset",
         "description": "Enter the Fixed Asset application details."
+      },
+      "pigmy": {
+        "title": "Pigmy",
+        "description": "Enter the Pigmy application details."
       }
     },
     "filters": {
@@ -109,20 +112,16 @@
       "customerId": "Customer ID",
       "createdBy": "Created By",
       "openingDate": "Opening Date",
-      "menuFreeze": "Account Freeze",
-      "menuUnfreeze": "Account Unfreeze",
+      "menuFreeze": "Account Freeze / Unfreeze",
       "menuCheque": "Cheque Book Issue",
-      "menuInterestCalculation": "Interest Calculation",
-      "menuEmiCalculation": "EMI Calculation",
-      "menuDisbursement": "Disbursement",
-      "menuValuation": "Valuation",
-      "menuDepreciation": "Depreciation",
       "menuFreezeUnfreeze": "Account Freeze / Unfreeze",
-      "menuChequeBookIssue": "Cheque Book Issue / Stop",
-      "menuStandingInstruction": "Standing Instruction",
-      "menuMemo": "Memo",
-      "menuOperativeInoperative": "Account Operative/Inoperative",
-      "menuLienMark": "Lien Mark / Stop"
+      "menuChequeBookIssue": "Cheque Book Issue",
+      "menuStandingInstruction": "New Standing Instruction",
+      "menuMemo": "Account Memo",
+      "menuOperativeInoperative": "Operative / Inoperative",
+      "menuLienMark": "Lien Mark",
+      "menuPigmyOpenDetails": "Pigmy Open Details",
+      "menuAddInsuranceDetails": "Add Insurance Details"
     },
     "addForm": {
       "title": "Add Account",
@@ -153,8 +152,8 @@
     }
   },
   "application": {
-    "title": "Account",
-    "breadcrumb": "Account"
+    "title": "Application",
+    "breadcrumb": "Application"
   },
   "assignUserRole": {
     "title": "Assign User Role",
@@ -265,7 +264,7 @@
   },
   "accountAuthorizeMaster": {
     "title": "Account Authorize",
-    "navTitle": "Master Maintenance Account Authorize",
+    "navTitle": "Account Authorize",
     "searchPlaceholder": "Search account type...",
     "show": "Show",
     "cards": {
@@ -278,7 +277,9 @@
       "fixedAssetAuthorization": "Fixed Asset Authorization",
       "fixedAssetClosing": "Fixed Asset Closing",
       "investmentAuthorization": "Investment Authorization",
-      "investmentClosing": "Investment Closing"
+      "investmentClosing": "Investment Closing",
+      "pigmyAuthorization": "Pigmy Open Authorization",
+      "pigmyClosing": "Pigmy Closing Authorization"
     }
   },
   "tdClose": {
@@ -594,61 +595,12 @@
         "modalSubtitle": "View the parameter information and associated details.",
         "successTitle": "Outward Clearing Posted To Account Successfully"
       },
-      "clearingTallyWithClearingHouse": {
-        "cardTitle": "Clearing Tally With Clearing House",
-        "cardDescription": "Tally the branch's clearing scroll against the clearing house figures.",
-        "modalTitle": "Clearing Tally With Clearing House",
-        "modalSubtitle": "Verify scroll totals against the clearing house before closing.",
-        "successTitle": "Clearing Tallied With Clearing House Successfully"
-      },
       "firstSecondClearingClosing": {
-        "cardTitle": "1st & 2nd Clearing Closing",
-        "cardDescription": "Close the first and second clearing sessions for the day.",
-        "modalTitle": "1st & 2nd Clearing Closing",
-        "modalSubtitle": "Close the selected clearing session for the branch.",
+        "cardTitle": "First/Second Clearing Closing",
+        "cardDescription": "Close the first or second clearing session for the day.",
+        "modalTitle": "First/Second Clearing Closing",
+        "modalSubtitle": "View the parameter information and associated details.",
         "successTitle": "Clearing Closed Successfully"
-      },
-      "generateInwardSchedule": {
-        "cardTitle": "Generate Inward Schedule",
-        "cardDescription": "Generate the daily inward clearing schedule.",
-        "modalTitle": "Generate Inward Schedule",
-        "modalSubtitle": "Generate an inward clearing schedule for the selected date.",
-        "successTitle": "Inward Schedule Generated Successfully"
-      },
-      "generateOutwardSchedule": {
-        "cardTitle": "Generate Outward Schedule",
-        "cardDescription": "Generate the daily outward clearing schedule.",
-        "modalTitle": "Generate Outward Schedule",
-        "modalSubtitle": "Generate an outward clearing schedule for the selected date.",
-        "successTitle": "Outward Schedule Generated Successfully"
-      },
-      "importDailyOutwardScheduleDetail": {
-        "cardTitle": "Import Daily Outward Schedule Detail",
-        "cardDescription": "Import the outward schedule detail file received for the day.",
-        "modalTitle": "Import Daily Outward Schedule Detail",
-        "modalSubtitle": "Import the outward schedule detail file for the selected schedule.",
-        "successTitle": "Daily Outward Schedule Detail Imported Successfully"
-      },
-      "inwardClearingEntry": {
-        "cardTitle": "Inward Clearing Entry",
-        "cardDescription": "Record instrument-wise entries received in inward clearing.",
-        "modalTitle": "Inward Clearing Entry",
-        "modalSubtitle": "Enter the branch, schedule and instrument details for inward clearing.",
-        "successTitle": "Inward Clearing Entry Saved Successfully"
-      },
-      "owClearingBounceMark": {
-        "cardTitle": "O/W Clearing Bounce Mark",
-        "cardDescription": "Mark an outward clearing instrument as bounced/returned.",
-        "modalTitle": "Outward Clearing Bounce Mark",
-        "modalSubtitle": "Record the rejection and charges for a bounced instrument.",
-        "successTitle": "Outward Clearing Bounce Marked Successfully"
-      },
-      "outwardClearingEntry": {
-        "cardTitle": "Outward Clearing Entry",
-        "cardDescription": "Record instrument-wise entries sent in outward clearing.",
-        "modalTitle": "Outward Clearing Entry",
-        "modalSubtitle": "Enter the branch, schedule and instrument details for outward clearing.",
-        "successTitle": "Outward Clearing Entry Saved Successfully"
       }
     },
     "sections": {
@@ -715,16 +667,11 @@
       "numberOfInstruments": "Number of Instruments",
       "totalAmount": "Total Amount",
       "bounceNoOfInstruments": "Bounce No of Instruments",
-      "totalInstruments": "Total Instruments",
-      "closingRemark": "Closing Remark",
-      "fileName": "File Name"
+      "closingRemark": "Closing Remark"
     },
     "actions": {
       "postToAccount": "Post To Account",
-      "tally": "Tally",
-      "close": "Close",
-      "generate": "Generate",
-      "import": "Import"
+      "close": "Close"
     }
   },
   "setProductStatus": {
@@ -880,18 +827,6 @@
     },
     "placeholders": {
       "name": "name"
-    }
-  },
-  "clerkSms": {
-    "title": "SMS",
-    "table": {
-      "srNo": "Sr No.",
-      "mobileNumber": "Mobile Number",
-      "customerName": "Customer Name",
-      "message": "Message",
-      "type": "Type",
-      "status": "Status",
-      "sentDate": "Sent Date"
     }
   }
 }

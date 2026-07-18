@@ -1,6 +1,6 @@
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
-import AddInvestmentAccountClose from "@/components/futuremodels/AddInvestmentAccountClose";
+import AddInvestmentAccountClose from "@/components/Authorization/Account/AddInvestmentAccountClose";
 
 const InvestmentAccountClosePage = () => {
   const router = useRouter();

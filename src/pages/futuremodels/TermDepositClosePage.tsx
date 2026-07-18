@@ -29,7 +29,8 @@ const TermDepositClosePage = () => {
  
       {/* {openCloseModal && ( */}
         <DepositCloseModal
-          open={openCloseModal}
+          open={true}
+           variant="page"
           onClose={() => setOpenCloseModal(false)}
           onSubmit={handleCloseSubmit}
         />

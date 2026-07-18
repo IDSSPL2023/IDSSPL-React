@@ -18,7 +18,7 @@ import RejectReasonModal from "@/components/shared/RejectReasonModal";
 import {
   DEFAULT_INVESTMENT_ACCOUNT_CLOSE_DATA,
   type InvestmentAccountCloseFormData,
-} from "@/components/futuremodels/AddInvestmentAccountClose";
+} from "@/components/Authorization/Account/AddInvestmentAccountClose";
 
 export interface AuthorizeInvestmentPaymentClosingModalProps {
   open: boolean;

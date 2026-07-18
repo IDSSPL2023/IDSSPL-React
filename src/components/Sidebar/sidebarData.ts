@@ -226,7 +226,7 @@ export const menuItems: NavItemData[] = [
       },
       {
         id: "clerk-account-opening",
-        title: "Account Clsoing",
+        title: "Account Closing",
         icon: Landmark,
         href: "/account-closing"
       },
