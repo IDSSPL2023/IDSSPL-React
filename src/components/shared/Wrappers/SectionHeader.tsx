@@ -30,8 +30,8 @@ const SectionHeader = ({
       <div className="flex items-start gap-3">
         {icon && (
           <div className={`flex-shrink-0 ${iconSize}`}>
-            {React.cloneElement(icon as React.ReactElement, {
-              className: `w-full h-full object-contain ${(icon as React.ReactElement).props.className || ''}`,
+            {React.cloneElement(icon as React.ReactElement<{ className?: string }>, {
+              className: `w-full h-full object-contain ${(icon as React.ReactElement<{ className?: string }>).props.className || ''}`,
             })}
           </div>
         )}
