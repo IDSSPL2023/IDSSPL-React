@@ -159,17 +159,18 @@ export const router = createBrowserRouter([
       { path: "/authorization/transaction/rtgs", element: <RtgsAuthorizePage /> },
       { path: "/authorization/transaction/td-interest-payment", element: <TdInterestPaymentAuthorizePage /> },
       { path: "/authorization/transaction/tds-transaction", element: <TdsTransactionAuthorizePage /> },
-      { path: "/authorization\/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
+      { path: "/authorization/transaction/tl-cc-installment", element: <TlCcInstallmentAuthorizePage /> },
       { path: "/authorization/transaction/tl-disbursement", element: <TlDisbursementAuthorizePage /> },
     { path: "/authorization/transaction/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/authorization/transaction/transfer", element: <TransferAuthorizePage /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/transaction/term-deposit-interest-payment", element: <TermDepositInterestPayment /> },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
+       {path: "/authorization/sms-authorize", element: <SMSAuthorizeModal/>},
+       
       { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
       { path: "/sms", element: <SMSRegistrationPage/> },
-      { path: "/authorization/sms-authorize", element: <SMSAuthorize /> },
-       
+     
       
       { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
