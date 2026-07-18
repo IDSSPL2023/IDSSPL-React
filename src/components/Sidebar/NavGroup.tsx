@@ -9,12 +9,13 @@ type NavGroupProps = {
   item: NavItemData;
   pathname: string;
   collapsed?: boolean;
+  href?: string;
 };
 
 const FLYOUT_WIDTH = 240;
 const FLYOUT_MARGIN = 8;
 
-export default function NavGroup({ item, pathname, collapsed = false }: NavGroupProps) {
+export default function NavGroup({ item, pathname, collapsed = false,href }: NavGroupProps) {
   const router = useRouter();
   const { tRaw } = useBilingual();
   const children = item.children ?? [];
@@ -87,12 +88,20 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+    const handleClick = () => {
+    if (item.href) {
+      router.push(item.href)
+    }else{
+      setOpen((prev) => !prev)
+    }
+  };
+
   return (
     <div className="select-none">
       <button
         ref={triggerRef}
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleClick}
         title={collapsed ? label : undefined}
         aria-haspopup="menu"
         aria-expanded={open}
