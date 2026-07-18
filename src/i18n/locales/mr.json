@@ -88,6 +88,14 @@
       "investment": {
         "title": "गुंतवणूक",
         "description": "गुंतवणूक अर्जाचा तपशील भरा."
+      },
+      "fixedAsset": {
+        "title": "स्थायी मालमत्ता",
+        "description": "स्थायी मालमत्ता अर्जाचा तपशील भरा."
+      },
+      "pigmy": {
+        "title": "पिग्मी",
+        "description": "पिग्मी खाते उघडण्याचा तपशील भरा."
       }
     },
     "filters": {
@@ -112,7 +120,9 @@
       "menuStandingInstruction": "स्टँडिंग इन्स्ट्रक्शन",
       "menuMemo": "मेमो",
       "menuOperativeInoperative": "खाते कार्यरत/निष्क्रिय",
-      "menuLienMark": "लियन मार्क / स्टॉप"
+      "menuLienMark": "लियन मार्क / स्टॉप",
+      "menuPigmyOpenDetails": "पिग्मी ओपन तपशील",
+      "menuAddInsuranceDetails": "विमा तपशील जोडा"
     },
     "addForm": {
       "title": "खाते जोडा",
@@ -268,7 +278,9 @@
       "fixedAssetAuthorization": "स्थिर मालमत्ता अधिकृतीकरण",
       "fixedAssetClosing": "स्थिर मालमत्ता बंद करणे",
       "investmentAuthorization": "गुंतवणूक अधिकृतीकरण",
-      "investmentClosing": "गुंतवणूक बंद करणे"
+      "investmentClosing": "गुंतवणूक बंद करणे",
+      "pigmyAuthorization": "पिग्मी ओपन अधिकृतीकरण",
+      "pigmyClosing": "पिग्मी बंद अधिकृतीकरण"
     }
   },
   "tdClose": {

@@ -21,6 +21,7 @@ import AccountMasterDepositPage from "@/pages/account-master/AccountMasterDeposi
 import AccountMasterInvestmentPage from "@/pages/account-master/AccountMasterInvestmentPage";
 import AccountMasterLoanPage from "@/pages/account-master/AccountMasterLoanPage";
 import AccountMasterFixedAssetPage from "@/pages/account-master/AccountMasterFixedAssetPage";
+import AccountMasterPigmyPage from "@/pages/account-master/AccountMasterPigmyPage";
 import AccountMasterPage from "@/pages/AccountMasterPage";
 import AiDashboardPage from "@/pages/AiDashboardPage";
 import AssignUserRolePage from "@/pages/AssignUserRolePage";
@@ -28,6 +29,8 @@ import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
 import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
+import AuthorizePigmyOpenPage from "@/pages/authorization/pigmy/AuthorizePigmyOpenPage";
+import AuthorizePigmyClosePage from "@/pages/authorization/pigmy/AuthorizePigmyClosePage";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
 import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearingPage";
 import AuthorizeTransactionPage from "@/pages/authorization/transaction/AuthorizeTransactionPage";
@@ -157,6 +160,7 @@ export const router = createBrowserRouter([
       { path: "/account-master/investment", element: <AccountMasterInvestmentPage /> },
       { path: "/account-master/loan", element: <AccountMasterLoanPage /> },
       { path: "/account-master/fixed-asset", element: <AccountMasterFixedAssetPage /> },
+      { path: "/account-master/pigmy", element: <AccountMasterPigmyPage /> },
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
@@ -166,6 +170,8 @@ export const router = createBrowserRouter([
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
       { path: "/authorization/authorizeaccountmain/authorizeaccount", element: <AuthorizeAccountPage /> },
+      { path: "/authorization/pigmy/open", element: <AuthorizePigmyOpenPage /> },
+      { path: "/authorization/pigmy/close", element: <AuthorizePigmyClosePage /> },
       { path: "/authorization/authorizecustomer", element: <AuthorizationCustomerPage /> },
       { path: "/authorization/clearing", element: <AuthorizeClearingPage /> },
       { path: "/authorization/transaction", element: <AuthorizeTransactionPage /> },
@@ -191,20 +197,20 @@ export const router = createBrowserRouter([
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
-      { path: "/futuremodels/casa-closing", element: <CasaClosingPage /> },
-      { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
+      { path: "/authorization/authorizeaccountmain/casa-closing", element: <CasaClosingPage /> },
+      { path: "/authorization/authorizeaccountmain/FixedAsset", element: <FixedAssetPage /> },
       { path: "/futuremodels/investment-account", element: <InvestmentAccountPage /> },
-      { path: "/futuremodels/investment-account-close", element: <InvestmentAccountClosePage /> },
+      { path: "/authorization/authorizeaccountmain/investment-account-close", element: <InvestmentAccountClosePage /> },
       // { path: "/futuremodels/lean", element: <LeanPage /> },
       // { path: "/futuremodels/memo", element: <MemoPage /> },
       { path: "/futuremodels/pigmy-deposit-details", element: <PigmyDepositDetailsPage /> },
       { path: "/futuremodels/PigmyDetails", element: <PigmyDetailsPage /> },
       { path: "/futuremodels/standing-instructions", element: <StandingInstructionsPage /> },
       { path: "/futuremodels/td-calculate", element: <TdCalculatePage /> },
-      { path: "/futuremodels/td-close", element: <TermDepositClosePage /> },
+      { path: "/authorization/authorizeaccountmain/td-close", element: <TermDepositClosePage /> },
       { path: "/futuremodels/td-open", element: <TdOpenPage /> },
       { path: "/futuremodels/TDClosingReinvest", element: <TDClosingReinvestPage /> },
-      { path: "/futuremodels/tl-close", element: <TlClosePage /> },
+      { path: "/authorization/authorizeaccountmain/tl-close", element: <TlClosePage /> },
       { path: "/futuremodels/tl-open", element: <TermLoanOpenPage /> },
       { path: "/futuremodels/tl-other-charges", element: <TLOtherChargesPage /> },
       { path: "/futuremodels/un-lean", element: <UnLeanPage /> },

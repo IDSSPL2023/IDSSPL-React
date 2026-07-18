@@ -27,6 +27,7 @@ interface AddFixedAssetAccountModalProps {
   onClose?: () => void;
   onValidate?: () => void;
   onSave?: () => void;
+  isPageMode?: boolean;
 }
 
 type DeprecationMethod = "Day" | "Month";
@@ -36,8 +37,6 @@ interface CustomerListRow {
   customerId: string;
   name: string;
 }
-
-
 
 function useCloseHandler(onClose?: () => void) {
   const router = useRouter();
@@ -50,8 +49,7 @@ function useCloseHandler(onClose?: () => void) {
   };
 }
 
-// Sample rows for the Customer pickup list, opened from the
-// Customer ID field's menu button
+// Sample rows for the Customer pickup list
 const CUSTOMER_LIST: CustomerListRow[] = [
   { customerId: "000012", name: "BALAMI MANJUNATH IRANNA" },
   { customerId: "0002000001", name: "SAVAKAR RAMANNA FAKIRAPPA00000....." },
@@ -67,8 +65,6 @@ const CUSTOMER_LIST: CustomerListRow[] = [
   { customerId: "0002000011", name: "SONNAD RAJASAB HASANASAB" },
   { customerId: "0002000012", name: "HANAMAR SURESH PAKEERAPPA" },
 ];
-
-
 
 function HeaderIcon() {
   return (
@@ -104,7 +100,6 @@ function BilingualLabel({
   );
 }
 
-
 interface FieldWrapProps {
   label: string;
   labelHi?: string;
@@ -127,8 +122,6 @@ function FieldWrap({ label, labelHi, required = true, error, children }: FieldWr
     </div>
   );
 }
-
-
 
 interface TextFieldProps {
   icon?: ReactNode;
@@ -167,7 +160,6 @@ function TextField({ icon, value, onChange, placeholder, prefix, disabled, error
   );
 }
 
-
 function TextFieldWithMenu({
   icon,
   value,
@@ -201,10 +193,6 @@ function TextFieldWithMenu({
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/*  Primitive: SelectField — matches TLCalculatorModal's SelectField    */
-/* ------------------------------------------------------------------ */
 
 interface SelectFieldProps {
   icon?: ReactNode;
@@ -261,8 +249,6 @@ function SelectField({ icon, value, onChange, options, placeholder = "Select", e
   );
 }
 
-
-
 function RadioOption<T extends string>({
   label,
   value,
@@ -309,11 +295,9 @@ function CustomerListModal({
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4">
       <div className="relative flex max-h-[85vh] w-[95vw] max-w-[720px] flex-col overflow-hidden rounded-[28px] bg-white shadow-2xl">
-        {/* Decorative corner circles — clipped to the card */}
         <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-primary-100" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-primary-100" />
 
-        {/* Header — title, single search box, close circle */}
         <div className="relative z-10 flex items-center justify-between gap-4 px-6 pt-6 pb-5">
           <h2 className="shrink-0 text-lg font-bold text-slate-800">Customer List</h2>
           <div className="relative w-full max-w-[260px]">
@@ -336,7 +320,6 @@ function CustomerListModal({
           </button>
         </div>
 
-        {/* Table */}
         <div className="scrollbar-hide relative z-10 flex-1 overflow-y-auto px-6 pb-6">
           <table className="w-full border-collapse text-left text-sm">
             <thead>
@@ -391,8 +374,6 @@ function CustomerListModal({
   );
 }
 
-
-
 function SuccessModal({
   title = "Save Successfully",
   message = "Your Account is Saved Successfully",
@@ -407,11 +388,9 @@ function SuccessModal({
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4">
       <div className="relative flex w-[95vw] max-w-[380px] flex-col items-center overflow-hidden rounded-[24px] bg-white px-8 py-10 shadow-2xl">
-        {/* Decorative corner circles */}
         <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-primary-50" />
         <div className="pointer-events-none absolute -bottom-10 -left-10 h-24 w-24 rounded-full bg-primary-50" />
 
-        {/* Close button */}
         <button
           type="button"
           onClick={onClose}
@@ -421,7 +400,6 @@ function SuccessModal({
           <X className="h-4 w-4" strokeWidth={1.75} />
         </button>
 
-        {/* Check icon with dotted sparkle accents */}
         <div className="relative z-10 mb-5 flex h-20 w-20 items-center justify-center">
           <span className="absolute -top-1 left-1 h-1.5 w-1.5 rounded-full bg-primary/60" />
           <span className="absolute -top-2 right-2 h-1 w-1 rounded-full bg-primary/40" />
@@ -435,11 +413,9 @@ function SuccessModal({
           </span>
         </div>
 
-        {/* Title + message */}
         <h3 className="relative z-10 text-center text-lg font-bold text-slate-800">{title}</h3>
         <p className="relative z-10 mt-1 text-center text-sm text-slate-500">{message}</p>
 
-        {/* OK button */}
         <button
           type="button"
           onClick={onClose}
@@ -453,13 +429,14 @@ function SuccessModal({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Main: AddFixedAssetAccountModal                                    */
+/*  Main: FixedAssetPage                                              */
 /* ------------------------------------------------------------------ */
 
 export default function FixedAssetPage({
   onClose,
   onValidate = () => {},
   onSave = () => {},
+  isPageMode = false,
 }: AddFixedAssetAccountModalProps) {
   const handleClose = useCloseHandler(onClose);
 
@@ -537,9 +514,10 @@ export default function FixedAssetPage({
     handleClose();
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="flex max-h-[90vh] w-[95vw] max-w-[1150px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+  // Page mode render (without modal overlay)
+  if (isPageMode) {
+    return (
+      <div className="flex flex-col">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
           <div className="flex items-start gap-3">
@@ -557,14 +535,6 @@ export default function FixedAssetPage({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label="Close"
-            className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-          >
-            <X className="h-5 w-5" strokeWidth={1.75} />
-          </button>
         </div>
 
         {/* Body */}
@@ -699,7 +669,6 @@ export default function FixedAssetPage({
               />
             </FieldWrap>
 
-            {/* Radio groups sit in the same grid, spanning full width */}
             <div className="sm:col-span-2 lg:col-span-2">
               <BilingualLabel en="Method of Deprecation Calculation" mr="जाणिवाने कमी होण्याची गणना करण्याची पद्धत ?" />
               <div className="flex h-[42px] items-center gap-8">
@@ -765,19 +734,265 @@ export default function FixedAssetPage({
             <ChevronDown className="h-4 w-4" />
           </button>
         </div>
+
+        {/* Modals */}
+        {isCustomerListOpen && (
+          <CustomerListModal onSelect={handleCustomerSelect} onClose={() => setIsCustomerListOpen(false)} />
+        )}
+
+        {isSuccessOpen && (
+          <SuccessModal
+            title="Save Successfully"
+            message="Your Fixed Asset Account is Saved Successfully"
+            onClose={handleSuccessClose}
+          />
+        )}
       </div>
+    );
+  }
 
-      {isCustomerListOpen && (
-        <CustomerListModal onSelect={handleCustomerSelect} onClose={() => setIsCustomerListOpen(false)} />
-      )}
+  // Modal mode render (original)
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="flex max-h-[90vh] w-[95vw] max-w-[1150px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5">
+          <div className="flex items-start gap-3">
+            <HeaderIcon />
+            <div>
+              <h2 className="text-[20px] font-semibold leading-6 tracking-[0.0025em] text-slate-800">
+                Add Fixed Asset Account
+                <span className="text-slate-400"> / </span>
+                <span className="text-[#64748B]">स्थिर मालमत्ता खाते जोडा</span>
+              </h2>
+              <p className="mt-1 text-sm font-normal leading-5 tracking-[0.0025em] text-slate-500">
+                Add some basic information related to the Employee
+                <span className="text-slate-400"> / </span>
+                कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती जोडा
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleClose}
+            aria-label="Close"
+            className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+          >
+            <X className="h-5 w-5" strokeWidth={1.75} />
+          </button>
+        </div>
 
-      {isSuccessOpen && (
-        <SuccessModal
-          title="Save Successfully"
-          message="Your Fixed Asset Account is Saved Successfully"
-          onClose={handleSuccessClose}
-        />
-      )}
+        {/* Body - same as page mode */}
+        <div className="scrollbar-hide flex-1 overflow-y-auto overflow-x-hidden px-6 py-5">
+          <div className="grid grid-cols-1 gap-4 rounded-[20px] border-x border-b-2 border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
+            <FieldWrap label="Application Number" labelHi="अर्ज क्रमांक" error={errors.applicationNumber}>
+              <TextField
+                icon={<FileText size={16} />}
+                value={applicationNumber}
+                onChange={(v) => {
+                  setApplicationNumber(v);
+                  setErrors((prev) => ({ ...prev, applicationNumber: "" }));
+                }}
+                error={!!errors.applicationNumber}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Customer ID" labelHi="ग्राहक आयडी" error={errors.customerId}>
+              <TextFieldWithMenu
+                icon={<IdCard size={16} />}
+                value={customerId}
+                onChange={(v) => {
+                  setCustomerId(v);
+                  setErrors((prev) => ({ ...prev, customerId: "" }));
+                }}
+                menuActive={isCustomerListOpen}
+                onMenuClick={() => setIsCustomerListOpen(true)}
+                error={!!errors.customerId}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Customer Name" labelHi="ग्राहकाचे नाव" error={errors.customerName}>
+              <TextField
+                icon={<User size={16} />}
+                value={customerName}
+                onChange={(v) => {
+                  setCustomerName(v);
+                  setErrors((prev) => ({ ...prev, customerName: "" }));
+                }}
+                error={!!errors.customerName}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Date of Application" labelHi="अर्जाची तारीख" error={errors.dateOfApplication}>
+              <TextField
+                icon={<CalendarDays size={16} />}
+                value={dateOfApplication}
+                onChange={(v) => {
+                  setDateOfApplication(v);
+                  setErrors((prev) => ({ ...prev, dateOfApplication: "" }));
+                }}
+                error={!!errors.dateOfApplication}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Item Name" labelHi="वस्तूचे नाव" error={errors.itemName}>
+              <TextField
+                icon={<Package size={16} />}
+                value={itemName}
+                onChange={(v) => {
+                  setItemName(v);
+                  setErrors((prev) => ({ ...prev, itemName: "" }));
+                }}
+                error={!!errors.itemName}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Min Balance ID" labelHi="किमान शिल्लक आयडी" error={errors.minBalanceId}>
+              <SelectField
+                icon={<Users size={16} />}
+                value={minBalanceId}
+                onChange={(v) => {
+                  setMinBalanceId(v);
+                  setErrors((prev) => ({ ...prev, minBalanceId: "" }));
+                }}
+                options={["200", "500", "1000"]}
+                error={!!errors.minBalanceId}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Purchase Date" labelHi="खरेदीची तारीख" error={errors.purchaseDate}>
+              <TextField
+                icon={<CalendarDays size={16} />}
+                value={purchaseDate}
+                onChange={(v) => {
+                  setPurchaseDate(v);
+                  setErrors((prev) => ({ ...prev, purchaseDate: "" }));
+                }}
+                error={!!errors.purchaseDate}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Purchase Amount" labelHi="खरेदीची तारीख" required={false}>
+              <TextField icon={<IndianRupee size={16} />} value={purchaseAmount} onChange={setPurchaseAmount} />
+            </FieldWrap>
+
+            <FieldWrap label="Deprecation Rate" labelHi="जुना होण्याचा दर" error={errors.deprecationRate}>
+              <TextField
+                prefix="%"
+                value={deprecationRate}
+                onChange={(v) => {
+                  setDeprecationRate(v);
+                  setErrors((prev) => ({ ...prev, deprecationRate: "" }));
+                }}
+                error={!!errors.deprecationRate}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Description" labelHi="वर्णन" error={errors.description}>
+              <SelectField
+                icon={<FileText size={16} />}
+                value={description}
+                onChange={(v) => {
+                  setDescription(v);
+                  setErrors((prev) => ({ ...prev, description: "" }));
+                }}
+                options={["Office Equipment", "Vehicle", "Furniture", "Machinery"]}
+                placeholder="-"
+                error={!!errors.description}
+              />
+            </FieldWrap>
+
+            <FieldWrap label="Bill Number" labelHi="बिल नंबर" error={errors.billNumber}>
+              <TextField
+                icon={<Receipt size={16} />}
+                value={billNumber}
+                onChange={(v) => {
+                  setBillNumber(v);
+                  setErrors((prev) => ({ ...prev, billNumber: "" }));
+                }}
+                error={!!errors.billNumber}
+              />
+            </FieldWrap>
+
+            <div className="sm:col-span-2 lg:col-span-2">
+              <BilingualLabel en="Method of Deprecation Calculation" mr="जाणिवाने कमी होण्याची गणना करण्याची पद्धत ?" />
+              <div className="flex h-[42px] items-center gap-8">
+                <RadioOption label="Day" value="Day" selected={deprecationMethod} onSelect={setDeprecationMethod} />
+                <RadioOption label="Month" value="Month" selected={deprecationMethod} onSelect={setDeprecationMethod} />
+              </div>
+            </div>
+
+            <div className="sm:col-span-2 lg:col-span-2">
+              <BilingualLabel en="Deprecation Calculate On" mr="कमी होणे मोजा सुरु ?" />
+              <div className="flex h-[42px] items-center gap-8">
+                <RadioOption
+                  label="Opening Balance"
+                  value="Opening Balance"
+                  selected={deprecationCalculateOn}
+                  onSelect={setDeprecationCalculateOn}
+                />
+                <RadioOption
+                  label="Current Balance"
+                  value="Current Balance"
+                  selected={deprecationCalculateOn}
+                  onSelect={setDeprecationCalculateOn}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
+
+        {/* Footer */}
+        <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
+          <button
+            type="button"
+            onClick={handleValidate}
+            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg bg-primary text-[14px] font-medium text-white transition hover:bg-primary-700"
+          >
+            Validate
+            <Check className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={handleClose}
+            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white text-[14px] font-medium text-slate-600 transition hover:bg-slate-50"
+          >
+            Cancel
+            <X className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-primary-50 text-[14px] font-medium text-primary transition hover:bg-primary-100"
+          >
+            Save
+            <ChevronDown className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Modals */}
+        {isCustomerListOpen && (
+          <CustomerListModal onSelect={handleCustomerSelect} onClose={() => setIsCustomerListOpen(false)} />
+        )}
+
+        {isSuccessOpen && (
+          <SuccessModal
+            title="Save Successfully"
+            message="Your Fixed Asset Account is Saved Successfully"
+            onClose={handleSuccessClose}
+          />
+        )}
+      </div>
     </div>
   );
 }

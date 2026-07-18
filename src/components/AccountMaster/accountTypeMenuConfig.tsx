@@ -7,6 +7,8 @@ import {
   ClipboardList,
   StickyNote,
   ShieldAlert,
+  PiggyBank,
+  ShieldPlus,
 } from "lucide-react";
 import { type RowActionMenuItem } from "../shared/RowActionMenu";
 import type { RowData } from "./AccountMasterTable";
@@ -22,6 +24,8 @@ export interface AccountRowMenuHandlers {
   onStandingInstruction: (row: RowData) => void;
   onMemo: (row: RowData) => void;
   onLienMark: (row: RowData) => void;
+  onPigmyOpenDetails: (row: RowData) => void;
+  onAddInsuranceDetails: (row: RowData) => void;
 }
 
 export interface AccountTypeMenuConfig {
@@ -43,6 +47,17 @@ const viewEditFreezeItems = (
   { key: "freeze", label: tRaw("accountMaster.table.menuFreezeUnfreeze"), icon: Lock, onClick: () => handlers.onFreeze(row) },
 ];
 
+const addInsuranceDetailsItem = (
+  row: RowData,
+  tRaw: (key: string) => string,
+  handlers: AccountRowMenuHandlers
+): RowActionMenuItem => ({
+  key: "addInsuranceDetails",
+  label: tRaw("accountMaster.table.menuAddInsuranceDetails"),
+  icon: ShieldPlus,
+  onClick: () => handlers.onAddInsuranceDetails(row),
+});
+
 // CA/SA Account Type - Menu 1
 const caSaMenuConfig: AccountTypeMenuConfig = {
   accountType: "ca-sa",
@@ -52,6 +67,7 @@ const caSaMenuConfig: AccountTypeMenuConfig = {
     { key: "standingInstruction", label: tRaw("accountMaster.table.menuStandingInstruction"), icon: ClipboardList, onClick: () => handlers.onStandingInstruction(row) },
     { key: "memo", label: tRaw("accountMaster.table.menuMemo"), icon: StickyNote, onClick: () => handlers.onMemo(row) },
     { key: "operative", label: tRaw("accountMaster.table.menuOperativeInoperative"), icon: UserRoundCog, onClick: () => handlers.onOperative(row) },
+    addInsuranceDetailsItem(row, tRaw, handlers),
   ],
 };
 
@@ -62,6 +78,7 @@ const depositMenuConfig: AccountTypeMenuConfig = {
     ...viewEditFreezeItems(row, tRaw, handlers),
     { key: "lienMark", label: tRaw("accountMaster.table.menuLienMark"), icon: ShieldAlert, onClick: () => handlers.onLienMark(row) },
     { key: "memo", label: tRaw("accountMaster.table.menuMemo"), icon: StickyNote, onClick: () => handlers.onMemo(row) },
+    addInsuranceDetailsItem(row, tRaw, handlers),
   ],
 };
 
@@ -71,6 +88,7 @@ const loanMenuConfig: AccountTypeMenuConfig = {
   getMenuItems: (row, tRaw, handlers) => [
     ...viewEditFreezeItems(row, tRaw, handlers),
     { key: "memo", label: tRaw("accountMaster.table.menuMemo"), icon: StickyNote, onClick: () => handlers.onMemo(row) },
+    addInsuranceDetailsItem(row, tRaw, handlers),
   ],
 };
 
@@ -80,10 +98,22 @@ const investmentMenuConfig: AccountTypeMenuConfig = {
   getMenuItems: (row, tRaw, handlers) => viewEditFreezeItems(row, tRaw, handlers),
 };
 
-// Fixed Asset Account Type - Menu 4 (same as investment)
+// Fixed Asset Account Type - Menu 4 (same as investment, plus Add Insurance Details)
 const fixedAssetMenuConfig: AccountTypeMenuConfig = {
   accountType: "fixed-asset",
-  getMenuItems: (row, tRaw, handlers) => viewEditFreezeItems(row, tRaw, handlers),
+  getMenuItems: (row, tRaw, handlers) => [
+    ...viewEditFreezeItems(row, tRaw, handlers),
+    addInsuranceDetailsItem(row, tRaw, handlers),
+  ],
+};
+
+// Pigmy Account Type - Menu 5
+const pigmyMenuConfig: AccountTypeMenuConfig = {
+  accountType: "pigmy",
+  getMenuItems: (row, tRaw, handlers) => [
+    ...viewEditFreezeItems(row, tRaw, handlers),
+    { key: "pigmyOpenDetails", label: tRaw("accountMaster.table.menuPigmyOpenDetails"), icon: PiggyBank, onClick: () => handlers.onPigmyOpenDetails(row) },
+  ],
 };
 
 // Configuration mapping
@@ -93,6 +123,7 @@ export const accountTypeMenuConfigs: Record<AccountMasterType, AccountTypeMenuCo
   loan: loanMenuConfig,
   investment: investmentMenuConfig,
   "fixed-asset": fixedAssetMenuConfig,
+  pigmy: pigmyMenuConfig,
 };
 
 /** Returns the row-action menu items for a given account type, wired to the caller's handlers. */

@@ -9,7 +9,7 @@ import AddCashWithdrawal from '@/components/TransactionMaster/AddCashWithdrawal'
 import AddHoTransfer from '@/components/HO-Clerk/AddHoTransfer';
 import AddReconciliation from '@/components/HO-Clerk/AddReconciliation';
 import AddRtgsOutward from '@/components/HO-Clerk/AddRtgsOutward';
-import AddInvestmentAccountClose from '@/components/futuremodels/AddInvestmentAccountClose';
+import AddInvestmentAccountClose from '@/components/Authorization/Account/AddInvestmentAccountClose';
 
 const HO_CLERK_TRANSACTION_ITEMS = [
   {

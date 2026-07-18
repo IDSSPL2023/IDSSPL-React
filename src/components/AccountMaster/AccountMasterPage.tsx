@@ -15,9 +15,11 @@ import MemoModal from "../../pages/futuremodels/MemoPage";
 import LeanPage from "../../pages/futuremodels/LeanPage";
 import { getMenuItemsForAccountType } from "@/components/AccountMaster/accountTypeMenuConfig";
 import AccountOperativeModal, {  type AccountOperativeSubmitPayload} from "@/components/AccountMaster/AccountOperativeModal";
+import AddPigmyDepositModal from "@/components/futuremodels/AddPigmyDepositModal";
+import AddInsuranceDetailsModal from "@/components/AccountMaster/AddInsuranceDetailsModal";
 import { useBilingual } from "@/i18n/useBilingual";
 
-export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment" | "fixed-asset";
+export type AccountMasterType = "ca-sa" | "deposit" | "loan" | "investment" | "fixed-asset" | "pigmy";
 
 type AccountMasterPageProps = {
   accountType: AccountMasterType;
@@ -43,6 +45,8 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
   const [standingInstructionRow, setStandingInstructionRow] = useState<RowData | null>(null);
   const [memoRow, setMemoRow] = useState<RowData | null>(null);
   const [leanRow, setLeanRow] = useState<RowData | null>(null);
+  const [pigmyOpenDetailsRow, setPigmyOpenDetailsRow] = useState<RowData | null>(null);
+  const [insuranceDetailsRow, setInsuranceDetailsRow] = useState<RowData | null>(null);
 
   const handleView = (row: RowData) => {
     setSelectedAccountRow(row);
@@ -85,6 +89,8 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
       onStandingInstruction: (r) => setStandingInstructionRow(r),
       onMemo: (r) => setMemoRow(r),
       onLienMark: (r) => setLeanRow(r),
+      onPigmyOpenDetails: (r) => setPigmyOpenDetailsRow(r),
+      onAddInsuranceDetails: (r) => setInsuranceDetailsRow(r),
     });
 
   return (
@@ -166,10 +172,24 @@ const AccountMasterPage = ({ accountType }: AccountMasterPageProps) => {
         />
       )}
 
+      {/* Fixed LeanPage rendering */}
       {leanRow && (
         <LeanPage
           onClose={() => setLeanRow(null)}
+          accountCode={leanRow.accountId}
+          accountName={leanRow.accountName}
+          // You can pass additional props if available in your RowData
+          // ledgerBalance={leanRow.ledgerBalance}
+          // availableBalance={leanRow.availableBalance}
         />
+      )}
+
+      {pigmyOpenDetailsRow && (
+        <AddPigmyDepositModal open onClose={() => setPigmyOpenDetailsRow(null)} />
+      )}
+
+      {insuranceDetailsRow && (
+        <AddInsuranceDetailsModal open onClose={() => setInsuranceDetailsRow(null)} />
       )}
     </div>
   );

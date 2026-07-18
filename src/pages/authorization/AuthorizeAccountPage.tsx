@@ -19,6 +19,7 @@ import AuthorizationTabs, {
 import AuthorizeSavingAccountModal from "@/components/Authorization/Account/AuthorizeSavingAccountModal";
 import AuthorizeLoanAccountModal from "@/components/Authorization/Account/AuthorizeLoanAccountModal";
 import AuthorizeDepositAccountModal from "@/components/Authorization/Account/AuthorizeDepositAccountModal";
+import AuthorizeFixedAssetAccountModal from "@/components/Authorization/Account/AuthorizeFixedAssetAccountModal";
 
 const authorizeColumns: ColumnConfig[] = [
   {
@@ -355,6 +356,11 @@ const AuthorizeAccountPage = () => {
       />
     ) : activeCategory === "deposit" ? (
       <AuthorizeDepositAccountModal
+        open
+        onClose={() => setOpenAuthorizeAccount(false)}
+      />
+    ) : activeCategory === "fixedAsset" ? (
+      <AuthorizeFixedAssetAccountModal
         open
         onClose={() => setOpenAuthorizeAccount(false)}
       />

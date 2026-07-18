@@ -12,17 +12,22 @@ import {
   ShieldAlert,
   CreditCard,
   CircleDollarSign,
+  PiggyBank,
+  ShieldOff,
   type LucideIcon,
 } from "lucide-react";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import { useBilingual } from "@/i18n/useBilingual";
 import { useRouter } from "@/lib/navigation";
+// Import the FixedAssetPage component
+import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
 
 type AuthorizeMasterItem = {
   key: string;
   icon: LucideIcon;
   cardKey: string;
   href?: string;
+  isModal?: boolean; // Flag to identify items that should open as modals
 };
 
 const ITEMS: AuthorizeMasterItem[] = [
@@ -36,46 +41,68 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "casaAuthorizationClosing",
     icon: UserX,
     cardKey: "casaAuthorizationClosing",
+    href: "/authorization/authorizeaccountmain/casa-closing",
   },
   {
     key: "depositAuthorization",
     icon: ShieldCheck,
     cardKey: "depositAuthorization",
+    href: "/authorization/authorizeaccountmain/authorizeaccount",
   },
   {
     key: "depositAuthorizationClosing",
     icon: Share2,
     cardKey: "depositAuthorizationClosing",
+    href: "/authorization/authorizeaccountmain/td-close",
   },
   {
     key: "loanAuthorization",
     icon: Power,
     cardKey: "loanAuthorization",
+    href: "/authorization/authorizeaccountmain/authorizeaccount",
   },
   {
     key: "loanClosing",
     icon: BarChart3,
     cardKey: "loanClosing",
+    href: "/authorization/authorizeaccountmain/tl-close"
   },
   {
     key: "fixedAssetAuthorization",
     icon: Building2,
     cardKey: "fixedAssetAuthorization",
+    isModal: true, // Mark this as a modal item
+    // href is not needed for modal items
   },
   {
     key: "fixedAssetClosing",
     icon: ShieldAlert,
     cardKey: "fixedAssetClosing",
+    // href: "/authorization/authorizeaccountmain/fixed-close",
   },
   {
     key: "investmentAuthorization",
     icon: CreditCard,
     cardKey: "investmentAuthorization",
+    href: "/authorization/authorizeaccountmain/authorizeaccount",
   },
   {
     key: "investmentClosing",
     icon: CircleDollarSign,
     cardKey: "investmentClosing",
+    href: "/authorization/authorizeaccountmain/investment-account-close",
+  },
+  {
+    key: "pigmyAuthorization",
+    icon: PiggyBank,
+    cardKey: "pigmyAuthorization",
+    href: "/authorization/pigmy/open",
+  },
+  {
+    key: "pigmyClosing",
+    icon: ShieldOff,
+    cardKey: "pigmyClosing",
+    href: "/authorization/pigmy/close",
   },
 ];
 
@@ -128,6 +155,7 @@ const AuthorizeAccountMainPage = () => {
   const { t, en, tRaw } = useBilingual();
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [isFixedAssetModalOpen, setIsFixedAssetModalOpen] = useState(false);
 
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -143,6 +171,18 @@ const AuthorizeAccountMainPage = () => {
       );
     });
   }, [query, en, tRaw]);
+
+  const handleCardOpen = (item: AuthorizeMasterItem) => {
+    if (item.isModal) {
+      // Open modal for items marked as modal
+      if (item.key === "fixedAssetAuthorization") {
+        setIsFixedAssetModalOpen(true);
+      }
+    } else if (item.href) {
+      // Navigate to route for items with href
+      router.push(item.href);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
@@ -195,13 +235,28 @@ const AuthorizeAccountMainPage = () => {
                   titleSecondary={tRaw(
                     `accountAuthorizeMaster.cards.${item.cardKey}`,
                   )}
-                  onOpen={() => item.href && router.push(item.href)}
+                  onOpen={() => handleCardOpen(item)}
                 />
               ))
             )}
           </div>
         </div>
       </div>
+
+      {/* Fixed Asset Authorization Modal */}
+      {isFixedAssetModalOpen && (
+        <FixedAssetPage
+          onClose={() => setIsFixedAssetModalOpen(false)}
+          onValidate={() => {
+            // Handle validate action
+            console.log("Validate clicked");
+          }}
+          onSave={() => {
+            // Handle save action
+            console.log("Save clicked");
+          }}
+        />
+      )}
     </div>
   );
 };

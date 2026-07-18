@@ -5,6 +5,14 @@ import ClearingFormModal from "@/components/Clerk/Clearing/ClearingFormModal";
 import { useBilingual } from "@/i18n/useBilingual";
 import { useRouter } from "@/lib/navigation";
 
+// Custom clearing modals imported from futuremodels/clerk modals
+import InwardClearingEntryModal from "@/components/futuremodels/InwardClearingEntryModal";
+import OutwardClearingBounceModal from "@/components/futuremodels/OutwardClearingBounceModal";
+import OutwardClearingEntryModal from "@/components/futuremodels/OutwardClearingEntryModal";
+import GeneratedInwardScheduleModal from "@/components/Clerk/Modals/GenerateInwardSchedule";
+import GenerateOutwardScheduleModal from "@/components/Clerk/Modals/GenerateOutwordSchedule";
+import ClearingTallyModal from "@/components/Clerk/Modals/ClearingTallyAndHouse";
+
 const ClerkClearingPage: FC = () => {
   const { en } = useBilingual();
   const router = useRouter();
@@ -24,9 +32,21 @@ const ClerkClearingPage: FC = () => {
 
       <HeroClearing onOpenMaster={setActiveMasterKey} />
 
-      {activeMasterKey && (
+      {activeMasterKey === "clearingTallyWithClearingHouse" ? (
+        <ClearingTallyModal open onClose={() => setActiveMasterKey(null)} />
+      ) : activeMasterKey === "generateInwardSchedule" ? (
+        <GeneratedInwardScheduleModal open onClose={() => setActiveMasterKey(null)} />
+      ) : activeMasterKey === "generateOutwardSchedule" ? (
+        <GenerateOutwardScheduleModal open onClose={() => setActiveMasterKey(null)} />
+      ) : activeMasterKey === "inwardClearingEntry" ? (
+        <InwardClearingEntryModal open onClose={() => setActiveMasterKey(null)} />
+      ) : activeMasterKey === "owClearingBounceMark" ? (
+        <OutwardClearingBounceModal open onClose={() => setActiveMasterKey(null)} />
+      ) : activeMasterKey === "outwardClearingEntry" ? (
+        <OutwardClearingEntryModal open onClose={() => setActiveMasterKey(null)} />
+      ) : activeMasterKey ? (
         <ClearingFormModal masterKey={activeMasterKey} onClose={() => setActiveMasterKey(null)} />
-      )}
+      ) : null}
     </div>
   );
 };
