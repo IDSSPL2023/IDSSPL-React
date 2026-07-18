@@ -9,12 +9,13 @@ type NavGroupProps = {
   item: NavItemData;
   pathname: string;
   collapsed?: boolean;
+  href?: string;
 };
 
 const FLYOUT_WIDTH = 240;
 const FLYOUT_MARGIN = 8;
 
-export default function NavGroup({ item, pathname, collapsed = false }: NavGroupProps) {
+export default function NavGroup({ item, pathname, collapsed = false,href }: NavGroupProps) {
   const router = useRouter();
   const { tRaw } = useBilingual();
   const children = item.children ?? [];
@@ -23,7 +24,18 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
   const hasActiveChild = children.some((child) => child.href === pathname);
 
   const [open, setOpen] = useState(false);
+  const [prevCollapsed, setPrevCollapsed] = useState(collapsed);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+
+  // When the sidebar itself collapses (e.g. the pointer leaves it), any open
+  // flyout would be left pointing at a trigger that just shrank/moved — close
+  // it so it doesn't linger disconnected from its trigger. Adjusted during
+  // render (rather than an effect) per React's guidance for resetting state
+  // in response to a prop change.
+  if (collapsed !== prevCollapsed) {
+    setPrevCollapsed(collapsed);
+    if (collapsed) setOpen(false);
+  }
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const flyoutRef = useRef<HTMLDivElement | null>(null);
 
@@ -76,12 +88,20 @@ export default function NavGroup({ item, pathname, collapsed = false }: NavGroup
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+    const handleClick = () => {
+    if (item.href) {
+      router.push(item.href)
+    }else{
+      setOpen((prev) => !prev)
+    }
+  };
+
   return (
     <div className="select-none">
       <button
         ref={triggerRef}
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleClick}
         title={collapsed ? label : undefined}
         aria-haspopup="menu"
         aria-expanded={open}

@@ -105,4 +105,20 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     icon: FALLBACK_ICON,
     href: "/transactionmaster/modify-tds-transaction",
   },
+  {
+    id: "new-pg-transaction-import",
+    titleEn: "New PG Transaction Import",
+    titleHi: "नवीन पीजी व्यवहार आयात",
+    descriptionEn: "Import new PG transaction details.",
+    icon: FALLBACK_ICON,
+    href: "/transactionmaster/new-pg-transaction-import",
+  },
+  {
+    id: "new-pg-transaction-export",
+    titleEn: "New PG Transaction Export",
+    titleHi: "नवीन पीजी व्यवहार निर्यात",
+    descriptionEn: "Export new PG transaction details.",
+    icon: FALLBACK_ICON,
+    href: "/transactionmaster/new-pg-transaction-export",
+  },
 ];

@@ -31,10 +31,17 @@ export const AUTHORIZE_TRANSACTION_ITEMS: AuthorizeTransactionItem[] = [
     icon: ICON,
   },
   {
-    id: "td-interest-payment",
+    id: "td-interest-payment-mark",
     title: "TD Interest Payment Mark Authorize",
     marathiTitle: "मुदत ठेव व्याज भुगतान चिन्हांकित",
     route: "/authorization/transaction/td-interest-payment",
+    icon: ICON,
+  },
+  {
+    id: "td-interest-payment",
+    title: "TD Interest Payment Authorize",
+    marathiTitle: "मुदत ठेव व्याज भुगतान",
+    route: "/authorization/transaction/term-deposit-interest-payment",
     icon: ICON,
   },
   {
@@ -77,6 +84,27 @@ export const AUTHORIZE_TRANSACTION_ITEMS: AuthorizeTransactionItem[] = [
     title: "Transfer Authorize",
     marathiTitle: "हस्तांतरण नोंद",
     route: "/authorization/transaction/transfer",
+    icon: ICON,
+  },
+  {
+    id: "modify-tds-transaction",
+    title: "Modify TDS Transaction Authorize",
+    marathiTitle: "टीडीएस व्यवहार सुधारणे",
+    route: "/authorization/transaction/modify-tds-transaction",
+    icon: ICON,
+  },
+  {
+    id: "new-pg-transaction-import",
+    title: "New PG Transaction Import Authorize",
+    marathiTitle: "नवीन पीजी व्यवहार आयात",
+    route: "/authorization/transaction/new-pg-transaction-import",
+    icon: ICON,
+  },
+  {
+    id: "new-pg-transaction-export",
+    title: "New PG Transaction Export Authorize",
+    marathiTitle: "नवीन पीजी व्यवहार निर्यात",
+    route: "/authorization/transaction/new-pg-transaction-export",
     icon: ICON,
   },
 ];

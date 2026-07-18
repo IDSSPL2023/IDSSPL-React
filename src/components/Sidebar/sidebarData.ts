@@ -12,18 +12,14 @@ import {
   Users,
   ArrowLeftRight,
   Building2,
-  Building,
   MessageSquare,
   Receipt,
   PlayCircle,
   ClipboardList,
-  BarChart3,
-  CalendarClock,
   Server,
   Settings,
   FileSpreadsheet,
   Banknote,
-  FileQuestion,
   IdCard,
   KeyRound,
   Search,
@@ -78,19 +74,23 @@ export const menuItems: NavItemData[] = [
     icon: FileText,
     children: [
       {
-        id: "mis-day-begin-end",
+        id: "daybeginend",
         title: "DAY Begin / End",
+        titleKey: "sidebar.dayBeginEnd",
         icon: PlayCircle,
+        href: "/day-begin-end",
       },
       {
         id: "mis-financial-closing",
         title: "Financial Closing",
         icon: FileText,
+        href: "/financial-closing",
       },
       {
         id: "mis-interest-posting",
         title: "Interest Posting",
         icon: Percent,
+        href: "/interest-posting",
       },
       {
         id: "mis-master-mainenance-global",
@@ -104,7 +104,7 @@ export const menuItems: NavItemData[] = [
         icon: Database,
         href: "/headofficemaster",
       },
-     {
+      {
         id: "mis-master-maintanance-user",
         title: "Master Maintenance - User",
         icon: Database,
@@ -114,19 +114,21 @@ export const menuItems: NavItemData[] = [
         id: "mis-support-utility",
         title: "Support Utility",
         icon: FileText,
+        href: "/support-utility",
       },
       {
         id: "mis-tds",
         title: "TDS",
         icon: Percent,
+        href: "/tds",
       },
-      {
-        id: "daybeginend",
-        title: "Day Begin / End",
-        titleKey: "sidebar.dayBeginEnd",
-        icon: Landmark,
-        href: "/day-begin-end",
-      },
+      // {
+      //   id: "daybeginend",
+      //   title: "Day Begin / End",
+      //   titleKey: "sidebar.dayBeginEnd",
+      //   icon: Landmark,
+      //   href: "/day-begin-end",
+      // },
     ],
   },
   {
@@ -216,26 +218,29 @@ export const menuItems: NavItemData[] = [
     titleKey: "sidebar.clerk",
     icon: User,
     children: [
-      // {
-      //   id: "clerk-account",
-      //   title: "Account",
-      //   icon: Landmark,
-      // },
-      // {
-      //   id: "clerk-account-opening",
-      //   title: "Account Opening",
-      //   icon: Landmark,
-      // },
       {
-        id: "clerk-application",
-        title: "Application",
-        icon: FileText,
+        id: "clerk-account",
+        title: "Account",
+        icon: Landmark,
         href: "/account-master",
       },
+      {
+        id: "clerk-account-opening",
+        title: "Account Clsoing",
+        icon: Landmark,
+        href: "/account-closing"
+      },
+      // {
+      //   id: "clerk-application",
+      //   title: "Application",
+      //   icon: FileText,
+      //   // href: "/account-master",
+      // },
       {
         id: "clerk-bills",
         title: "Bills",
         icon: Receipt,
+        href: "/account-master/bill",
       },
       {
         id: "clerk-branch",
@@ -247,6 +252,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-clearing",
         title: "Clearing",
         icon: ArrowLeftRight,
+        href: "/clerk/clearing",
       },
       {
         id: "clerk-customer",
@@ -258,6 +264,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-locker",
         title: "Locker",
         icon: KeyRound,
+        href: "/locker",
       },
       {
         id: "clerk-queries",
@@ -268,6 +275,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-sms",
         title: "SMS",
         icon: MessageSquare,
+        href: "/sms",
       },
       {
         id: "clerk-transaction",
@@ -287,6 +295,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-application",
         title: "Application",
         icon: FileText,
+        href: "/ho-clerk-application"
       },
       {
         id: "ho-clerk-legal-section",
@@ -302,6 +311,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-clerk-transaction",
         title: "Transaction",
         icon: ArrowLeftRight,
+        href: "/ho-clerk-transaction"
       },
     ],
   },
@@ -315,6 +325,7 @@ export const menuItems: NavItemData[] = [
         id: "cashier-cash-handling",
         title: "Cash Handling",
         icon: Wallet,
+        href: "/cashier"
       },
       {
         id: "cashier-cash-handling-report",
@@ -627,6 +638,7 @@ export const menuItems: NavItemData[] = [
         id: "dd-printing",
         title: "Printing",
         icon: FileText,
+        href: "/dd",
       },
       {
         id: "dd-report",
@@ -644,6 +656,7 @@ export const menuItems: NavItemData[] = [
         id: "ho-officer-transaction-authorize",
         title: "Transaction Authorize",
         icon: ShieldCheck,
+        href: "/ho-officer"
       },
     ],
   },
@@ -653,9 +666,10 @@ export const menuItems: NavItemData[] = [
     icon: PlayCircle,
     children: [
       {
-        id: "branch-activity-day-begin",
+        id: "branch-activity",
         title: "Day Begin",
         icon: PlayCircle,
+        href:"/branch-activity",
       },
     ],
   },
@@ -668,6 +682,7 @@ export const menuItems: NavItemData[] = [
         id: "payroll-master",
         title: "Master",
         icon: Database,
+        href: "/payroll/master"
       },
       {
         id: "payroll-report",
@@ -678,6 +693,7 @@ export const menuItems: NavItemData[] = [
         id: "payroll-transaction",
         title: "Transaction",
         icon: ArrowLeftRight,
+        href: "/payroll/transaction"
       },
       {
         id: "payroll-transaction-entry",
@@ -861,7 +877,7 @@ export const menuItems: NavItemData[] = [
   },
 
   // General / future items not tied to a specific role menu in the sheet.
-   { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href:"/futuremodals" },
+  { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href: "/futuremodals" },
 ];
 
 export const user = {

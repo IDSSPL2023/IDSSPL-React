@@ -33,7 +33,7 @@ export const FieldShell = ({
   <div className={className}>
     <label
       className={`mb-1.5 block text-black ${variant === "large"
-          ? "text-[16px] font-semibold"
+          ? "text-[14px] font-semibold"
           : "text-sm font-medium"
         }`}
     >
@@ -101,7 +101,7 @@ export const TextInput = ({
         onChange={(e) => onChange(e.target.value)}
         className={
           isFilledReadOnly
-            ? `w-full h-12 rounded-lg border ${READONLY_FILLED_BG} py-3 ${icon ? "pl-[38px]" : "pl-[14px]"} pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-10 rounded-lg border ${READONLY_FILLED_BG}  ${icon ? "pl-[38px]" : "pl-[14px]"} pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
             : `w-full rounded-lg border bg-white py-2.5 ${icon ? "pl-9" : "pl-3"} ${trailing ? "pr-11" : "pr-3"} text-sm text-slate-700 outline-none transition-colors focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
@@ -153,7 +153,7 @@ export const SelectInput = ({
         tabIndex={readOnly ? -1 : undefined}
         className={
           isFilledReadOnly
-            ? `w-full h-12 appearance-none rounded-lg border pointer-events-none ${READONLY_FILLED_BG} py-3 ${icon ? "pl-[38px]" : "pl-[14px]"} pr-9 text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-12 appearance-none rounded-lg border pointer-events-none ${READONLY_FILLED_BG} ${icon ? "pl-[38px]" : "pl-[14px]"} pr-9 text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
             : `w-full appearance-none rounded-lg border bg-white py-2.5 ${icon ? "pl-9" : "pl-3"} pr-9 text-sm text-slate-700 outline-none transition-colors focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
@@ -203,7 +203,7 @@ export const DateInput = ({ value, onChange, placeholder, error, readOnly }: Dat
         tabIndex={readOnly ? -1 : undefined}
         className={
           isFilledReadOnly
-            ? `w-full h-12 rounded-lg border pointer-events-none ${READONLY_FILLED_BG} py-3 pl-[38px] pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-12 rounded-lg border pointer-events-none ${READONLY_FILLED_BG}  pl-[38px] pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
             : `w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
@@ -300,6 +300,8 @@ export interface SectionCardProps {
   subtitleEn?: string;
   subtitleHi?: string;
   icon?: string | ReactNode;
+  /** Optional control (e.g. an "+ Add" button) rendered at the right edge of the header row. */
+  headerAction?: ReactNode;
   children: ReactNode;
 }
 
@@ -309,30 +311,34 @@ export const SectionCard = ({
   subtitleEn,
   subtitleHi,
   icon,
+  headerAction,
   children,
 }: SectionCardProps) => (
   <div className="bg-white rounded-[20px] border border-t-4 border-primary p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] no-scrollbar">
-    <div className="mb-3 flex items-center gap-3 border-b border-primary-100 pb-3">
-      {icon && (
-        <div className="flex h-10 w-10 items-center justify-center">
-          {typeof icon === "string" ? (
+    <div className="mb-3 flex items-center justify-between gap-3 border-b border-primary-100 pb-3">
+      <div className="flex items-center gap-3">
+        {icon && (
+          <div className="flex h-10 w-10 items-center justify-center">
+            {typeof icon === "string" ? (
   <img src={icon} alt="" className="h-8 w-8" />
 ) : (
   icon
 )}
-        </div>
-      )}
-      <div>
-        <h3 className="text-lg font-semibold leading-none text-[#1F2858]">
-          {titleEn} / <span className="text-slate-600">{titleHi}</span>
-        </h3>
-        {(subtitleEn || subtitleHi) && (
-          <p className="mt-0.5 text-xs text-[#64748B]">
-            {subtitleEn}
-            {subtitleHi && ` / ${subtitleHi}`}
-          </p>
+          </div>
         )}
+        <div>
+          <h3 className="text-lg font-semibold leading-none text-[#1F2858]">
+            {titleEn} / <span className="text-slate-600">{titleHi}</span>
+          </h3>
+          {(subtitleEn || subtitleHi) && (
+            <p className="mt-0.5 text-xs text-[#64748B]">
+              {subtitleEn}
+              {subtitleHi && ` / ${subtitleHi}`}
+            </p>
+          )}
+        </div>
       </div>
+      {headerAction}
     </div>
     {children}
   </div>

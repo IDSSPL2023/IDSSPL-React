@@ -24,6 +24,7 @@ export default function TopNavItem({ item, active, level = 0 }: TopNavItemProps)
   // Sidebar items are single labels (not bilingual pairs), so use tRaw so the
   // label always shows the selected language and never goes blank in English.
   const label = item.titleKey ? tRaw(item.titleKey) : item.title;
+  const disabled = !item.href;
 
   const handleClick = () => {
     if (item.href) {
@@ -34,14 +35,19 @@ export default function TopNavItem({ item, active, level = 0 }: TopNavItemProps)
   if (level === 0) {
     return (
       <button
+        type="button"
+        disabled={disabled}
         onClick={handleClick}
+        title={disabled ? tRaw("sidebar.comingSoon") : undefined}
         className={`flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 text-[13px] font-medium transition-all ${
-          active
+          disabled
+            ? "cursor-not-allowed text-[#5B5F79] opacity-60"
+            : active
             ? "bg-[#2E3050] text-white"
             : "text-[#ECECF4] hover:bg-[#242846]"
         }`}
       >
-        {Icon && <Icon size={16} className="shrink-0 text-[#2E8FFF]" />}
+        {Icon && <Icon size={16} className={`shrink-0 ${disabled ? "" : "text-[#2E8FFF]"}`} />}
         <span>{label}</span>
       </button>
     );
@@ -49,9 +55,14 @@ export default function TopNavItem({ item, active, level = 0 }: TopNavItemProps)
 
   return (
     <button
+      type="button"
+      disabled={disabled}
       onClick={handleClick}
+      title={disabled ? tRaw("sidebar.comingSoon") : undefined}
       className={`flex h-9 w-full items-center whitespace-nowrap rounded-lg px-3 text-left text-[13px] font-medium transition-all ${
-        active
+        disabled
+          ? "cursor-not-allowed text-[#5B5F79] opacity-60"
+          : active
           ? "bg-[#1877F2] text-white shadow-md"
           : "text-[#ECECF4] hover:bg-[#242846]"
       }`}

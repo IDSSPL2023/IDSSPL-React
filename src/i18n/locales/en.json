@@ -9,6 +9,7 @@
     "validate": "Validate",
     "authorize": "Authorize",
     "revoke": "Revoke",
+    "reject": "Reject",
     "details": "Details",
     "accountDetails": "Account Details",
     "lienDetails": "Lien Details",
@@ -23,7 +24,12 @@
     "services": "Services",
     "logout": "Logout",
     "modify": "Modify",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "apply": "Apply",
+    "calculate": "Calculate",
+    "report": "Report",
+    "yes": "Yes",
+    "no": "No"
   },
   "fields": {
     "accountCode": "Account Code",
@@ -82,6 +88,10 @@
       "investment": {
         "title": "Investment",
         "description": "Enter the Investment application details."
+      },
+      "fixedAsset": {
+        "title": "Fixed Asset",
+        "description": "Enter the Fixed Asset application details."
       }
     },
     "filters": {
@@ -99,8 +109,20 @@
       "customerId": "Customer ID",
       "createdBy": "Created By",
       "openingDate": "Opening Date",
-      "menuFreeze": "Account Freeze / Unfreeze",
-      "menuCheque": "Cheque Book Issue"
+      "menuFreeze": "Account Freeze",
+      "menuUnfreeze": "Account Unfreeze",
+      "menuCheque": "Cheque Book Issue",
+      "menuInterestCalculation": "Interest Calculation",
+      "menuEmiCalculation": "EMI Calculation",
+      "menuDisbursement": "Disbursement",
+      "menuValuation": "Valuation",
+      "menuDepreciation": "Depreciation",
+      "menuFreezeUnfreeze": "Account Freeze / Unfreeze",
+      "menuChequeBookIssue": "Cheque Book Issue / Stop",
+      "menuStandingInstruction": "Standing Instruction",
+      "menuMemo": "Memo",
+      "menuOperativeInoperative": "Account Operative/Inoperative",
+      "menuLienMark": "Lien Mark / Stop"
     },
     "addForm": {
       "title": "Add Account",
@@ -131,8 +153,8 @@
     }
   },
   "application": {
-    "title": "Application",
-    "breadcrumb": "Application"
+    "title": "Account",
+    "breadcrumb": "Account"
   },
   "assignUserRole": {
     "title": "Assign User Role",
@@ -354,7 +376,18 @@
     "dba": "DBA",
     "noMatchingItems": "No matching menu items",
     "comingSoon": "Coming soon",
+    "moreMenusBelow": "More menus below",
     "logoAlt": "Logo"
+  },
+  "supportUtility": {
+    "allMasters": "All Masters",
+    "recentlyUsed": "Recently Used",
+    "open": "Open",
+    "welcomeTitle": "Welcome to Support Utility",
+   "welcomeSubtitle": "",
+    "searchPlaceholder": "Search utilities...",
+    "show": "Show",
+    "noUtilitiesFound": "No utilities found"
   },
   "modifyBranchGlBalance": {
     "title": "Modify Branch GL Balance",
@@ -398,6 +431,467 @@
       "rChange": "RChange",
       "p10": "P10",
       "pChange": "PChange"
+    }
+  },
+  "loanInterestRate": {
+    "title": "Loan Interest Rate Modification",
+    "subtitle": "View the parameter information and associated details.",
+    "successTitle": "Loan interest rate modified successfully",
+    "successSubtitle": "Please Authorize",
+    "actions": {
+      "new": "New"
+    },
+    "placeholders": {
+      "accountCode": "Select Account Code",
+      "accountName": "name"
+    },
+    "table": {
+      "check": "Check",
+      "interestRate": "Interest Rate",
+      "penalInterest": "Penal Interest",
+      "overdueInterest": "Overdue Interest",
+      "moratoriumInterest": "Moratorium Interest",
+      "dateOfApplication": "Date of Application"
+    }
+  },
+  "interestPostingProcess": {
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "successTitle": "Interest posting processed successfully",
+    "fields": {
+      "asOnDate": "As on Date",
+      "interestRate": "Interest Rate"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date"
+    },
+    "actions": {
+      "generateReports": "Generate Reports"
+    }
+  },
+  "siInterestPosting": {
+    "title": "SI Interest Posting",
+    "menuTitle": "SI Interest Posting",
+    "postingParameter": "Posting Parameter",
+    "fields": {
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "uptoDate": "Enter Upto Date"
+    }
+  },
+  "tlccInterestPosting": {
+    "title": "TL/CC Interest Posting",
+    "fields": {
+      "accountType": "Account Type",
+      "accountTypeDescription": "Account Type Description",
+      "nextIntPostingDate": "Next Int. Posting Date",
+      "nextIntPostingUpToDate": "Next Int. Posting Up To Date",
+      "applyServiceCharges": "Apply Service Charges",
+      "interestReposting": "Interest Reposting"
+    },
+    "placeholders": {
+      "selectAccountType": "Select Account Type",
+      "description": "Description"
+    }
+  },
+  "tdPostingConsistency": {
+    "title": "Deposit Interest Posting",
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "fields": {
+      "applyInterestUpToDate": "Apply Interest Up to date",
+      "postAs": "Post as",
+      "select": "Select",
+      "reportType": "Report Type",
+      "productCode": "Product Code",
+      "productDescription": "Product Description"
+    },
+    "placeholders": {
+      "applyInterestUpToDate": "Enter Apply Interest Up to date",
+      "postAs": "Select Post As",
+      "productCode": "Select Product Code",
+      "description": "Description"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "npaModification": {
+    "title": "NPA Modification",
+    "subtitle": "Fill in the details below to create a new parameter.",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "accountNumber": "Account Number",
+      "accountName": "Account Name",
+      "osAmount": "OS Amount",
+      "principalOverdueAmount": "Prin. Ovd. Amt.",
+      "interestOverdueAmount": "Int. Ovd. Amt.",
+      "principalOverdueMonths": "Prin. Ovd. Months",
+      "interestOverdueDate": "Int. Ovd. Date",
+      "calculatedNpaClass": "Calc. NPA Class",
+      "description": "Description",
+      "actualNpaClass": "Act. NPA Class",
+      "calculatedNpaPercentage": "Calc. NPA Per.",
+      "actualNpaPercentage": "Act. NPA Per",
+      "provisionOnAmount": "Prov. On Amt.",
+      "calculatedProvision": "Calc. Prov.",
+      "actualProvision": "Act. Prov."
+    },
+    "placeholders": {
+      "guardianName": "Enter Guardian Name",
+      "accountType": "Select Account Type",
+      "description": "Description"
+    }
+  },
+  "depreciationCalculation": {
+    "title": "Deprecation Calculation",
+    "subtitle": "Process interest posting for eligible deposit accounts.",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "balanceDate": "Balance Date for Simple Deprection",
+      "roundingRequired": "Rounding Required"
+    },
+    "placeholders": {
+      "fromDate": "Enter From Date",
+      "toDate": "Enter To Date",
+      "balanceDate": "Enter Balance Date for Simple Deprection"
+    }
+  },
+  "clearing": {
+    "hero": {
+      "title": "Clearing",
+      "welcomeTitle": "Welcome to Clearing",
+      "searchPlaceholder": "Search clearing processes...",
+      "show": "Show",
+      "allMasters": "All Masters",
+      "recentlyUsed": "Recently Used",
+      "open": "Open",
+      "noUtilitiesFound": "No utilities found",
+      "breadcrumbClerk": "Clerk"
+    },
+    "masters": {
+      "owClearingLateReturn": {
+        "cardTitle": "O/W Clearing Late Return Mark",
+        "cardDescription": "Mark and record late returns for outward clearing bills.",
+        "modalTitle": "Outward Clearing Late Return",
+        "modalSubtitle": "Record a late return raised against an outward clearing bill.",
+        "successTitle": "Outward Clearing Late Return Marked Successfully"
+      },
+      "subBranchInwardReturn": {
+        "cardTitle": "Sub Branch I/W CLG Return",
+        "cardDescription": "Record inward clearing returns raised by a sub branch.",
+        "modalTitle": "Sub Branch Inward Return",
+        "modalSubtitle": "View the parameter information and associated details.",
+        "successTitle": "Sub Branch Inward Return Saved Successfully"
+      },
+      "owClearingPostingMark": {
+        "cardTitle": "O/W Clearing Posting Mark",
+        "cardDescription": "Mark the posting status of an outward clearing schedule.",
+        "modalTitle": "Outward Clearing Posting Mark",
+        "modalSubtitle": "View the parameter information and associated details.",
+        "successTitle": "Outward Clearing Posted To Account Successfully"
+      },
+      "clearingTallyWithClearingHouse": {
+        "cardTitle": "Clearing Tally With Clearing House",
+        "cardDescription": "Tally the branch's clearing scroll against the clearing house figures.",
+        "modalTitle": "Clearing Tally With Clearing House",
+        "modalSubtitle": "Verify scroll totals against the clearing house before closing.",
+        "successTitle": "Clearing Tallied With Clearing House Successfully"
+      },
+      "firstSecondClearingClosing": {
+        "cardTitle": "1st & 2nd Clearing Closing",
+        "cardDescription": "Close the first and second clearing sessions for the day.",
+        "modalTitle": "1st & 2nd Clearing Closing",
+        "modalSubtitle": "Close the selected clearing session for the branch.",
+        "successTitle": "Clearing Closed Successfully"
+      },
+      "generateInwardSchedule": {
+        "cardTitle": "Generate Inward Schedule",
+        "cardDescription": "Generate the daily inward clearing schedule.",
+        "modalTitle": "Generate Inward Schedule",
+        "modalSubtitle": "Generate an inward clearing schedule for the selected date.",
+        "successTitle": "Inward Schedule Generated Successfully"
+      },
+      "generateOutwardSchedule": {
+        "cardTitle": "Generate Outward Schedule",
+        "cardDescription": "Generate the daily outward clearing schedule.",
+        "modalTitle": "Generate Outward Schedule",
+        "modalSubtitle": "Generate an outward clearing schedule for the selected date.",
+        "successTitle": "Outward Schedule Generated Successfully"
+      },
+      "importDailyOutwardScheduleDetail": {
+        "cardTitle": "Import Daily Outward Schedule Detail",
+        "cardDescription": "Import the outward schedule detail file received for the day.",
+        "modalTitle": "Import Daily Outward Schedule Detail",
+        "modalSubtitle": "Import the outward schedule detail file for the selected schedule.",
+        "successTitle": "Daily Outward Schedule Detail Imported Successfully"
+      },
+      "inwardClearingEntry": {
+        "cardTitle": "Inward Clearing Entry",
+        "cardDescription": "Record instrument-wise entries received in inward clearing.",
+        "modalTitle": "Inward Clearing Entry",
+        "modalSubtitle": "Enter the branch, schedule and instrument details for inward clearing.",
+        "successTitle": "Inward Clearing Entry Saved Successfully"
+      },
+      "owClearingBounceMark": {
+        "cardTitle": "O/W Clearing Bounce Mark",
+        "cardDescription": "Mark an outward clearing instrument as bounced/returned.",
+        "modalTitle": "Outward Clearing Bounce Mark",
+        "modalSubtitle": "Record the rejection and charges for a bounced instrument.",
+        "successTitle": "Outward Clearing Bounce Marked Successfully"
+      },
+      "outwardClearingEntry": {
+        "cardTitle": "Outward Clearing Entry",
+        "cardDescription": "Record instrument-wise entries sent in outward clearing.",
+        "modalTitle": "Outward Clearing Entry",
+        "modalSubtitle": "Enter the branch, schedule and instrument details for outward clearing.",
+        "successTitle": "Outward Clearing Entry Saved Successfully"
+      }
+    },
+    "sections": {
+      "branchInformation": {
+        "title": "Branch Information",
+        "subtitle": "Enter the account details for outward bill collections."
+      },
+      "clearingDetails": {
+        "title": "Clearing Details",
+        "subtitle": "Select the branch and transaction details before recording."
+      },
+      "customerAccountDetails": {
+        "title": "Customer & Account Details",
+        "subtitle": "Enter the customer, payee and drawee bank details."
+      },
+      "instrumentDetails": {
+        "title": "Instrument Details",
+        "subtitle": "Enter the cheque / instrument details."
+      },
+      "returnDetails": {
+        "title": "Return Details",
+        "subtitle": "Enter the rejection and charges details."
+      },
+      "details": {
+        "title": "Details",
+        "subtitle": "View the parameter information and associated details."
+      }
+    },
+    "fields": {
+      "bankCode": "Bank Code",
+      "bankName": "Bank Name",
+      "branchCode": "Branch Code",
+      "branchName": "Branch Name",
+      "date": "Date",
+      "scrollNumber": "Scroll Number",
+      "clearingTypeId": "Clearing Type Id",
+      "clearingTypeName": "Clearing Type Name",
+      "dailyOutwardScheduleNo": "Daily Outward Schedule No.",
+      "scheduleDate": "Schedule Date",
+      "clearingSerialNumber": "Clearing Serial Number",
+      "customerId": "Customer Id",
+      "customerName": "Customer Name",
+      "accountCode": "Account Code",
+      "accountName": "Account Name",
+      "payeeName": "Payee Name",
+      "drawerName": "Drawer Name",
+      "instrumentType": "Instrument Type",
+      "instrumentNumber": "Instrument Number",
+      "instrumentDate": "Instrument Date",
+      "instrumentAmount": "Instrument Amount",
+      "outletSerialNo": "Outlet Serial No.",
+      "glOutletDescription": "GL Outlet Description",
+      "glOutlistDocNo": "GL OutList Doc. No.",
+      "rejectionTypeId": "Rejection Type ID",
+      "rejectionDescription": "Rejection Description",
+      "chequeReturnCharges": "Cheque Return Charges",
+      "serviceTax": "Service Tax",
+      "adviceNumber": "Advice Number",
+      "adviceDate": "Advice Date",
+      "originalResponding": "Original / Responding",
+      "dailyInwardScheduleNo": "Daily Inward Schedule No.",
+      "amount": "Amount",
+      "scheduleNumber": "Schedule Number",
+      "numberOfInstruments": "Number of Instruments",
+      "totalAmount": "Total Amount",
+      "bounceNoOfInstruments": "Bounce No of Instruments",
+      "totalInstruments": "Total Instruments",
+      "closingRemark": "Closing Remark",
+      "fileName": "File Name"
+    },
+    "actions": {
+      "postToAccount": "Post To Account",
+      "tally": "Tally",
+      "close": "Close",
+      "generate": "Generate",
+      "import": "Import"
+    }
+  },
+  "setProductStatus": {
+    "fields": {
+      "type": "Type",
+      "typeHi": "प्रकार",
+      "description": "Description",
+      "descriptionHi": "विवरण",
+      "productCode": "Product Code",
+      "productCodeHi": "उत्पाद कोड",
+      "productName": "Product Name",
+      "productNameHi": "उत्पादाचे नाव",
+      "interestApplyDate": "Interest Apply Date",
+      "interestApplyDateHi": "व्याज लागू तारीख",
+      "interestFlag": "Interest Flag",
+      "interestFlagHi": "व्याज ध्वज"
+    },
+    "errors": {
+      "typeRequired": "Type is required",
+      "descriptionRequired": "Description is required",
+      "productCodeRequired": "Product Code is required",
+      "productNameRequired": "Product Name is required",
+      "interestApplyDateRequired": "Interest Apply Date is required",
+      "interestFlagRequired": "Interest Flag is required"
+    },
+    "pickerTitle": "Select Product",
+    "successTitle": "Product Status Saved Successfully",
+    "successSubtitle": "The product status has been updated successfully."
+  },
+  "pigmyInterestProvision": {
+    "title": "Pigmy Interest Provision/Posting",
+    "subtitle": "Process automatic renewal at the beginning of the day.",
+    "fields": {
+      "fromProductCode": "From Product Code",
+      "productDescription": "Product Description",
+      "uptoDate": "Upto Date"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "interestNotApplied": {
+    "title": "Interest Not Applied",
+    "subtitle": "Process automatic renewal at the beginning of the day.",
+    "fields": {
+      "branchCode": "Branch Code",
+      "asOnDate": "As On Date"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    }
+  },
+  "nFormBalancesheet": {
+    "title": "Reports Parameter",
+    "fields": {
+      "productCode": "Product Code",
+      "lastQuarterDate": "Last Quarter Date",
+      "select": "Select"
+    },
+    "placeholders": {
+      "enterToDate": "Enter To Date"
+    },
+    "options": {
+      "regular": "Regular",
+      "closing": "Closing"
+    },
+    "actions": {
+      "generateRecord": "Generate Record",
+      "generateNFormBalanceSheet": "Generate N form Balance Sheet",
+      "generatePnL": "Generate P&L A/C"
+    }
+  },
+  "detailTrialBalance": {
+    "title": "Detail Trail Balance Sheet",
+    "fields": {
+      "branchCode": "Branch Code",
+      "branchName": "Branch Name",
+      "asOnDate": "As On Date",
+      "select": "Select",
+      "reportType": "Report Type"
+    },
+    "placeholders": {
+      "enterDate": "Enter Date"
+    },
+    "options": {
+      "all": "All",
+      "single": "Single"
+    }
+  },
+  "modifyDepositDiary": {
+    "title": "Modify Deposit Diary",
+    "fields": {
+      "productCode": "Product Code",
+      "productDescription": "Product Description",
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "reportFor": "Report For",
+      "selectInterestFrequency": "Select Interest Frequency"
+    },
+    "placeholders": {
+      "name": "name"
+    },
+    "options": {
+      "all": "All",
+      "si": "SI",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    }
+  },
+  "exceedCashLimitReport": {
+    "title": "Exceed Balance Limit Amount and Review Date",
+    "fields": {
+      "fromProductCode": "From Product Code",
+      "productDescription": "Product Description",
+      "toProductCode": "To Product Code",
+      "asOnDate": "As On Date"
+    },
+    "placeholders": {
+      "selectProductCode": "Select Product Code",
+      "description": "Description",
+      "enterDate": "Enter Date"
+    }
+  },
+  "hoInterestReportBranch": {
+    "title": "HO Interest Posting",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date"
+    }
+  },
+  "hoInterestReportHo": {
+    "title": "HO Account Interest",
+    "fields": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "fromAccountCode": "From Account Code",
+      "toAccountCode": "To Account Code",
+      "accountName": "Account Name"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "hoInterestReportGl": {
+    "title": "HO Interest Report Posting",
+    "fields": {
+      "glAccountCode": "GL Account Code",
+      "accountName": "Account Name",
+      "fromDate": "From Date",
+      "toDate": "To Date"
+    },
+    "placeholders": {
+      "name": "name"
+    }
+  },
+  "clerkSms": {
+    "title": "SMS",
+    "table": {
+      "srNo": "Sr No.",
+      "mobileNumber": "Mobile Number",
+      "customerName": "Customer Name",
+      "message": "Message",
+      "type": "Type",
+      "status": "Status",
+      "sentDate": "Sent Date"
     }
   }
 }
