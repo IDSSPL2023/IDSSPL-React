@@ -176,7 +176,7 @@ export const router = createBrowserRouter([
       { path: "/dd/maintenance", element: <DDMaintenancePage /> },
       { path: "/dd/printing", element: <DDPrintingPage /> },
       { path: "/branch-activity", element: <BranchActivityPage /> },
-{ path: "/interest-posting", element: <InterestPostingPage /> },
+      { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage /> },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute /> },
