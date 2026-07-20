@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import type { ReactNode } from "react";
 import Image from "@/components/ui/Image";
 import { useRouter } from "@/lib/navigation";
@@ -13,6 +13,8 @@ import {
   IndianRupee,
   Receipt,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   MoreVertical,
   Check,
   Search,
@@ -51,8 +53,8 @@ function useCloseHandler(onClose?: () => void) {
 
 // Sample rows for the Customer pickup list
 const CUSTOMER_LIST: CustomerListRow[] = [
-  { customerId: "000012", name: "BALAMI MANJUNATH IRANNA" },
-  { customerId: "0002000001", name: "SAVAKAR RAMANNA FAKIRAPPA00000....." },
+  { customerId: "0000200012", name: "BALAMI MANJUNATH IRANNA" },
+  { customerId: "0002000001", name: "SAVAKAR RAMANNA FAKIRAP" },
   { customerId: "0002000002", name: "JALI SHIVAPPA PARASAPPA" },
   { customerId: "0002000003", name: "CHALAWADI SANGAPPA YALLAVVA" },
   { customerId: "0002000004", name: "DESAI SUVARNA SANJAY" },
@@ -118,6 +120,188 @@ function FieldWrap({ label, labelHi, required = true, error, children }: FieldWr
           <AlertCircle className="h-3 w-3 shrink-0" />
           {error}
         </p>
+      )}
+    </div>
+  );
+}
+
+// ==========================================
+// DATE FIELD — custom DD/MM/YYYY text input + calendar popover
+//
+// NOTE: We intentionally do NOT use <input type="date">. Native date
+// inputs always display in the browser/OS locale format (often
+// MM/DD/YYYY), and that display text cannot be overridden with CSS,
+// props, or any JS conversion layer — only the underlying value is
+// standardized (YYYY-MM-DD), not what the user sees. Building the
+// mask + calendar ourselves guarantees DD/MM/YYYY everywhere.
+// ==========================================
+
+interface DateFieldProps {
+  icon?: ReactNode;
+  value: string; // always DD/MM/YYYY
+  onChange: (v: string) => void;
+  placeholder?: string;
+  error?: boolean;
+  disabled?: boolean;
+}
+
+function isValidDMY(v: string): boolean {
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(v)) return false;
+  const [dd, mm, yyyy] = v.split("/").map(Number);
+  const d = new Date(yyyy, mm - 1, dd);
+  return d.getFullYear() === yyyy && d.getMonth() === mm - 1 && d.getDate() === dd;
+}
+
+function toDate(v: string): Date | null {
+  if (!isValidDMY(v)) return null;
+  const [dd, mm, yyyy] = v.split("/").map(Number);
+  return new Date(yyyy, mm - 1, dd);
+}
+
+function fromDate(d: Date): string {
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+// Auto-inserts "/" as the user types digits: 27022026 -> 27/02/2026
+function maskDMYInput(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 8);
+  const parts = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)].filter(Boolean);
+  return parts.join("/");
+}
+
+function MiniCalendar({
+  selected,
+  onSelect,
+  onClose,
+}: {
+  selected: Date | null;
+  onSelect: (d: Date) => void;
+  onClose: () => void;
+}) {
+  const [viewDate, setViewDate] = useState(selected ?? new Date());
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [onClose]);
+
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  const firstOfMonth = new Date(year, month, 1);
+  const startWeekday = firstOfMonth.getDay(); // 0 = Sun
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const cells: (Date | null)[] = [];
+  for (let i = 0; i < startWeekday; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+
+  const monthLabel = viewDate.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+
+  const isSameDay = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+  return (
+    <div
+      ref={ref}
+      className="absolute left-0 top-[calc(100%+4px)] z-50 w-[280px] rounded-lg border border-slate-200 bg-white p-3 shadow-lg"
+    >
+      <div className="mb-2 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => setViewDate(new Date(year, month - 1, 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
+          aria-label="Previous month"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </button>
+        <span className="text-sm font-medium text-slate-700">{monthLabel}</span>
+        <button
+          type="button"
+          onClick={() => setViewDate(new Date(year, month + 1, 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
+          aria-label="Next month"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="mb-1 grid grid-cols-7 text-center text-[11px] font-medium text-slate-400">
+        {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
+          <span key={d}>{d}</span>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-7 gap-y-1 text-center text-sm">
+        {cells.map((d, i) =>
+          d ? (
+            <button
+              key={i}
+              type="button"
+              onClick={() => {
+                onSelect(d);
+                onClose();
+              }}
+              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full transition ${
+                selected && isSameDay(d, selected)
+                  ? "bg-primary text-white"
+                  : "text-slate-700 hover:bg-primary-50"
+              }`}
+            >
+              {d.getDate()}
+            </button>
+          ) : (
+            <span key={i} />
+          )
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DateField({ icon, value, onChange, placeholder = "DD/MM/YYYY", error, disabled }: DateFieldProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedDate = toDate(value);
+
+  return (
+    <div className="relative flex flex-1 min-w-0 items-center">
+      {icon && (
+        <span
+          onClick={() => !disabled && setIsOpen((p) => !p)}
+          className={`absolute left-3 z-10 cursor-pointer ${error ? "text-rose-400" : "text-slate-400"}`}
+        >
+          {icon}
+        </span>
+      )}
+      <input
+        type="text"
+        inputMode="numeric"
+        value={value}
+        placeholder={placeholder}
+        disabled={disabled}
+        maxLength={10}
+        onChange={(e) => onChange(maskDMYInput(e.target.value))}
+        onFocus={() => !disabled && setIsOpen(true)}
+        className={`w-full min-h-[42px] rounded-lg border px-3 py-2.5 ${
+          icon ? "pl-10" : "pl-3"
+        } pr-3 text-sm font-normal outline-none transition-colors ${
+          error
+            ? "border-rose-400 focus:border-rose-500 focus:ring-1 focus:ring-rose-200"
+            : "border-slate-600 focus:border-primary focus:ring-1 focus:ring-primary"
+        } ${disabled ? "bg-slate-50 text-slate-600" : "bg-white text-slate-700"}`}
+      />
+      {isOpen && !disabled && (
+        <MiniCalendar
+          selected={selectedDate}
+          onSelect={(d) => onChange(fromDate(d))}
+          onClose={() => setIsOpen(false)}
+        />
       )}
     </div>
   );
@@ -428,6 +612,18 @@ function SuccessModal({
   );
 }
 
+// Helper: parse date string (DD/MM/YYYY) to Date object
+const parseDate = (dateStr: string): Date | null => {
+  if (!dateStr) return null;
+  const parts = dateStr.split("/");
+  if (parts.length !== 3) return null;
+  const day = parseInt(parts[0]);
+  const month = parseInt(parts[1]) - 1;
+  const year = parseInt(parts[2]);
+  if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+  return new Date(year, month, day);
+};
+
 /* ------------------------------------------------------------------ */
 /*  Main: FixedAssetPage                                              */
 /* ------------------------------------------------------------------ */
@@ -441,13 +637,13 @@ export default function FixedAssetPage({
   const handleClose = useCloseHandler(onClose);
 
   const [applicationNumber, setApplicationNumber] = useState("New");
-  const [customerId, setCustomerId] = useState("00022");
+  const [customerId, setCustomerId] = useState("0002000001");
   const [customerName, setCustomerName] = useState("Karan Mangesh Patil");
-  const [dateOfApplication, setDateOfApplication] = useState("27-Feb-2026");
+  const [dateOfApplication, setDateOfApplication] = useState("27/02/2026");
 
   const [itemName, setItemName] = useState("Self");
   const [minBalanceId, setMinBalanceId] = useState("200");
-  const [purchaseDate, setPurchaseDate] = useState("27-Feb-2026");
+  const [purchaseDate, setPurchaseDate] = useState("27/02/2026");
   const [purchaseAmount, setPurchaseAmount] = useState("2,50,0000");
 
   const [deprecationRate, setDeprecationRate] = useState("0");
@@ -461,33 +657,132 @@ export default function FixedAssetPage({
   const [isCustomerListOpen, setIsCustomerListOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [isValidated, setIsValidated] = useState(false);
 
   const handleCustomerSelect = (row: CustomerListRow) => {
     setCustomerId(row.customerId);
     setCustomerName(row.name);
     setIsCustomerListOpen(false);
     setErrors((prev) => ({ ...prev, customerId: "", customerName: "" }));
+    setIsValidated(false);
   };
 
   const validate = (): Record<string, string> => {
     const next: Record<string, string> = {};
 
-    if (!applicationNumber.trim()) next.applicationNumber = "Application Number is required";
-    if (!customerId.trim()) next.customerId = "Customer ID is required";
-    if (!customerName.trim()) next.customerName = "Customer Name is required";
-    if (!dateOfApplication.trim()) next.dateOfApplication = "Date of Application is required";
-    if (!itemName.trim()) next.itemName = "Item Name is required";
-    if (!minBalanceId.trim()) next.minBalanceId = "Min Balance ID is required";
-    if (!purchaseDate.trim()) next.purchaseDate = "Purchase Date is required";
-
-    if (!deprecationRate.trim()) {
-      next.deprecationRate = "Deprecation Rate is required";
-    } else if (Number.isNaN(Number(deprecationRate)) || Number(deprecationRate) < 0) {
-      next.deprecationRate = "Enter a valid rate";
+    // Application Number - Required (read-only, auto-generated)
+    if (!applicationNumber.trim()) {
+      next.applicationNumber = "Application Number is required";
     }
 
-    if (!description.trim()) next.description = "Description is required";
-    if (!billNumber.trim()) next.billNumber = "Bill Number is required";
+    // Customer ID - Required, Numeric only, 8-15 digits
+    if (!customerId.trim()) {
+      next.customerId = "Customer ID is required";
+    } else if (!/^\d+$/.test(customerId.trim())) {
+      next.customerId = "Customer ID must contain 8–15 digits";
+    } else if (customerId.trim().length < 8 || customerId.trim().length > 15) {
+      next.customerId = "Customer ID must contain 8–15 digits";
+    }
+
+    // Customer Name - Required (read-only)
+    if (!customerName.trim()) {
+      next.customerName = "Customer Name is required";
+    }
+
+    // Date of Application - Required, cannot be future
+    if (!dateOfApplication.trim()) {
+      next.dateOfApplication = "Date of Application is required";
+    } else {
+      const appDate = parseDate(dateOfApplication);
+      if (appDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (appDate > today) {
+          next.dateOfApplication = "Application Date cannot be in the future";
+        }
+      }
+    }
+
+    // Item Name - Required
+    if (!itemName.trim()) {
+      next.itemName = "Item Name is required";
+    }
+
+    // Min Balance ID - Required
+    if (!minBalanceId.trim()) {
+      next.minBalanceId = "Min Balance ID is required";
+    }
+
+    // Purchase Date - Required, cannot be future, cannot be after Application Date
+    if (!purchaseDate.trim()) {
+      next.purchaseDate = "Purchase Date is required";
+    } else {
+      const purchaseDt = parseDate(purchaseDate);
+      const appDt = parseDate(dateOfApplication);
+      if (purchaseDt) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (purchaseDt > today) {
+          next.purchaseDate = "Purchase Date cannot be in the future";
+        }
+        if (appDt && purchaseDt > appDt) {
+          next.purchaseDate = "Purchase Date cannot be after Application Date";
+        }
+      }
+    }
+
+    // Purchase Amount - Required, >0, max 999999999, up to 2 decimals
+    if (!purchaseAmount.trim()) {
+      next.purchaseAmount = "Purchase Amount is required";
+    } else {
+      const cleanAmount = purchaseAmount.replace(/,/g, "");
+      const amountNum = parseFloat(cleanAmount);
+      if (isNaN(amountNum) || amountNum <= 0) {
+        next.purchaseAmount = "Purchase Amount must be greater than zero";
+      } else if (amountNum > 999999999) {
+        next.purchaseAmount = "Invalid Purchase Amount";
+      } else if (!/^\d+(\.\d{1,2})?$/.test(cleanAmount)) {
+        next.purchaseAmount = "Invalid Purchase Amount";
+      }
+    }
+
+    // Depreciation Rate - Required, between 0 and 100
+    if (!deprecationRate.trim()) {
+      next.deprecationRate = "Depreciation Rate is required";
+    } else {
+      const rateNum = parseFloat(deprecationRate);
+      if (isNaN(rateNum) || rateNum < 0 || rateNum > 100) {
+        next.deprecationRate = "Depreciation Rate must be between 0 and 100";
+      }
+    }
+
+    // Description - Required, min 5, max 250
+    if (!description.trim()) {
+      next.description = "Description is required";
+    } else if (description.trim().length < 5) {
+      next.description = "Description must contain at least 5 characters";
+    } else if (description.trim().length > 250) {
+      next.description = "Description cannot exceed 250 characters";
+    }
+
+    // Bill Number - Required, only letters/numbers/slash/hyphen, max 30
+    if (!billNumber.trim()) {
+      next.billNumber = "Bill Number is required";
+    } else if (!/^[a-zA-Z0-9/\-]+$/.test(billNumber.trim())) {
+      next.billNumber = "Invalid Bill Number";
+    } else if (billNumber.trim().length > 30) {
+      next.billNumber = "Invalid Bill Number";
+    }
+
+    // Method of Depreciation - Required
+    if (!deprecationMethod) {
+      next.deprecationMethod = "Method of Depreciation is required";
+    }
+
+    // Depreciation Calculate On - Required
+    if (!deprecationCalculateOn) {
+      next.deprecationCalculateOn = "Depreciation Calculate On is required";
+    }
 
     return next;
   };
@@ -495,7 +790,9 @@ export default function FixedAssetPage({
   const handleValidate = () => {
     const nextErrors = validate();
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) {
+    const valid = Object.keys(nextErrors).length === 0;
+    setIsValidated(valid);
+    if (valid) {
       onValidate();
     }
   };
@@ -503,7 +800,9 @@ export default function FixedAssetPage({
   const handleSave = () => {
     const nextErrors = validate();
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) {
+    const valid = Object.keys(nextErrors).length === 0;
+    setIsValidated(valid);
+    if (valid) {
       onSave();
       setIsSuccessOpen(true);
     }
@@ -513,6 +812,262 @@ export default function FixedAssetPage({
     setIsSuccessOpen(false);
     handleClose();
   };
+
+  const renderContent = () => (
+    <>
+      {/* Body */}
+      <div className="scrollbar-hide flex-1 overflow-y-auto overflow-x-hidden px-6 py-5">
+        <div className="grid grid-cols-1 gap-4 rounded-[20px] border-x border-b-2 border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
+          <FieldWrap label="Application Number" labelHi="अर्ज क्रमांक" error={errors.applicationNumber}>
+            <TextField
+              icon={<FileText size={16} />}
+              value={applicationNumber}
+              onChange={(v) => {
+                setApplicationNumber(v);
+                setErrors((prev) => ({ ...prev, applicationNumber: "" }));
+                setIsValidated(false);
+              }}
+              disabled={true}
+              error={!!errors.applicationNumber}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Customer ID" labelHi="ग्राहक आयडी" error={errors.customerId}>
+            <TextFieldWithMenu
+              icon={<IdCard size={16} />}
+              value={customerId}
+              onChange={(v) => {
+                setCustomerId(v);
+                setErrors((prev) => ({ ...prev, customerId: "" }));
+                setIsValidated(false);
+              }}
+              menuActive={isCustomerListOpen}
+              onMenuClick={() => setIsCustomerListOpen(true)}
+              error={!!errors.customerId}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Customer Name" labelHi="ग्राहकाचे नाव" error={errors.customerName}>
+            <TextField
+              icon={<User size={16} />}
+              value={customerName}
+              onChange={(v) => {
+                setCustomerName(v);
+                setErrors((prev) => ({ ...prev, customerName: "" }));
+                setIsValidated(false);
+              }}
+              disabled={true}
+              error={!!errors.customerName}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Date of Application" labelHi="अर्जाची तारीख" error={errors.dateOfApplication}>
+            <DateField
+              icon={<CalendarDays size={16} />}
+              value={dateOfApplication}
+              onChange={(v) => {
+                setDateOfApplication(v);
+                setErrors((prev) => ({ ...prev, dateOfApplication: "" }));
+                setIsValidated(false);
+              }}
+              error={!!errors.dateOfApplication}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Item Name" labelHi="वस्तूचे नाव" error={errors.itemName}>
+            <TextField
+              icon={<Package size={16} />}
+              value={itemName}
+              onChange={(v) => {
+                setItemName(v);
+                setErrors((prev) => ({ ...prev, itemName: "" }));
+                setIsValidated(false);
+              }}
+              error={!!errors.itemName}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Min Balance ID" labelHi="किमान शिल्लक आयडी" error={errors.minBalanceId}>
+            <SelectField
+              icon={<Users size={16} />}
+              value={minBalanceId}
+              onChange={(v) => {
+                setMinBalanceId(v);
+                setErrors((prev) => ({ ...prev, minBalanceId: "" }));
+                setIsValidated(false);
+              }}
+              options={["200", "500", "1000"]}
+              error={!!errors.minBalanceId}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Purchase Date" labelHi="खरेदीची तारीख" error={errors.purchaseDate}>
+            <DateField
+              icon={<CalendarDays size={16} />}
+              value={purchaseDate}
+              onChange={(v) => {
+                setPurchaseDate(v);
+                setErrors((prev) => ({ ...prev, purchaseDate: "" }));
+                setIsValidated(false);
+              }}
+              error={!!errors.purchaseDate}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Purchase Amount" labelHi="खरेदीची रक्कम" required={true} error={errors.purchaseAmount}>
+            <TextField
+              icon={<IndianRupee size={16} />}
+              value={purchaseAmount}
+              onChange={(v) => {
+                setPurchaseAmount(v);
+                setErrors((prev) => ({ ...prev, purchaseAmount: "" }));
+                setIsValidated(false);
+              }}
+              error={!!errors.purchaseAmount}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Depreciation Rate" labelHi="घसारा दर" error={errors.deprecationRate}>
+            <TextField
+              prefix="%"
+              value={deprecationRate}
+              onChange={(v) => {
+                setDeprecationRate(v);
+                setErrors((prev) => ({ ...prev, deprecationRate: "" }));
+                setIsValidated(false);
+              }}
+              error={!!errors.deprecationRate}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Description" labelHi="वर्णन" error={errors.description}>
+            <SelectField
+              icon={<FileText size={16} />}
+              value={description}
+              onChange={(v) => {
+                setDescription(v);
+                setErrors((prev) => ({ ...prev, description: "" }));
+                setIsValidated(false);
+              }}
+              options={["Office Equipment", "Vehicle", "Furniture", "Machinery"]}
+              placeholder="-"
+              error={!!errors.description}
+            />
+          </FieldWrap>
+
+          <FieldWrap label="Bill Number" labelHi="बिल नंबर" error={errors.billNumber}>
+            <TextField
+              icon={<Receipt size={16} />}
+              value={billNumber}
+              onChange={(v) => {
+                setBillNumber(v);
+                setErrors((prev) => ({ ...prev, billNumber: "" }));
+                setIsValidated(false);
+              }}
+              error={!!errors.billNumber}
+            />
+          </FieldWrap>
+
+          <div className="sm:col-span-2 lg:col-span-2">
+            <BilingualLabel en="Method of Depreciation" mr="घसारा पद्धत" />
+            <div className="flex h-[42px] items-center gap-8">
+              <RadioOption label="Day" value="Day" selected={deprecationMethod} onSelect={(v) => {
+                setDeprecationMethod(v);
+                setErrors((prev) => ({ ...prev, deprecationMethod: "" }));
+                setIsValidated(false);
+              }} />
+              <RadioOption label="Month" value="Month" selected={deprecationMethod} onSelect={(v) => {
+                setDeprecationMethod(v);
+                setErrors((prev) => ({ ...prev, deprecationMethod: "" }));
+                setIsValidated(false);
+              }} />
+            </div>
+            {errors.deprecationMethod && (
+              <p className="mt-1 flex items-center gap-1 text-xs text-rose-500">
+                <AlertCircle className="h-3 w-3 shrink-0" />
+                {errors.deprecationMethod}
+              </p>
+            )}
+          </div>
+
+          <div className="sm:col-span-2 lg:col-span-2">
+            <BilingualLabel en="Depreciation Calculate On" mr="घसारा गणना करा" />
+            <div className="flex h-[42px] items-center gap-8">
+              <RadioOption
+                label="Opening Balance"
+                value="Opening Balance"
+                selected={deprecationCalculateOn}
+                onSelect={(v) => {
+                  setDeprecationCalculateOn(v);
+                  setErrors((prev) => ({ ...prev, deprecationCalculateOn: "" }));
+                  setIsValidated(false);
+                }}
+              />
+              <RadioOption
+                label="Current Balance"
+                value="Current Balance"
+                selected={deprecationCalculateOn}
+                onSelect={(v) => {
+                  setDeprecationCalculateOn(v);
+                  setErrors((prev) => ({ ...prev, deprecationCalculateOn: "" }));
+                  setIsValidated(false);
+                }}
+              />
+            </div>
+            {errors.deprecationCalculateOn && (
+              <p className="mt-1 flex items-center gap-1 text-xs text-rose-500">
+                <AlertCircle className="h-3 w-3 shrink-0" />
+                {errors.deprecationCalculateOn}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+
+      {/* Footer - Save button disabled initially, enabled after successful validation */}
+      <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
+        <button
+          type="button"
+          onClick={handleValidate}
+          className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg bg-primary text-[14px] font-medium text-white transition hover:bg-primary-700"
+        >
+          Validate
+          <Check className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={handleClose}
+          className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white text-[14px] font-medium text-slate-600 transition hover:bg-slate-50"
+        >
+          Cancel
+          <X className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={!isValidated}
+          className={`flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 text-[14px] font-medium transition ${
+            isValidated
+              ? "bg-primary text-white hover:bg-primary-700 cursor-pointer"
+              : "bg-slate-100 text-slate-400 cursor-not-allowed"
+          }`}
+        >
+          Save
+          <ChevronDown className="h-4 w-4" />
+        </button>
+      </div>
+    </>
+  );
 
   // Page mode render (without modal overlay)
   if (isPageMode) {
@@ -537,203 +1092,7 @@ export default function FixedAssetPage({
           </div>
         </div>
 
-        {/* Body */}
-        <div className="scrollbar-hide flex-1 overflow-y-auto overflow-x-hidden px-6 py-5">
-          <div className="grid grid-cols-1 gap-4 rounded-[20px] border-x border-b-2 border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
-            <FieldWrap label="Application Number" labelHi="अर्ज क्रमांक" error={errors.applicationNumber}>
-              <TextField
-                icon={<FileText size={16} />}
-                value={applicationNumber}
-                onChange={(v) => {
-                  setApplicationNumber(v);
-                  setErrors((prev) => ({ ...prev, applicationNumber: "" }));
-                }}
-                error={!!errors.applicationNumber}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Customer ID" labelHi="ग्राहक आयडी" error={errors.customerId}>
-              <TextFieldWithMenu
-                icon={<IdCard size={16} />}
-                value={customerId}
-                onChange={(v) => {
-                  setCustomerId(v);
-                  setErrors((prev) => ({ ...prev, customerId: "" }));
-                }}
-                menuActive={isCustomerListOpen}
-                onMenuClick={() => setIsCustomerListOpen(true)}
-                error={!!errors.customerId}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Customer Name" labelHi="ग्राहकाचे नाव" error={errors.customerName}>
-              <TextField
-                icon={<User size={16} />}
-                value={customerName}
-                onChange={(v) => {
-                  setCustomerName(v);
-                  setErrors((prev) => ({ ...prev, customerName: "" }));
-                }}
-                error={!!errors.customerName}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Date of Application" labelHi="अर्जाची तारीख" error={errors.dateOfApplication}>
-              <TextField
-                icon={<CalendarDays size={16} />}
-                value={dateOfApplication}
-                onChange={(v) => {
-                  setDateOfApplication(v);
-                  setErrors((prev) => ({ ...prev, dateOfApplication: "" }));
-                }}
-                error={!!errors.dateOfApplication}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Item Name" labelHi="वस्तूचे नाव" error={errors.itemName}>
-              <TextField
-                icon={<Package size={16} />}
-                value={itemName}
-                onChange={(v) => {
-                  setItemName(v);
-                  setErrors((prev) => ({ ...prev, itemName: "" }));
-                }}
-                error={!!errors.itemName}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Min Balance ID" labelHi="किमान शिल्लक आयडी" error={errors.minBalanceId}>
-              <SelectField
-                icon={<Users size={16} />}
-                value={minBalanceId}
-                onChange={(v) => {
-                  setMinBalanceId(v);
-                  setErrors((prev) => ({ ...prev, minBalanceId: "" }));
-                }}
-                options={["200", "500", "1000"]}
-                error={!!errors.minBalanceId}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Purchase Date" labelHi="खरेदीची तारीख" error={errors.purchaseDate}>
-              <TextField
-                icon={<CalendarDays size={16} />}
-                value={purchaseDate}
-                onChange={(v) => {
-                  setPurchaseDate(v);
-                  setErrors((prev) => ({ ...prev, purchaseDate: "" }));
-                }}
-                error={!!errors.purchaseDate}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Purchase Amount" labelHi="खरेदीची तारीख" required={false}>
-              <TextField icon={<IndianRupee size={16} />} value={purchaseAmount} onChange={setPurchaseAmount} />
-            </FieldWrap>
-
-            <FieldWrap label="Deprecation Rate" labelHi="जुना होण्याचा दर" error={errors.deprecationRate}>
-              <TextField
-                prefix="%"
-                value={deprecationRate}
-                onChange={(v) => {
-                  setDeprecationRate(v);
-                  setErrors((prev) => ({ ...prev, deprecationRate: "" }));
-                }}
-                error={!!errors.deprecationRate}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Description" labelHi="वर्णन" error={errors.description}>
-              <SelectField
-                icon={<FileText size={16} />}
-                value={description}
-                onChange={(v) => {
-                  setDescription(v);
-                  setErrors((prev) => ({ ...prev, description: "" }));
-                }}
-                options={["Office Equipment", "Vehicle", "Furniture", "Machinery"]}
-                placeholder="-"
-                error={!!errors.description}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Bill Number" labelHi="बिल नंबर" error={errors.billNumber}>
-              <TextField
-                icon={<Receipt size={16} />}
-                value={billNumber}
-                onChange={(v) => {
-                  setBillNumber(v);
-                  setErrors((prev) => ({ ...prev, billNumber: "" }));
-                }}
-                error={!!errors.billNumber}
-              />
-            </FieldWrap>
-
-            <div className="sm:col-span-2 lg:col-span-2">
-              <BilingualLabel en="Method of Deprecation Calculation" mr="जाणिवाने कमी होण्याची गणना करण्याची पद्धत ?" />
-              <div className="flex h-[42px] items-center gap-8">
-                <RadioOption label="Day" value="Day" selected={deprecationMethod} onSelect={setDeprecationMethod} />
-                <RadioOption label="Month" value="Month" selected={deprecationMethod} onSelect={setDeprecationMethod} />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2 lg:col-span-2">
-              <BilingualLabel en="Deprecation Calculate On" mr="कमी होणे मोजा सुरु ?" />
-              <div className="flex h-[42px] items-center gap-8">
-                <RadioOption
-                  label="Opening Balance"
-                  value="Opening Balance"
-                  selected={deprecationCalculateOn}
-                  onSelect={setDeprecationCalculateOn}
-                />
-                <RadioOption
-                  label="Current Balance"
-                  value="Current Balance"
-                  selected={deprecationCalculateOn}
-                  onSelect={setDeprecationCalculateOn}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}</style>
-
-        {/* Footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
-          <button
-            type="button"
-            onClick={handleValidate}
-            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg bg-primary text-[14px] font-medium text-white transition hover:bg-primary-700"
-          >
-            Validate
-            <Check className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white text-[14px] font-medium text-slate-600 transition hover:bg-slate-50"
-          >
-            Cancel
-            <X className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-primary-50 text-[14px] font-medium text-primary transition hover:bg-primary-100"
-          >
-            Save
-            <ChevronDown className="h-4 w-4" />
-          </button>
-        </div>
+        {renderContent()}
 
         {/* Modals */}
         {isCustomerListOpen && (
@@ -782,203 +1141,7 @@ export default function FixedAssetPage({
           </button>
         </div>
 
-        {/* Body - same as page mode */}
-        <div className="scrollbar-hide flex-1 overflow-y-auto overflow-x-hidden px-6 py-5">
-          <div className="grid grid-cols-1 gap-4 rounded-[20px] border-x border-b-2 border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
-            <FieldWrap label="Application Number" labelHi="अर्ज क्रमांक" error={errors.applicationNumber}>
-              <TextField
-                icon={<FileText size={16} />}
-                value={applicationNumber}
-                onChange={(v) => {
-                  setApplicationNumber(v);
-                  setErrors((prev) => ({ ...prev, applicationNumber: "" }));
-                }}
-                error={!!errors.applicationNumber}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Customer ID" labelHi="ग्राहक आयडी" error={errors.customerId}>
-              <TextFieldWithMenu
-                icon={<IdCard size={16} />}
-                value={customerId}
-                onChange={(v) => {
-                  setCustomerId(v);
-                  setErrors((prev) => ({ ...prev, customerId: "" }));
-                }}
-                menuActive={isCustomerListOpen}
-                onMenuClick={() => setIsCustomerListOpen(true)}
-                error={!!errors.customerId}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Customer Name" labelHi="ग्राहकाचे नाव" error={errors.customerName}>
-              <TextField
-                icon={<User size={16} />}
-                value={customerName}
-                onChange={(v) => {
-                  setCustomerName(v);
-                  setErrors((prev) => ({ ...prev, customerName: "" }));
-                }}
-                error={!!errors.customerName}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Date of Application" labelHi="अर्जाची तारीख" error={errors.dateOfApplication}>
-              <TextField
-                icon={<CalendarDays size={16} />}
-                value={dateOfApplication}
-                onChange={(v) => {
-                  setDateOfApplication(v);
-                  setErrors((prev) => ({ ...prev, dateOfApplication: "" }));
-                }}
-                error={!!errors.dateOfApplication}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Item Name" labelHi="वस्तूचे नाव" error={errors.itemName}>
-              <TextField
-                icon={<Package size={16} />}
-                value={itemName}
-                onChange={(v) => {
-                  setItemName(v);
-                  setErrors((prev) => ({ ...prev, itemName: "" }));
-                }}
-                error={!!errors.itemName}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Min Balance ID" labelHi="किमान शिल्लक आयडी" error={errors.minBalanceId}>
-              <SelectField
-                icon={<Users size={16} />}
-                value={minBalanceId}
-                onChange={(v) => {
-                  setMinBalanceId(v);
-                  setErrors((prev) => ({ ...prev, minBalanceId: "" }));
-                }}
-                options={["200", "500", "1000"]}
-                error={!!errors.minBalanceId}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Purchase Date" labelHi="खरेदीची तारीख" error={errors.purchaseDate}>
-              <TextField
-                icon={<CalendarDays size={16} />}
-                value={purchaseDate}
-                onChange={(v) => {
-                  setPurchaseDate(v);
-                  setErrors((prev) => ({ ...prev, purchaseDate: "" }));
-                }}
-                error={!!errors.purchaseDate}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Purchase Amount" labelHi="खरेदीची तारीख" required={false}>
-              <TextField icon={<IndianRupee size={16} />} value={purchaseAmount} onChange={setPurchaseAmount} />
-            </FieldWrap>
-
-            <FieldWrap label="Deprecation Rate" labelHi="जुना होण्याचा दर" error={errors.deprecationRate}>
-              <TextField
-                prefix="%"
-                value={deprecationRate}
-                onChange={(v) => {
-                  setDeprecationRate(v);
-                  setErrors((prev) => ({ ...prev, deprecationRate: "" }));
-                }}
-                error={!!errors.deprecationRate}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Description" labelHi="वर्णन" error={errors.description}>
-              <SelectField
-                icon={<FileText size={16} />}
-                value={description}
-                onChange={(v) => {
-                  setDescription(v);
-                  setErrors((prev) => ({ ...prev, description: "" }));
-                }}
-                options={["Office Equipment", "Vehicle", "Furniture", "Machinery"]}
-                placeholder="-"
-                error={!!errors.description}
-              />
-            </FieldWrap>
-
-            <FieldWrap label="Bill Number" labelHi="बिल नंबर" error={errors.billNumber}>
-              <TextField
-                icon={<Receipt size={16} />}
-                value={billNumber}
-                onChange={(v) => {
-                  setBillNumber(v);
-                  setErrors((prev) => ({ ...prev, billNumber: "" }));
-                }}
-                error={!!errors.billNumber}
-              />
-            </FieldWrap>
-
-            <div className="sm:col-span-2 lg:col-span-2">
-              <BilingualLabel en="Method of Deprecation Calculation" mr="जाणिवाने कमी होण्याची गणना करण्याची पद्धत ?" />
-              <div className="flex h-[42px] items-center gap-8">
-                <RadioOption label="Day" value="Day" selected={deprecationMethod} onSelect={setDeprecationMethod} />
-                <RadioOption label="Month" value="Month" selected={deprecationMethod} onSelect={setDeprecationMethod} />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2 lg:col-span-2">
-              <BilingualLabel en="Deprecation Calculate On" mr="कमी होणे मोजा सुरु ?" />
-              <div className="flex h-[42px] items-center gap-8">
-                <RadioOption
-                  label="Opening Balance"
-                  value="Opening Balance"
-                  selected={deprecationCalculateOn}
-                  onSelect={setDeprecationCalculateOn}
-                />
-                <RadioOption
-                  label="Current Balance"
-                  value="Current Balance"
-                  selected={deprecationCalculateOn}
-                  onSelect={setDeprecationCalculateOn}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}</style>
-
-        {/* Footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
-          <button
-            type="button"
-            onClick={handleValidate}
-            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg bg-primary text-[14px] font-medium text-white transition hover:bg-primary-700"
-          >
-            Validate
-            <Check className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white text-[14px] font-medium text-slate-600 transition hover:bg-slate-50"
-          >
-            Cancel
-            <X className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="flex h-10 w-[120px] items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-primary-50 text-[14px] font-medium text-primary transition hover:bg-primary-100"
-          >
-            Save
-            <ChevronDown className="h-4 w-4" />
-          </button>
-        </div>
+        {renderContent()}
 
         {/* Modals */}
         {isCustomerListOpen && (
