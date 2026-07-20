@@ -13,6 +13,7 @@ import ClearingTallyModal from "./Clerk/Modals/ClearingTallyAndHouse";
 import InwardClearingEntryModal from "./futuremodels/InwardClearingEntryModal";
 import OutwardClearingBounceModal from "./futuremodels/OutwardClearingBounceModal";
 import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal";
+import VoterList from "./futuremodels/VoterList";
 
 interface FutureModelAction {
   label: string;
@@ -29,10 +30,11 @@ const FutureModalsPage = () => {
     const [showCombineAcceptPayCash, setShowCombineAcceptPayCash] = useState(false);
     const [showRecoverySummary, setShowRecoverySummary] = useState(false);
     const [showPayCash, setShowPayCash] = useState(false);
-  const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("tally");
+  const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("");
     const [showInwardClearing, setShowInwardClearing] = useState(false);
     const [showOutwardBounce, setShowOutwardBounce] = useState(false);
     const [showOutwardClearing, setShowOutwardClearing] = useState(false);
+    const [voterList, setVoterList] = useState(false);
 
     return (
         <div className="p-6">
@@ -116,6 +118,14 @@ const FutureModalsPage = () => {
                 >
                     PAY CASH
                 </button>
+
+                   <button
+                    type="button"
+                    onClick={() => setVoterList(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    Voter List
+                </button>
             </div>
 
       {showStopChequePayment && (
@@ -178,6 +188,11 @@ const FutureModalsPage = () => {
             {showPayCash && (
                 <PayCash onClose={() => setShowPayCash(false)} />
             )}
+
+            {voterList && (
+                <VoterList open onClose={() => setVoterList(false)} />
+            )}
+
         </div>
     );
     // </div>
