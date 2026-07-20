@@ -114,6 +114,12 @@ import BillUtilityPage from "./components/Bill/BillUtilityPage";
 import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
 import PayrollMaster from "./components/Payroll/PayrollMaster";
 import PayrollTransaction from "./components/Payroll/PayrollTransaction";
+import EmployeeLeaveBalancePage from "@/pages/payroll/EmployeeLeaveBalancePage";
+import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
+import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
+import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
+import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
+import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
 
 import SMSRegistrationPage from "@/components/SMS/SMSRegistrationPage ";
 import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAuthorize";
@@ -380,6 +386,12 @@ export const router = createBrowserRouter([
       // Payroll
       { path: "/payroll/master", element: <PayrollMaster /> },
       { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
+      { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
+      { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
+      { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
+      { path: "/payroll/transaction/salary-updation", element: <SalaryUpdationPage /> },
+      { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
       { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage />, },
       { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage />, },
       { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage />, },
