@@ -5,8 +5,8 @@ import {
   Wallet, Landmark, History, Banknote, ScrollText, ArrowLeftRight, Coins,
   Percent, ShieldCheck, Search,
 } from "lucide-react";
-import DataTable from "./DataTable";
-import { MASTERS, getMasterConfig } from "./masterConfig";
+import DataTable from "../SupportUtility/DataTable";
+import { MASTERS, getMasterConfig } from "../SupportUtility/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
 
 const ICON_MAP = {
@@ -49,9 +49,8 @@ const HeroSupportUtility = ({
 
     return (
       <div
-        className={`group flex items-center justify-between rounded-md border px-5 py-3 transition-all duration-200 hover:shadow-md dark:bg-slate-900 ${
-           "border-[#E5E7EB] bg-white hover:border-[#D7E3FF] dark:border-slate-800 dark:hover:border-primary-800"
-        }`}
+        className={`group flex items-center justify-between rounded-md border px-5 py-3 transition-all duration-200 hover:shadow-md dark:bg-slate-900 ${"border-[#E5E7EB] bg-white hover:border-[#D7E3FF] dark:border-slate-800 dark:hover:border-primary-800"
+          }`}
       >
         <div className="flex items-center gap-4 min-w-0">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[#052F5B]">
@@ -83,9 +82,8 @@ const HeroSupportUtility = ({
     <button
       type="button"
       onClick={onClick}
-      className={`pb-2 text-sm font-medium border-b-2 transition-colors ${
-        active ? "text-primary border-primary" : "text-gray-500 border-transparent hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
-      }`}
+      className={`pb-2 text-sm font-medium border-b-2 transition-colors ${active ? "text-primary border-primary" : "text-gray-500 border-transparent hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
+        }`}
     >
       {label}
     </button>

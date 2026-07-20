@@ -68,7 +68,7 @@ import TLOtherChargesPage from "@/pages/futuremodels/TLOtherChargesPage";
 import UnLeanPage from "@/pages/futuremodels/UnLeanPage";
 import GlobalMasterPage from "@/pages/GlobalMasterPage";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
-import SupportUtilityPage from "@/pages/SupportUtilityPage";
+import SupportUtilityPage from "@/pages/MisActivity/SupportUtility/SupportUtilityPage";
 import ClerkClearingPage from "@/pages/ClerkClearingPage";
 import ClerkSmsPage from "@/pages/ClerkSmsPage";
 import LockerPage from "@/pages/LockerPage";

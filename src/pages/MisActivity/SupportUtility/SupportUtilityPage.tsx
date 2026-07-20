@@ -1,7 +1,6 @@
 // src/pages/SupportUtilityPage.tsx
 import React, { useState, useCallback } from "react";
 import Nav from "@/components/HeadOfficeMaster/Nav";
-import HeroSupportUtility from "@/components/SupportUtility/HeroSupportUtility";
 import ParameterModal from "@/components/SupportUtility/ParameterModal";
 import FilterModal from "@/components/SupportUtility/FilterModal";
 import AccountLookupTableModal from "@/components/SupportUtility/AccountLookupTableModal";
@@ -13,6 +12,7 @@ import DenominationModal from "@/components/SupportUtility/DenominationModal";
 import FormSectionsModal from "@/components/SupportUtility/FormSectionsModal";
 import { getMasterConfig, emptyFormData } from "@/components/SupportUtility/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
+import HeroSupportUtility from "@/components/shared/WelcomeScreen";
 
 interface BreadcrumbItem {
   label: string;
@@ -66,20 +66,20 @@ const SupportUtilityPage: React.FC = () => {
 
   const breadcrumbs: BreadcrumbItem[] = openMaster
     ? [
-        { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
-        {
-          label: SUPPORT_UTILITY_TITLE,
-          href: "#",
-          onClick: handleCloseMaster,
-        },
-        { label: openMaster.titleEn, href: "#" },
-      ]
+      { label: en("common.home"), href: "/" },
+      { label: en("common.misActivity"), href: "/mis-activity" },
+      {
+        label: SUPPORT_UTILITY_TITLE,
+        href: "#",
+        onClick: handleCloseMaster,
+      },
+      { label: openMaster.titleEn, href: "#" },
+    ]
     : [
-        { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
-        { label: SUPPORT_UTILITY_TITLE, href: "#" },
-      ];
+      { label: en("common.home"), href: "/" },
+      { label: en("common.misActivity"), href: "/mis-activity" },
+      { label: SUPPORT_UTILITY_TITLE, href: "#" },
+    ];
 
   const handleAddSave = (formData: Record<string, string>) => {
     if (!openMaster) return;
