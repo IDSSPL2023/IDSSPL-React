@@ -1,9 +1,9 @@
-﻿import React, { useState } from 'react'
+﻿import { useState } from 'react'
 import NavbarCM from '../CustomerMaster/NavbarCM'
 import { useRouter } from '@/lib/navigation';
 import { useBilingual } from '@/i18n/useBilingual';
 import Image from '@/components/ui/Image';
-import { ArrowUpRight, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import AddCashDeposit from '@/components/TransactionMaster/AddCashDeposit';
 import AddCashWithdrawal from '@/components/TransactionMaster/AddCashWithdrawal';
 import AddHoTransfer from '@/components/HO-Clerk/AddHoTransfer';
