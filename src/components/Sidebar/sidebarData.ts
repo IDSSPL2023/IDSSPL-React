@@ -343,6 +343,7 @@ export const menuItems: NavItemData[] = [
         id: "shares-annual-meeting-attendance",
         title: "Annual Meeting Attendance",
         icon: FileText,
+        href: "/annual-meeting-attendance"
       },
       {
         id: "shares-annual-meeting-report",
