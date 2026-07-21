@@ -1,5 +1,5 @@
 import { useRouter } from "@/lib/navigation";
-import AddPigmyDepositModal from "@/components/FutureModels/AddPigmyDepositModal";
+import AddPigmyDepositModal from "@/components/futuremodels/AddPigmyDepositModal";
 
 
 export default function PigmyDepositDetailsPage() {
