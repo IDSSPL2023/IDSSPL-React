@@ -1,6 +1,6 @@
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
-import AddTDClosingReinvest from "@/components/FutureModels/AddTDClosingReinvest";
+import AddTDClosingReinvest from "@/components/futuremodels/AddTDClosingReinvest";
 
 const TDClosingReinvestPage = () => {
   const router = useRouter();

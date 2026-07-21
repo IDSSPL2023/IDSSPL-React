@@ -1,4 +1,4 @@
-import PigmyColseMask from "@/components/FutureModels/PigmyColseMask";
+import PigmyColseMask from "@/components/futuremodels/PigmyColseMask";
 
 export default function AccountClosingPigmyPage() {
   return <PigmyColseMask />;
