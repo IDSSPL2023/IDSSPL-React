@@ -120,6 +120,11 @@ import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAu
 import AuthorizeAccountPage from "./pages/authorization/account/AuthorizeAccountPage";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
 
+import AnnualMeetingAttendancePage from "@/pages/futuremodels/AnnualMeetingAttendance";
+
+
+
+
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
   return <RoleAuthorizationFlow onClose={() => router.back()} />;
@@ -201,6 +206,7 @@ export const router = createBrowserRouter([
       },
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
+      { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       {
         path: "/authorization",
         children: [
