@@ -50,7 +50,11 @@ import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
 import CustomerMasterPage from "@/pages/CustomerMasterPage";
 import DashboardPage from "@/pages/DashboardPage";
 import FutureModelsPage from "@/pages/futuremodels/FutureModelsPage";
-import CalculatorPage from "@/pages/futuremodels/CalculatorPage";
+
+
+import LoanCalculatorsPage from "@/pages/futuremodels/LoanCalculators";
+
+
 import CasaClosingPage from "@/pages/futuremodels/CasaClosingPage";
 import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
 import InvestmentAccountPage from "@/pages/futuremodels/InvestmentAccountPage";
@@ -129,8 +133,7 @@ import AuthorizationClearingTablePage from "./pages/authorization/Clearing/Autho
 
 import AnnualMeetingAttendancePage from "@/pages/futuremodels/AnnualMeetingAttendance";
 
-
-
+import CalculatorPage from "@/components/futuremodels/CalculatorPage";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -214,6 +217,7 @@ export const router = createBrowserRouter([
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
       { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
+      { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       {
         path: "/authorization",
         children: [
@@ -344,7 +348,13 @@ export const router = createBrowserRouter([
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },
-      { path: "/futuremodels/calculator", element: <CalculatorPage /> },
+
+
+
+
+      { path: "/loan-calculators", element: <LoanCalculatorsPage /> },
+
+
       { path: "/futuremodels/casa-closing", element: <CasaClosingPage /> },
       { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
       {

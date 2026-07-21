@@ -20,6 +20,7 @@ import SharesDividendWarrant from "@/components/Shares/SharesDividendWarrant";
 import SharesLetterPrinting from "@/components/Shares/SharesLetterPrinting";
 import CertificatePrintModal from "./futuremodels/CertificatePrintModal";
 import VoterList from "./futuremodels/VoterList";
+import CalculatorPage from "@/components/futuremodels/CalculatorPage";
 
 interface FutureModelAction {
   label: string;
@@ -36,6 +37,7 @@ const FutureModalsPage = () => {
     const [showCombineAcceptPayCash, setShowCombineAcceptPayCash] = useState(false);
     const [showRecoverySummary, setShowRecoverySummary] = useState(false);
     const [showPayCash, setShowPayCash] = useState(false);
+    const [showCalculators, setShowCalculators] = useState(false);
     const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("");
     const [showInwardClearing, setShowInwardClearing] = useState(false);
     const [showOutwardBounce, setShowOutwardBounce] = useState(false);
@@ -190,7 +192,19 @@ const FutureModalsPage = () => {
                 >
                     Voter List
                 </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowCalculators(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    Calculators
+                </button>
             </div>
+
+            {showCalculators && (
+                <CalculatorPage onClose={() => setShowCalculators(false)} />
+            )}
 
             {/* Existing Modals */}
             {showStopChequePayment && (
