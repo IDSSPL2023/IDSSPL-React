@@ -1,3 +1,5 @@
+// FutureModalsPage.tsx (updated with Certificate Print)
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanInterestRate";
@@ -16,6 +18,7 @@ import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal"
 import AddShareAllotment from "@/components/Shares/AddShareAllotment";
 import SharesDividendWarrant from "@/components/Shares/SharesDividendWarrant";
 import SharesLetterPrinting from "@/components/Shares/SharesLetterPrinting";
+import CertificatePrintModal from "./futuremodels/CertificatePrintModal";
 
 interface FutureModelAction {
   label: string;
@@ -32,13 +35,35 @@ const FutureModalsPage = () => {
     const [showCombineAcceptPayCash, setShowCombineAcceptPayCash] = useState(false);
     const [showRecoverySummary, setShowRecoverySummary] = useState(false);
     const [showPayCash, setShowPayCash] = useState(false);
-  const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("tally");
+    const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("tally");
     const [showInwardClearing, setShowInwardClearing] = useState(false);
     const [showOutwardBounce, setShowOutwardBounce] = useState(false);
     const [showOutwardClearing, setShowOutwardClearing] = useState(false);
     const [showShareAllotment, setShowShareAllotment] = useState(false);
     const [showSharesDividendWarrant, setShowSharesDividendWarrant] = useState(false);
     const [showSharesLetterPrinting, setShowSharesLetterPrinting] = useState(false);
+    const [showCertificatePrint, setShowCertificatePrint] = useState(false);
+
+    // Sample data for certificate print
+    const [certificateData] = useState({
+        memberNoForm: "1230",
+        memberType: "1230",
+        toNo: "1230",
+        issueDate: "",
+        toDate: "",
+    });
+
+    const handleCertificateValidate = (data: any) => {
+        console.log("Certificate validated:", data);
+        // You can add validation logic here
+    };
+
+    const handleCertificatePrint = (data: any) => {
+        console.log("Printing certificate with data:", data);
+        // Implement print logic here
+        // You can use window.print() or call an API
+        alert("Printing certificate...");
+    };
 
     return (
         <div className="p-6">
@@ -51,13 +76,13 @@ const FutureModalsPage = () => {
                     STOP CHEQUE PAYMENT
                 </button>
 
-        <button
-          type="button"
-          onClick={() => setShowLoanInterestRate(true)}
-          className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
-        >
-          ADD/MODIFY LOAN INTEREST RATE
-        </button>
+                <button
+                    type="button"
+                    onClick={() => setShowLoanInterestRate(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    ADD/MODIFY LOAN INTEREST RATE
+                </button>
 
                 <button
                     type="button"
@@ -146,35 +171,46 @@ const FutureModalsPage = () => {
                 >
                     SHARES LETTER PRINTING
                 </button>
+
+                {/* New Certificate Print button */}
+                <button
+                    type="button"
+                    onClick={() => setShowCertificatePrint(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    CERTIFICATE PRINT
+                </button>
             </div>
 
-      {showStopChequePayment && (
-        <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
-      )}
+            {/* Existing Modals */}
+            {showStopChequePayment && (
+                <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
+            )}
 
             {showLoanInterestRate && (
                 <AddModifyLoanInterestRate onClose={() => setShowLoanInterestRate(false)} />
             )}
 
-      {showSetBranchParameter && (
-        <SetBranchParameterModal
-          onClose={() => setShowSetBranchParameter(false)}
-        />
-      )}
+            {showSetBranchParameter && (
+                <SetBranchParameterModal
+                    onClose={() => setShowSetBranchParameter(false)}
+                />
+            )}
 
+            <GeneratedInwardScheduleModal 
+                open={clerkModal === "inward"}
+                onClose={() => setClerkModal("")}
+            />
 
-        <GeneratedInwardScheduleModal open={clerkModal === "inward"}
-            onClose={() => setClerkModal("")}
-        />
+            <GenerateOutwardScheduleModal 
+                open={clerkModal === "outward"}
+                onClose={() => setClerkModal("")}
+            />
 
-       <GenerateOutwardScheduleModal open={clerkModal === "outward"}
-            onClose={() => setClerkModal("")}
-
-        />
-
-        <ClearingTallyModal open={clerkModal === "tally"}
-            onClose={() => setClerkModal("")}
-        />
+            <ClearingTallyModal 
+                open={clerkModal === "tally"}
+                onClose={() => setClerkModal("")}
+            />
 
             {showInwardClearing && (
                 <InwardClearingEntryModal
@@ -220,10 +256,20 @@ const FutureModalsPage = () => {
             {showSharesLetterPrinting && (
                 <SharesLetterPrinting onClose={() => setShowSharesLetterPrinting(false)} />
             )}
+
+            {/* Certificate Print Modal */}
+            {showCertificatePrint && (
+                <CertificatePrintModal
+                    open={showCertificatePrint}
+                    initialData={certificateData}
+                    readOnly={false}
+                    onClose={() => setShowCertificatePrint(false)}
+                    onValidate={handleCertificateValidate}
+                    onPrint={handleCertificatePrint}
+                />
+            )}
         </div>
     );
-    // </div>
-//   );
 };
 
 export default FutureModalsPage;
