@@ -186,10 +186,9 @@ type CustomerAuthorizationTableProps = {
   onAuthorize?: (row: RowData) => void;
 };
 
-const CustomerAuthorizationTable = ({
+const ClearingAuthorizationTable = ({
   activeTab,
   filters,
-  onView,
   onAuthorize,
 }: CustomerAuthorizationTableProps) => {
   const { tRaw } = useBilingual();
@@ -236,35 +235,6 @@ const CustomerAuthorizationTable = ({
     return "text-amber-700";
   };
 
-  const rowActionItems = (row: RowData) =>
-    onView
-      ? [
-          {
-            key: "view",
-            label: tRaw("common.view"),
-            icon: Eye,
-            onClick: () => onView?.(row),
-          },
-          {
-            key: "authorize",
-            label: tRaw(
-              "authorization.customerAuthorization.table.menuAuthorize",
-            ),
-            icon: ShieldCheck,
-            onClick: () => onAuthorize?.(row),
-          },
-        ]
-      : [
-          {
-            key: "authorize",
-            label: tRaw(
-              "authorization.customerAuthorization.table.menuAuthorize",
-            ),
-            icon: ShieldCheck,
-            onClick: () => onAuthorize?.(row),
-          },
-        ];
-
   return (
     <div className="w-full bg-white rounded-xl overflow-hidden shadow-sm">
       <div className="table-container relative overflow-x-auto no-scrollbar">
@@ -299,7 +269,18 @@ const CustomerAuthorizationTable = ({
                 </td>
 
                 <td className="px-6 py-3 relative" style={{ width: "90px" }}>
-                  <RowActionMenu items={rowActionItems(row)} />
+                  <RowActionMenu
+                    items={[
+                      {
+                        key: "authorize",
+                        label: tRaw(
+                          "authorization.customerAuthorization.table.menuAuthorize",
+                        ),
+                        icon: ShieldCheck,
+                        onClick: () => onAuthorize?.(row),
+                      },
+                    ]}
+                  />
                 </td>
 
                 <td
@@ -387,4 +368,4 @@ const CustomerAuthorizationTable = ({
   );
 };
 
-export default CustomerAuthorizationTable;
+export default ClearingAuthorizationTable;
