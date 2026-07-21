@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Eye, SquarePen } from "lucide-react";
 import NavbarAM from "@/components/AccountMaster/NavbarAM";
-import AddTermLoanFlow from "@/components/futuremodels/AddTermLoanMaster";
-import AddLoanAccountModal, { type LoanAccountFormData } from "@/components/futuremodels/AddLoanAccountModal";
+import AddTermLoanFlow from "@/components/FutureModels/AddTermLoanMaster";
+import AddLoanAccountModal, { type LoanAccountFormData } from "@/components/FutureModels/AddLoanAccountModal";
 
 interface LoanAccountRecord {
   accountCode: string;

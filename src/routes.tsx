@@ -88,10 +88,10 @@ import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
 import FutureModalsPage from "./components/FutureModal";
 import TDSReportsPage from "./pages/Tds";
-import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
-import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
-import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
-import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
+import ModifyBranchGlBalance from "./components/FutureModels/ModifyBranchGlBalance";
+import ModifyAccountBalancePage from "./components/FutureModels/ModifyAccountBalancePage";
+import ModifyBranchGlHistory from "./components/FutureModels/ModifyBranchGlHistory";
+import ModifyCashHandlingRecord from "./components/FutureModels/ModifyCashHandlingRecord";
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";

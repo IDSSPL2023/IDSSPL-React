@@ -6,9 +6,9 @@ import { useBilingual } from "@/i18n/useBilingual";
 import { useRouter } from "@/lib/navigation";
 
 // Custom clearing modals imported from futuremodels/clerk modals
-import InwardClearingEntryModal from "@/components/futuremodels/InwardClearingEntryModal";
-import OutwardClearingBounceModal from "@/components/futuremodels/OutwardClearingBounceModal";
-import OutwardClearingEntryModal from "@/components/futuremodels/OutwardClearingEntryModal";
+import InwardClearingEntryModal from "@/components/FutureModels/InwardClearingEntryModal";
+import OutwardClearingBounceModal from "@/components/FutureModels/OutwardClearingBounceModal";
+import OutwardClearingEntryModal from "@/components/FutureModels/OutwardClearingEntryModal";
 import GeneratedInwardScheduleModal from "@/components/Clerk/Modals/GenerateInwardSchedule";
 import GenerateOutwardScheduleModal from "@/components/Clerk/Modals/GenerateOutwordSchedule";
 import ClearingTallyModal from "@/components/Clerk/Modals/ClearingTallyAndHouse";
