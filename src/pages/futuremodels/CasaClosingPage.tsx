@@ -1,6 +1,6 @@
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
-import CASAClosingModal, { type CasaClosingFormData } from "@/components/futuremodels/CASAClosing";
+import CASAClosingModal, { type CasaClosingFormData } from "@/components/FutureModels/CASAClosing";
 import { useBilingual } from "@/i18n/useBilingual";
 
 const CasaClosingPage = () => {

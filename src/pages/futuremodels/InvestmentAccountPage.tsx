@@ -1,6 +1,6 @@
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
-import AddInvestmentAccountMaster from "@/components/futuremodels/AddInvestmentAccountMaster";
+import AddInvestmentAccountMaster from "@/components/FutureModels/AddInvestmentAccountMaster";
 
 const InvestmentAccountPage = () => {
   const router = useRouter();

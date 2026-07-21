@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanInterestRate";
-import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
-import StopChequePayment from "@/components/futuremodels/StopChequePayment";
+import AddModifyLoanInterestRate from "@/components/FutureModels/AddModifyLoanInterestRate";
+import InterestPostingProcess from "@/components/FutureModels/InterestPostingProcess";
+import StopChequePayment from "@/components/FutureModels/StopChequePayment";
 import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchParameterModal";
-import CombineAcceptPayCashMultiple from "@/components/futuremodels/CombineAcceptPayCashMultiple";
-import RecoverySummary from "@/components/futuremodels/RecoverySummary";
-import PayCash from "@/components/futuremodels/PayCash";
+import CombineAcceptPayCashMultiple from "@/components/FutureModels/CombineAcceptPayCashMultiple";
+import RecoverySummary from "@/components/FutureModels/RecoverySummary";
+import PayCash from "@/components/FutureModels/PayCash";
 import GeneratedInwardScheduleModal from "./Clerk/Modals/GenerateInwardSchedule";
 import GenerateOutwardScheduleModal from "./Clerk/Modals/GenerateOutwordSchedule";
 import ClearingTallyModal from "./Clerk/Modals/ClearingTallyAndHouse";
-import InwardClearingEntryModal from "./futuremodels/InwardClearingEntryModal";
-import OutwardClearingBounceModal from "./futuremodels/OutwardClearingBounceModal";
-import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal";
+import InwardClearingEntryModal from "./FutureModels/InwardClearingEntryModal";
+import OutwardClearingBounceModal from "./FutureModels/OutwardClearingBounceModal";
+import OutwardClearingEntryModal from "./FutureModels/OutwardClearingEntryModal";
 
 interface FutureModelAction {
   label: string;

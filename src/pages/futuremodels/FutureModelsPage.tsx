@@ -1,4 +1,4 @@
-import MainModel from '@/components/futuremodels/MainModel'
+import MainModel from '@/components/FutureModels/MainModel'
 import React from 'react'
 
 const FutureModelsPage = () => {
