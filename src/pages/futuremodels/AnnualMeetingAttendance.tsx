@@ -11,10 +11,9 @@ import {
   Calendar,
   MoreVertical,
   Search,
-  Type as TypeIcon,
+  User,
 } from "lucide-react";
 import {
-  FieldShell,
   TextInput,
 } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
@@ -143,6 +142,9 @@ function PickListModal({
   );
 }
 
+// ---- Shared dark border used on EVERY field box (matches Account Code / Address look) ----
+const FIELD_BORDER = "border border-slate-800";
+
 // ---- DateInput (same clean pattern used in SMSRegistrationPage) ----
 function DateInputField({
   value,
@@ -180,13 +182,13 @@ function DateInputField({
         type="date"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="min-h-[42px] w-full rounded-md border border-[#E5E7EB] bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 outline-none focus:border-primary focus:ring-1 focus:ring-primary opacity-0 absolute inset-0 cursor-pointer"
+        className="min-h-[42px] w-full rounded-md border border-slate-800 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 outline-none focus:border-primary focus:ring-1 focus:ring-primary opacity-0 absolute inset-0 cursor-pointer"
         style={{ opacity: 0, position: "absolute" }}
       />
       <div
         onClick={handleIconClick}
-        className={`min-h-[42px] w-full rounded-md border ${
-          error ? "border-red-400" : "border-[#E5E7EB]"
+        className={`min-h-[42px] w-full rounded-md ${
+          error ? "border border-red-400" : FIELD_BORDER
         } bg-white py-2.5 pl-10 pr-3 text-sm text-gray-700 outline-none cursor-pointer flex items-center`}
       >
         {value || placeholder || "Select Date"}
@@ -251,7 +253,7 @@ function TextInputWithMenu({
     <div className="flex items-center gap-2">
       <div className="flex-1">
         <TextInput
-          icon={<TypeIcon size={15} />}
+          icon={<User size={15} />}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
@@ -273,12 +275,12 @@ function TextInputWithMenu({
   );
 }
 
-// ---- Readonly text field, same disabled look used across the app ----
+// ---- Readonly text field, disabled gray look with dark border like other fields ----
 function ReadonlyTextField({ value, placeholder }: { value: string; placeholder?: string }) {
   return (
-    <div className="flex items-center min-h-[42px] w-full rounded-md border border-[#E5E7EB] bg-[#f0f2f5] px-3">
+    <div className="flex items-center min-h-[42px] w-full rounded-md border border-slate-800 bg-[#f0f2f5] px-3">
       <span className="text-slate-400">
-        <TypeIcon size={15} />
+        <User size={15} />
       </span>
       <span className="ml-2 w-full py-2.5 text-sm text-slate-500 cursor-not-allowed">
         {value || placeholder}
@@ -315,7 +317,7 @@ const FIELDS: FieldConfig[] = [
 type FormState = Record<string, string>;
 
 // ==========================================
-// REMARK ROW - Full width
+// REMARK ROW - narrower box, not full width
 // ==========================================
 
 function RemarkRow({
@@ -328,22 +330,20 @@ function RemarkRow({
   error?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-1 gap-x-6 gap-y-5">
-      <div>
-        <label className="mb-1.5 block text-[13px] font-medium text-black">
-          Remarks <span className="font-medium text-gray-500">/ टिप्पणी</span>
-          <span className="text-red-500"> *</span>
-        </label>
-        <textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Enter remarks..."
-          rows={3}
-          className={`w-full rounded-md border px-3 py-2.5 text-sm outline-none transition-colors resize-none ${
-            error ? "border-red-400 focus:border-red-500" : "border-[#E5E7EB] focus:border-primary focus:ring-1 focus:ring-primary"
-          }`}
-        />
-      </div>
+    <div className="max-w-md">
+      <label className="mb-1.5 block text-[13px] font-medium text-black">
+        Remarks <span className="font-medium text-gray-500">/ टिप्पणी</span>
+        <span className="text-red-500"> *</span>
+      </label>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Enter remarks..."
+        rows={2}
+        className={`w-full rounded-md px-3 py-2.5 text-sm outline-none transition-colors resize-none ${
+          error ? "border border-red-400 focus:border-red-500" : `${FIELD_BORDER} focus:border-primary focus:ring-1 focus:ring-primary`
+        }`}
+      />
     </div>
   );
 }
@@ -447,7 +447,9 @@ export default function AnnualMeetingAttendancePage() {
           <div className="rounded-2xl border-2 border-primary bg-white p-6 shadow-sm">
             {/* Section Header */}
             <div className="mb-5 flex items-center gap-3 border-b border-slate-100 pb-4">
-             
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-blue-100 bg-blue-50">
+                <User className="h-4 w-4 text-primary" />
+              </div>
               <div>
                 <h2 className="text-sm font-bold text-slate-800">
                   Employee Information{" "}
@@ -508,7 +510,7 @@ export default function AnnualMeetingAttendancePage() {
                   );
                 }
 
-                // Read-only fields - disabled, gray background
+                // Read-only fields - now same white bg + dark border as every other field
                 if (f.readOnly) {
                   return (
                     <div key={f.id}>
@@ -524,21 +526,26 @@ export default function AnnualMeetingAttendancePage() {
 
                 // Address - Editable
                 return (
-                  <FieldShell key={f.id} label={f.label} labelHi={f.labelHi} required error={hasError}>
+                  <div key={f.id}>
+                    <label className="mb-1.5 block text-[13px] font-medium text-black">
+                      {f.label}
+                      <span className="font-medium text-gray-500"> / {f.labelHi}</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
                     <TextInput
-                      icon={<TypeIcon size={15} />}
+                      icon={<User size={15} />}
                       value={form[f.id] || ""}
                       onChange={(v) => setField(f.id, v)}
                       placeholder={f.placeholder}
                       error={hasError}
                     />
-                  </FieldShell>
+                  </div>
                 );
               })}
             </div>
 
-            {/* Remark Row - Full width */}
-            <div className="mt-2 block text-[10px] font-medium text-black">
+            {/* Remark Row - narrower box */}
+            <div className="mb-5 border-gray-100 pt-5">
               <RemarkRow value={remarks} onChange={setRemarks} error={!!errors["remarks"]} />
             </div>
 
