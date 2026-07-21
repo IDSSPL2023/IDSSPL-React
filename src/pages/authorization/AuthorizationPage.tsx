@@ -1,4 +1,4 @@
-import GlobalNav from "@/components/GlobalMaster/GlobalNav";
+import { AppNavbar } from "@/components/common";
 import AuthorizationCards from "@/components/Authorization/AuthorizationCards";
 import { useBilingual } from "@/i18n/useBilingual";
 
@@ -6,7 +6,7 @@ const AuthorizationPage = () => {
   const { t, en } = useBilingual();
   return (
     <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
-      <GlobalNav
+      <AppNavbar
         titleEn={en("authorization.title")}
         titleHi={t("authorization.title")}
         breadcrumbs={[

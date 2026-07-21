@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import type { ComponentType } from "react";
 import {
   LayoutGrid,
@@ -885,6 +886,6 @@ export const user = {
   name: "Kunal Jadhav",
   role: "Admin",
   email: "kunal.jadhav@idsspl.com",
-  avatar: "/profile.png",
+  avatar: IMAGES.PROFILE,
   lastLogin: "Today, 10:45 AM",
 };

@@ -6,6 +6,8 @@ import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
 import Pagination from "@/components/shared/Pagination";
 import type { TdInterestPaymentFilters } from "./TdInterestPaymentFilterModal";
 
+/** Shared with TermDepositInterest/TermDepositInterestPayment.tsx — kept standalone, not inlined. */
+/* ===== from TdInterestPaymentAuthorizeTable.tsx ===== */
 export type TdInterestPaymentAuthorizeTab = "new" | "modify" | "rejected";
 
 export type TdInterestPaymentAuthorizeRow = {
@@ -192,5 +194,7 @@ const TdInterestPaymentAuthorizeTable = ({ activeTab, filters, onAuthorize }: Td
     </div>
   );
 };
+
+
 
 export default TdInterestPaymentAuthorizeTable;

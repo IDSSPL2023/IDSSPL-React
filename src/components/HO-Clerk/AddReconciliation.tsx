@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -122,7 +123,7 @@ const AddReconciliation = ({
   titleHi = "समायोजन",
   subtitleEn = "Fill in the reconciliation entry details below.",
   subtitleHi = "खालील समायोजन तपशील भरा.",
-  headerIcon = <Image src="/note1.png" alt="Reconciliation" width={50} height={50} />,
+  headerIcon = <Image src={IMAGES.NOTE_1} alt="Reconciliation" width={50} height={50} />,
   variant = "modal",
 }: AddReconciliationProps) => {
   const [form, setForm] = useState<ReconciliationFormData>(DEFAULT_RECONCILIATION_DATA);

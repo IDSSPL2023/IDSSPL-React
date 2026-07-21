@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import Image from "@/components/ui/Image";
 import { Search } from "lucide-react";
 
@@ -11,7 +12,7 @@ const AuthorizeHero = ({ query, onQueryChange, title = "Authorize Transaction" }
   return (
     <div className="relative isolate overflow-hidden rounded-2xl">
       <Image
-        src="/Background.jpg"
+        src={IMAGES.BACKGROUND_DARK}
         alt=""
         fill
         priority

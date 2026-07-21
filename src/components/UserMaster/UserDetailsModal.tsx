@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useEffect, useState } from "react";
 import { User, IdCard, Building2, Phone, Mail, Home, Flag, Check, X, ChevronDown, MoreVertical, ShieldCheck, ThumbsUp, ThumbsDown } from "lucide-react";
 import Image from "@/components/ui/Image";
@@ -44,21 +45,21 @@ interface ModeConfig {
 
 const MODE_CONFIG: Record<Mode, ModeConfig> = {
   edit: {
-    icon: "/User.png",
+    icon: IMAGES.USER,
     titleEn: "Edit User Details",
     titleHi: "वापरकर्त्याचे तपशील संपादित",
     descEn: "Edit some basic information related to the Employee",
     descHi: "कर्मचाऱ्याची बेसिक माहिती एडिट करा.",
   },
   view: {
-    icon: "/User.png",
+    icon: IMAGES.USER,
     titleEn: "View User Details",
     titleHi: "वापरकर्त्याचे तपशील पहा",
     descEn: "Only can view some basic information related to the Employee",
     descHi: "कर्मचाऱ्याची मूलभूत माहिती पहा.",
   },
   authorize: {
-    icon: "/User.png",
+    icon: IMAGES.USER,
     titleEn: "Authorize User",
     titleHi: "वापरकर्त्याला अधिकृत करा",
     descEn: "Check information related to the Employee and Authorize them.",
@@ -289,7 +290,7 @@ export default function UserDetailsModal({
           titleHi="वापरकर्ता तपशील"
           subtitleEn="Add some basic information related to the Employee"
           subtitleHi="कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती जोडा"
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className="mb-4">
             <RadioYesNo
@@ -422,7 +423,7 @@ export default function UserDetailsModal({
           titleHi="पत्ता तपशील"
           subtitleEn="Add some basic information related to the Employee Address"
           subtitleHi="कर्मचाऱ्याच्या पत्त्याशी संबंधित काही मूलभूत माहिती जोडा."
-          icon="/Address.png"
+          icon={IMAGES.ADDRESS}
         >
       
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -501,7 +502,7 @@ export default function UserDetailsModal({
           titleHi="भूमिका तपशील"
           subtitleEn="Configure employee access roles and operational responsibilities"
           subtitleHi="कर्मचाऱ्याच्या प्रवेश भूमिका आणि कार्यात्मक जबाबदाऱ्या कॉन्फिगर करा."
-          icon="/roles.png"
+          icon={IMAGES.ROLES}
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <RadioYesNo

@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -314,7 +315,7 @@ const AddTransfer = ({ onClose, onSave, variant = "modal" }: AddTransferProps) =
       titleHi="हस्तांतरण"
       subtitleEn="All Information's are related to Interest Payment Mark."
       subtitleHi="सर्व माहिती व्याज भरण्याच्या मार्कशी संबंधित आहे."
-      headerIcon={<Image src="/Transfer.png" alt="Transfer" width={50} height={50} />}
+      headerIcon={<Image src={IMAGES.TRANSFER} alt="Transfer" width={50} height={50} />}
       tabs={[]}
       activeTab=""
       onTabChange={() => {}}

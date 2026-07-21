@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "@/components/ui/Image";
 import {
@@ -30,7 +31,8 @@ import {
   Trash2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import FormModal from "@/components/shared/FormModal";
+import { TabModal } from "@/components/common";
+import type { TabModalTab } from "@/components/common";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -649,42 +651,6 @@ function RadioGroup({
   );
 }
 
-function Tabs({
-  tabs,
-  active,
-  onChange,
-  right,
-}: {
-  tabs: TabKey[];
-  active: TabKey;
-  onChange: (t: TabKey) => void;
-  right?: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-      <div className="flex gap-8">
-        {tabs.map((tab) => {
-          const isActive = tab === active;
-          return (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => onChange(tab)}
-              className={`relative -mb-px pb-3 pt-2 text-[14px] font-medium transition ${
-                isActive ? "text-primary" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-              }`}
-            >
-              {tab}
-              {isActive && <span className="absolute inset-x-0 -bottom-px h-[2px] rounded-full bg-primary" />}
-            </button>
-          );
-        })}
-      </div>
-      {right && <div className="mb-2">{right}</div>}
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /*  Details tab                                                        */
 /* ------------------------------------------------------------------ */
@@ -1099,7 +1065,7 @@ function ListModal<T extends Record<string, unknown>>({
         </div>
 
         {/* Table */}
-        <div className="scrollbar-hide relative z-10 flex-1 overflow-y-auto px-6 pb-6">
+        <div className="no-scrollbar relative z-10 flex-1 overflow-y-auto px-6 pb-6">
           <table className="w-full border-collapse text-left text-sm">
             <thead>
               <tr className="bg-primary-100 text-slate-700">
@@ -1158,7 +1124,7 @@ function HeaderIcon({ mode }: { mode: "view" | "edit" }) {
   return (
     <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 p-2 shadow-sm">
       <Image
-        src={mode === "edit" ? "/person%20edit%20icon.png" : "/person%20icon.png"}
+        src={mode === "edit" ? IMAGES.PERSON_EDIT_ICON : IMAGES.PERSON_ICON}
         alt=""
         fill
         sizes="48px"
@@ -1278,78 +1244,51 @@ export default function ViewAccountModal({
     }
   };
 
+  const tabModalTabs: TabModalTab[] = [
+    { key: "Details", label: "Details", content: <DetailsTab data={data} /> },
+    { key: "Deposit", label: "Deposit", content: <DepositTab data={depositData} /> },
+    {
+      key: "Nominee",
+      label: "Nominee",
+      content: <NomineeTab rows={nomineeRows} onChangeRows={setNomineeRows} />,
+    },
+    { key: "Joint Holder", label: "Joint Holder", content: <JointHolderTab data={jointHolderData} /> },
+  ];
+
   return (
     <EditModeContext.Provider value={isEdit}>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-        <div className="flex max-h-[90vh] w-[95vw] max-w-[1400px] flex-col overflow-hidden rounded-2xl bg-white dark:bg-slate-900 shadow-2xl">
-          {/* Header */}
-<div className="flex items-start justify-between gap-4 border-b border-slate-100 dark:border-slate-800 px-6 py-5">
-          <div className="flex items-start gap-3">
-            <HeaderIcon mode={mode} />
-            <div>
-              <h2 className="text-[20px] font-semibold leading-6 tracking-[0.0025em] text-slate-800 dark:text-slate-100">
-                {isEdit ? "Edit Deposit Account Details" : "View Deposit Account Details"}
-                <span className="text-slate-400 dark:text-slate-500"> / </span>
-                <span className="text-[#64748B] dark:text-slate-400">
-                  {isEdit ? "ठेवी खात्याचे तपशील संपादित करा" : "ठेव खाते तपशील पहा"}
-                </span>
-              </h2>
-              <p className="mt-1 text-sm font-normal leading-5 tracking-[0.0025em] text-slate-500 dark:text-slate-400">
-                {isEdit
-                  ? "Edit some basic information related to the Employee / कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती"
-                  : "Only can view some basic information related to the Employee / कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती"}
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 transition hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300"
-          >
-            <X className="h-5 w-5" strokeWidth={1.75} />
-          </button>
-        </div>
-
-        {/* Tabs */}
-        <div className="px-6 pt-2">
-            <Tabs
-              tabs={TABS}
-              active={activeTab}
-              onChange={setActiveTab}
-              right={
-                isEdit && activeTab === "Nominee" ? (
-                  <button
-                    type="button"
-                    onClick={handleAddNominee}
-                    className="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-                  >
-                    <Plus size={16} /> Add
-                  </button>
-                ) : null
-              }
-            />
-          </div>
-
-          {/* Body */}
-          <div className="scrollbar-hide flex-1 overflow-y-auto overflow-x-hidden px-6 py-5">
-            {activeTab === "Details" && <DetailsTab data={data} />}
-            {activeTab === "Deposit" && <DepositTab data={depositData} />}
-            {activeTab === "Nominee" && <NomineeTab rows={nomineeRows} onChangeRows={setNomineeRows} />}
-            {activeTab === "Joint Holder" && <JointHolderTab data={jointHolderData} />}
-          </div>
-          <style>{`
-            .scrollbar-hide::-webkit-scrollbar {
-              display: none;
-            }
-            .scrollbar-hide {
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-            }
-          `}</style>
-
-          {/* Footer */}
-          <div className="flex items-center justify-end gap-6 border-t border-slate-100 dark:border-slate-800 px-6 py-4">
+      <TabModal
+        onClose={onClose}
+        maxWidthPx={1400}
+        headerIcon={<HeaderIcon mode={mode} />}
+        title={
+          <>
+            {isEdit ? "Edit Deposit Account Details" : "View Deposit Account Details"}
+            <span className="text-slate-400"> / </span>
+            <span className="text-[#64748B]">{isEdit ? "ठेवी खात्याचे तपशील संपादित करा" : "ठेव खाते तपशील पहा"}</span>
+          </>
+        }
+        subtitle={
+          isEdit
+            ? "Edit some basic information related to the Employee / कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती"
+            : "Only can view some basic information related to the Employee / कर्मचाऱ्याशी संबंधित काही मूलभूत माहिती"
+        }
+        tabs={tabModalTabs}
+        activeTab={activeTab}
+        onTabChange={(key) => setActiveTab(key as TabKey)}
+        tabBarActions={
+          isEdit && activeTab === "Nominee" ? (
+            <button
+              type="button"
+              onClick={handleAddNominee}
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              <Plus size={16} /> Add
+            </button>
+          ) : null
+        }
+        footer={
+          <div className="flex items-center justify-end gap-6 px-6 py-4">
             {isEdit && (
               <button
                 type="button"
@@ -1364,7 +1303,7 @@ export default function ViewAccountModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 px-5 py-2 text-[14px] font-medium text-slate-600 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-800"
+              className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-5 py-2 text-[14px] font-medium text-slate-600 transition hover:bg-slate-50"
             >
               Cancel
               <X className="h-4 w-4" />
@@ -1374,7 +1313,7 @@ export default function ViewAccountModal({
               <button
                 type="button"
                 onClick={goNext}
-                className="flex items-center gap-1.5 rounded-lg bg-primary-100 dark:bg-primary-900/30 px-5 py-2 text-[14px] font-medium text-primary dark:text-primary-300 transition hover:bg-primary-200 dark:hover:bg-primary-900/50"
+                className="flex items-center gap-1.5 rounded-lg bg-primary-100 px-5 py-2 text-[14px] font-medium text-primary transition hover:bg-primary-200"
               >
                 {isLastTab ? "Save" : "Next"}
                 <ChevronDown className={`h-4 w-4 ${isLastTab ? "" : "-rotate-90"}`} />
@@ -1390,8 +1329,8 @@ export default function ViewAccountModal({
               </button>
             )}
           </div>
-        </div>
-      </div>
+        }
+      />
     </EditModeContext.Provider>
   );
 }

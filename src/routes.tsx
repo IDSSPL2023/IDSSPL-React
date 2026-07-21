@@ -15,111 +15,104 @@ import DepositClosingPage from "@/pages/account-closing/DepositClosingPage";
 import AccountClosingInvestmentPage from "@/pages/account-closing/AccountClosingInvestmentPage";
 import AccountClosingLoanPage from "@/pages/account-closing/AccountClosingLoanPage";
 import AccountClosingPigmyPage from "@/pages/account-closing/AccountClosingPigmyPage";
-import AccountMasterLandingPage from "@/pages/account-master/AccountMasterLandingPage";
-import AccountMasterCaSaPage from "@/pages/account-master/AccountMasterCaSaPage";
-import AccountMasterDepositPage from "@/pages/account-master/AccountMasterDepositPage";
-import AccountMasterInvestmentPage from "@/pages/account-master/AccountMasterInvestmentPage";
-import AccountMasterLoanPage from "@/pages/account-master/AccountMasterLoanPage";
-import AccountMasterFixedAssetPage from "@/pages/account-master/AccountMasterFixedAssetPage";
-import AccountMasterPigmyPage from "@/pages/account-master/AccountMasterPigmyPage";
+import AccountMasterLandingPage, { AccountMasterPage as AccountMasterTypePage } from "@/pages/AccountMaster/AccountMaster";
 import AccountMasterPage from "@/pages/AccountMasterPage";
-import AiDashboardPage from "@/pages/AiDashboardPage";
-import AssignUserRolePage from "@/pages/AssignUserRolePage";
-import DayBeginEndPage from "@/pages/day-begin-end/DayBeginEndPage";
-import BranchActivityPage from "@/pages/branch-activity/BranchActivity";
-import InterestPostingPage from "@/pages/interest-posting/InterestPostingPage";
+import AiDashboardPage from "@/pages/AiDashboard/AiDashboard";
+import AssignUserRolePage from "@/pages/AssignUserRole/AssignUserRole";
+import DayBeginEndPage from "@/pages/DayBeginEnd/DayBeginEnd";
+import BranchActivityPage from "@/pages/BranchActivity/BranchActivity";
+import InterestPostingPage from "@/pages/InterestPosting/InterestPosting";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
-// import AuthorizeAccountPage from "@/pages/authorization/AuthorizeAccountPage";
-import AuthorizePigmyOpenPage from "@/pages/authorization/pigmy/AuthorizePigmyOpenPage";
-import AuthorizePigmyClosePage from "@/pages/authorization/pigmy/AuthorizePigmyClosePage";
-import AuthorizationCustomerPage from "@/pages/authorization/AuthorizationCustomerPage";
-import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearingPage";
-import AuthorizeTransactionPage from "@/pages/authorization/transaction/AuthorizeTransactionPage";
-import CashDepositAuthorizePage from "@/pages/authorization/transaction/CashDepositAuthorizePage";
-import CashWithdrawalAuthorizePage from "@/pages/authorization/transaction/CashWithdrawalAuthorizePage";
-import RecurringInstallmentAuthorizePage from "@/pages/authorization/transaction/RecurringInstallmentAuthorizePage";
-import RtgsAuthorizePage from "@/pages/authorization/transaction/RtgsAuthorizePage";
-import TdInterestPaymentAuthorizePage from "@/pages/authorization/transaction/TdInterestPaymentAuthorizePage";
-import TdsTransactionAuthorizePage from "@/pages/authorization/transaction/TdsTransactionAuthorizePage";
-import TlCcInstallmentAuthorizePage from "@/pages/authorization/transaction/TlCcInstallmentAuthorizePage";
-import TlDisbursementAuthorizePage from "@/pages/authorization/transaction/TlDisbursementAuthorizePage";
-import TlOtherChargesAuthorizePage from "@/pages/authorization/transaction/TlOtherChargesAuthorizePage";
-import TransferAuthorizePage from "@/pages/authorization/transaction/TransferAuthorizePage";
-import AuthorizationUserPage from "@/pages/authorization/AuthorizationUserPage";
-import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
-import CustomerMasterPage from "@/pages/CustomerMasterPage";
+import AuthorizePigmyOpenPage from "@/pages/authorization/AuthorizeAccount/AuthorizePigmyOpen/AuthorizePigmyOpen";
+import AuthorizePigmyClosePage from "@/pages/authorization/AuthorizeAccount/AuthorizePigmyClose/AuthorizePigmyClose";
+import AuthorizationCustomerPage from "@/pages/authorization/AuthorizeCustomer/AuthorizeCustomer";
+import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearing/AuthorizeClearing";
+import AuthorizeTransactionPage from "@/pages/authorization/AuthorizeTransaction/AuthorizeTransaction";
+import CashDepositAuthorizePage from "@/pages/authorization/AuthorizeTransaction/CashDepositAuthorize/CashDepositAuthorize";
+import CashWithdrawalAuthorizePage from "@/pages/authorization/AuthorizeTransaction/CashWithdrawalAuthorize/CashWithdrawalAuthorize";
+import RecurringInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/RecurringInstallmentAuthorize/RecurringInstallmentAuthorize";
+import RtgsAuthorizePage from "@/pages/authorization/AuthorizeTransaction/RtgsAuthorize/RtgsAuthorize";
+import TdInterestPaymentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdInterestPaymentAuthorize/TdInterestPaymentAuthorize";
+import TdsTransactionAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdsTransactionAuthorize/TdsTransactionAuthorize";
+import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+import TlDisbursementAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlDisbursementAuthorize/TlDisbursementAuthorize";
+import TlOtherChargesAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlOtherChargesAuthorize/TlOtherChargesAuthorize";
+import TransferAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TransferAuthorize/TransferAuthorize";
+import AuthorizationUserPage from "@/pages/authorization/AuthorizeUser/AuthorizeUser";
+import BranchMasterPage from "@/pages/BranchMaster/BranchMaster";
+import CustomerMasterPage from "@/pages/CustomerMaster/CustomerMaster";
 import DashboardPage from "@/pages/DashboardPage";
-import FutureModelsPage from "@/pages/futuremodels/FutureModelsPage";
-import CalculatorPage from "@/pages/futuremodels/CalculatorPage";
-import CasaClosingPage from "@/pages/futuremodels/CasaClosingPage";
-import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
-import InvestmentAccountPage from "@/pages/futuremodels/InvestmentAccountPage";
-import InvestmentAccountClosePage from "@/pages/futuremodels/InvestmentAccountClosePage";
-import PigmyDepositDetailsPage from "@/pages/futuremodels/PigmyDepositDetailsPage";
-import PigmyDetailsPage from "@/pages/futuremodels/PigmyDetailsPage";
-import StandingInstructionsPage from "@/pages/futuremodels/StandingInstructionsPage";
-import TdCalculatePage from "@/pages/futuremodels/TdCalculatePage";
-import TermDepositClosePage from "@/pages/futuremodels/TermDepositClosePage";
-import TdOpenPage from "@/pages/futuremodels/TdOpenPage";
-import TDClosingReinvestPage from "@/pages/futuremodels/TDClosingReinvestPage";
-import TlClosePage from "@/pages/futuremodels/TlClosePage";
-import TermLoanOpenPage from "@/pages/futuremodels/TermLoanOpenPage";
-import TLOtherChargesPage from "@/pages/futuremodels/TLOtherChargesPage";
-import UnLeanPage from "@/pages/futuremodels/UnLeanPage";
-import GlobalMasterPage from "@/pages/GlobalMasterPage";
-import HeadOfficeMasterPage from "@/pages/HeadOfficeMasterPage";
-import SupportUtilityPage from "@/pages/SupportUtilityPage";
+import FutureModelsPage from "@/pages/futuremodels/FutureModels";
+import CalculatorPage from "@/pages/futuremodels/Calculator/Calculator";
+import CasaClosingPage from "@/pages/futuremodels/CasaClosing/CasaClosing";
+import FixedAssetPage from "@/pages/futuremodels/FixedAsset/FixedAsset";
+import InvestmentAccountPage from "@/pages/futuremodels/InvestmentAccount/InvestmentAccount";
+import InvestmentAccountClosePage from "@/pages/futuremodels/InvestmentAccountClose/InvestmentAccountClose";
+import PigmyDepositDetailsPage from "@/pages/futuremodels/PigmyDepositDetails/PigmyDepositDetails";
+import PigmyDetailsPage from "@/pages/futuremodels/PigmyDetails/PigmyDetails";
+import StandingInstructionsPage from "@/pages/futuremodels/StandingInstructions/StandingInstructions";
+import TdCalculatePage from "@/pages/futuremodels/TdCalculate/TdCalculate";
+import TermDepositClosePage from "@/pages/futuremodels/TermDepositClose/TermDepositClose";
+import TdOpenPage from "@/pages/futuremodels/TdOpen/TdOpen";
+import TDClosingReinvestPage from "@/pages/futuremodels/TdClosingReinvest/TdClosingReinvest";
+import TlClosePage from "@/pages/futuremodels/TlClose/TlClose";
+import TermLoanOpenPage from "@/pages/futuremodels/TermLoanOpen/TermLoanOpen";
+import TLOtherChargesPage from "@/pages/futuremodels/TlOtherCharges/TlOtherCharges";
+import UnLeanPage from "@/pages/futuremodels/UnLean/UnLean";
+import GlobalMasterPage from "@/pages/GlobalMaster/GlobalMaster";
+import HeadOfficeMasterPage from "@/pages/HeadOfficeMaster/HeadOfficeMaster";
+import SupportUtilityPage from "@/pages/SupportUtility/SupportUtility";
 import ClerkClearingPage from "@/pages/ClerkClearingPage";
 import ClerkSmsPage from "@/pages/ClerkSmsPage";
-import LockerPage from "@/pages/LockerPage";
-import TransactionMasterPage from "@/pages/transactionmaster/TransactionMasterPage";
-import CashDepositPage from "@/pages/transactionmaster/CashDepositPage";
-import CashWithdrawalPage from "@/pages/transactionmaster/CashWithdrawalPage";
-import RecurringInstallmentPage from "@/pages/transactionmaster/RecurringInstallmentPage";
-import RtgsPage from "@/pages/transactionmaster/RtgsPage";
-import TdInterestPaymentPage from "@/pages/transactionmaster/TdInterestPaymentPage";
-import TdsTransactionPage from "@/pages/transactionmaster/TdsTransactionPage";
-import TlCcInstallmentPage from "@/pages/transactionmaster/TlCcInstallmentPage";
-import TlDisbursementPage from "@/pages/transactionmaster/TlDisbursementPage";
-import TransferPage from "@/pages/transactionmaster/TransferPage";
-import ModifyTdsTransactionPage from "@/pages/transactionmaster/ModifyTdsTransactionPage";
-import UserMasterPage from "@/pages/UserMasterPage";
-import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/Roleauthorizationflow";
-import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
-import FutureModalsPage from "./components/FutureModal";
-import TDSReportsPage from "./pages/Tds";
-import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
-import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
-import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
-import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
-import FinancialClosing from "./components/FinancialClosing";
-import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
-import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
-import Application from "./components/HO-Clerk/HoApplication";
-import HoClerkTransaction from "./components/HO-Clerk/HoClerkTransaction";
-import Cashier from "./components/Cashier/Cashier";
-import PagesAcceptCashPage from "@/pages/cashier/AcceptCashPage";
-import HoOfficer from "./components/Ho-Officer/HoOfficer";
-import HoCashDepositAuthorizePage from "@/pages/ho-officer/HoCashDepositAuthorizePage";
-import HoCashWithdrawalAuthorizePage from "@/pages/ho-officer/HoCashWithdrawalAuthorizePage";
-import HoTransferAuthorizePage from "@/pages/ho-officer/HoTransferAuthorizePage";
-import InvestmentPaymentClosingAuthorizePage from "@/pages/ho-officer/InvestmentPaymentClosingAuthorizePage";
-import RtgsOutwardAuthorizePage from "@/pages/ho-officer/RtgsOutwardAuthorizePage";
-import ReconciliationAuthorizePage from "@/pages/ho-officer/ReconciliationAuthorizePage";
-import DDPage from "./pages/dd/DDPage";
-import DDMaintenancePage from "./pages/dd/DDMaintenancePage";
-import DDPrintingPage from "./pages/dd/DDPrintingPage";
-// import BillHero from "./components/Bill/BillHero";
-import BillUtilityPage from "./components/Bill/BillUtilityPage";
-import BillAuthorizationOptions from "@/components/Authorization/BillAuthorize/BillAuthorizationOptions";
-import PayrollMaster from "./components/Payroll/PayrollMaster";
-import PayrollTransaction from "./components/Payroll/PayrollTransaction";
+import LockerPage from "@/pages/Locker/Locker";
+import TransactionMasterPage, {
+  CashDepositPage,
+  CashWithdrawalPage,
+  RecurringInstallmentPage,
+  RtgsPage,
+  TdInterestPaymentPage,
+  TdsTransactionPage,
+  TlCcInstallmentPage,
+  TlDisbursementPage,
+  TransferPage,
+  ModifyTdsTransactionPage,
+} from "@/pages/TransactionMaster/TransactionMaster";
+import UserMasterPage from "@/pages/UserMaster/UserMaster";
+import RoleAuthorizationFlow from "@/pages/authorization/RolesAuthorization/RolesAuthorization";
+import AuthorizeAccountMainPage from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
+import FutureModalsPage from "./pages/FutureModals/FutureModals";
+import TDSReportsPage from "./pages/Tds/Tds";
+import ModifyBranchGlBalance from "./pages/futuremodels/ModifyBranchGlBalance/ModifyBranchGlBalance";
+import ModifyAccountBalancePage from "./pages/futuremodels/ModifyAccountBalance/ModifyAccountBalance";
+import ModifyBranchGlHistory from "./pages/futuremodels/ModifyBranchGlHistory/ModifyBranchGlHistory";
+import ModifyCashHandlingRecord from "./pages/futuremodels/ModifyCashHandlingRecord/ModifyCashHandlingRecord";
+import FinancialClosing from "./pages/FinancialClosing/FinancialClosing";
+import TermDepositInterestPayment from "./pages/authorization/AuthorizeTransaction/TermDepositInterestPayment/TermDepositInterestPayment";
+import SetProductStatusPage from "./pages/FinancialClosing/SetProductStatus/SetProductStatus";
+import Application from "./pages/HoClerk/Application/Application";
+import HoClerkTransaction from "./pages/HoClerk/Transaction/Transaction";
+import Cashier from "./pages/Cashier/Cashier";
+import PagesAcceptCashPage from "@/pages/Cashier/AcceptCash/AcceptCash";
+import HoOfficer from "./pages/HoOfficer/HoOfficer";
+import HoCashDepositAuthorizePage from "@/pages/HoOfficer/HoCashDepositAuthorize/HoCashDepositAuthorize";
+import HoCashWithdrawalAuthorizePage from "@/pages/HoOfficer/HoCashWithdrawalAuthorize/HoCashWithdrawalAuthorize";
+import HoTransferAuthorizePage from "@/pages/HoOfficer/HoTransferAuthorize/HoTransferAuthorize";
+import InvestmentPaymentClosingAuthorizePage from "@/pages/HoOfficer/InvestmentPaymentClosingAuthorize/InvestmentPaymentClosingAuthorize";
+import RtgsOutwardAuthorizePage from "@/pages/HoOfficer/RtgsOutwardAuthorize/RtgsOutwardAuthorize";
+import ReconciliationAuthorizePage from "@/pages/HoOfficer/ReconciliationAuthorize/ReconciliationAuthorize";
+import DDPage from "./pages/dd/DD/DD";
+import DDMaintenancePage from "./pages/dd/Maintenance/Maintenance";
+import DDPrintingPage from "./pages/dd/Printing/Printing";
+import BillUtilityPage from "./pages/Bill/Bill";
+import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
+import PayrollMaster from "./pages/Payroll/Master/Master";
+import PayrollTransaction from "./pages/Payroll/Transaction/Transaction";
 
-import SMSRegistrationPage from "@/components/SMS/SMSRegistrationPage ";
-import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAuthorize";
-import AuthorizeAccountPage from "./pages/authorization/account/AuthorizeAccountPage";
+import SMSRegistrationPage from "@/pages/SMS/SMS";
+import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
+import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 
-import AnnualMeetingAttendancePage from "@/pages/futuremodels/AnnualMeetingAttendance";
+import AnnualMeetingAttendancePage from "@/pages/Shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
 
 
 
@@ -170,18 +163,18 @@ export const router = createBrowserRouter([
       { path: "/account-master", element: <AccountMasterLandingPage /> },
       // { path: "/account-master/bill", element: <BillHero /> },
       { path: "/account-master/bill", element: <BillUtilityPage /> },
-      { path: "/account-master/ca-sa", element: <AccountMasterCaSaPage /> },
+      { path: "/account-master/ca-sa", element: <AccountMasterTypePage accountType="ca-sa" /> },
       {
         path: "/account-master/deposit",
-        element: <AccountMasterDepositPage />,
+        element: <AccountMasterTypePage accountType="deposit" />,
       },
       {
         path: "/account-master/investment",
-        element: <AccountMasterInvestmentPage />,
+        element: <AccountMasterTypePage accountType="investment" />,
       },
-      { path: "/account-master/loan", element: <AccountMasterLoanPage /> },
-      { path: "/account-master/fixed-asset", element: <AccountMasterFixedAssetPage /> },
-      { path: "/account-master/pigmy", element: <AccountMasterPigmyPage /> },
+      { path: "/account-master/loan", element: <AccountMasterTypePage accountType="loan" /> },
+      { path: "/account-master/fixed-asset", element: <AccountMasterTypePage accountType="fixed-asset" /> },
+      { path: "/account-master/pigmy", element: <AccountMasterTypePage accountType="pigmy" /> },
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },

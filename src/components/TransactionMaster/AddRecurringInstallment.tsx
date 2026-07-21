@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -436,7 +437,7 @@ const AddRecurringInstallment = ({ onClose, onSave, variant = "modal" }: AddRecu
       titleHi="पुनरावृत्ती होणारी हप्त्याची नोंद"
       subtitleEn="All Information's are related to Interest Payment Mark."
       subtitleHi="सर्व माहिती व्याज भरण्याच्या मार्कशी संबंधित आहे."
-      headerIcon={<Image src="/Frame 1618867441.png" alt="Recurring Installment Entry" width={50} height={50} />}
+      headerIcon={<Image src={IMAGES.FRAME_1618867441} alt="Recurring Installment Entry" width={50} height={50} />}
       tabs={[]}
       activeTab=""
       onTabChange={() => {}}

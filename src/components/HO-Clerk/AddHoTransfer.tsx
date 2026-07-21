@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -284,7 +285,7 @@ const AddHoTransfer = ({
   titleHi = "HO हस्तांतरण",
   subtitleEn = "Fill in the HO transfer entry details below.",
   subtitleHi = "खालील HO हस्तांतरण तपशील भरा.",
-  headerIcon = <Image src="/Transfer.png" alt="HO Transfer" width={50} height={50} />,
+  headerIcon = <Image src={IMAGES.TRANSFER} alt="HO Transfer" width={50} height={50} />,
   variant = "modal",
 }: AddHoTransferProps) => {
   const [form, setForm] = useState<HoTransferFormData>(DEFAULT_HO_TRANSFER_DATA);

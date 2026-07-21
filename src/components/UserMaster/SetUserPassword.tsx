@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import React, { useEffect, useState } from "react";
 import Image from "@/components/ui/Image";
 import {
@@ -207,7 +208,7 @@ export default function SetUserPasswordModal({
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-center gap-3 sm:gap-4">
               <Image
-                src="/SetPassword.png"
+                src={IMAGES.SET_PASSWORD}
                 alt="Set User Password"
                 width={64}
                 height={64}

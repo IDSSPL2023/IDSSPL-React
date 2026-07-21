@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import type { ComponentType } from "react";
 
 export interface TransactionTypeItem {
@@ -13,7 +14,7 @@ export interface TransactionTypeItem {
   href?: string;
 }
 
-const FALLBACK_ICON = "/Ellipse 58 (4).png";
+const FALLBACK_ICON = IMAGES.ELLIPSE_58_4;
 
 /** Reusable list of transaction types shown on the Transaction Master landing page. */
 export const TRANSACTION_TYPES: TransactionTypeItem[] = [
@@ -22,7 +23,7 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     titleEn: "Cash Deposit",
     titleHi: "रोख रक्कम जमा",
     descriptionEn: "Enter the cash deposit transaction details.",
-    icon: "/cash deposite.png",
+    icon: IMAGES.CASH_DEPOSIT,
     href: "/transactionmaster/cash-deposit",
   },
   {
@@ -30,7 +31,7 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     titleEn: "Cash Withdrawal",
     titleHi: "रोख रक्कम काढणे",
     descriptionEn: "Enter the cash Withdrawal transaction details.",
-    icon: "/Cash Withdrawal.png",
+    icon: IMAGES.CASH_WITHDRAWAL,
     href: "/transactionmaster/cash-withdrawal",
   },
   {
@@ -38,7 +39,7 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     titleEn: "RTGS",
     titleHi: "आरटीजीएस",
     descriptionEn: "Enter the RTGS transaction details.",
-    icon: "/RTGS.png",
+    icon: IMAGES.RTGS,
     href: "/transactionmaster/rtgs",
   },
   {
@@ -54,7 +55,7 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     titleEn: "TD Interest Payment",
     titleHi: "रोख रक्कम काढणे",
     descriptionEn: "Enter the TD Interest Payment transaction details.",
-    icon: "/TD Intrest Payment.png",
+    icon: IMAGES.TD_INTEREST_PAYMENT,
     href: "/transactionmaster/td-interest-payment",
   },
   {
@@ -94,7 +95,7 @@ export const TRANSACTION_TYPES: TransactionTypeItem[] = [
     titleEn: "Transfer",
     titleHi: "रोख रक्कम काढणे",
     descriptionEn: "Enter the Transfer transaction details.",
-    icon: "/Transfer.png",
+    icon: IMAGES.TRANSFER,
     href: "/transactionmaster/transfer",
   },
   {
