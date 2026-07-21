@@ -1,34 +1,31 @@
-
-
-
 import { useMemo, useState } from "react";
-import NavbarCM from "../CustomerMaster/NavbarCM";
+import { Wallet } from "lucide-react";
+import { useRouter } from "@/lib/navigation";
+import NavbarCM from "@/components/CustomerMaster/NavbarCM";
 import FilterModal, {
   defaultValues,
   type CustomerFilters,
-} from "../CustomerMaster/FilterModal";
-import { useRouter } from "@/lib/navigation";
-import PayrollTable, { type PayrollRow } from "./PayrollTable";
-import AddEmployee from "./AddEmployee";
+} from "@/components/CustomerMaster/FilterModal";
+import PayrollTable, { type PayrollRow } from "@/components/Payroll/PayrollTable";
+import EmployeeLoanFormModal from "@/components/Payroll/EmployeeLoanFormModal";
 
-const initialRows: PayrollRow[] = [
+const employeeRows: PayrollRow[] = [
   { id: 1, employeeId: "EMP001", employeeName: "Rahul Sharma", employmentType: "Permanent", designation: "Accountant", gender: "Male", status: "Active" },
   { id: 2, employeeId: "EMP002", employeeName: "Priya Singh", employmentType: "Contract", designation: "Officer", gender: "Female", status: "Active" },
   { id: 3, employeeId: "EMP003", employeeName: "Amit Verma", employmentType: "Permanent", designation: "Executive", gender: "Male", status: "Inactive" },
   { id: 4, employeeId: "EMP004", employeeName: "Sneha Patel", employmentType: "Permanent", designation: "Manager", gender: "Female", status: "Active" },
 ];
 
-const PayrollMaster = () => {
+const EmployeeLoanDetailsPage = () => {
   const router = useRouter();
-  const [rows, setRows] = useState<PayrollRow[]>(initialRows);
   const [filters, setFilters] = useState<CustomerFilters>(defaultValues);
-  const [isSearchVisible, setIsSearchVisible] = useState(true);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [loanEmployee, setLoanEmployee] = useState<PayrollRow | null>(null);
 
   const filteredRows = useMemo(
     () =>
-      rows.filter((row) => {
+      employeeRows.filter((row) => {
         if (
           filters.customerId &&
           !row.employeeId.toLowerCase().includes(filters.customerId.toLowerCase())
@@ -36,26 +33,20 @@ const PayrollMaster = () => {
         if (filters.status && row.status !== filters.status) return false;
         return true;
       }),
-    [filters, rows]
+    [filters]
   );
 
-  const nextEmployeeId = `EMP${String(rows.length + 1).padStart(3, "0")}`;
-
-  const handleEmployeeSaved = (employee: PayrollRow) => {
-    setRows((currentRows) => [...currentRows, employee]);
-  };
-
   return (
-    <div className="min-h-full bg-[#F8FAFC] dark:bg-slate-950">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950">
       <NavbarCM
-        titleEn="Payroll Master"
+        titleEn="Employee Loan Details"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
-          { label: "Master", href: "#" },
-          { label: "Payroll Master", href: "/payroll/master" },
+          { label: "Payroll", href: "/payroll/master" },
+          { label: "Transaction", href: "/payroll/transaction" },
+          { label: "Employee Loan Details", href: "#" },
         ]}
         onBack={() => router.back()}
-        onAdd={() => setIsAddOpen(true)}
         isSearchVisible={isSearchVisible}
         filters={filters}
         onToggleSearch={() => setIsSearchVisible(true)}
@@ -64,11 +55,19 @@ const PayrollMaster = () => {
       />
 
       <main className="p-4 sm:p-6">
-        <PayrollTable rows={filteredRows} />
+        <PayrollTable
+          rows={filteredRows}
+          actions={(row) => [
+            { key: "employee-loan", label: "Employee Loan", icon: Wallet, onClick: () => setLoanEmployee(row) },
+          ]}
+        />
       </main>
 
       {isFilterOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => setIsFilterOpen(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setIsFilterOpen(false)}
+        >
           <div onClick={(event) => event.stopPropagation()}>
             <FilterModal
               initialValues={filters}
@@ -79,15 +78,14 @@ const PayrollMaster = () => {
         </div>
       )}
 
-      {isAddOpen && (
-        <AddEmployee
-          onClose={() => setIsAddOpen(false)}
-          onSave={handleEmployeeSaved}
-          nextEmployeeId={nextEmployeeId}
+      {loanEmployee && (
+        <EmployeeLoanFormModal
+          employee={loanEmployee}
+          onClose={() => setLoanEmployee(null)}
         />
       )}
     </div>
   );
 };
 
-export default PayrollMaster
+export default EmployeeLoanDetailsPage;

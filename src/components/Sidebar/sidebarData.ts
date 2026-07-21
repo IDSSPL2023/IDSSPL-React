@@ -399,6 +399,7 @@ export const menuItems: NavItemData[] = [
         id: "shares-shares-allotment-entry",
         title: "Shares Allotment Entry",
         icon: ClipboardList,
+        href: "/shares/allotment-entry",
       },
       {
         id: "shares-shares-dividend-warrant",
@@ -670,7 +671,7 @@ export const menuItems: NavItemData[] = [
         id: "branch-activity",
         title: "Day Begin",
         icon: PlayCircle,
-        href:"/branch-activity",
+        href: "/branch-activity",
       },
     ],
   },
@@ -699,6 +700,11 @@ export const menuItems: NavItemData[] = [
       {
         id: "payroll-transaction-entry",
         title: "Transaction Entry",
+        icon: ArrowLeftRight,
+      },
+      {
+        id: "payroll-authrization",
+        title: "Authorization",
         icon: ArrowLeftRight,
       },
     ],

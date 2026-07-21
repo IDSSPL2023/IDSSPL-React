@@ -3,11 +3,25 @@ import { useRouter } from "@/lib/navigation";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import AuthorizeHero from "@/components/Authorization/AuthorizeTransaction/AuthorizeHero";
 import PayrollTransactionCard from "./PayrollTransactionCard";
-import { PAYROLL_TRANSACTION_ITEMS } from "./payrollTransactionData";
+import { PAYROLL_TRANSACTION_ITEMS, type PayrollTransactionItem } from "./payrollTransactionData";
 
 const PayrollTransaction = () => {
   const router = useRouter();
   const [query, setQuery] = useState("");
+
+  const TRANSACTION_ROUTES: Partial<Record<PayrollTransactionItem["id"], string>> = {
+    "employee-leave-balance": "/payroll/transaction/employee-leave-balance",
+    "employee-loan-details": "/payroll/transaction/employee-loan-details",
+    "leave-opening-balance": "/payroll/transaction/leave-opening-balance",
+    "salary-instruction": "/payroll/transaction/salary-instruction",
+    "salary-updation": "/payroll/transaction/salary-updation",
+    "update-attendance": "/payroll/transaction/update-attendance",
+  };
+
+  const handleOpen = (item: PayrollTransactionItem) => {
+    const route = TRANSACTION_ROUTES[item.id];
+    if (route) router.push(route);
+  };
 
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -34,7 +48,7 @@ const PayrollTransaction = () => {
 
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5">
           {filteredItems.map((item) => (
-            <PayrollTransactionCard key={item.id} item={item} />
+            <PayrollTransactionCard key={item.id} item={item} onOpen={handleOpen} />
           ))}
 
           {filteredItems.length === 0 && (
