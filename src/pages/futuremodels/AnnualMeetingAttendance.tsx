@@ -25,19 +25,23 @@ import SuccessModal from "@/components/shared/SuccessModal";
 interface PickListRow {
   code: string;
   name: string;
+  productCode?: string;
+  customerId?: string;
+  yearFrom?: string;
+  yearTo?: string;
 }
 
 const ACCOUNT_CODE_OPTIONS: PickListRow[] = [
-  { code: "000000002", name: "Appana M Telagi" },
-  { code: "000000004", name: "Savings Interest Account" },
-  { code: "000000006", name: "Current Interest Account" },
-  { code: "000000008", name: "Fixed Deposit Account" },
+  { code: "000000002", name: "Appana M Telagi", productCode: "SB001", customerId: "CUST1002" },
+  { code: "000000004", name: "Savings Interest Account", productCode: "SB002", customerId: "CUST1004" },
+  { code: "000000006", name: "Current Interest Account", productCode: "CA001", customerId: "CUST1006" },
+  { code: "000000008", name: "Fixed Deposit Account", productCode: "FD001", customerId: "CUST1008" },
 ];
 
 const MEETING_OPTIONS: PickListRow[] = [
-  { code: "AGM001", name: "Annual General Meeting 2026" },
-  { code: "AGM002", name: "Annual General Meeting 2025" },
-  { code: "AGM003", name: "Annual General Meeting 2024" },
+  { code: "AGM001", name: "Annual General Meeting 2026", yearFrom: "2025", yearTo: "2026" },
+  { code: "AGM002", name: "Annual General Meeting 2025", yearFrom: "2024", yearTo: "2025" },
+  { code: "AGM003", name: "Annual General Meeting 2024", yearFrom: "2023", yearTo: "2024" },
 ];
 
 // ==========================================
@@ -276,9 +280,21 @@ function TextInputWithMenu({
 }
 
 // ---- Readonly text field, disabled gray look with dark border like other fields ----
-function ReadonlyTextField({ value, placeholder }: { value: string; placeholder?: string }) {
+function ReadonlyTextField({
+  value,
+  placeholder,
+  error,
+}: {
+  value: string;
+  placeholder?: string;
+  error?: boolean;
+}) {
   return (
-    <div className="flex items-center min-h-[42px] w-full rounded-md border border-slate-800 bg-[#f0f2f5] px-3">
+    <div
+      className={`flex items-center min-h-[42px] w-full rounded-md border ${
+        error ? "border-red-400" : "border-slate-800"
+      } bg-[#f0f2f5] px-3`}
+    >
       <span className="text-slate-400">
         <User size={15} />
       </span>
@@ -373,17 +389,42 @@ export default function AnnualMeetingAttendancePage() {
   };
 
   const handleAccountSelect = (row: PickListRow) => {
-    setForm((prev) => ({ ...prev, accountCode: row.code, accountName: row.name }));
+    setForm((prev) => ({
+      ...prev,
+      accountCode: row.code,
+      accountName: row.name,
+      productCode: row.productCode || "",
+      customerId: row.customerId || "",
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      accountCode: false,
+      accountName: false,
+      productCode: false,
+      customerId: false,
+    }));
     setShowPickList(false);
     setIsValidated(false);
   };
 
   const handleMeetingSelect = (row: PickListRow) => {
-    setForm((prev) => ({ ...prev, meetingDate: row.name }));
+    setForm((prev) => ({
+      ...prev,
+      meetingDate: row.name,
+      yearFrom: row.yearFrom || "",
+      yearTo: row.yearTo || "",
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      meetingDate: false,
+      yearFrom: false,
+      yearTo: false,
+    }));
     setShowMeetingPickList(false);
     setIsValidated(false);
   };
 
+  // ---- Validate: checks every required field + remarks is filled ----
   const validateForm = (): boolean => {
     const nextErrors: Record<string, boolean> = {};
     FIELDS.forEach((f) => {
@@ -519,7 +560,7 @@ export default function AnnualMeetingAttendancePage() {
                         <span className="font-medium text-gray-500"> / {f.labelHi}</span>
                         <span className="text-red-500"> *</span>
                       </label>
-                      <ReadonlyTextField value={form[f.id] || ""} placeholder={f.placeholder} />
+                      <ReadonlyTextField value={form[f.id] || ""} placeholder={f.placeholder} error={hasError} />
                     </div>
                   );
                 }
