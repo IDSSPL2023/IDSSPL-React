@@ -50,7 +50,11 @@ import BranchMasterPage from "@/pages/MisActivity/BranchMasterPage";
 import CustomerMasterPage from "@/pages/CustomerMasterPage";
 import DashboardPage from "@/pages/DashboardPage";
 import FutureModelsPage from "@/pages/futuremodels/FutureModelsPage";
-import CalculatorPage from "@/pages/futuremodels/CalculatorPage";
+
+
+import  LoanCalculatorsPage from "@/pages/futuremodels/LoanCalculators";
+
+
 import CasaClosingPage from "@/pages/futuremodels/CasaClosingPage";
 import FixedAssetPage from "@/pages/futuremodels/FixedAssetPage";
 import InvestmentAccountPage from "@/pages/futuremodels/InvestmentAccountPage";
@@ -88,10 +92,10 @@ import RoleAuthorizationFlow from "./components/Authorization/RoleAuthorization/
 import AuthorizeAccountMainPage from "./pages/authorization/account/authorizationaccountmain";
 import FutureModalsPage from "./components/FutureModal";
 import TDSReportsPage from "./pages/Tds";
-import ModifyBranchGlBalance from "./components/futuremodels/ModifyBranchGlBalance";
-import ModifyAccountBalancePage from "./components/futuremodels/ModifyAccountBalancePage";
-import ModifyBranchGlHistory from "./components/futuremodels/ModifyBranchGlHistory";
-import ModifyCashHandlingRecord from "./components/futuremodels/ModifyCashHandlingRecord";
+import ModifyBranchGlBalance from "./components/FutureModels/ModifyBranchGlBalance";
+import ModifyAccountBalancePage from "./components/FutureModels/ModifyAccountBalancePage";
+import ModifyBranchGlHistory from "./components/FutureModels/ModifyBranchGlHistory";
+import ModifyCashHandlingRecord from "./components/FutureModels/ModifyCashHandlingRecord";
 import FinancialClosing from "./components/FinancialClosing";
 import TermDepositInterestPayment from "./components/TermDepositInterest/TermDepositInterestPayment";
 import SetProductStatusPage from "./components/FinancialClosing/SetProductStatusPage";
@@ -121,8 +125,8 @@ import AuthorizeAccountPage from "./pages/authorization/account/AuthorizeAccount
 
 import AnnualMeetingAttendancePage from "@/pages/futuremodels/AnnualMeetingAttendance";
 
-
-
+import CalculatorPage from "@/components/FutureModels/CalculatorPage";
+// import LoanCalculatorsPage from "@/pages/futuremodels/LoanCalculators";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -198,6 +202,7 @@ export const router = createBrowserRouter([
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
       { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
+      { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       {
         path: "/authorization",
         children: [
@@ -266,6 +271,9 @@ export const router = createBrowserRouter([
       },
       { path: "/authorization/user", element: <AuthorizationUserPage /> },
       { path: "/authorization/BillAuthorize", element: <BillAuthorizationOptions /> },
+{ path: "/loan-calculators",
+  element: <LoanCalculatorsPage />},
+  
 
 
 
@@ -273,7 +281,13 @@ export const router = createBrowserRouter([
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },
-      { path: "/futuremodels/calculator", element: <CalculatorPage /> },
+
+
+
+
+      { path: "/loan-calculators", element: <LoanCalculatorsPage  /> },
+
+
       { path: "/futuremodels/casa-closing", element: <CasaClosingPage /> },
       { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
       {
@@ -365,6 +379,7 @@ export const router = createBrowserRouter([
       { path: "/usermaster", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
       { path: "/tds", element: <TDSReportsPage /> },
+      
 
       // HO-Clerk Route
       { path: "/ho-clerk-application", element: <Application /> },

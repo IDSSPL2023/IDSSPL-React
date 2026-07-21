@@ -870,12 +870,12 @@ export const menuItems: NavItemData[] = [
       },
     ],
   },
-  {
-    id: "calculator",
-    title: "Calculator",
-    icon: Calculator,
-    href: "/futuremodels/calculator",
-  },
+{
+  id: "calculator",
+  title: "Calculator",
+  icon: Calculator,
+  href: "/loan-calculators",
+},
 
   // General / future items not tied to a specific role menu in the sheet.
   { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href: "/futuremodals" },

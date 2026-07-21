@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AddModifyLoanInterestRate from "@/components/futuremodels/AddModifyLoanInterestRate";
-import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
-import StopChequePayment from "@/components/futuremodels/StopChequePayment";
+import AddModifyLoanInterestRate from "@/components/FutureModels/AddModifyLoanInterestRate";
+import InterestPostingProcess from "@/components/FutureModels/InterestPostingProcess";
+import StopChequePayment from "@/components/FutureModels/StopChequePayment";
 import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchParameterModal";
-import CombineAcceptPayCashMultiple from "@/components/futuremodels/CombineAcceptPayCashMultiple";
-import RecoverySummary from "@/components/futuremodels/RecoverySummary";
-import PayCash from "@/components/futuremodels/PayCash";
+import CombineAcceptPayCashMultiple from "@/components/FutureModels/CombineAcceptPayCashMultiple";
+import RecoverySummary from "@/components/FutureModels/RecoverySummary";
+import PayCash from "@/components/FutureModels/PayCash";
 import GeneratedInwardScheduleModal from "./Clerk/Modals/GenerateInwardSchedule";
 import GenerateOutwardScheduleModal from "./Clerk/Modals/GenerateOutwordSchedule";
 import ClearingTallyModal from "./Clerk/Modals/ClearingTallyAndHouse";
 import InwardClearingEntryModal from "./futuremodels/InwardClearingEntryModal";
 import OutwardClearingBounceModal from "./futuremodels/OutwardClearingBounceModal";
 import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal";
+import CalculatorPage from "@/components/FutureModels/CalculatorPage";
 
 interface FutureModelAction {
   label: string;
@@ -29,6 +30,7 @@ const FutureModalsPage = () => {
     const [showCombineAcceptPayCash, setShowCombineAcceptPayCash] = useState(false);
     const [showRecoverySummary, setShowRecoverySummary] = useState(false);
     const [showPayCash, setShowPayCash] = useState(false);
+    const [showCalculators, setShowCalculators] = useState(false);
   const [clerkModal, setClerkModal] = useState<"tally"|"inward"|"outward"|"">("tally");
     const [showInwardClearing, setShowInwardClearing] = useState(false);
     const [showOutwardBounce, setShowOutwardBounce] = useState(false);
@@ -116,7 +118,25 @@ const FutureModalsPage = () => {
                 >
                     PAY CASH
                 </button>
+
+                
+                <button
+                    type="button"
+                    onClick={() => setShowCalculators(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    Calculators
+                </button>
+
+
+
             </div>
+
+
+            {showCalculators && (
+                <CalculatorPage onClose={() => setShowCalculators(false)} />
+            )}
+
 
       {showStopChequePayment && (
         <StopChequePayment onClose={() => setShowStopChequePayment(false)} />
@@ -178,10 +198,10 @@ const FutureModalsPage = () => {
             {showPayCash && (
                 <PayCash onClose={() => setShowPayCash(false)} />
             )}
+
+
         </div>
     );
-    // </div>
-//   );
 };
 
 export default FutureModalsPage;
