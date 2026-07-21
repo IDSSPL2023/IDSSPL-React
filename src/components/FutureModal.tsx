@@ -13,6 +13,9 @@ import ClearingTallyModal from "./Clerk/Modals/ClearingTallyAndHouse";
 import InwardClearingEntryModal from "./futuremodels/InwardClearingEntryModal";
 import OutwardClearingBounceModal from "./futuremodels/OutwardClearingBounceModal";
 import OutwardClearingEntryModal from "./futuremodels/OutwardClearingEntryModal";
+import AddShareAllotment from "@/components/Shares/AddShareAllotment";
+import SharesDividendWarrant from "@/components/Shares/SharesDividendWarrant";
+import SharesLetterPrinting from "@/components/Shares/SharesLetterPrinting";
 
 interface FutureModelAction {
   label: string;
@@ -33,6 +36,9 @@ const FutureModalsPage = () => {
     const [showInwardClearing, setShowInwardClearing] = useState(false);
     const [showOutwardBounce, setShowOutwardBounce] = useState(false);
     const [showOutwardClearing, setShowOutwardClearing] = useState(false);
+    const [showShareAllotment, setShowShareAllotment] = useState(false);
+    const [showSharesDividendWarrant, setShowSharesDividendWarrant] = useState(false);
+    const [showSharesLetterPrinting, setShowSharesLetterPrinting] = useState(false);
 
     return (
         <div className="p-6">
@@ -116,6 +122,30 @@ const FutureModalsPage = () => {
                 >
                     PAY CASH
                 </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowShareAllotment(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    SHARE ALLOTMENT
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowSharesDividendWarrant(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    SHARES DIVIDEND WARRANT
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setShowSharesLetterPrinting(true)}
+                    className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+                >
+                    SHARES LETTER PRINTING
+                </button>
             </div>
 
       {showStopChequePayment && (
@@ -177,6 +207,18 @@ const FutureModalsPage = () => {
 
             {showPayCash && (
                 <PayCash onClose={() => setShowPayCash(false)} />
+            )}
+
+            {showShareAllotment && (
+                <AddShareAllotment onClose={() => setShowShareAllotment(false)} />
+            )}
+
+            {showSharesDividendWarrant && (
+                <SharesDividendWarrant onClose={() => setShowSharesDividendWarrant(false)} />
+            )}
+
+            {showSharesLetterPrinting && (
+                <SharesLetterPrinting onClose={() => setShowSharesLetterPrinting(false)} />
             )}
         </div>
     );

@@ -120,6 +120,7 @@ import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
 import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
 import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
 import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
+import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
 
 import SMSRegistrationPage from "@/components/SMS/SMSRegistrationPage ";
 import SMSAuthorizeModal from "@/components/Authorization/AuthorizationSMS/SMSAuthorize";
@@ -392,6 +393,9 @@ export const router = createBrowserRouter([
       { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
       { path: "/payroll/transaction/salary-updation", element: <SalaryUpdationPage /> },
       { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
+
+      // Shares
+      { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
       { path: "/ho-officer/ho-cash-deposit-entry", element: <HoCashDepositAuthorizePage />, },
       { path: "/ho-officer/ho-cash-withdrawal-entry", element: <HoCashWithdrawalAuthorizePage />, },
       { path: "/ho-officer/ho-transfer-entry", element: <HoTransferAuthorizePage />, },

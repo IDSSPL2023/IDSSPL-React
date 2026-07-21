@@ -398,6 +398,7 @@ export const menuItems: NavItemData[] = [
         id: "shares-shares-allotment-entry",
         title: "Shares Allotment Entry",
         icon: ClipboardList,
+        href: "/shares/allotment-entry",
       },
       {
         id: "shares-shares-dividend-warrant",
