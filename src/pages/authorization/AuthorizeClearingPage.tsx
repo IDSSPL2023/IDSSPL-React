@@ -1,12 +1,12 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import HeroClearing from "@/components/Clerk/Clearing/HeroClearing";
-import ClearingFormModal from "@/components/Clerk/Clearing/ClearingFormModal";
 import { useBilingual } from "@/i18n/useBilingual";
+import { useNavigate } from "react-router-dom";
 
 const AuthorizeClearingPage: FC = () => {
   const { en } = useBilingual();
-  const [activeMasterKey, setActiveMasterKey] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
@@ -21,15 +21,7 @@ const AuthorizeClearingPage: FC = () => {
         onBack={() => window.history.back()}
       />
 
-      <HeroClearing onOpenMaster={setActiveMasterKey} />
-
-      {activeMasterKey && (
-        <ClearingFormModal
-          masterKey={activeMasterKey}
-          mode="authorize"
-          onClose={() => setActiveMasterKey(null)}
-        />
-      )}
+      <HeroClearing onOpenMaster={(url) => navigate(url)} />
     </div>
   );
 };
