@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "@/lib/navigation";
 import NavbarCA from "@/components/Authorization/NavbarCA";
-import CustomerAuthorizationTable, {
-  type AuthTab,
-  type RowData,
-  TAB_COUNTS,
-} from "@/components/Authorization/CustomerAuthorizationTable";
+
 import FilterModal, {
   type CustomerFilters,
   defaultValues,
@@ -14,6 +10,11 @@ import { useBilingual } from "@/i18n/useBilingual";
 import SuccessModal from "@/components/shared/SuccessModal";
 import { useParams } from "react-router-dom";
 import ClearingFormModal from "@/components/Clerk/Clearing/ClearingFormModal";
+import ClearingAuthorizationTable, {
+  AuthTab,
+  RowData,
+  TAB_COUNTS,
+} from "@/components/Authorization/ClearingTable";
 
 const AuthorizationClearingPage = () => {
   const { t, en } = useBilingual();
@@ -89,7 +90,7 @@ const AuthorizationClearingPage = () => {
       )}
 
       <div className="p-4">
-        <CustomerAuthorizationTable
+        <ClearingAuthorizationTable
           activeTab={activeTab}
           filters={filters}
           onAuthorize={openAuthModal}
