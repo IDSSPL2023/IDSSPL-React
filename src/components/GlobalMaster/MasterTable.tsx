@@ -17,9 +17,10 @@ interface MasterTableProps {
   filters: Record<string, string>;
   searchQuery: string;
   onRowsChange: (rows: Record<string, unknown>[]) => void;
+  loading?: boolean;
 }
 
-export default function MasterTable({ master, rows, filters, searchQuery, onRowsChange }: MasterTableProps) {
+export default function MasterTable({ master, rows, filters, searchQuery, onRowsChange, loading = false }: MasterTableProps) {
   const config = getMasterConfig(master.key);
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortAsc, setSortAsc] = useState(true);
@@ -102,6 +103,7 @@ export default function MasterTable({ master, rows, filters, searchQuery, onRows
         sortDirection={(sortAsc ? "asc" : "desc") as SortDirection}
         onSortChange={handleSort}
         pagination={{ page, totalPages, onPageChange: setPage }}
+        loading={loading}
       />
 
       {editRow && (

@@ -3,7 +3,7 @@ import {
   Settings, GitBranch, Layers, BookOpen, IdCard, Hash, Users, Home, FileText,
   Shield, Globe, MapPin, Building2, User, Car, type LucideIcon,
 } from "lucide-react";
-import { AppNavbar, WelcomeScreen, FilterModal, SuccessModal } from "@/components/common";
+import { AppNavbar, WelcomeScreen, FilterModal, SuccessModal, RejectModal } from "@/components/common";
 import type { FilterFieldDef, FilterValues } from "@/components/common";
 import MasterTable from "@/components/GlobalMaster/MasterTable";
 import MasterParameterModal from "@/components/GlobalMaster/MasterParameterModal";
@@ -12,11 +12,18 @@ import {
   emptyFormData,
   buildRowFromForm,
   MASTERS,
-  cityCountryCodeByName,
+  countryCodeByName,
 } from "@/components/GlobalMaster/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
 import { useRouter } from "@/lib/navigation";
-import { fetchCities, createCity, type CityRecord } from "@/lib/masterMaintenanceApi";
+import {
+  fetchCities,
+  createCity,
+  fetchStates,
+  createState,
+  type CityRecord,
+  type StateRecord,
+} from "@/lib/masterMaintenanceApi";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Settings, GitBranch, Layers, BookOpen, IdCard, Hash, Users, Home, FileText,
@@ -25,6 +32,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 const ROUTED_MASTER_KEYS: Record<string, string> = {
   city: "/globalmaster/citymaster",
+  state: "/globalmaster/statemaster",
 };
 
 const mapCityRecordToRow = (record: CityRecord): Record<string, unknown> => ({
@@ -32,6 +40,13 @@ const mapCityRecordToRow = (record: CityRecord): Record<string, unknown> => ({
   cityCode: record.cityCode,
   cityName: record.name,
   country: record.countryName,
+});
+
+const mapStateRecordToRow = (record: StateRecord): Record<string, unknown> => ({
+  id: record.stateCode,
+  stateCode: record.stateCode,
+  stateName: record.stateName,
+  country: record.countryCode,
 });
 
 interface MasterItem {
@@ -57,8 +72,11 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
   const [showFilter, setShowFilter] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successDetails, setSuccessDetails] = useState<{ label: string; value: string }[] | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [tableLoading, setTableLoading] = useState(false);
 
   const loadCities = useCallback(async () => {
+    setTableLoading(true);
     try {
       const records = await fetchCities();
       setTableRows(records.map(mapCityRecordToRow));
@@ -66,6 +84,22 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
       console.error(err);
       alert("Failed to load cities from server.");
       setTableRows([]);
+    } finally {
+      setTableLoading(false);
+    }
+  }, []);
+
+  const loadStates = useCallback(async () => {
+    setTableLoading(true);
+    try {
+      const records = await fetchStates();
+      setTableRows(records.map(mapStateRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load states from server.");
+      setTableRows([]);
+    } finally {
+      setTableLoading(false);
     }
   }, []);
 
@@ -82,10 +116,16 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
         return;
       }
 
+      if (master.key === "state") {
+        setTableRows([]);
+        loadStates();
+        return;
+      }
+
       const config = getMasterConfig(master.key);
       setTableRows([...config.rows]);
     },
-    [loadCities]
+    [loadCities, loadStates]
   );
 
   useEffect(() => {
@@ -127,9 +167,13 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
       loadCities();
       return;
     }
+    if (openMaster.key === "state") {
+      loadStates();
+      return;
+    }
     const config = getMasterConfig(openMaster.key);
     setTableRows([...config.rows]);
-  }, [openMaster, loadCities]);
+  }, [openMaster, loadCities, loadStates]);
 
   const activeFilterCount = useMemo(
     () => Object.values(filters).filter((v) => v?.trim()).length,
@@ -170,7 +214,7 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
 
     if (openMaster.key === "city") {
       try {
-        const countryCode = cityCountryCodeByName[formData.country] || formData.country;
+        const countryCode = countryCodeByName[formData.country] || formData.country;
         const created = await createCity({ name: formData.cityName, countryCode });
         const record = {
           cityCode: created.cityCode,
@@ -188,8 +232,29 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
         setShowAdd(false);
         setShowSuccess(true);
       } catch (err) {
-        console.error(err);
-        alert("Failed to create city. Please try again.");
+        setErrorMessage(err instanceof Error ? err.message : "Failed to create city. Please try again.");
+      }
+      return;
+    }
+
+    if (openMaster.key === "state") {
+      try {
+        const countryCode = countryCodeByName[formData.country] || formData.country;
+        const created = await createState({
+          stateCode: formData.stateCode,
+          countryCode,
+          stateName: formData.stateName,
+        });
+        setTableRows((prev) => [...prev, mapStateRecordToRow(created)]);
+        setSuccessDetails([
+          { label: "State Code", value: created.stateCode },
+          { label: "State Name", value: created.stateName },
+          { label: "Country Code", value: created.countryCode },
+        ]);
+        setShowAdd(false);
+        setShowSuccess(true);
+      } catch (err) {
+        setErrorMessage(err instanceof Error ? err.message : "Failed to create state. Please try again.");
       }
       return;
     }
@@ -234,6 +299,7 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
           onRowsChange={setTableRows}
           filters={filters}
           searchQuery={searchQuery}
+          loading={tableLoading}
         />
       ) : (
         <div className="mx-auto max-w-7xl p-4">
@@ -295,6 +361,15 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
             setShowSuccess(false);
             setSuccessDetails(null);
           }}
+        />
+      )}
+
+      {errorMessage && (
+        <RejectModal
+          title="Unable to Save"
+          subtitle={errorMessage}
+          onClose={() => setErrorMessage(null)}
+          onDone={() => setErrorMessage(null)}
         />
       )}
     </div>

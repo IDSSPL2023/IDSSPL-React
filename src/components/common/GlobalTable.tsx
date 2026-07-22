@@ -17,6 +17,8 @@ export interface GlobalTableProps<T> {
   sortDirection?: SortDirection;
   onSortChange?: (key: string) => void;
   loading?: boolean;
+  /** Number of placeholder rows rendered while `loading` is true. */
+  skeletonRows?: number;
   emptyMessage?: string;
   pagination?: PaginationState;
   minWidth?: string;
@@ -25,6 +27,10 @@ export interface GlobalTableProps<T> {
   showSrNo?: boolean;
   srNoHeader?: string;
 }
+
+const SkeletonBar = ({ widthClass = "w-full" }: { widthClass?: string }) => (
+  <div className={`h-4 ${widthClass} animate-pulse rounded bg-slate-200 dark:bg-slate-700`} />
+);
 
 /**
  * Generic, typed data table: sortable columns, row actions via `TableActionMenu`,
@@ -43,6 +49,7 @@ export default function GlobalTable<T>({
   sortDirection = "asc",
   onSortChange,
   loading = false,
+  skeletonRows = 6,
   emptyMessage = "No records found",
   pagination,
   minWidth = "1000px",
@@ -91,11 +98,28 @@ export default function GlobalTable<T>({
           </thead>
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan={totalColumns} className="px-6 py-10 text-center text-sm text-gray-400 dark:text-slate-500">
-                  Loading…
-                </td>
-              </tr>
+              Array.from({ length: skeletonRows }, (_, rowIdx) => (
+                <tr
+                  key={`skeleton-${rowIdx}`}
+                  className={rowIdx !== skeletonRows - 1 ? "border-b border-gray-100 dark:border-slate-800" : ""}
+                >
+                  {showSrNo && (
+                    <td className="px-6 py-3" style={{ width: "80px" }}>
+                      <SkeletonBar widthClass="w-6" />
+                    </td>
+                  )}
+                  {hasActions && (
+                    <td className="px-6 py-3" style={{ width: actionsWidth }}>
+                      <SkeletonBar widthClass="w-5" />
+                    </td>
+                  )}
+                  {columns.map((col) => (
+                    <td key={col.key} className="px-6 py-3" style={{ width: col.width }}>
+                      <SkeletonBar widthClass="w-3/4" />
+                    </td>
+                  ))}
+                </tr>
+              ))
             ) : rows.length === 0 ? (
               <tr>
                 <td colSpan={totalColumns} className="px-6 py-10 text-center text-sm text-gray-400 dark:text-slate-500">

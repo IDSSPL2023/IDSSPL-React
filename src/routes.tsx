@@ -428,6 +428,7 @@ export const router = createBrowserRouter([
       { path: "/clerk/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/globalmaster/citymaster", element: <GlobalMasterPage initialMasterKey="city" /> },
+      { path: "/globalmaster/statemaster", element: <GlobalMasterPage initialMasterKey="state" /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },

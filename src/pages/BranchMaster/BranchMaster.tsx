@@ -14,6 +14,12 @@ import ListModal, { type ListModalItem } from "@/components/shared/Modals/ListMo
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu from "@/components/shared/RowActionMenu";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
+import {
+  fetchBranches,
+  fetchBranchByCode,
+  updateBranch,
+  type BranchDetail,
+} from "@/lib/masterMaintenanceApi";
 
 /* ===== from AddBranchModal.tsx ===== */
 export interface AddBranchModal_BranchFormData {
@@ -1211,7 +1217,7 @@ export interface ViewAndEditParameter_ParameterModalProps {
   mode: ViewAndEditParameter_ParameterModalMode;
   initialData?: ViewAndEditParameter_ParameterFormData;
   onClose?: () => void;
-  onSave?: (data: ViewAndEditParameter_ParameterFormData) => void;
+  onSave?: (data: ViewAndEditParameter_ParameterFormData) => void | Promise<void>;
   onValidate?: (data: ViewAndEditParameter_ParameterFormData) => void;
 }
 
@@ -1229,6 +1235,7 @@ function ViewEditParameterModal({
     Partial<Record<ViewAndEditParameter_RequiredFieldKey, boolean>>
   >({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setFormData(initialData);
@@ -1267,7 +1274,7 @@ function ViewEditParameterModal({
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const newErrors: Partial<Record<ViewAndEditParameter_RequiredFieldKey, boolean>> = {};
     ViewAndEditParameter_REQUIRED_FIELDS.forEach((key) => {
       if (!formData[key]?.toString().trim()) newErrors[key] = true;
@@ -1275,11 +1282,20 @@ function ViewEditParameterModal({
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
     setValidated(isValid);
-    if (!isValid) return;
+    if (!isValid || saving) return;
 
-    onSave?.(formData);
-    // Show success modal
-    setShowSuccessModal(true);
+    setSaving(true);
+    try {
+      await onSave?.(formData);
+      // Show success modal only once the save actually succeeded — the caller
+      // is responsible for surfacing its own error UI (e.g. a rejection modal)
+      // and rethrows so this modal stays open for the user to retry.
+      setShowSuccessModal(true);
+    } catch {
+      // swallow — the parent already reports the failure via its own error modal
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSuccessClose = () => {
@@ -1353,12 +1369,12 @@ function ViewEditParameterModal({
         icon: <X size={16} />,
       },
       {
-        label: "Save",
+        label: saving ? "Saving..." : "Save",
         onClick: handleSave,
         variant: "primary" as const,
         icon: <Check size={16} />,
-        disabled: !validated,
-        className: validated
+        disabled: !validated || saving,
+        className: validated && !saving
           ? "bg-primary-100 text-primary hover:bg-primary-200"
           : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-600",
       },
@@ -3055,7 +3071,7 @@ function BranchMasterTable_SortableHeader({ label, active, direction }: BranchMa
 }
 
 export interface BranchMasterTable_BranchActionHandlers {
-  handleOpenEditViewParameter: (mode: ViewAndEditParameter_ParameterModalMode) => void;
+  handleOpenEditViewParameter: (mode: ViewAndEditParameter_ParameterModalMode, row: BranchMasterTable_BranchRow) => void;
   onBranchNonCbsParameter?: (row: BranchMasterTable_BranchRow) => void;
   onBranchChequeBookLot?: (row: BranchMasterTable_BranchRow) => void;
   onBranchTdReceiptLot?: (row: BranchMasterTable_BranchRow) => void;
@@ -3142,8 +3158,8 @@ function BranchMasterTable({
                       menuWidth={224}
                       triggerClassName="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 dark:hover:bg-slate-800 dark:text-slate-400"
                       items={[
-                        { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => handleOpenEditViewParameter("view") },
-                        { key: "edit", label: "Edit", icon: Landmark, onClick: () =>  handleOpenEditViewParameter("edit") },
+                        { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => handleOpenEditViewParameter("view", r) },
+                        { key: "edit", label: "Edit", icon: Landmark, onClick: () => handleOpenEditViewParameter("edit", r) },
                         { key: "area", label: "Branch Area/Sub Area", icon: CreditCard, onClick: () => setOpenBranchArea(true) },
                       ]}
                     />
@@ -3175,6 +3191,79 @@ function BranchMasterTable({
 
 
 /* ===== from BranchMasterPage.tsx ===== */
+
+function mapBranchSummaryToRow(summary: BranchSummary, sr: number): BranchMasterTable_BranchRow {
+  return {
+    sr,
+    branchCode: summary.branchCode,
+    ifscCode: "",
+    branchName: summary.name,
+    shortName: "",
+    address: "",
+    cityCode: summary.cityCode,
+    emailId: summary.emailId,
+    phoneNo: "",
+    isImplemented: "N",
+  };
+}
+
+function mapBranchDetailToRow(detail: BranchDetail, sr: number): BranchMasterTable_BranchRow {
+  return {
+    sr,
+    branchCode: detail.branchCode,
+    ifscCode: detail.rtgsCode,
+    branchName: detail.name,
+    shortName: detail.nameShort,
+    address: [detail.address1, detail.address2, detail.address3].filter(Boolean).join(", "),
+    cityCode: detail.cityCode,
+    emailId: detail.emailId,
+    phoneNo: detail.phone1,
+    isImplemented: detail.isImplemented === "Y" ? "Y" : "N",
+  };
+}
+
+function mapBranchDetailToParameterFormData(detail: BranchDetail): ViewAndEditParameter_ParameterFormData {
+  return {
+    branchCode: detail.branchCode,
+    branchName: detail.name,
+    shortName: detail.nameShort,
+    address1: detail.address1,
+    address2: detail.address2,
+    address3: detail.address3,
+    zipCode: detail.zip,
+    cityCode: detail.cityCode,
+    state: "",
+    country: "",
+    emailId: detail.emailId,
+    phoneNumber1: detail.phone1,
+    phoneNumber2: detail.phone2,
+    phoneNumber3: detail.phone3,
+    isImplemented: detail.isImplemented === "Y" ? "Yes" : "No",
+  };
+}
+
+/** Merges form edits back onto the original detail record — the server model has no state/country fields. */
+function buildBranchDetailPayload(
+  formData: ViewAndEditParameter_ParameterFormData,
+  base: BranchDetail,
+): BranchDetail {
+  return {
+    ...base,
+    name: formData.branchName,
+    nameShort: formData.shortName,
+    address1: formData.address1,
+    address2: formData.address2,
+    address3: formData.address3,
+    cityCode: formData.cityCode,
+    zip: formData.zipCode,
+    emailId: formData.emailId,
+    phone1: formData.phoneNumber1,
+    phone2: formData.phoneNumber2,
+    phone3: formData.phoneNumber3,
+    isImplemented: formData.isImplemented === "Yes" ? "Y" : "N",
+  };
+}
+
 export default function BranchMasterPage() {
   const { t, en } = useBilingual();
 
@@ -3191,7 +3280,9 @@ export default function BranchMasterPage() {
     isImplemented: en("branchMaster.filters.isImplemented"),
   };
 
-  const [rows, setRows] = useState<BranchMasterTable_BranchRow[]>(BranchMasterTable_DEFAULT_BRANCH_ROWS);
+  const [rows, setRows] = useState<BranchMasterTable_BranchRow[]>([]);
+  const [tableLoading, setTableLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [viewRow, setViewRow] = useState<BranchMasterTable_BranchRow | null>(null);
@@ -3246,6 +3337,23 @@ export default function BranchMasterPage() {
     return `${FILTER_LABELS[firstKey]}:${firstVal}${extra}`;
   }, [filters, FILTER_LABELS]);
 
+  const loadBranches = useCallback(async () => {
+    setTableLoading(true);
+    try {
+      const summaries = await fetchBranches();
+      setRows(summaries.map((s, idx) => mapBranchSummaryToRow(s, idx + 1)));
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to load branches.");
+      setRows([]);
+    } finally {
+      setTableLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadBranches();
+  }, [loadBranches]);
+
   const handleAddSave = useCallback((formData: AddBranchModal_BranchFormData) => {
     setRows((prev) => [
       ...prev,
@@ -3282,74 +3390,54 @@ export default function BranchMasterPage() {
     setTdReceiptLotRow(null);
   }, []);
 
-  // Sample data for View/Edit modes
-  const sampleParameterData: ViewAndEditParameter_ParameterFormData = {
-    branchCode: "0100",
-    branchName: "Ilkal Branch",
-    shortName: "Ilkal",
-    address1: "Gongada Shetti Building",
-    address2: "Gongada Shetti Building",
-    address3: "Gongada Shetti Building",
-    zipCode: "400001",
-    cityCode: "Ilkal",
-    state: "Maharashtra",
-    country: "India",
-    emailId: "ilkal@gmail.com",
-    phoneNumber1: "9876543210",
-    phoneNumber2: "9876543210",
-    phoneNumber3: "9876543210",
-    isImplemented: "Yes",
-  };
-
-  // Sample data with different values
-  const sampleParameterData2: ViewAndEditParameter_ParameterFormData = {
-    branchCode: "0200",
-    branchName: "Mumbai Main Branch",
-    shortName: "MMB",
-    address1: "123 Marine Drive",
-    address2: "Near Gateway of India",
-    address3: "Colaba",
-    zipCode: "400005",
-    cityCode: "MUM",
-    state: "Maharashtra",
-    country: "India",
-    emailId: "mumbai@branch.com",
-    phoneNumber1: "9876543211",
-    phoneNumber2: "9876543212",
-    phoneNumber3: "9876543213",
-    isImplemented: "No",
-  };
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ViewAndEditParameter_ParameterModalMode>("view");
-  const [currentData, setCurrentData] =
-    useState<ViewAndEditParameter_ParameterFormData>(sampleParameterData);
+  const [currentData, setCurrentData] = useState<ViewAndEditParameter_ParameterFormData>(
+    ViewAndEditParameter_emptyParameterFormData,
+  );
+  const [currentBranchDetail, setCurrentBranchDetail] = useState<BranchDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
-  const handleOpenView = (mode:ViewAndEditParameter_ParameterModalMode) => {
+  const handleOpenEditViewParameter = async (
+    mode: ViewAndEditParameter_ParameterModalMode,
+    row: BranchMasterTable_BranchRow,
+  ) => {
     setModalMode(mode);
-    setCurrentData(sampleParameterData);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenEditViewParameter = (mode:ViewAndEditParameter_ParameterModalMode) => {
-    setModalMode(mode);
-    setCurrentData(sampleParameterData);
-    setIsModalOpen(true);
+    setDetailLoading(true);
+    try {
+      const detail = await fetchBranchByCode(row.branchCode);
+      setCurrentBranchDetail(detail);
+      setCurrentData(mapBranchDetailToParameterFormData(detail));
+      setIsModalOpen(true);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to load branch details.");
+    } finally {
+      setDetailLoading(false);
+    }
   };
 
   const handleClose = () => {
     setIsModalOpen(false);
+    setCurrentBranchDetail(null);
   };
 
-  const handleSave = (data: ViewAndEditParameter_ParameterFormData) => {
-    console.log("Saved data:", data);
-    setCurrentData(data);
-    // Here you would typically make an API call to save the data
+  const handleSave = async (data: ViewAndEditParameter_ParameterFormData) => {
+    if (!currentBranchDetail) return;
+    try {
+      const updated = await updateBranch(buildBranchDetailPayload(data, currentBranchDetail));
+      setCurrentBranchDetail(updated);
+      setCurrentData(mapBranchDetailToParameterFormData(updated));
+      setRows((prev) =>
+        prev.map((r) => (r.branchCode === updated.branchCode ? mapBranchDetailToRow(updated, r.sr) : r)),
+      );
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to update branch.");
+      throw err;
+    }
   };
 
   const handleValidate = (data: ViewAndEditParameter_ParameterFormData) => {
     console.log("Validated data:", data);
-    // Here you would typically perform additional validation
   };
 
   return (
@@ -3367,11 +3455,17 @@ export default function BranchMasterPage() {
         onRefresh={() => {
           setFilters(FilterModal_defaultBranchFilterValues);
           setSearchQuery("");
+          loadBranches();
         }}
         activeFilterCount={activeFilterCount}
         filterSummary={filterSummary}
       />
       <div className="p-4">
+        {tableLoading && rows.length === 0 ? (
+          <div className="flex w-full items-center justify-center rounded-xl bg-white py-16 text-sm text-gray-400 shadow-sm dark:bg-slate-900 dark:text-slate-500">
+            Loading branches...
+          </div>
+        ) : (
         <BranchMasterTable
           rows={filteredRows}
           handleOpenEditViewParameter={handleOpenEditViewParameter}
@@ -3379,6 +3473,7 @@ export default function BranchMasterPage() {
           onBranchChequeBookLot={setChequeBookLotRow}
           onBranchTdReceiptLot={setTdReceiptLotRow}
         />
+        )}
       </div>
       {/* Add Branch Modal */}
       <AddParameterModal
@@ -3448,6 +3543,22 @@ export default function BranchMasterPage() {
               onClose={() => setShowFilter(false)}
               onApply={setFilters}
             />
+          </div>
+        </div>
+      )}
+      {errorMessage && (
+        <SuccessModal
+          variant="critical"
+          title="Something Went Wrong"
+          subtitle={errorMessage}
+          onClose={() => setErrorMessage(null)}
+          onDone={() => setErrorMessage(null)}
+        />
+      )}
+      {detailLoading && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/20">
+          <div className="rounded-lg bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-lg dark:bg-slate-900 dark:text-slate-200">
+            Loading branch details...
           </div>
         </div>
       )}

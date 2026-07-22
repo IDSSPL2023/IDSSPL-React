@@ -299,10 +299,7 @@ branchInterest: {
       { key: "cityName", labelEn: "City Name", labelHi: "शहराचे नाव", placeholder: "Enter City Name", icon: "landmark" },
       {
         key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"],
-        loadOptions: async () => {
-          const countries = await fetchCountries();
-          setCityCountryOptions(countries);
-        },
+        loadOptions: () => loadCountryOptions(),
       },
     ],
     filterFields: [
@@ -326,26 +323,37 @@ branchInterest: {
     ],
     formColumns: 1,
     fields: [
-      { key: "stateCode", labelEn: "State Code", labelHi: "राज्य कोड", placeholder: "Enter State Code", icon: "hash", readOnlyOnEdit: true },
+      { key: "stateCode", labelEn: "State Code", labelHi: "राज्य कोड", placeholder: "Enter State Code", icon: "hash" },
       { key: "stateName", labelEn: "State Name", labelHi: "राज्याचे नाव", placeholder: "Enter State Name", icon: "landmark" },
-      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"] },
+      {
+        key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"],
+        loadOptions: () => loadCountryOptions(),
+      },
     ],
     filterFields: [
       { key: "stateCode", label: "State Code" },
       { key: "stateName", label: "State Name" },
     ],
+    hideActions: true,
   },
 };
 
 /** Populated at runtime from the master-maintenance countries API; maps a displayed country name back to its code. */
-export const cityCountryCodeByName: Record<string, string> = {};
+export const countryCodeByName: Record<string, string> = {};
 
-export const setCityCountryOptions = (countries: { code: string; name: string }[]): void => {
-  const field = MASTER_CONFIG.city.fields.find((f) => f.key === "country");
-  if (!field) return;
-  field.options = countries.map((c) => c.name);
-  Object.keys(cityCountryCodeByName).forEach((key) => delete cityCountryCodeByName[key]);
-  countries.forEach((c) => { cityCountryCodeByName[c.name] = c.code; });
+/** Shared across every master's Country dropdown (city, state, ...) so the lookup only needs wiring once per field. */
+export const setCountryOptions = (countries: { code: string; name: string }[]): void => {
+  Object.values(MASTER_CONFIG).forEach((entry) => {
+    const field = entry.fields.find((f) => f.key === "country");
+    if (field) field.options = countries.map((c) => c.name);
+  });
+  Object.keys(countryCodeByName).forEach((key) => delete countryCodeByName[key]);
+  countries.forEach((c) => { countryCodeByName[c.name] = c.code; });
+};
+
+const loadCountryOptions = async (): Promise<void> => {
+  const countries = await fetchCountries();
+  setCountryOptions(countries);
 };
 
 const DEFAULT_CONFIG: MasterConfigEntry = {

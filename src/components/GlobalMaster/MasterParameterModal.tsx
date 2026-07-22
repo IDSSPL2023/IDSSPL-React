@@ -37,7 +37,7 @@ interface MasterParameterModalProps {
   masterKey: string;
   initialData: Record<string, string>;
   onClose: () => void;
-  onSave: (formData: Record<string, string>) => void;
+  onSave: (formData: Record<string, string>) => void | Promise<void>;
 }
 
 export default function MasterParameterModal({ mode, masterKey, initialData, onClose, onSave }: MasterParameterModalProps) {
@@ -47,12 +47,25 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
   const [validated, setValidated] = useState(false);
   const [loadingField, setLoadingField] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setFormData(initialData);
     setErrors({});
     setValidated(false);
   }, [initialData, mode, masterKey]);
+
+  useEffect(() => {
+    // Kick off any lazy dropdown options as soon as the modal opens rather than
+    // waiting for focus — a native <select>'s open list is a snapshot taken at
+    // click time, so fetching on focus alone shows stale options on first click.
+    config.fields.forEach((field) => {
+      if (!field.loadOptions) return;
+      setLoadingField(field.key);
+      field.loadOptions().finally(() => setLoadingField((prev) => (prev === field.key ? null : prev)));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [masterKey]);
 
   const isEdit = mode === "edit";
 
@@ -65,7 +78,7 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
   const handleDropdownFocus = (field: MasterField) => {
     if (!field.loadOptions || loadingField === field.key) return;
     setLoadingField(field.key);
-    field.loadOptions().finally(() => setLoadingField(null));
+    field.loadOptions().finally(() => setLoadingField((prev) => (prev === field.key ? null : prev)));
   };
 
   const handleValidate = () => {
@@ -78,9 +91,14 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
     setValidated(isFormValid(nextErrors));
   };
 
-  const handleSave = () => {
-    if (!validated) return;
-    onSave(formData);
+  const handleSave = async () => {
+    if (!validated || saving) return;
+    setSaving(true);
+    try {
+      await onSave(formData);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const formCols = config.formColumns || 1;
@@ -120,7 +138,9 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
             onChange={(v) => handleChange(field.key, v)}
             onFocus={() => handleDropdownFocus(field)}
             options={field.options ?? []}
-            placeholder={loadingField === field.key ? "Loading..." : field.placeholder}
+            placeholder={field.placeholder}
+            loading={loadingField === field.key}
+            loadingText="Loading options..."
             required
             readOnly={isReadOnly}
             error={error}
@@ -165,6 +185,7 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
       onValidate={handleValidate}
       onSave={handleSave}
       isValid={validated}
+      saving={saving}
     >
       <div className={gridClass}>{config.fields.map(renderField)}</div>
     </NormalFormModal>
