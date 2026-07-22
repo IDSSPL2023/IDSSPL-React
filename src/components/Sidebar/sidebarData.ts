@@ -399,6 +399,7 @@ export const menuItems: NavItemData[] = [
         id: "shares-shares-allotment-entry",
         title: "Shares Allotment Entry",
         icon: ClipboardList,
+        href: "/shares/allotment-entry",
       },
       {
         id: "shares-shares-dividend-warrant",
@@ -670,7 +671,7 @@ export const menuItems: NavItemData[] = [
         id: "branch-activity",
         title: "Day Begin",
         icon: PlayCircle,
-        href:"/branch-activity",
+        href: "/branch-activity",
       },
     ],
   },
@@ -699,6 +700,11 @@ export const menuItems: NavItemData[] = [
       {
         id: "payroll-transaction-entry",
         title: "Transaction Entry",
+        icon: ArrowLeftRight,
+      },
+      {
+        id: "payroll-authrization",
+        title: "Authorization",
         icon: ArrowLeftRight,
       },
     ],
@@ -870,12 +876,12 @@ export const menuItems: NavItemData[] = [
       },
     ],
   },
-  {
-    id: "calculator",
-    title: "Calculator",
-    icon: Calculator,
-    href: "/futuremodels/calculator",
-  },
+{
+  id: "calculator",
+  title: "Calculator",
+  icon: Calculator,
+  href: "/loan-calculators",
+},
 
   // General / future items not tied to a specific role menu in the sheet.
   { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href: "/futuremodals" },

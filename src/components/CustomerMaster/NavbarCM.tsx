@@ -1,10 +1,21 @@
-import { ArrowLeft, Home, ChevronRight, Filter, Plus, Search, RefreshCw } from "lucide-react";
-import { type CustomerFilters } from "./FilterModal";
+import { ArrowLeft, Home, ChevronRight, Filter, Plus, Search, RefreshCw, type LucideIcon } from "lucide-react";
 
 type BreadcrumbItem = {
   label: string;
   href?: string;
 };
+
+// Known abbreviations kept for pages already relying on this exact wording
+// (e.g. "ID" rather than the generic "Customer Id").
+const KNOWN_FILTER_LABELS: Record<string, string> = {
+  customerId: "ID",
+  customerName: "Name",
+  status: "Status",
+};
+
+const toFilterLabel = (key: string) =>
+  KNOWN_FILTER_LABELS[key] ??
+  key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
 
 type NavbarCMProps = {
   titleEn: string;
@@ -12,8 +23,12 @@ type NavbarCMProps = {
   breadcrumbs?: BreadcrumbItem[];
   onBack?: () => void;
   onAdd?: () => void;
+  /** Text shown on the "Add" pill button. Defaults to "Add". */
+  addLabel?: string;
+  /** Icon shown on the "Add" pill button. Defaults to Plus. */
+  addIcon?: LucideIcon;
   isSearchVisible?: boolean;
-  filters?: CustomerFilters;
+  filters?: Record<string, string>;
   onToggleSearch?: () => void;
   onOpenFilter?: () => void;
   onResetFilters?: () => void;
@@ -33,6 +48,8 @@ const NavbarCM = ({
   breadcrumbs = [],
   onBack,
   onAdd,
+  addLabel = "Add",
+  addIcon: AddIcon = Plus,
   isSearchVisible = false,
   filters,
   onToggleSearch,
@@ -63,26 +80,17 @@ const NavbarCM = ({
     }
   };
 
-  const hasActiveFilters = Boolean(
-    filters && (filters.customerName || filters.customerId || filters.status)
-  );
+  const activeFilterEntries = filters
+    ? Object.entries(filters).filter(([, value]) => Boolean(value))
+    : [];
+  const hasActiveFilters = activeFilterEntries.length > 0;
 
-  // Build the active-filters summary once, safely, regardless of TS narrowing
-  // across nested closures — avoids "possibly undefined" on filters.* below.
   const activeFilterSummary = (() => {
-    if (!filters) return "";
-    const active: { label: string; value: string }[] = [];
-    if (filters.customerId) active.push({ label: "ID", value: filters.customerId });
-    if (filters.customerName) active.push({ label: "Name", value: filters.customerName });
-    if (filters.status) active.push({ label: "Status", value: filters.status });
-
-    if (active.length === 0) return "";
-    const first = active[0];
-    const othersCount = active.length - 1;
-    if (othersCount > 0) {
-      return `${first.label}:${first.value} +${othersCount} more`;
-    }
-    return `${first.label}:${first.value}`;
+    if (activeFilterEntries.length === 0) return "";
+    const [firstKey, firstValue] = activeFilterEntries[0];
+    const othersCount = activeFilterEntries.length - 1;
+    const label = `${toFilterLabel(firstKey)}:${firstValue}`;
+    return othersCount > 0 ? `${label} +${othersCount} more` : label;
   })();
 
   return (
@@ -161,31 +169,36 @@ const NavbarCM = ({
             {/* Filter */}
             <button
               onClick={handleFilterClick}
-              className="flex h-10 w-10 items-center justify-center rounded-md border-2 border-primary bg-primary-50 text-primary transition hover:bg-primary-100"
+              className="relative flex h-10 w-10 items-center justify-center rounded-md border-2 border-primary bg-primary-50 text-primary transition hover:bg-primary-100"
             >
               <Filter size={24} />
+              {hasActiveFilters && (
+                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-primary-50" />
+              )}
             </button>
 
             {/* Add */}
-            <button
-              onClick={onAdd}
-              className="flex h-10 w-[100px] overflow-hidden rounded-md border-2 border-primary bg-primary shadow-sm transition-all hover:bg-primary-700"
-            >
-              {/* Left Arrow Section */}
-              <div
-                className="flex w-[50px] shrink-0 items-center justify-center bg-white"
-                style={{
-                  clipPath: "polygon(0 0, 75% 0, 100% 50%, 75% 100%, 0 100%)",
-                }}
+            {onAdd && (
+              <button
+                onClick={onAdd}
+                className="flex h-10 min-w-25 overflow-hidden rounded-md border-2 border-primary bg-primary shadow-sm transition-all hover:bg-primary-700"
               >
-                <Plus size={22} strokeWidth={2.8} className="text-primary" />
-              </div>
+                {/* Left Arrow Section */}
+                <div
+                  className="flex w-[50px] shrink-0 items-center justify-center bg-white"
+                  style={{
+                    clipPath: "polygon(0 0, 75% 0, 100% 50%, 75% 100%, 0 100%)",
+                  }}
+                >
+                  <AddIcon size={22} strokeWidth={2.8} className="text-primary" />
+                </div>
 
-              {/* Text */}
-              <div className="flex flex-1 items-center justify-center">
-                <span className="text-md font-medium text-white">Add</span>
-              </div>
-            </button>
+                {/* Text */}
+                <div className="flex flex-1 items-center justify-center px-3">
+                  <span className="text-md whitespace-nowrap font-medium text-white">{addLabel}</span>
+                </div>
+              </button>
+            )}
           </div>
           )}
         </div>
