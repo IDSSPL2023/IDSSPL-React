@@ -130,7 +130,7 @@ function AccountFreezeModal({ onClose, onSubmit, data }: AccountFreezeModal_Acco
         <div className="relative z-10 flex items-center justify-between gap-4 px-8 pt-7 pb-5">
           <div className="flex items-center gap-3">
             <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
-              <Image src="/person1.png" alt="" fill sizes="48px" className="object-contain" />
+              <Image src={IMAGES.PERSON_ICON} alt="" fill sizes="48px" className="object-contain" />
             </span>
             <h2 className="text-[22px] font-bold text-[#1E1B4B] dark:text-slate-100">
               Account Status
@@ -1044,7 +1044,7 @@ export const AccountMasterPage = ({ accountType }: AccountMasterPage_AccountMast
     });
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] relative">
+    <div className="min-h-screen app-page-bg relative">
       <NavbarAM
         titleEn={titleEn}
         titleHi={titleHi}
@@ -1173,7 +1173,7 @@ const AccountMasterLandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn={en("application.title")}
         titleHi={t("application.title")}

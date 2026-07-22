@@ -15,6 +15,8 @@ export interface WelcomeScreenProps {
   title: string;
   titleHi?: string;
   backgroundImageSrc?: string;
+  /** Set false to opt out of the dark title/overlay treatment — e.g. when passing a light `backgroundImageSrc`. Defaults to true, tuned for the default `IMAGES.BACKGROUND_DARK` hero. */
+  dark?: boolean;
   searchPlaceholder?: string;
   query: string;
   onQueryChange: (value: string) => void;
@@ -26,12 +28,14 @@ export interface WelcomeScreenProps {
 /**
  * Reusable "menu landing screen": hero banner (background image + title +
  * search + Show button) + a card list below. First reference: `/day-begin-end`.
- * Defaults to the shared `welcome-hero.png` background asset.
+ * Defaults to the shared `background-dark` hero image (white title/overlay)
+ * so the banner reads clearly against the page's own `welcome-hero.png` backdrop.
  */
 export default function WelcomeScreen({
   title,
   titleHi,
-  backgroundImageSrc = IMAGES.WELCOME_HERO_BG,
+  backgroundImageSrc = IMAGES.BACKGROUND_DARK,
+  dark = true,
   searchPlaceholder = "Search…",
   query,
   onQueryChange,
@@ -43,11 +47,22 @@ export default function WelcomeScreen({
     <div className="w-full px-3 py-4 sm:px-4 sm:py-5 md:px-6 md:py-6">
       <div className="relative isolate overflow-hidden rounded-2xl border border-primary-100 bg-[#F5F9FF] dark:border-slate-800 dark:bg-slate-900">
         <Image src={backgroundImageSrc} alt="" fill priority className="object-cover" />
+        {dark && <div className="absolute inset-0 bg-black/25" />}
 
         <div className="relative flex flex-col items-center gap-6 px-6 py-12 text-center sm:py-16">
-          <h1 className="text-2xl font-bold text-[#1C398E] sm:text-3xl md:text-[34px] dark:text-slate-100">
+          <h1
+            className={
+              dark
+                ? "text-2xl font-bold text-white sm:text-3xl md:text-[34px]"
+                : "text-2xl font-bold text-[#1C398E] sm:text-3xl md:text-[34px] dark:text-slate-100"
+            }
+          >
             {title}
-            {titleHi && <span className="ml-2 font-normal text-[#1C398E]/70 dark:text-slate-400">/ {titleHi}</span>}
+            {titleHi && (
+              <span className={dark ? "ml-2 font-normal text-white/70" : "ml-2 font-normal text-[#1C398E]/70 dark:text-slate-400"}>
+                / {titleHi}
+              </span>
+            )}
           </h1>
 
           <div className="flex w-full max-w-xl items-center rounded-full bg-white py-1.5 pl-5 pr-1.5 shadow-lg dark:bg-slate-900">

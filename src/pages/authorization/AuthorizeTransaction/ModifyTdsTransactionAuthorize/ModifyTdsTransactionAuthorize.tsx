@@ -602,7 +602,7 @@ const ModifyTdsTransactionAuthorizePage = () => {
   const handleResetFilters = () => setFilters(ModifyTdsTransactionFilterModal_defaultModifyTdsTransactionFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Modify TDS Transaction"
         titleHi="टीडीएस व्यवहार सुधारणे अधिकृत करणे"

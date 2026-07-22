@@ -3,6 +3,7 @@ import { X, Check, ChevronRight, ChevronDown } from "lucide-react";
 import Image from "@/components/ui/Image";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import ModalCloseButton from "@/components/common/ModalCloseButton";
 
 export interface FormModalProps {
   onClose: () => void;
@@ -86,15 +87,7 @@ const FormModal = ({
           </div>
           <div className="flex items-center gap-3">
             {headerActions}
-            {!isPage && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100"
-              >
-                <X size={18} strokeWidth={2.5} />
-              </button>
-            )}
+            {!isPage && <ModalCloseButton onClose={onClose} />}
           </div>
         </div>
 

@@ -1922,7 +1922,7 @@ const AuthorizationCustomerPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar">
+    <div className="min-h-screen app-page-bg no-scrollbar">
       <NavbarCA
         titleEn={en("authorization.title")}
         titleHi={t("authorization.title")}

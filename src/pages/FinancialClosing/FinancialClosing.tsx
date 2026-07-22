@@ -1,16 +1,18 @@
 import { useState, useRef, useMemo } from "react";
 import type { ReactNode } from "react";
-import { BarChart3, Calculator, Calendar, Check, UserRound, X, User, ChevronDown, MoreVertical, FileSpreadsheet, Percent, Printer, Contact, Plus, FileText, Database, Hash, Search, ChevronRight } from "lucide-react";
+import { BarChart3, Calculator, Calendar, Check, UserRound, X, User, ChevronDown, MoreVertical, FileSpreadsheet, Percent, Printer, Contact, Plus, FileText, Database, Hash, Search, ChevronRight, Landmark } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 import ListModal from "@/components/AccountMaster/ListModal";
 import { IMAGES } from "@/assets";
-import { FieldShell, TextInput, DateInput, RadioYesNo } from "@/components/shared/FormFields";
+import { FieldShell, TextInput, SelectInput, DateInput, RadioYesNo } from "@/components/shared/FormFields";
 import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
 import { useRouter } from "@/lib/navigation";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import InterestPostingProcess from "@/components/futuremodels/InterestPostingProcess";
 import SetBranchParameterModal from "@/components/FinancialClosing/SetBranchParameterModal";
+import { formatDateDDMMMYYYY } from "@/lib/dateFormat";
+import ModalCloseButton from "@/components/common/ModalCloseButton";
 
 /* ===== from DepreciationCalculationProcess.tsx ===== */
 export interface DepreciationCalculationProcess_DepreciationCalculationData {
@@ -128,24 +130,27 @@ function DepreciationCalculationProcess({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-[860px] rounded-[22px] bg-white p-5 shadow-2xl">
         <div className="rounded-[18px] bg-white">
-          <div className="flex items-start gap-4 border-b border-slate-100">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-              <UserRound size={22} />
+          <div className="flex items-start justify-between gap-4 border-b border-slate-100">
+            <div className="flex items-start gap-4 min-w-0">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+                <UserRound size={22} />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[24px] font-bold leading-tight text-[#1F2858]">
+                  {en("depreciationCalculation.title")}
+                  {t("depreciationCalculation.title") ? (
+                    <span className="text-[#64748B]"> / {t("depreciationCalculation.title")}</span>
+                  ) : null}
+                </h2>
+                <p className="mt-2 text-[15px] leading-snug text-[#64748B]">
+                  {en("depreciationCalculation.subtitle")}
+                  {t("depreciationCalculation.subtitle") ? (
+                    <span> / {t("depreciationCalculation.subtitle")}</span>
+                  ) : null}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="text-[24px] font-bold leading-tight text-[#1F2858]">
-                {en("depreciationCalculation.title")}
-                {t("depreciationCalculation.title") ? (
-                  <span className="text-[#64748B]"> / {t("depreciationCalculation.title")}</span>
-                ) : null}
-              </h2>
-              <p className="mt-2 text-[15px] leading-snug text-[#64748B]">
-                {en("depreciationCalculation.subtitle")}
-                {t("depreciationCalculation.subtitle") ? (
-                  <span> / {t("depreciationCalculation.subtitle")}</span>
-                ) : null}
-              </p>
-            </div>
+            <ModalCloseButton onClose={onClose} />
           </div>
 
           <div className="m-3 space-y-7 border border-primary border-t-4 p-5 rounded-xl">
@@ -183,7 +188,7 @@ function DepreciationCalculationProcess({
           </div>
         </div>
 
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-7 flex flex-wrap items-center justify-end gap-3">
           <button
             type="button"
             onClick={handleValidate}
@@ -278,15 +283,18 @@ function DepreciationCalculationProcess_DateInput({
   placeholder: string;
 }) {
   return (
-    <div className="flex h-12 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[16px] text-slate-700">
+    <div className="relative flex h-12 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[16px] text-slate-700">
       <Calendar size={20} className="mr-3 shrink-0 text-[#64748B]" />
       <input
         type="date"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className="min-w-0 flex-1 bg-transparent text-transparent caret-transparent outline-none placeholder:text-[#8B95A5]"
       />
+      <span className={`pointer-events-none absolute left-[52px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+        {formatDateDDMMMYYYY(value) || placeholder}
+      </span>
     </div>
   );
 }
@@ -377,24 +385,27 @@ function DetailTrialBalanceProcess({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-3xl rounded-[22px] bg-white p-4 shadow-2xl">
-        <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-            <UserRound size={22} />
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+              <UserRound size={22} />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                {en("detailTrialBalance.title")}
+                {t("detailTrialBalance.title") ? (
+                  <span className="text-[#64748B]"> / {t("detailTrialBalance.title")}</span>
+                ) : null}
+              </h2>
+              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                {en("interestPostingProcess.subtitle")}
+                {t("interestPostingProcess.subtitle") ? (
+                  <span> / {t("interestPostingProcess.subtitle")}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-              {en("detailTrialBalance.title")}
-              {t("detailTrialBalance.title") ? (
-                <span className="text-[#64748B]"> / {t("detailTrialBalance.title")}</span>
-              ) : null}
-            </h2>
-            <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-              {en("interestPostingProcess.subtitle")}
-              {t("interestPostingProcess.subtitle") ? (
-                <span> / {t("interestPostingProcess.subtitle")}</span>
-              ) : null}
-            </p>
-          </div>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -424,7 +435,7 @@ function DetailTrialBalanceProcess({
               labelHi={t("detailTrialBalance.fields.asOnDate")}
               error={error}
             >
-              <div className="flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700">
+              <div className="relative flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700">
                 <Calendar size={18} className="mr-3 shrink-0 text-[#64748B]" />
                 <input
                   type="date"
@@ -435,8 +446,11 @@ function DetailTrialBalanceProcess({
                     setIsValidated(false);
                   }}
                   placeholder={tRaw("detailTrialBalance.placeholders.enterDate")}
-                  className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+                  className="min-w-0 flex-1 bg-transparent text-transparent caret-transparent outline-none placeholder:text-[#8B95A5]"
                 />
+                <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(values.asOnDate) ? "" : "text-[#8B95A5]"}`}>
+                  {formatDateDDMMMYYYY(values.asOnDate) || tRaw("detailTrialBalance.placeholders.enterDate")}
+                </span>
               </div>
             </DetailTrialBalanceProcess_FormField>
 
@@ -490,7 +504,7 @@ function DetailTrialBalanceProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
           <button
             type="button"
             onClick={handleValidate}
@@ -718,14 +732,7 @@ function ModifyDepositDiaryProcess({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={en("common.cancel")}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-          >
-            <X size={16} />
-          </button>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -925,15 +932,7 @@ function ModifyDepositDiaryProcess_DateInput({
       )}
       <input
         type={type === "date" ? "text" : type}
-        value={
-          type === "date" && value
-            ? new Date(value).toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              })
-            : value
-        }
+        value={type === "date" ? formatDateDDMMMYYYY(value) : value}
         readOnly={readOnly || type === "date"}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
@@ -1031,24 +1030,27 @@ function NFormBalancesheetProcess({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-3xl rounded-[22px] bg-white p-4 shadow-2xl">
-        <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-            <UserRound size={22} />
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+              <UserRound size={22} />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                {en("nFormBalancesheet.title")}
+                {t("nFormBalancesheet.title") ? (
+                  <span className="text-[#64748B]"> / {t("nFormBalancesheet.title")}</span>
+                ) : null}
+              </h2>
+              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                {en("interestPostingProcess.subtitle")}
+                {t("interestPostingProcess.subtitle") ? (
+                  <span> / {t("interestPostingProcess.subtitle")}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-              {en("nFormBalancesheet.title")}
-              {t("nFormBalancesheet.title") ? (
-                <span className="text-[#64748B]"> / {t("nFormBalancesheet.title")}</span>
-              ) : null}
-            </h2>
-            <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-              {en("interestPostingProcess.subtitle")}
-              {t("interestPostingProcess.subtitle") ? (
-                <span> / {t("interestPostingProcess.subtitle")}</span>
-              ) : null}
-            </p>
-          </div>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -1109,7 +1111,7 @@ function NFormBalancesheetProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-4 ">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-4 ">
           <button
             type="button"
             onClick={handleGenerateRecord}
@@ -1468,13 +1470,7 @@ function NpaModificationProcess({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-[3px] border-[#6B7280] text-[#6B7280] transition hover:bg-slate-50"
-          >
-            <X size={20} strokeWidth={3} />
-          </button>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <NpaModificationProcess_FieldSection className="mt-5">
@@ -1578,7 +1574,7 @@ function NpaModificationProcess_NpaField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-[12px] font-semibold leading-none text-[#1F2937]">
+      <label className="mb-3 block text-[15px] font-semibold leading-none text-[#1F2937]">
         {en(field.labelKey)}
         {t(field.labelKey) ? <span className="text-[#64748B]"> / {t(field.labelKey)}</span> : null}
         <span className="ml-0.5 text-rose-600">*</span>
@@ -1621,7 +1617,7 @@ function NpaModificationProcess_IconInput({
 }) {
   return (
     <div
-      className={`flex h-9 min-w-0 flex-1 items-center rounded-md border border-[#7E8796] px-3 text-[12px] text-slate-700 ${readOnly ? "bg-slate-100" : "bg-white"
+      className={`flex h-10 min-w-0 flex-1 items-center rounded-md border border-[#7E8796] px-3 text-[13px] text-slate-700 ${readOnly ? "bg-slate-100" : "bg-white"
         }`}
     >
       <span className="mr-2 shrink-0 text-[#64748B]">{icon}</span>
@@ -1632,6 +1628,213 @@ function NpaModificationProcess_IconInput({
         placeholder={placeholder}
         className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
       />
+    </div>
+  );
+}
+
+
+/* ===== NpaGenerationProcess (mirrors sibling "calculation" category modals,
+   e.g. DepreciationCalculationProcess, since no prior implementation existed) ===== */
+interface NpaGenerationProcess_NpaGenerationData {
+  branchCode: string;
+  fromDate: string;
+  toDate: string;
+  npaCategory: "" | "Substandard" | "Doubtful" | "Loss";
+  reportType: "pdf" | "xls";
+}
+
+export interface NpaGenerationProcess_NpaGenerationProcessProps {
+  open: boolean;
+  onClose: () => void;
+  onValidate?: (data: NpaGenerationProcess_NpaGenerationData) => void;
+  onCalculate?: (data: NpaGenerationProcess_NpaGenerationData) => void;
+  onReport?: (data: NpaGenerationProcess_NpaGenerationData) => void;
+  onApply?: (data: NpaGenerationProcess_NpaGenerationData) => void;
+}
+
+const NpaGenerationProcess_INITIAL_VALUES: NpaGenerationProcess_NpaGenerationData = {
+  branchCode: "Main Branch",
+  fromDate: "",
+  toDate: "",
+  npaCategory: "",
+  reportType: "pdf",
+};
+
+const NpaGenerationProcess_NPA_CATEGORY_OPTIONS = ["Substandard", "Doubtful", "Loss"];
+
+type NpaGenerationProcess_RequiredField = "fromDate" | "toDate" | "npaCategory";
+
+const NpaGenerationProcess_buttonBase =
+  "flex h-11 items-center justify-center gap-2 rounded-lg px-6 text-[14px] font-semibold transition";
+
+function NpaGenerationProcess({
+  open,
+  onClose,
+  onValidate,
+  onCalculate,
+  onReport,
+  onApply,
+}: NpaGenerationProcess_NpaGenerationProcessProps) {
+  const [values, setValues] = useState<NpaGenerationProcess_NpaGenerationData>(NpaGenerationProcess_INITIAL_VALUES);
+  const [errors, setErrors] = useState<Partial<Record<NpaGenerationProcess_RequiredField, string>>>({});
+  const [isValidated, setIsValidated] = useState(false);
+  const [isCalculated, setIsCalculated] = useState(false);
+
+  if (!open) return null;
+
+  const updateValue = <K extends keyof NpaGenerationProcess_NpaGenerationData>(
+    key: K,
+    value: NpaGenerationProcess_NpaGenerationData[K]
+  ) => {
+    setValues((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => ({ ...prev, [key]: undefined }));
+    setIsValidated(false);
+    setIsCalculated(false);
+  };
+
+  const validate = () => {
+    const nextErrors: Partial<Record<NpaGenerationProcess_RequiredField, string>> = {};
+    if (!values.fromDate) nextErrors.fromDate = "This field is required";
+    if (!values.toDate) nextErrors.toDate = "This field is required";
+    if (!values.npaCategory) nextErrors.npaCategory = "This field is required";
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const handleValidate = () => {
+    if (!validate()) return;
+    setIsValidated(true);
+    onValidate?.(values);
+  };
+
+  const handleCalculate = () => {
+    if (!validate()) return;
+    setIsValidated(true);
+    setIsCalculated(true);
+    onCalculate?.(values);
+  };
+
+  const handleReport = () => {
+    if (!validate()) return;
+    setIsValidated(true);
+    onReport?.(values);
+  };
+
+  const handleApply = () => {
+    if (!isCalculated) return;
+    onApply?.(values);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="w-full max-w-xl rounded-[22px] bg-white p-4 shadow-2xl">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+              <FileText size={22} />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">NPA Generation</h2>
+              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                Generate NPA classification for eligible loan accounts.
+              </p>
+            </div>
+          </div>
+          <ModalCloseButton onClose={onClose} />
+        </div>
+
+        <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
+          <div className="space-y-5">
+            <FieldShell label="Branch" required>
+              <TextInput icon={<Landmark size={18} />} value={values.branchCode} onChange={() => {}} readOnly />
+            </FieldShell>
+
+            <FieldShell label="From Date" required error={Boolean(errors.fromDate)}>
+              <DateInput value={values.fromDate} onChange={(value) => updateValue("fromDate", value)} placeholder="Select from date" />
+            </FieldShell>
+
+            <FieldShell label="To Date" required error={Boolean(errors.toDate)}>
+              <DateInput value={values.toDate} onChange={(value) => updateValue("toDate", value)} placeholder="Select to date" />
+            </FieldShell>
+
+            <FieldShell label="NPA Category" required error={Boolean(errors.npaCategory)}>
+              <SelectInput
+                value={values.npaCategory}
+                onChange={(value) => updateValue("npaCategory", value as NpaGenerationProcess_NpaGenerationData["npaCategory"])}
+                options={NpaGenerationProcess_NPA_CATEGORY_OPTIONS}
+                placeholder="Select NPA category"
+              />
+            </FieldShell>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-black">Report Type</label>
+              <div className="flex items-center gap-6">
+                {(["pdf", "xls"] as const).map((opt) => (
+                  <label key={opt} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+                    <input
+                      type="radio"
+                      name="npa-generation-report-type"
+                      checked={values.reportType === opt}
+                      onChange={() => updateValue("reportType", opt)}
+                      className="h-4 w-4"
+                      style={{ accentColor: "#1F67F4" }}
+                    />
+                    {opt.toUpperCase()}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
+          <button
+            type="button"
+            onClick={handleValidate}
+            className={`${NpaGenerationProcess_buttonBase} bg-primary text-white hover:bg-primary-700`}
+          >
+            Validate
+            <Check size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={handleCalculate}
+            className={`${NpaGenerationProcess_buttonBase} border border-primary bg-white text-primary hover:bg-primary-50`}
+          >
+            Calculate
+            <Calculator size={17} />
+          </button>
+          <button
+            type="button"
+            onClick={handleReport}
+            className={`${NpaGenerationProcess_buttonBase} bg-primary-50 text-primary hover:bg-primary-100`}
+          >
+            Report
+            <BarChart3 size={17} />
+          </button>
+          <button
+            type="button"
+            disabled={!isCalculated}
+            onClick={handleApply}
+            className={`${NpaGenerationProcess_buttonBase} ${
+              isCalculated
+                ? "bg-primary text-white hover:bg-primary-700"
+                : "cursor-not-allowed bg-slate-100 text-slate-400"
+            }`}
+          >
+            Apply
+            <Check size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className={`${NpaGenerationProcess_buttonBase} border border-primary bg-white text-primary hover:bg-primary-50`}
+          >
+            Cancel
+            <X size={18} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1753,24 +1956,27 @@ function TdPostingConsistencyProcess({
     <>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-[1024px] rounded-[22px] bg-white p-4 shadow-2xl">
-          <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-              <UserRound size={22} />
+          <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+            <div className="flex items-start gap-4 min-w-0">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+                <UserRound size={22} />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                  {en("tdPostingConsistency.title")}
+                  {t("tdPostingConsistency.title") ? (
+                    <span className="text-[#64748B]"> / {t("tdPostingConsistency.title")}</span>
+                  ) : null}
+                </h2>
+                <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                  {en("tdPostingConsistency.subtitle")}
+                  {t("tdPostingConsistency.subtitle") ? (
+                    <span> / {t("tdPostingConsistency.subtitle")}</span>
+                  ) : null}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-                {en("tdPostingConsistency.title")}
-                {t("tdPostingConsistency.title") ? (
-                  <span className="text-[#64748B]"> / {t("tdPostingConsistency.title")}</span>
-                ) : null}
-              </h2>
-              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-                {en("tdPostingConsistency.subtitle")}
-                {t("tdPostingConsistency.subtitle") ? (
-                  <span> / {t("tdPostingConsistency.subtitle")}</span>
-                ) : null}
-              </p>
-            </div>
+            <ModalCloseButton onClose={onClose} />
           </div>
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
 
@@ -1871,7 +2077,7 @@ function TdPostingConsistencyProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
           <button
             type="button"
             onClick={handleValidate}
@@ -1984,7 +2190,7 @@ function TdPostingConsistencyProcess_DateInput({
   readOnly?: boolean;
 }) {
   return (
-    <div className={`flex h-11 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
+    <div className={`relative flex h-11 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
       readOnly ? "bg-slate-100" : "bg-white"
     }`}>
       <Calendar size={18} className="mr-3 shrink-0 text-[#64748B]" />
@@ -1994,8 +2200,13 @@ function TdPostingConsistencyProcess_DateInput({
         readOnly={readOnly}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className={`min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5] ${type === "date" ? "text-transparent caret-transparent" : ""}`}
       />
+      {type === "date" && (
+        <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+          {formatDateDDMMMYYYY(value) || placeholder}
+        </span>
+      )}
     </div>
   );
 }
@@ -2191,24 +2402,27 @@ function TlccInterestPostingProcess({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-3xl rounded-xl bg-white p-3 shadow-2xl">
         <div className="rounded-2xl p-3">
-          <div className="flex items-start gap-3 border-b border-slate-100 pb-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary">
-              <UserRound size={19} />
+          <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-4">
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary">
+                <UserRound size={19} />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[19px] font-bold leading-tight text-[#1F2858]">
+                  {en("tlccInterestPosting.title")}
+                  {t("tlccInterestPosting.title") ? (
+                    <span className="text-[#64748B]"> / {t("tlccInterestPosting.title")}</span>
+                  ) : null}
+                </h2>
+                <p className="text-[13px] leading-snug text-slate-500">
+                  {en("interestPostingProcess.subtitle")}
+                  {t("interestPostingProcess.subtitle") ? (
+                    <span> / {t("interestPostingProcess.subtitle")}</span>
+                  ) : null}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="text-[19px] font-bold leading-tight text-[#1F2858]">
-                {en("tlccInterestPosting.title")}
-                {t("tlccInterestPosting.title") ? (
-                  <span className="text-[#64748B]"> / {t("tlccInterestPosting.title")}</span>
-                ) : null}
-              </h2>
-              <p className="text-[13px] leading-snug text-slate-500">
-                {en("interestPostingProcess.subtitle")}
-                {t("interestPostingProcess.subtitle") ? (
-                  <span> / {t("interestPostingProcess.subtitle")}</span>
-                ) : null}
-              </p>
-            </div>
+            <ModalCloseButton onClose={onClose} />
           </div>
 
           <div className="mt-4 rounded-xl border border-primary border-t-4 bg-white px-5 pb-6 pt-5 shadow-[0_1px_8px_rgba(37,99,235,0.12)]">
@@ -2451,11 +2665,11 @@ function ReportsParameterModal({
                 className="min-h-[42px] w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 outline-none focus:border-primary focus:ring-1 focus:ring-primary opacity-0 absolute inset-0 cursor-pointer"
                 style={{ opacity: 0, position: 'absolute' }}
               />
-              <div 
+              <div
                 onClick={handleIconClick}
                 className="min-h-[42px] w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-700 outline-none cursor-pointer flex items-center"
               >
-                {asOnDate || "Enter From Date"}
+                {formatDateDDMMMYYYY(asOnDate) || "Enter From Date"}
               </div>
             </div>
           </FieldShell>
@@ -2675,24 +2889,27 @@ function ExceedCashLimitReportProcess({
     <>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-2xl rounded-[22px] bg-white p-4 shadow-2xl">
-        <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-            <UserRound size={22} />
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+              <UserRound size={22} />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                {en("exceedCashLimitReport.title")}
+                {t("exceedCashLimitReport.title") ? (
+                  <span className="text-[#64748B]"> / {t("exceedCashLimitReport.title")}</span>
+                ) : null}
+              </h2>
+              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                {en("interestPostingProcess.subtitle")}
+                {t("interestPostingProcess.subtitle") ? (
+                  <span> / {t("interestPostingProcess.subtitle")}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-              {en("exceedCashLimitReport.title")}
-              {t("exceedCashLimitReport.title") ? (
-                <span className="text-[#64748B]"> / {t("exceedCashLimitReport.title")}</span>
-              ) : null}
-            </h2>
-            <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-              {en("interestPostingProcess.subtitle")}
-              {t("interestPostingProcess.subtitle") ? (
-                <span> / {t("interestPostingProcess.subtitle")}</span>
-              ) : null}
-            </p>
-          </div>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -2781,7 +2998,7 @@ function ExceedCashLimitReportProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
           <button
             type="button"
             onClick={handleValidate}
@@ -2886,7 +3103,7 @@ function ExceedCashLimitReportProcess_DateInput({
 }) {
   return (
     <div
-      className={`flex h-11 flex-1 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
+      className={`relative flex h-11 flex-1 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
         readOnly ? "bg-slate-100" : "bg-white"
       }`}
     >
@@ -2897,8 +3114,13 @@ function ExceedCashLimitReportProcess_DateInput({
         readOnly={readOnly}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className={`min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5] ${type === "date" ? "text-transparent caret-transparent" : ""}`}
       />
+      {type === "date" && (
+        <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+          {formatDateDDMMMYYYY(value) || placeholder}
+        </span>
+      )}
     </div>
   );
 }
@@ -2944,14 +3166,7 @@ function HoInterestReportBranchProcess({
     onReport?.(values);
   };
 
-  const formatDate = (value: string) =>
-    value
-      ? new Date(value).toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })
-      : "";
+  const formatDate = formatDateDDMMMYYYY;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -2976,14 +3191,7 @@ function HoInterestReportBranchProcess({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={en("common.cancel")}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-          >
-            <X size={16} />
-          </button>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -3152,14 +3360,7 @@ function HoInterestReportGlProcess({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={en("common.cancel")}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-          >
-            <X size={16} />
-          </button>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -3223,7 +3424,7 @@ function HoInterestReportGlProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
           <button
             type="button"
             onClick={handleValidate}
@@ -3311,7 +3512,7 @@ function HoInterestReportGlProcess_IconInput({
 }) {
   return (
     <div
-      className={`flex h-11 flex-1 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
+      className={`relative flex h-11 flex-1 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
         readOnly ? "bg-slate-100" : "bg-white"
       }`}
     >
@@ -3322,8 +3523,13 @@ function HoInterestReportGlProcess_IconInput({
         readOnly={readOnly}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className={`min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5] ${type === "date" ? "text-transparent caret-transparent" : ""}`}
       />
+      {type === "date" && (
+        <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+          {formatDateDDMMMYYYY(value) || placeholder}
+        </span>
+      )}
     </div>
   );
 }
@@ -3397,14 +3603,7 @@ function HoInterestReportHoProcess({
     setActivePicker(null);
   };
 
-  const formatDate = (value: string) =>
-    value
-      ? new Date(value).toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })
-      : "";
+  const formatDate = formatDateDDMMMYYYY;
 
   return (
     <>
@@ -3430,14 +3629,7 @@ function HoInterestReportHoProcess({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={en("common.cancel")}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-          >
-            <X size={16} />
-          </button>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -3520,7 +3712,7 @@ function HoInterestReportHoProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
           <button
             type="button"
             onClick={handleValidate}
@@ -3676,24 +3868,27 @@ function InterestNotAppliedProcess({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-xl rounded-[22px] bg-white p-4 shadow-2xl">
-        <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-            <UserRound size={22} />
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+              <UserRound size={22} />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                {en("interestNotApplied.title")}
+                {t("interestNotApplied.title") ? (
+                  <span className="text-[#64748B]"> / {t("interestNotApplied.title")}</span>
+                ) : null}
+              </h2>
+              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                {en("interestNotApplied.subtitle")}
+                {t("interestNotApplied.subtitle") ? (
+                  <span> / {t("interestNotApplied.subtitle")}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-              {en("interestNotApplied.title")}
-              {t("interestNotApplied.title") ? (
-                <span className="text-[#64748B]"> / {t("interestNotApplied.title")}</span>
-              ) : null}
-            </h2>
-            <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-              {en("interestNotApplied.subtitle")}
-              {t("interestNotApplied.subtitle") ? (
-                <span> / {t("interestNotApplied.subtitle")}</span>
-              ) : null}
-            </p>
-          </div>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -3713,7 +3908,7 @@ function InterestNotAppliedProcess({
               labelHi={t("interestNotApplied.fields.asOnDate")}
               error={error}
             >
-              <div className="flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700">
+              <div className="relative flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700">
                 <Calendar size={18} className="mr-3 shrink-0 text-[#64748B]" />
                 <input
                   type="date"
@@ -3724,14 +3919,17 @@ function InterestNotAppliedProcess({
                     setIsValidated(false);
                   }}
                   placeholder={tRaw("interestNotApplied.placeholders.enterDate")}
-                  className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+                  className="min-w-0 flex-1 bg-transparent text-transparent caret-transparent outline-none placeholder:text-[#8B95A5]"
                 />
+                <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(values.asOnDate) ? "" : "text-[#8B95A5]"}`}>
+                  {formatDateDDMMMYYYY(values.asOnDate) || tRaw("interestNotApplied.placeholders.enterDate")}
+                </span>
               </div>
             </InterestNotAppliedProcess_FormField>
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
           <button
             type="button"
             onClick={handleValidate}
@@ -3893,24 +4091,27 @@ function PigmyInterestProvisionProcess({
     <>
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-2xl rounded-[22px] bg-white p-4 shadow-2xl">
-        <div className="flex items-start gap-4 border-b border-slate-100 pb-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-            <UserRound size={22} />
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3">
+          <div className="flex items-start gap-4 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+              <UserRound size={22} />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                {en("pigmyInterestProvision.title")}
+                {t("pigmyInterestProvision.title") ? (
+                  <span className="text-[#64748B]"> / {t("pigmyInterestProvision.title")}</span>
+                ) : null}
+              </h2>
+              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                {en("pigmyInterestProvision.subtitle")}
+                {t("pigmyInterestProvision.subtitle") ? (
+                  <span> / {t("pigmyInterestProvision.subtitle")}</span>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-              {en("pigmyInterestProvision.title")}
-              {t("pigmyInterestProvision.title") ? (
-                <span className="text-[#64748B]"> / {t("pigmyInterestProvision.title")}</span>
-              ) : null}
-            </h2>
-            <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-              {en("pigmyInterestProvision.subtitle")}
-              {t("pigmyInterestProvision.subtitle") ? (
-                <span> / {t("pigmyInterestProvision.subtitle")}</span>
-              ) : null}
-            </p>
-          </div>
+          <ModalCloseButton onClose={onClose} />
         </div>
 
         <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -3964,7 +4165,7 @@ function PigmyInterestProvisionProcess({
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
           <button
             type="button"
             onClick={handleValidate}
@@ -4069,7 +4270,7 @@ function PigmyInterestProvisionProcess_DateInput({
 }) {
   return (
     <div
-      className={`flex h-11 flex-1 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
+      className={`relative flex h-11 flex-1 items-center rounded-lg border border-[#7E8796] px-4 text-[15px] text-slate-700 ${
         readOnly ? "bg-slate-100" : "bg-white"
       }`}
     >
@@ -4080,8 +4281,13 @@ function PigmyInterestProvisionProcess_DateInput({
         readOnly={readOnly}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className={`min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5] ${type === "date" ? "text-transparent caret-transparent" : ""}`}
       />
+      {type === "date" && (
+        <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+          {formatDateDDMMMYYYY(value) || placeholder}
+        </span>
+      )}
     </div>
   );
 }
@@ -4228,14 +4434,7 @@ function SiInterestPostingProcess({
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={en("common.cancel")}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-            >
-              <X size={16} />
-            </button>
+            <ModalCloseButton onClose={onClose} />
           </div>
 
           <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -4260,7 +4459,7 @@ function SiInterestPostingProcess({
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-3 flex flex-wrap items-center justify-end gap-3">
           <button
             type="button"
             onClick={handleValidate}
@@ -4348,15 +4547,20 @@ function SiInterestPostingProcess_IconInput({
   type?: "text" | "date";
 }) {
   return (
-    <div className="flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+    <div className="relative flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
       <span className="mr-3 shrink-0 text-[#64748B]">{icon}</span>
       <input
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className={`min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5] ${type === "date" ? "text-transparent caret-transparent" : ""}`}
       />
+      {type === "date" && (
+        <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+          {formatDateDDMMMYYYY(value) || placeholder}
+        </span>
+      )}
     </div>
   );
 }
@@ -4580,7 +4784,7 @@ const FinancialClosing = () => {
 
     const handleOpen = (id: string) => {
         if (id === "set-product-status") {
-            router.push("/financial-closing/set-product-status");
+            router.push("/misactivity/financialclosing/set-product-status");
         } else {
             setActiveModal(id);
         }
@@ -4591,13 +4795,13 @@ const FinancialClosing = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+        <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
             <GlobalNav
                 titleEn="Financial Closing"
                 titleHi="आर्थिक समाप्ती"
                 breadcrumbs={[
                     { label: "Home", href: "/" },
-                    { label: "MIS Activity", href: "/misactivity" },
+                    { label: "MIS Activity", href: "#" },
                     { label: "Financial Closing", href: "#" },
                 ]}
                 onBack={() => router.back()}
@@ -4720,11 +4924,15 @@ const FinancialClosing = () => {
                 onClose={handleCloseModal}
             />
             <TdPostingConsistencyProcess
-                open={activeModal === "td-interest-posting"}
+                open={activeModal === "td-posting-consistency" || activeModal === "td-interest-posting"}
                 onClose={handleCloseModal}
             />
             <NpaModificationProcess
                 open={activeModal === "npa-modification"}
+                onClose={handleCloseModal}
+            />
+            <NpaGenerationProcess
+                open={activeModal === "npa-generation"}
                 onClose={handleCloseModal}
             />
             <DepreciationCalculationProcess

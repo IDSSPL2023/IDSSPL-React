@@ -382,6 +382,7 @@ const ModifyAccountBalancePage = () => {
   }
 
   return (
+    <div className="min-h-screen app-page-bg px-3 py-4 dark:bg-slate-950">
     <div className="relative mx-auto w-full max-w-3xl rounded-2xl bg-white p-8 dark:bg-slate-900">
       <FutureModelForm_FuturePageHeader
         titleKey="modifyAccountBalance.title"
@@ -535,6 +536,7 @@ const ModifyAccountBalancePage = () => {
           onSelect={handleAccountSelect}
         />
       )}
+    </div>
     </div>
   );
 };

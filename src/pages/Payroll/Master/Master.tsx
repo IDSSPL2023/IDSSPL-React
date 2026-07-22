@@ -1095,7 +1095,7 @@ const PayrollMaster = () => {
   };
 
   return (
-    <div className="min-h-full bg-[#F8FAFC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarCM
         titleEn="Payroll Master"
         breadcrumbs={[

@@ -2336,7 +2336,7 @@ const CustomerMasterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] relative dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg relative dark:bg-slate-950">
       <NavbarCM
         titleEn={en("customerMaster.title")}
         titleHi={t("customerMaster.title")}

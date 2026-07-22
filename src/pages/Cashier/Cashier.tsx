@@ -88,14 +88,14 @@ const actions: CashierActionCard_CashierActionItem[] = [
   { key: 'cash-handling-entry', iconSrc: IMAGES.HAND, titleEn: 'CASH HANDLING ENTRY', titleHi: 'रोख हाताळणी नोंद' },
   { key: 'combine-accept-pay-cash-multiple', iconSrc: IMAGES.NOTE_1, titleEn: 'COMBINE ACCEPT PAY CASH MULTIPLE', titleHi: 'एकत्रित रोख स्वीकृती व प्रदान' },
   { key: 'exchange-money', iconSrc: IMAGES.CONTACT, titleEn: 'EXCHANGE MONEY', titleHi: 'पैसे विनिमय' },
-  { key: 'pay-cash', iconSrc: '/message.png"', titleEn: 'PAY CASH', titleHi: 'रोख प्रदान' },
+  { key: 'pay-cash', iconSrc: IMAGES.CASH_WITHDRAWAL, titleEn: 'PAY CASH', titleHi: 'रोख प्रदान' },
 ]
 
 const Cashier = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Cashier"
         titleHi="केशियर"

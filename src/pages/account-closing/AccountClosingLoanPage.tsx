@@ -609,7 +609,7 @@ export default function AccountClosingLoanPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Loan Closing"
         titleHi="कर्ज बंद करा"

@@ -293,6 +293,7 @@ const ModifyCashHandlingRecord = () => {
   }
 
   return (
+    <div className="min-h-screen app-page-bg px-3 py-4 dark:bg-slate-950">
      <div className="mx-auto w-full max-w-5xl rounded-[28px] bg-white p-3 shadow-sm dark:bg-slate-900">
       <div className="mb-3 flex items-center justify-between border-b border-slate-200 pb-3 dark:border-slate-700">
         <div className="flex min-w-0 items-center gap-3">
@@ -406,6 +407,7 @@ const ModifyCashHandlingRecord = () => {
           onSelect={handleScrollSelect}
         />
       )}
+    </div>
     </div>
   );
 };

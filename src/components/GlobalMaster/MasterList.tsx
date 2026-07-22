@@ -69,14 +69,20 @@ const MasterList = ({ openMaster, onOpenMaster, tableRows, onRowsChange, filters
             <br />
             Maintenance Global
           </h1>
-          <div className="mt-6 max-w-xl mx-auto flex items-center bg-white rounded-full px-4 py-2 shadow-lg">
-            <Search size={18} className="text-gray-400 mr-2" />
+          <div className="mt-6 max-w-xl mx-auto flex items-center bg-white rounded-full py-1.5 pl-5 pr-1.5 shadow-lg">
+            <Search size={18} className="text-gray-400 mr-2 shrink-0" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search masters..."
-              className="flex-1 text-sm outline-none text-gray-700 placeholder-gray-400"
+              className="flex-1 min-w-0 text-sm outline-none text-gray-700 placeholder-gray-400"
             />
+            <button
+              type="button"
+              className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              Show
+            </button>
           </div>
         </div>
 

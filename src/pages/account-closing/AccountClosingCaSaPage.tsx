@@ -12,7 +12,7 @@ const AccountClosingCaSaPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="CA/SA Closing"
         titleHi="खाते बंद करा"

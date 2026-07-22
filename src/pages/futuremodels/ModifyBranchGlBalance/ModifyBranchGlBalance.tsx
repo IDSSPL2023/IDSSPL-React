@@ -224,6 +224,7 @@ const ModifyBranchGlBalance = () => {
   }
 
   return (
+    <div className="min-h-screen app-page-bg px-3 py-4 dark:bg-slate-950">
     <div className="relative mx-auto w-full max-w-5xl rounded-2xl bg-white p-8 dark:bg-slate-900">
       {/* Header */}
       <div className="mb-6 flex items-start justify-between border-b border-gray-200 pb-5 dark:border-slate-700">
@@ -376,6 +377,7 @@ const ModifyBranchGlBalance = () => {
           onSelect={handleGlSelect}
         />
       )}
+    </div>
     </div>
   );
 };

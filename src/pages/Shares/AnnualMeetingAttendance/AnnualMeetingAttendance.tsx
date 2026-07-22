@@ -397,7 +397,7 @@ export default function AnnualMeetingAttendancePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#F9FAFB] p-4">
+      <div className="min-h-screen app-page-bg p-4">
         <div className="mx-auto max-w-[1600px]">
           {/* Header */}
           <div className="mb-4 flex items-center gap-3">

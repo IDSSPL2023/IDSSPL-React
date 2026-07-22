@@ -1728,13 +1728,13 @@ function TDSReportsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="TDS Reports"
         titleHi="TDS अहवाल"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "MIS Activity", href: "/" },
+          { label: "MIS Activity", href: "#" },
           { label: "TDS Reports", href: "#" },
         ]}
         onBack={() => router.back()}

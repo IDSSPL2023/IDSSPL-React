@@ -10,6 +10,7 @@ import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
 import { FieldShell, TextInput, SelectInput, RadioYesNo, SectionCard, DateInput } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
+import RejectReasonModal from "@/components/shared/RejectReasonModal";
 import ListModal from "@/components/AccountMaster/ListModal";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import Pagination from "@/components/shared/Pagination";
@@ -1076,18 +1077,25 @@ const LockerSurrenderModal_RadioTransactionMode = ({ value, onChange }: { value:
 
 export interface LockerSurrenderModal_LockerSurrenderModalProps {
   row: LockerTable_LockerRow;
+  mode?: "entry" | "authorize";
   onClose: () => void;
   onSave?: (data: LockerSurrenderModal_SurrenderFormData) => void;
+  onAuthorize?: (data: LockerSurrenderModal_SurrenderFormData) => void;
+  onReject?: (data: LockerSurrenderModal_SurrenderFormData, reason: string) => void;
 }
 
-const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_LockerSurrenderModalProps) => {
+export const LockerSurrenderModal = ({ row, mode = "entry", onClose, onSave, onAuthorize, onReject }: LockerSurrenderModal_LockerSurrenderModalProps) => {
+  const isAuthorize = mode === "authorize";
   const [form, setForm] = useState<LockerSurrenderModal_SurrenderFormData>(() => LockerSurrenderModal_buildInitialData(row));
   const [isValidated, setIsValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof LockerSurrenderModal_SurrenderFormData, boolean>>>({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [showRejectReason, setShowRejectReason] = useState(false);
+  const [authorizeResult, setAuthorizeResult] = useState<"authorized" | "rejected" | null>(null);
 
   const updateField = <K extends keyof LockerSurrenderModal_SurrenderFormData>(key: K, value: LockerSurrenderModal_SurrenderFormData[K]) => {
+    if (isAuthorize) return;
     setForm((prev) => ({ ...prev, [key]: value }));
     setIsValidated(false);
   };
@@ -1122,6 +1130,24 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
     onClose();
   };
 
+  const handleAuthorize = () => {
+    onAuthorize?.(form);
+    setAuthorizeResult("authorized");
+  };
+
+  const handleReject = () => setShowRejectReason(true);
+
+  const handleConfirmReject = (reason: string) => {
+    setShowRejectReason(false);
+    onReject?.(form, reason);
+    setAuthorizeResult("rejected");
+  };
+
+  const handleAuthorizeDone = () => {
+    setAuthorizeResult(null);
+    onClose();
+  };
+
   if (showSuccess) {
     return (
       <SuccessModal
@@ -1129,6 +1155,30 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
         onDone={handleSuccessDone}
         title="Locker Surrendered Successfully"
         subtitle="Please Authorize"
+      />
+    );
+  }
+
+  if (authorizeResult === "authorized") {
+    return (
+      <SuccessModal
+        variant="success"
+        title="Locker Surrender Authorized Successfully"
+        subtitle=""
+        onClose={handleAuthorizeDone}
+        onDone={handleAuthorizeDone}
+      />
+    );
+  }
+
+  if (authorizeResult === "rejected") {
+    return (
+      <SuccessModal
+        variant="critical"
+        title="Locker Surrender Authorization Rejected"
+        subtitle=""
+        onClose={handleAuthorizeDone}
+        onDone={handleAuthorizeDone}
       />
     );
   }
@@ -1146,46 +1196,72 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
       hideFooter
       maxWidth="max-w-6xl"
       customFooter={
-        <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
-          <button
-            type="button"
-            onClick={handleValidate}
-            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          >
-            Validate
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePlaceholderAction("Signature")}
-            className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-          >
-            Signature
-          </button>
-          <button
-            type="button"
-            onClick={() => handlePlaceholderAction("Photo")}
-            className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-          >
-            Photo
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={!isValidated}
-            className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-              isValidated ? "bg-primary-100 text-primary hover:bg-primary-200" : "cursor-not-allowed bg-slate-200 text-slate-400"
-            }`}
-          >
-            Save
-          </button>
-        </div>
+        isAuthorize ? (
+          <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
+            <button
+              type="button"
+              onClick={handleReject}
+              className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+            >
+              Reject
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleAuthorize}
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              Authorize
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
+            <button
+              type="button"
+              onClick={handleValidate}
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              Validate
+            </button>
+            <button
+              type="button"
+              onClick={() => handlePlaceholderAction("Signature")}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+            >
+              Signature
+            </button>
+            <button
+              type="button"
+              onClick={() => handlePlaceholderAction("Photo")}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+            >
+              Photo
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={!isValidated}
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+                isValidated ? "bg-primary-100 text-primary hover:bg-primary-200" : "cursor-not-allowed bg-slate-200 text-slate-400"
+              }`}
+            >
+              Save
+            </button>
+          </div>
+        )
       }
     >
       <SectionCard titleEn="Surrender Details" titleHi="लॉकर समर्पण तपशील" subtitleEn="Manage customer's personal and identity information." icon={<LockerSurrenderModal_SectionIcon />}>
@@ -1200,7 +1276,7 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
             <TextInput icon={<Calendar size={16} />} value={form.hireDate} onChange={() => {}} readOnly />
           </FieldShell>
           <FieldShell label="Period">
-            <TextInput icon={<Hash size={16} />} value={form.period} onChange={(v) => updateField("period", v)} />
+            <TextInput icon={<Hash size={16} />} value={form.period} onChange={(v) => updateField("period", v)} readOnly={isAuthorize} />
           </FieldShell>
 
           <FieldShell label="Completed Period in Months">
@@ -1210,10 +1286,10 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
             <TextInput icon={<Calendar size={16} />} value={form.reviewDate} onChange={() => {}} readOnly />
           </FieldShell>
           <FieldShell label="Rent from Date">
-            <DateInput value={form.rentFromDate} onChange={(v) => updateField("rentFromDate", v)} />
+            <DateInput value={form.rentFromDate} onChange={(v) => updateField("rentFromDate", v)} readOnly={isAuthorize} />
           </FieldShell>
           <FieldShell label="Rent To Date">
-            <DateInput value={form.rentToDate} onChange={(v) => updateField("rentToDate", v)} />
+            <DateInput value={form.rentToDate} onChange={(v) => updateField("rentToDate", v)} readOnly={isAuthorize} />
           </FieldShell>
 
           <FieldShell label="Transaction Date">
@@ -1239,12 +1315,13 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
           <FieldShell label="Debit A/C Code" required error={errors.debitAcCode}>
             <div className="flex items-center gap-2">
               <div className="flex-1">
-                <TextInput icon={<CreditCard size={16} />} value={form.debitAcCode} onChange={(v) => updateField("debitAcCode", v)} error={errors.debitAcCode} />
+                <TextInput icon={<CreditCard size={16} />} value={form.debitAcCode} onChange={(v) => updateField("debitAcCode", v)} error={errors.debitAcCode} readOnly={isAuthorize} />
               </div>
               <button
                 type="button"
-                onClick={() => setShowPicker(true)}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-[#EEF4FF] text-primary transition hover:bg-[#DDEAFF]"
+                onClick={() => !isAuthorize && setShowPicker(true)}
+                disabled={isAuthorize}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-[#EEF4FF] text-primary transition hover:bg-[#DDEAFF] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <MoreVertical size={18} strokeWidth={2.4} />
               </button>
@@ -1269,6 +1346,13 @@ const LockerSurrenderModal = ({ row, onClose, onSave }: LockerSurrenderModal_Loc
           rows={LockerSurrenderModal_DEBIT_AC_LIST}
           onSelect={handlePickRow}
           onClose={() => setShowPicker(false)}
+        />
+      )}
+
+      {showRejectReason && (
+        <RejectReasonModal
+          onClose={() => setShowRejectReason(false)}
+          onConfirm={handleConfirmReject}
         />
       )}
     </FormModal>
@@ -1379,18 +1463,25 @@ const LockerTransactionModal_RadioTransferByCheque = ({ value, onChange }: { val
 
 export interface LockerTransactionModal_LockerTransactionModalProps {
   row: LockerTable_LockerRow;
+  mode?: "entry" | "authorize";
   onClose: () => void;
   onSave?: (data: LockerTransactionModal_TransactionFormData) => void;
+  onAuthorize?: (data: LockerTransactionModal_TransactionFormData) => void;
+  onReject?: (data: LockerTransactionModal_TransactionFormData, reason: string) => void;
 }
 
-const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal_LockerTransactionModalProps) => {
+export const LockerTransactionModal = ({ row, mode = "entry", onClose, onSave, onAuthorize, onReject }: LockerTransactionModal_LockerTransactionModalProps) => {
+  const isAuthorize = mode === "authorize";
   const [form, setForm] = useState<LockerTransactionModal_TransactionFormData>(() => LockerTransactionModal_buildInitialData(row));
   const [isValidated, setIsValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof LockerTransactionModal_TransactionFormData, boolean>>>({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [activePicker, setActivePicker] = useState<"debitAcCode" | "chequeType" | null>(null);
+  const [showRejectReason, setShowRejectReason] = useState(false);
+  const [authorizeResult, setAuthorizeResult] = useState<"authorized" | "rejected" | null>(null);
 
   const updateField = <K extends keyof LockerTransactionModal_TransactionFormData>(key: K, value: LockerTransactionModal_TransactionFormData[K]) => {
+    if (isAuthorize) return;
     setForm((prev) => ({ ...prev, [key]: value }));
     setIsValidated(false);
   };
@@ -1432,6 +1523,24 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
     onClose();
   };
 
+  const handleAuthorize = () => {
+    onAuthorize?.(form);
+    setAuthorizeResult("authorized");
+  };
+
+  const handleReject = () => setShowRejectReason(true);
+
+  const handleConfirmReject = (reason: string) => {
+    setShowRejectReason(false);
+    onReject?.(form, reason);
+    setAuthorizeResult("rejected");
+  };
+
+  const handleAuthorizeDone = () => {
+    setAuthorizeResult(null);
+    onClose();
+  };
+
   if (showSuccess) {
     return (
       <SuccessModal
@@ -1439,6 +1548,30 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
         onDone={handleSuccessDone}
         title="Locker Transaction Saved Successfully"
         subtitle="Please Authorize"
+      />
+    );
+  }
+
+  if (authorizeResult === "authorized") {
+    return (
+      <SuccessModal
+        variant="success"
+        title="Locker Transaction Authorized Successfully"
+        subtitle=""
+        onClose={handleAuthorizeDone}
+        onDone={handleAuthorizeDone}
+      />
+    );
+  }
+
+  if (authorizeResult === "rejected") {
+    return (
+      <SuccessModal
+        variant="critical"
+        title="Locker Transaction Authorization Rejected"
+        subtitle=""
+        onClose={handleAuthorizeDone}
+        onDone={handleAuthorizeDone}
       />
     );
   }
@@ -1459,56 +1592,82 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
       hideFooter
       maxWidth="max-w-6xl"
       customFooter={
-        <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
-          <button
-            type="button"
-            onClick={handleValidate}
-            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          >
-            Validate
-          </button>
-          <button
-            type="button"
-            disabled={!isValidated}
-            onClick={() => handlePlaceholderAction("Signature")}
-            className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isValidated ? enabledOutlineClass : disabledBtnClass}`}
-          >
-            Signature
-          </button>
-          <button
-            type="button"
-            disabled={!isValidated}
-            onClick={() => handlePlaceholderAction("Photo")}
-            className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isValidated ? enabledOutlineClass : disabledBtnClass}`}
-          >
-            Photo
-          </button>
-          <button
-            type="button"
-            disabled={!isValidated}
-            onClick={() => handlePlaceholderAction("Display Voucher")}
-            className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isValidated ? enabledOutlineClass : disabledBtnClass}`}
-          >
-            Display Voucher
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={!isValidated}
-            className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-              isValidated ? "bg-primary-100 text-primary hover:bg-primary-200" : "cursor-not-allowed bg-slate-200 text-slate-400"
-            }`}
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
-          >
-            Cancel
-          </button>
-        </div>
+        isAuthorize ? (
+          <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
+            <button
+              type="button"
+              onClick={handleReject}
+              className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+            >
+              Reject
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleAuthorize}
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              Authorize
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-4">
+            <button
+              type="button"
+              onClick={handleValidate}
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              Validate
+            </button>
+            <button
+              type="button"
+              disabled={!isValidated}
+              onClick={() => handlePlaceholderAction("Signature")}
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isValidated ? enabledOutlineClass : disabledBtnClass}`}
+            >
+              Signature
+            </button>
+            <button
+              type="button"
+              disabled={!isValidated}
+              onClick={() => handlePlaceholderAction("Photo")}
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isValidated ? enabledOutlineClass : disabledBtnClass}`}
+            >
+              Photo
+            </button>
+            <button
+              type="button"
+              disabled={!isValidated}
+              onClick={() => handlePlaceholderAction("Display Voucher")}
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isValidated ? enabledOutlineClass : disabledBtnClass}`}
+            >
+              Display Voucher
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={!isValidated}
+              className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+                isValidated ? "bg-primary-100 text-primary hover:bg-primary-200" : "cursor-not-allowed bg-slate-200 text-slate-400"
+              }`}
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500 bg-white px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+            >
+              Cancel
+            </button>
+          </div>
+        )
       }
     >
       <SectionCard titleEn="Account Details" titleHi="आकाउंट तपशील" subtitleEn="Manage customer's personal and identity information." icon={<LockerTransactionModal_SectionIcon />}>
@@ -1520,17 +1679,17 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
             <TextInput icon={<Calendar size={16} />} value={form.rentPaidTillDate} onChange={() => {}} readOnly />
           </FieldShell>
           <FieldShell label="Period">
-            <TextInput icon={<Hash size={16} />} value={form.period} onChange={(v) => updateField("period", v)} />
+            <TextInput icon={<Hash size={16} />} value={form.period} onChange={(v) => updateField("period", v)} readOnly={isAuthorize} />
           </FieldShell>
           <FieldShell label="Review Date">
             <TextInput icon={<Calendar size={16} />} value={form.reviewDate} onChange={() => {}} readOnly />
           </FieldShell>
 
           <FieldShell label="Rent from Date">
-            <DateInput value={form.rentFromDate} onChange={(v) => updateField("rentFromDate", v)} />
+            <DateInput value={form.rentFromDate} onChange={(v) => updateField("rentFromDate", v)} readOnly={isAuthorize} />
           </FieldShell>
           <FieldShell label="Rent To Date">
-            <DateInput value={form.rentToDate} onChange={(v) => updateField("rentToDate", v)} />
+            <DateInput value={form.rentToDate} onChange={(v) => updateField("rentToDate", v)} readOnly={isAuthorize} />
           </FieldShell>
           <FieldShell label="Completed Period in Months">
             <TextInput icon={<Hash size={16} />} value={form.completedPeriodInMonths} onChange={() => {}} readOnly />
@@ -1546,7 +1705,7 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
             <TextInput icon={<Percent size={16} />} value={form.serviceTax} onChange={() => {}} readOnly />
           </FieldShell>
           <FieldShell label="Amount">
-            <TextInput icon={<IndianRupee size={16} />} value={form.amount} onChange={(v) => updateField("amount", v)} />
+            <TextInput icon={<IndianRupee size={16} />} value={form.amount} onChange={(v) => updateField("amount", v)} readOnly={isAuthorize} />
           </FieldShell>
           <FieldShell label="Closing Balance">
             <TextInput icon={<Percent size={16} />} value={form.closingBalance} onChange={() => {}} readOnly />
@@ -1565,12 +1724,13 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
           <FieldShell label="Debit A/C Code" required error={errors.debitAcCode}>
             <div className="flex items-center gap-2">
               <div className="flex-1">
-                <TextInput icon={<CreditCard size={16} />} value={form.debitAcCode} onChange={(v) => updateField("debitAcCode", v)} error={errors.debitAcCode} />
+                <TextInput icon={<CreditCard size={16} />} value={form.debitAcCode} onChange={(v) => updateField("debitAcCode", v)} error={errors.debitAcCode} readOnly={isAuthorize} />
               </div>
               <button
                 type="button"
-                onClick={() => setActivePicker("debitAcCode")}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-[#EEF4FF] text-primary transition hover:bg-[#DDEAFF]"
+                onClick={() => !isAuthorize && setActivePicker("debitAcCode")}
+                disabled={isAuthorize}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-[#EEF4FF] text-primary transition hover:bg-[#DDEAFF] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <MoreVertical size={18} strokeWidth={2.4} />
               </button>
@@ -1586,12 +1746,13 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
           <FieldShell label="Cheque Type" required={form.transferByCheque} error={errors.chequeType}>
             <div className="flex items-center gap-2">
               <div className="flex-1">
-                <TextInput icon={<CreditCard size={16} />} value={form.chequeType} onChange={(v) => updateField("chequeType", v)} placeholder="Cheque" error={errors.chequeType} />
+                <TextInput icon={<CreditCard size={16} />} value={form.chequeType} onChange={(v) => updateField("chequeType", v)} placeholder="Cheque" error={errors.chequeType} readOnly={isAuthorize} />
               </div>
               <button
                 type="button"
-                onClick={() => setActivePicker("chequeType")}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-[#EEF4FF] text-primary transition hover:bg-[#DDEAFF]"
+                onClick={() => !isAuthorize && setActivePicker("chequeType")}
+                disabled={isAuthorize}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-[#EEF4FF] text-primary transition hover:bg-[#DDEAFF] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <MoreVertical size={18} strokeWidth={2.4} />
               </button>
@@ -1620,6 +1781,13 @@ const LockerTransactionModal = ({ row, onClose, onSave }: LockerTransactionModal
           rows={activePicker === "debitAcCode" ? LockerTransactionModal_DEBIT_AC_LIST : LockerTransactionModal_CHEQUE_TYPE_LIST}
           onSelect={handlePickRow}
           onClose={() => setActivePicker(null)}
+        />
+      )}
+
+      {showRejectReason && (
+        <RejectReasonModal
+          onClose={() => setShowRejectReason(false)}
+          onConfirm={handleConfirmReject}
         />
       )}
     </FormModal>
@@ -1708,7 +1876,7 @@ export default function LockerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <GlobalNav
         titleEn="Locker"
         titleHi="लॉकर"

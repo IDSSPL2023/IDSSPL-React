@@ -1188,7 +1188,7 @@ const TDClosingReinvestPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="TD Closing Reinvest"
         titleHi="टीडी क्लोजिंग रीइनवेस्ट"

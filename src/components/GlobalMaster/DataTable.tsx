@@ -1,8 +1,9 @@
 // @ts-nocheck
 import { useState, useRef, useEffect, useMemo } from "react";
-import { ArrowUpDown, MoreVertical, Eye, SquarePen, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpDown, MoreVertical, Eye, SquarePen } from "lucide-react";
 import { getMasterConfig, rowToFormData, buildRowFromForm } from "./masterConfig";
 import ParameterModal from "./ParameterModal";
+import PaginationModal from "@/components/common/PaginationModal";
 
 const menuOptions = [
   { key: "view", label: "View", icon: Eye },
@@ -181,24 +182,7 @@ const DataTable = ({ master, rows, filters, searchQuery, onRowsChange }) => {
           </div>
 
           {sortedRows.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-600 dark:text-slate-400">
-              <span>
-                Showing {(page - 1) * PAGE_SIZE + 1} to {Math.min(page * PAGE_SIZE, sortedRows.length)} of {sortedRows.length} entries
-              </span>
-              <div className="flex items-center gap-2">
-                <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 disabled:opacity-40 hover:bg-gray-50 dark:border-slate-800 dark:hover:bg-slate-800">
-                  <ChevronLeft size={16} />
-                </button>
-                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => (
-                  <button key={p} type="button" onClick={() => setPage(p)} className={`flex h-8 min-w-[32px] items-center justify-center rounded px-2 ${page === p ? "bg-primary text-white" : "border border-gray-200 hover:bg-gray-50 dark:border-slate-800 dark:hover:bg-slate-800"}`}>
-                    {p}
-                  </button>
-                ))}
-                <button type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 disabled:opacity-40 hover:bg-gray-50 dark:border-slate-800 dark:hover:bg-slate-800">
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-            </div>
+            <PaginationModal page={page} totalPages={totalPages} onPageChange={setPage} />
           )}
         </div>
       </div>

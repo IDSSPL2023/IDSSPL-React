@@ -47,7 +47,7 @@ const HeadOfficeMasterPage: React.FC = () => {
   const breadcrumbs: BreadcrumbItem[] = openMaster
     ? [
         { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
+        { label: en("common.misActivity"), href: "#" },
         {
           label: en("headOfficeMaster.title"),
           href: "#",
@@ -57,7 +57,7 @@ const HeadOfficeMasterPage: React.FC = () => {
       ]
     : [
         { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
+        { label: en("common.misActivity"), href: "#" },
         { label: en("headOfficeMaster.title"), href: "#" },
       ];
 
@@ -82,7 +82,7 @@ const HeadOfficeMasterPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#E7EAEF] min-h-screen dark:bg-slate-950">
+    <div className="app-page-bg min-h-screen dark:bg-slate-950">
       <Nav
         titleEn={openMaster ? openMaster.titleEn : en("headOfficeMaster.title")}
         titleHi={openMaster ? (isEnglish ? undefined : openMaster.titleHi) : t("headOfficeMaster.title")}

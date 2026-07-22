@@ -854,7 +854,7 @@ const RecurringInstallmentAuthorizePage = () => {
   const handleResetFilters = () => setFilters(RecurringInstallmentFilterModal_defaultRecurringInstallmentFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Recurring Installment Authorize"
         titleHi="आवर्ती हप्ता अधिकृत करणे"

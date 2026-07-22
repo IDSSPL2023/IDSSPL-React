@@ -75,13 +75,13 @@ const GlobalMasterPage: React.FC = () => {
   const breadcrumbs: BreadcrumbItem[] = openMaster
     ? [
         { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
+        { label: en("common.misActivity"), href: "#" },
         { label: en("globalMaster.title"), href: "#", onClick: handleCloseMaster },
         { label: openMaster.titleEn, href: "#" },
       ]
     : [
         { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
+        { label: en("common.misActivity"), href: "#" },
         { label: en("globalMaster.title"), href: "#" },
       ];
 
@@ -97,7 +97,7 @@ const GlobalMasterPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#E7EAEF] min-h-screen dark:bg-slate-950">
+    <div className="app-page-bg min-h-screen dark:bg-slate-950">
       <GlobalNav
         titleEn={openMaster ? openMaster.titleEn : en("globalMaster.title")}
         titleHi={openMaster ? (isEnglish ? undefined : openMaster.titleHi) : t("globalMaster.title")}

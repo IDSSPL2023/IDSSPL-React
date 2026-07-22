@@ -727,7 +727,7 @@ const InvestmentPaymentClosingAuthorizePage = () => {
   const handleResetFilters = () => setFilters(InvestmentPaymentClosingFilterModal_defaultInvestmentPaymentClosingFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Investment Payment ClosingMark Authorize"
         titleHi="गुंतवणूक पेमेंट क्लोजिंगमार्क अधिकृत करणे"

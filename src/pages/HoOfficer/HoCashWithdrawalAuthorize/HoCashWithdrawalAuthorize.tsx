@@ -369,7 +369,7 @@ const HoCashWithdrawalAuthorizePage = () => {
   const handleResetFilters = () => setFilters(HoCashWithdrawalFilterModal_defaultHoCashWithdrawalFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="HO Cash Withdrawal Entry Authorize"
         titleHi="HO रोख पैसे काढणे नोंद अधिकृत करणे"

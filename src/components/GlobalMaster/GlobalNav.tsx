@@ -71,13 +71,13 @@ const GlobalNav = ({
 
           {showActions && (
             <div className="flex items-center gap-2 shrink-0">
-              <div className="hidden md:flex items-center rounded-md border border-gray-200 bg-white px-3 py-2 w-48 lg:w-56 dark:border-slate-700 dark:bg-slate-900">
-                <Search size={16} className="text-gray-400 mr-2 shrink-0" />
+              <div className="hidden w-48 items-center rounded-md border border-gray-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900 md:flex lg:w-56">
+                <Search size={16} className="mr-2 shrink-0 text-gray-400" />
                 <input
                   value={searchQuery}
                   onChange={(e) => onSearchChange?.(e.target.value)}
                   placeholder="Search/ Filter"
-                  className="flex-1 text-sm outline-none text-gray-700 placeholder-gray-400 min-w-0 dark:text-slate-100 dark:placeholder-slate-500"
+                  className="min-w-0 flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none dark:text-slate-100"
                 />
               </div>
 
