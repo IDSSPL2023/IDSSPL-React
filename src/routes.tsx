@@ -116,10 +116,10 @@ import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
 import SMSRegistrationPage from "@/pages/SMS/SMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
-import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
-import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-import PayrollMaster from "./pages/payroll/Master/Master";
+// import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+// import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
+// import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
+// import PayrollMaster from "./pages/payroll/Master/Master";
 
 
 function RoleAuthorizationFlowRoute() {
@@ -200,7 +200,7 @@ export const router = createBrowserRouter([
       },
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
-      { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
+      // { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       {
         path: "/authorization",
@@ -505,9 +505,9 @@ export const router = createBrowserRouter([
       },
 
       // Payroll
-      { path: "/payroll/master", element: <PayrollMaster /> },
-      { path: "/payroll/transaction", element: <PayrollTransaction /> },
-      { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
+      // { path: "/payroll/master", element: <PayrollMaster /> },
+      // { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
       { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
       { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
       { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
