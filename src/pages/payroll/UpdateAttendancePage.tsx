@@ -7,11 +7,11 @@ import SuccessModal from "@/components/shared/SuccessModal";
 import UpdateAttendanceTable, {
   type AttendanceRow,
   type AttendanceFieldKey,
-} from "@/pages/payroll/Master/UpdateAttendanceTable";
+} from "@/pages/Payroll/Master/UpdateAttendanceTable";
 import UpdateAttendanceFilterModal, {
   defaultValues,
   type AttendanceFilters,
-} from "@/pages/payroll/Master/UpdateAttendanceFilterModal";
+} from "@/pages/Payroll/Master/UpdateAttendanceFilterModal";
 
 const initialRows: AttendanceRow[] = [
   { id: 1, employeeId: "1", employeeName: "Rohit Sharma", selected: false, daysOfMonth: "30", workingDays: "28", paidLeaves: "1", unpaidLeaves: "1", payDays: "28" },
