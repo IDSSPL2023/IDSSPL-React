@@ -3,7 +3,8 @@ import { IMAGES } from "@/assets";
 import { useState, useEffect } from "react";
 import Image from "@/components/ui/Image";
 import { X, Check, ChevronDown, ThumbsUp, UserRound, SquarePen } from "lucide-react";
-import { getMasterConfig, getFieldIcon } from "./masterConfig";
+import { getMasterConfig, getFieldIcon, emptyFormData } from "./masterConfig";
+import { validateBranchAccount, saveBranchAccount, updateBranchAccount } from "@/lib/masterMaintenanceApi";
 
 const MODAL_META = {
   add: {
@@ -45,11 +46,15 @@ const ParameterModal = ({
   const [validated, setValidated] = useState(false);
   const [errors, setErrors] = useState({});
   const [saveMenuOpen, setSaveMenuOpen] = useState(false);
+  const [validationResult, setValidationResult] = useState(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     setFormData(initialData);
     setValidated(false);
     setErrors({});
+    setValidationResult(null);
   }, [initialData, mode, masterKey]);
 
   const isView = mode === "view";
@@ -63,7 +68,7 @@ const ParameterModal = ({
     }
   };
 
-  const handleValidate = () => {
+  const handleValidate = async () => {
     const newErrors = {};
     config.fields.forEach((field) => {
       if (!formData[field.key]?.toString().trim()) {
@@ -71,13 +76,91 @@ const ParameterModal = ({
       }
     });
     setErrors(newErrors);
-    setValidated(Object.keys(newErrors).length === 0);
+
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
+    // Call validation API for defaultBranchAccounts
+    if (masterKey === "defaultBranchAccounts") {
+      try {
+        setIsValidating(true);
+        const result = await validateBranchAccount({
+          branchCode: formData.branchCode,
+          inwardClearingAccountCode: formData.inwardClearingAccountCode,
+          outwardClearingAccountCode: formData.outwardClearingAccountCode,
+        });
+        setValidationResult(result);
+
+        // Auto-fill form with validation response data (add only — in edit mode this
+        // would overwrite the user's edited values with the existing saved mapping)
+        if (result.addModifyEnabled && !isEdit) {
+          setFormData((prev) => ({
+            ...prev,
+            inwardClearingAccountCode: result.inwardClearingAccountCode,
+            outwardClearingAccountCode: result.outwardClearingAccountCode,
+          }));
+        }
+
+        setValidated(result.addModifyEnabled);
+      } catch (error) {
+        console.error("Validation failed:", error);
+        setValidationResult({ message: "Validation failed. Please try again.", addModifyEnabled: false });
+      } finally {
+        setIsValidating(false);
+      }
+    } else {
+      setValidated(true);
+    }
   };
 
-  const handleSave = () => {
+  const resetForNewEntry = () => {
+    setFormData(emptyFormData(masterKey));
+    setValidated(false);
+    setValidationResult(null);
+    setErrors({});
+  };
+
+  const handleSave = async (keepOpen = false) => {
     if (!validated) return;
-    onSave?.(formData);
-    onClose();
+    setSaveMenuOpen(false);
+
+    // Call save/update API for defaultBranchAccounts
+    if (masterKey === "defaultBranchAccounts") {
+      try {
+        setIsSaving(true);
+        if (isEdit) {
+          await updateBranchAccount(formData.branchCode, {
+            inwardClearingAccountCode: formData.inwardClearingAccountCode,
+            outwardClearingAccountCode: formData.outwardClearingAccountCode,
+          });
+        } else {
+          await saveBranchAccount({
+            branchCode: formData.branchCode,
+            inwardClearingAccountCode: formData.inwardClearingAccountCode,
+            outwardClearingAccountCode: formData.outwardClearingAccountCode,
+          });
+        }
+        await onSave?.(formData);
+        if (keepOpen) {
+          resetForNewEntry();
+        } else {
+          onClose();
+        }
+      } catch (error) {
+        console.error("Save failed:", error);
+        setValidationResult({ message: "Save failed. Please try again.", addModifyEnabled: false });
+      } finally {
+        setIsSaving(false);
+      }
+    } else {
+      await onSave?.(formData);
+      if (keepOpen) {
+        resetForNewEntry();
+      } else {
+        onClose();
+      }
+    }
   };
 
   const HeaderIcon = meta.useImage ? null : meta.icon;
@@ -156,6 +239,33 @@ const ParameterModal = ({
               </div>
             );
           })}
+
+          {/* Validation Result Display for defaultBranchAccounts */}
+          {masterKey === "defaultBranchAccounts" && validationResult && (
+            <div className={`mt-4 p-4 rounded-lg border ${
+              validationResult.addModifyEnabled
+                ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800"
+                : "bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-800"
+            }`}>
+              {validationResult.branchName && (
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <span className="font-semibold">Branch Name:</span> {validationResult.branchName}
+                </p>
+              )}
+              <p className={`text-sm mt-1 ${
+                validationResult.addModifyEnabled
+                  ? "text-green-700 dark:text-green-400"
+                  : "text-red-700 dark:text-red-400"
+              }`}>
+                {validationResult.message}
+              </p>
+              {validationResult.existingMapping && (
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  Existing mapping found
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -182,9 +292,14 @@ const ParameterModal = ({
               <button
                 type="button"
                 onClick={handleValidate}
-                className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                disabled={isValidating}
+                className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-colors ${
+                  isValidating
+                    ? "bg-slate-400 cursor-not-allowed"
+                    : "bg-primary hover:bg-primary-700"
+                }`}
               >
-                Validate <Check size={16} />
+                {isValidating ? "Validating..." : "Validate"} <Check size={16} />
               </button>
               <button
                 type="button"
@@ -193,38 +308,53 @@ const ParameterModal = ({
               >
                 Cancel <X size={16} />
               </button>
-              <div className="relative">
+              {isEdit ? (
                 <button
                   type="button"
-                  disabled={!validated}
-                  onClick={() => validated && setSaveMenuOpen((o) => !o)}
+                  disabled={!validated || isSaving}
+                  onClick={() => handleSave(false)}
                   className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                    validated
+                    validated && !isSaving
                       ? "bg-primary-100 text-primary hover:bg-primary-200"
                       : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
                   }`}
                 >
-                  Save <ChevronDown size={16} />
+                  {isSaving ? "Saving..." : "Save"} <Check size={16} />
                 </button>
-                {saveMenuOpen && validated && (
-                  <div className="absolute bottom-12 right-0 w-40 rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900">
-                    <button
-                      type="button"
-                      onClick={handleSave}
-                      className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleSave}
-                      className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Save & New
-                    </button>
-                  </div>
-                )}
-              </div>
+              ) : (
+                <div className="relative">
+                  <button
+                    type="button"
+                    disabled={!validated || isSaving}
+                    onClick={() => validated && !isSaving && setSaveMenuOpen((o) => !o)}
+                    className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+                      validated && !isSaving
+                        ? "bg-primary-100 text-primary hover:bg-primary-200"
+                        : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
+                    }`}
+                  >
+                    {isSaving ? "Saving..." : "Save"} <ChevronDown size={16} />
+                  </button>
+                  {saveMenuOpen && validated && !isSaving && (
+                    <div className="absolute bottom-12 right-0 w-40 rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900">
+                      <button
+                        type="button"
+                        onClick={() => handleSave(false)}
+                        className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                      >
+                        Save
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSave(true)}
+                        className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                      >
+                        Save & New
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>

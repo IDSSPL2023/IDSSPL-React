@@ -5,6 +5,7 @@ import FilterModal from "@/components/HeadOfficeMaster/FilterModal";
 import { getMasterConfig, emptyFormData } from "@/components/HeadOfficeMaster/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
 import HeroOffice from "@/components/HeadOfficeMaster/HeroOffice";
+import { fetchBranchAccount, searchBranchAccounts } from "@/lib/masterMaintenanceApi";
 
 interface BreadcrumbItem {
   label: string;
@@ -29,11 +30,22 @@ const HeadOfficeMasterPage: React.FC = () => {
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [showFilter, setShowFilter] = useState(false);
 
-  const handleOpenMaster = useCallback((master: MasterItem) => {
+  const handleOpenMaster = useCallback(async (master: MasterItem) => {
     const config = getMasterConfig(master.key);
     setOpenMaster(master);
-    setTableRows([...config.rows]);
     setFilters({});
+
+    if (master.key === "defaultBranchAccounts") {
+      try {
+        const data = await fetchBranchAccount();
+        setTableRows(data.map((item, idx) => ({ id: String(idx), ...item })));
+      } catch (error) {
+        console.error("Failed to load branch accounts:", error);
+        setTableRows([]);
+      }
+    } else {
+      setTableRows([...config.rows]);
+    }
   }, []);
 
   const handleCloseMaster = useCallback(() => {
@@ -61,8 +73,21 @@ const HeadOfficeMasterPage: React.FC = () => {
         { label: en("headOfficeMaster.title"), href: "#" },
       ];
 
-  const handleAddSave = (formData: Record<string, string>) => {
+  const handleAddSave = async (formData: Record<string, string>) => {
     if (!openMaster) return;
+
+    // For defaultBranchAccounts, refresh data from API after save
+    // (modal closing/staying open for "Save & New" is handled by ParameterModal itself)
+    if (openMaster.key === "defaultBranchAccounts") {
+      try {
+        const data = await fetchBranchAccount();
+        setTableRows(data.map((item, idx) => ({ id: String(idx), ...item })));
+      } catch (error) {
+        console.error("Failed to refresh branch accounts:", error);
+      }
+      return;
+    }
+
     const newRow: Record<string, unknown> = {
       id: String(Date.now()),
       ...formData,
@@ -78,8 +103,31 @@ const HeadOfficeMasterPage: React.FC = () => {
       }).toUpperCase();
     }
     setTableRows((prev) => [...prev, newRow]);
-    setModalMode(null);
   };
+
+  const handleFilterApply = useCallback(async (newFilters: Record<string, string>) => {
+    setFilters(newFilters);
+
+    if (openMaster?.key === "defaultBranchAccounts") {
+      try {
+        // /branches/search only returns matching {branchCode, name} pairs — it's a branch
+        // lookup, not a search over the account mappings — so cross-reference the matched
+        // branch codes against the full mappings list to get the real clearing codes.
+        const [matches, allAccounts] = await Promise.all([
+          searchBranchAccounts({
+            searchBy: (newFilters.searchBy as "BRANCH_CODE" | "NAME") || "NAME",
+            textToSearch: newFilters.textToSearch || "",
+          }),
+          fetchBranchAccount(),
+        ]);
+        const matchedCodes = new Set(matches.map((m) => m.branchCode));
+        const filtered = allAccounts.filter((acc) => matchedCodes.has(acc.branchCode));
+        setTableRows(filtered.map((item, idx) => ({ id: String(idx), ...item })));
+      } catch (error) {
+        console.error("Failed to search branch accounts:", error);
+      }
+    }
+  }, [openMaster]);
 
   return (
     <div className="bg-[#E7EAEF] min-h-screen dark:bg-slate-950">
@@ -115,7 +163,7 @@ const HeadOfficeMasterPage: React.FC = () => {
           masterKey={openMaster.key}
           initialFilters={filters}
           onClose={() => setShowFilter(false)}
-          onApply={setFilters}
+          onApply={handleFilterApply}
         />
       )}
     </div>
