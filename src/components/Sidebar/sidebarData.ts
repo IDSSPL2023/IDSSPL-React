@@ -141,7 +141,7 @@ export const menuItems: NavItemData[] = [
         id: "manager-master-maintanance-branch",
         title: "Master Maintenance - Branch",
         icon: Database,
-        href: "/branchmaster",
+        href: "/manager/branchmaster",
       },
     ],
   },
@@ -246,7 +246,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-branch",
         title: "Branch",
         icon: Building2,
-        href: "/branchmaster",
+        href: "/clerk/branchmaster",
       },
       {
         id: "clerk-clearing",

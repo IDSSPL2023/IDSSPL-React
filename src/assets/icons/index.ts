@@ -12,6 +12,8 @@ import userCircle from "./user-circle.svg";
 import userSquare from "./user-square.svg";
 import messageLanguage from "./message-language.svg";
 import personEdit from "./person-edit.svg"
+import bank from "./bank.svg"
+import frame from "./frame.svg"
 
 
 // Export as ICON object with properties
@@ -29,6 +31,8 @@ export const ICONS = {
   USER_CIRCLE: userCircle,
   USER_SQUARE: userSquare,
   MESSAGE_LANGUAGE: messageLanguage,
+  BANK:bank,
+  FRAME:frame
 } as const;
 
 // Default export for convenience
