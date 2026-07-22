@@ -8,6 +8,8 @@ export interface SuccessModalProps {
   title?: string;
   subtitle?: string;
   variant?: SuccessModalVariant;
+  /** Optional key/value rows (e.g. a created record's fields) shown below the subtitle. */
+  details?: { label: string; value: string }[];
 }
 
 const VARIANT_STYLES: Record<
@@ -47,6 +49,7 @@ export default function SuccessModal({
   title = "Account Added Successfully",
   subtitle = "Please Authorize",
   variant = "success",
+  details,
 }: SuccessModalProps) {
   const key = normalizeVariant(variant);
   const styles = VARIANT_STYLES[key];
@@ -75,6 +78,17 @@ export default function SuccessModal({
           <h2 className="mt-10 text-center text-[28px] font-[700] leading-[34px] text-black">{title}</h2>
           {subtitle && (
             <p className="mt-2 text-center text-sm text-slate-500">{subtitle}</p>
+          )}
+
+          {details && details.length > 0 && (
+            <div className="mt-6 w-full rounded-xl border border-slate-100 bg-slate-50 px-5 py-4">
+              {details.map(({ label, value }) => (
+                <div key={label} className="flex items-center justify-between gap-4 py-1 text-sm">
+                  <span className="text-gray-500">{label}</span>
+                  <span className="font-medium text-gray-800">{value}</span>
+                </div>
+              ))}
+            </div>
           )}
 
           <button

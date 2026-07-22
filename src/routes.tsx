@@ -108,7 +108,7 @@ import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
 import PayrollMaster from "./pages/payroll/Master/Master";
 import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-import EmployeeLeaveBalancePage from "@/pages/payroll/EmployeeLeaveBalancePage";
+import EmployeeLeaveBalancePage from "@/pages/payroll/Transaction/EmployeeLeaveBalancePage";
 import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
 import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
 import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
@@ -432,6 +432,7 @@ export const router = createBrowserRouter([
       },
       { path: "/clerk/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
+      { path: "/globalmaster/citymaster", element: <GlobalMasterPage initialMasterKey="city" /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
