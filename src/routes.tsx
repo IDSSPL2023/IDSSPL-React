@@ -34,7 +34,7 @@ import RecurringInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTr
 import RtgsAuthorizePage from "@/pages/authorization/AuthorizeTransaction/RtgsAuthorize/RtgsAuthorize";
 import TdInterestPaymentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdInterestPaymentAuthorize/TdInterestPaymentAuthorize";
 import TdsTransactionAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdsTransactionAuthorize/TdsTransactionAuthorize";
-import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+// import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
 import TlDisbursementAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlDisbursementAuthorize/TlDisbursementAuthorize";
 import TlOtherChargesAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlOtherChargesAuthorize/TlOtherChargesAuthorize";
 import TransferAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TransferAuthorize/TransferAuthorize";
@@ -122,6 +122,7 @@ import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/Aut
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
 
 import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+import TlCcInstallmentAuthorizePage from "./pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -273,6 +274,10 @@ export const router = createBrowserRouter([
             element: <AuthorizationClearingTablePage />,
           },
         ],
+      },
+      {
+        path:"/authorization/sms-authorize",
+        element:<SMSAuthorizeModal/>
       },
       {
         path: "/authorization/transaction",
