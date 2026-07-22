@@ -106,9 +106,6 @@ import DDMaintenancePage from "./pages/dd/Maintenance/Maintenance";
 import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
-import PayrollMaster from "./pages/payroll/Master/Master";
-import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-import EmployeeLeaveBalancePage from "@/pages/payroll/Transaction/EmployeeLeaveBalancePage";
 import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
 import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
 import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
@@ -120,6 +117,9 @@ import SMSRegistrationPage from "@/pages/SMS/SMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
 import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
+import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
+import PayrollMaster from "./pages/payroll/Master/Master";
 
 
 function RoleAuthorizationFlowRoute() {
