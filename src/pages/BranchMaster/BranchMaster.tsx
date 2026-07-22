@@ -14,6 +14,7 @@ import ListModal, { type ListModalItem } from "@/components/shared/Modals/ListMo
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu from "@/components/shared/RowActionMenu";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
+import { CountryPicklistField } from "@/components/common";
 
 /* ===== from AddBranchModal.tsx ===== */
 export interface AddBranchModal_BranchFormData {
@@ -54,7 +55,6 @@ export const AddBranchModal_emptyBranchFormData: AddBranchModal_BranchFormData =
 
 const AddBranchModal_CITY_OPTIONS = ["Ilkal", "Chikmagalur", "Davangere", "Haveri", "Bagalkot", "Koppal", "Belagavi", "Udupi", "Karwar", "Ranebennur", "Kolar", "Sirsi", "Shimoga"];
 const AddBranchModal_STATE_OPTIONS = ["Karnataka", "Maharashtra", "Gujarat", "Tamil Nadu", "Uttar Pradesh"];
-const AddBranchModal_COUNTRY_OPTIONS = ["India"];
 
 export type AddBranchModal_BranchModalMode = "add" | "view";
 
@@ -295,7 +295,7 @@ function AddBranchModal({ open, mode = "add", initialData = AddBranchModal_empty
             <AddBranchModal_SelectField labelEn="City Code" labelHi="शहर कोड" icon={Building2} placeholder="Select City Code" value={formData.cityCode} options={AddBranchModal_CITY_OPTIONS} onChange={(v) => handleChange("cityCode", v)} hasError={errors.cityCode} readOnly={isView} />
             <AddBranchModal_SelectField labelEn="State" labelHi="राज्य" icon={Building2} placeholder="Select State" value={formData.state} options={AddBranchModal_STATE_OPTIONS} onChange={(v) => handleChange("state", v)} hasError={errors.state} readOnly={isView} />
 
-            <AddBranchModal_SelectField labelEn="Country" labelHi="देश" icon={Flag} placeholder="Select Country" value={formData.country} options={AddBranchModal_COUNTRY_OPTIONS} onChange={(v) => handleChange("country", v)} hasError={errors.country} readOnly={isView} />
+            <CountryPicklistField label="Country" labelHi="देश" icon={<Flag size={18} />} value={formData.country} onSelect={(c) => handleChange("country", c.name)} required readOnly={isView} error={errors.country ? "This field is required" : undefined} />
             <AddBranchModal_TextField labelEn="Email ID" labelHi="ईमेल आयडी" icon={Mail} placeholder="Enter Email ID" value={formData.emailId} onChange={(v) => handleChange("emailId", v)} hasError={errors.emailId} readOnly={isView} />
             <AddBranchModal_YesNoField value={formData.isImplemented} onChange={(v) => handleChange("isImplemented", v)} readOnly={isView} />
 
@@ -713,6 +713,21 @@ function AddParameterModal({
       ? errors[field.key as AddNewParameter_RequiredFieldKey]
       : false;
     const value = formData[field.key];
+
+    if (field.key === "country") {
+      return (
+        <CountryPicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
+          value={value as string}
+          onSelect={(c) => handleChange(field.key, c.name)}
+          required
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
 
     if (field.type === "select") {
       return (
@@ -1522,6 +1537,22 @@ function ViewEditParameterModal({
 
     // Check if field should be read-only in edit mode
     const isFieldReadOnly = isView || field.readOnly === true;
+
+    if (field.key === "country") {
+      return (
+        <CountryPicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
+          value={value as string}
+          onSelect={(c) => handleChange(field.key, c.name)}
+          required
+          readOnly={isFieldReadOnly}
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
 
     if (field.type === "select") {
       return (

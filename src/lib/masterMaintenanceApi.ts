@@ -39,11 +39,20 @@ export async function fetchCities(): Promise<CityRecord[]> {
 }
 
 /** POST /countries/search — empty textToSearch returns all countries; used for the Country dropdown. */
-export async function fetchCountries(): Promise<CountryOption[]> {
+export interface CountrySearchParams {
+  searchBy?: string;   // "NAME" | "CODE" | ...
+  textToSearch?: string;
+}
+
+export async function fetchCountries(
+  params: CountrySearchParams = {}
+): Promise<CountryOption[]> {
+  const { searchBy = "NAME", textToSearch = "" } = params;
+
   const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/countries/search`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ searchBy: "NAME", textToSearch: "" }),
+    body: JSON.stringify({ searchBy, textToSearch }),
   });
   if (!response.ok) throw new Error(`Failed to load countries (${response.status})`);
   const data = await parseJson(response);

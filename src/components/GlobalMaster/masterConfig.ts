@@ -2,7 +2,6 @@ import {
   IdCard, Shield, FileText, User, Building2, Phone, Home, Landmark, Flag, Calendar,
   Banknote, MapPin, Hash, Layers, type LucideIcon,
 } from "lucide-react";
-import { fetchCountries } from "@/lib/masterMaintenanceApi";
 
 export type MasterItem = {
   icon: string;
@@ -11,7 +10,7 @@ export type MasterItem = {
   key: string;
 };
 
-export type FieldType = "text" | "radio" | "select";
+export type FieldType = "text" | "radio" | "select" | "country";
 
 export type MasterField = {
   key: string;
@@ -22,8 +21,6 @@ export type MasterField = {
   type?: FieldType;
   options?: string[];
   readOnlyOnEdit?: boolean;
-  /** When set, the field's dropdown fetches and populates `options` lazily on first focus. */
-  loadOptions?: () => Promise<void>;
 };
 
 export type MasterColumn = {
@@ -277,7 +274,7 @@ branchInterest: {
       { key: "zipCode", labelEn: "Zip Code", labelHi: "झिप कोड", placeholder: "Enter Zip Code", icon: "home" },
       { key: "city", labelEn: "City", labelHi: "शहर", placeholder: "Select City", icon: "landmark", type: "select", options: ["Mumbai", "Pune", "Nagpur"] },
       { key: "state", labelEn: "State", labelHi: "राज्य", placeholder: "Select State", icon: "landmark", type: "select", options: ["Maharashtra", "Karnataka", "Gujarat"] },
-      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"] },
+      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
       { key: "floatDays", labelEn: "Float Days", labelHi: "अतिरिक्त सुट्टीचे दिवस", placeholder: "Select Date", icon: "calendar", type: "text" },
       { key: "branchHoliday", labelEn: "Branch Holiday", labelHi: "शाखेची सुट्टी", placeholder: "Select Date", icon: "calendar", type: "text" },
     ],
@@ -297,13 +294,7 @@ branchInterest: {
     formColumns: 1,
     fields: [
       { key: "cityName", labelEn: "City Name", labelHi: "शहराचे नाव", placeholder: "Enter City Name", icon: "landmark" },
-      {
-        key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"],
-        loadOptions: async () => {
-          const countries = await fetchCountries();
-          setCityCountryOptions(countries);
-        },
-      },
+      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
     ],
     filterFields: [
       { key: "cityCode", label: "City Code" },
@@ -328,7 +319,7 @@ branchInterest: {
     fields: [
       { key: "stateCode", labelEn: "State Code", labelHi: "राज्य कोड", placeholder: "Enter State Code", icon: "hash", readOnlyOnEdit: true },
       { key: "stateName", labelEn: "State Name", labelHi: "राज्याचे नाव", placeholder: "Enter State Name", icon: "landmark" },
-      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"] },
+      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
     ],
     filterFields: [
       { key: "stateCode", label: "State Code" },
@@ -337,16 +328,8 @@ branchInterest: {
   },
 };
 
-/** Populated at runtime from the master-maintenance countries API; maps a displayed country name back to its code. */
+/** Populated at runtime as countries are picked in the Country picklist; maps a displayed country name back to its code. */
 export const cityCountryCodeByName: Record<string, string> = {};
-
-export const setCityCountryOptions = (countries: { code: string; name: string }[]): void => {
-  const field = MASTER_CONFIG.city.fields.find((f) => f.key === "country");
-  if (!field) return;
-  field.options = countries.map((c) => c.name);
-  Object.keys(cityCountryCodeByName).forEach((key) => delete cityCountryCodeByName[key]);
-  countries.forEach((c) => { cityCountryCodeByName[c.name] = c.code; });
-};
 
 const DEFAULT_CONFIG: MasterConfigEntry = {
   columns: [

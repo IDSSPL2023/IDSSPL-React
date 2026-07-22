@@ -5,13 +5,14 @@ import {
   NormalFormModal,
   TextField,
   SelectField,
+  CountryPicklistField,
   RadioGroupField,
   validateFields,
   isFormValid,
   required,
   type Validator,
 } from "@/components/common";
-import { getMasterConfig, getFieldIcon, type MasterField } from "./masterConfig";
+import { getMasterConfig, getFieldIcon, cityCountryCodeByName, type MasterField } from "./masterConfig";
 
 const MODAL_META = {
   add: {
@@ -46,7 +47,6 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
   const [validated, setValidated] = useState(false);
-  const [loadingField, setLoadingField] = useState<string | null>(null);
 
   useEffect(() => {
     setFormData(initialData);
@@ -60,12 +60,6 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
     setFormData((prev) => ({ ...prev, [key]: value }));
     setValidated(false);
     setErrors((prev) => ({ ...prev, [key]: undefined }));
-  };
-
-  const handleDropdownFocus = (field: MasterField) => {
-    if (!field.loadOptions || loadingField === field.key) return;
-    setLoadingField(field.key);
-    field.loadOptions().finally(() => setLoadingField(null));
   };
 
   const handleValidate = () => {
@@ -109,6 +103,26 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
       );
     }
 
+    if (field.type === "country") {
+      return (
+        <div key={field.key} className="mb-4 last:mb-0">
+          <CountryPicklistField
+            label={field.labelEn}
+            labelHi={field.labelHi}
+            icon={<Icon size={18} />}
+            value={value}
+            onSelect={(country) => {
+              handleChange(field.key, country.name);
+              if (masterKey === "city") cityCountryCodeByName[country.name] = country.code;
+            }}
+            required
+            readOnly={isReadOnly}
+            error={error}
+          />
+        </div>
+      );
+    }
+
     if (field.type === "select") {
       return (
         <div key={field.key} className="mb-4 last:mb-0">
@@ -118,9 +132,8 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
             icon={<Icon size={18} />}
             value={value}
             onChange={(v) => handleChange(field.key, v)}
-            onFocus={() => handleDropdownFocus(field)}
             options={field.options ?? []}
-            placeholder={loadingField === field.key ? "Loading..." : field.placeholder}
+            placeholder={field.placeholder}
             required
             readOnly={isReadOnly}
             error={error}
