@@ -269,7 +269,7 @@ export const router = createBrowserRouter([
 
 
 
-      { path: "/branchmaster", element: <BranchMasterPage /> },
+      { path: "/manager/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },
@@ -338,7 +338,7 @@ export const router = createBrowserRouter([
         path: "/financial-closing/set-product-status",
         element: <SetProductStatusPage />,
       },
-      { path: "/branchmaster", element: <BranchMasterPage /> },
+      { path: "/clerk/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
