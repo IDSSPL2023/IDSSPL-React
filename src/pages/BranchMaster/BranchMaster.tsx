@@ -3192,21 +3192,6 @@ function BranchMasterTable({
 
 /* ===== from BranchMasterPage.tsx ===== */
 
-function mapBranchSummaryToRow(summary: BranchSummary, sr: number): BranchMasterTable_BranchRow {
-  return {
-    sr,
-    branchCode: summary.branchCode,
-    ifscCode: "",
-    branchName: summary.name,
-    shortName: "",
-    address: "",
-    cityCode: summary.cityCode,
-    emailId: summary.emailId,
-    phoneNo: "",
-    isImplemented: "N",
-  };
-}
-
 function mapBranchDetailToRow(detail: BranchDetail, sr: number): BranchMasterTable_BranchRow {
   return {
     sr,
@@ -3340,8 +3325,8 @@ export default function BranchMasterPage() {
   const loadBranches = useCallback(async () => {
     setTableLoading(true);
     try {
-      const summaries = await fetchBranches();
-      setRows(summaries.map((s, idx) => mapBranchSummaryToRow(s, idx + 1)));
+      const details = await fetchBranches();
+      setRows(details.map((d, idx) => mapBranchDetailToRow(d, idx + 1)));
     } catch (err) {
       setErrorMessage(err instanceof Error ? err.message : "Failed to load branches.");
       setRows([]);
