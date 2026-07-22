@@ -117,11 +117,10 @@ import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
 import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
 
 import SMSRegistrationPage from "@/pages/SMS/SMS";
-import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
+import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
 
-import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();

@@ -7,7 +7,7 @@ import FilterModal, {
   type CustomerFilters,
 } from "@/components/CustomerMaster/FilterModal";
 import PayrollTable, { type PayrollRow } from "@/components/Payroll/PayrollTable";
-import SalaryInstructionFormModal from "@/pages/payroll/Master/SalaryInstructionFormModal";
+import SalaryInstructionFormModal from "@/pages/Payroll/Master/SalaryInstructionFormModal";
 
 const employeeRows: PayrollRow[] = [
   { id: 1, employeeId: "EMP001", employeeName: "Rahul Sharma", employmentType: "Permanent", designation: "Accountant", gender: "Male", status: "Active" },

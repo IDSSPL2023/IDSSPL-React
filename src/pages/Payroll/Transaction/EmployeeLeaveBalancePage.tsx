@@ -4,10 +4,10 @@ import NavbarCM from "@/components/CustomerMaster/NavbarCM";
 import EmployeeLeaveBalanceFilterModal, {
   defaultValues,
   type LeaveBalanceFilters,
-} from "@/pages/payroll/Master/EmployeeLeaveBalanceFilterModal";
+} from "@/pages/Payroll/Master/EmployeeLeaveBalanceFilterModal";
 import EmployeeLeaveBalanceTable, {
   type LeaveBalanceRow,
-} from "@/pages/payroll/Master/EmployeeLeaveBalanceTable";
+} from "@/pages/Payroll/Master/EmployeeLeaveBalanceTable";
 
 const leaveBalanceRows: LeaveBalanceRow[] = [
   { id: 1, employeeId: "EMP001", employeeName: "Rahul Sharma", employmentType: "Permanent", designation: "Accountant", gender: "Male", status: "Active", earnLeave: 12, sickLeave: 6, casualLeave: 8, asOnDate: "2026-07-01" },
