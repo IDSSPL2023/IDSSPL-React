@@ -1,40 +1,10 @@
-import React, { useState } from 'react';
+import { IMAGES } from "@/assets";
+import { useState } from "react";
 import Image from "@/components/ui/Image";
-import { 
-  X, 
-  ChevronDown,
-  MoreVertical, 
-  Check, 
-  Receipt,
-  User,
-  UserCircle,
-  CreditCard,
-  DollarSign,
-  Calendar,
-  FileText,
-  Signature,
-  Hash,
-  Layers,
-  Banknote,
-  Building2,
-  Settings,
-  Users,
-  FileCheck,
-  BookOpen,
-  ListChecks,
-  ClipboardCheck,
-  Wallet,
-  ArrowRightLeft,
-  FileStack,
-  BadgeCheck,
-  CircleCheck,
-  Send,
-  FilePenLine,
-  Printer
-} from 'lucide-react';
+import { ArrowRightLeft, Banknote, Building2, Calendar, Check, ChevronDown, CreditCard, DollarSign, FileStack, FileText, Hash, Layers, MoreVertical, Receipt, Signature, User, UserCircle, Users, Wallet, X } from "lucide-react";
 
-// ==================== TYPE DEFINITIONS ====================
-
+/** Shared with pages/AccountMasterPage.tsx (the /accountmaster route) — kept standalone, not inlined. */
+/* ===== from cheque-issue.tsx ===== */
 interface FormData {
   accountCode: string;
   accountName: string;
@@ -301,7 +271,7 @@ interface ChequeBookIssueProps {
   onDisplayVouchers?: () => void;
 }
 
-export default function ChequeBookIssue({ onClose, onDisplayVouchers }: ChequeBookIssueProps) {
+function ChequeBookIssue({ onClose, onDisplayVouchers }: ChequeBookIssueProps) {
   const [formData, setFormData] = useState<FormData>({
     accountCode: "1234567890",
     accountName: "Akshay Om More",
@@ -534,7 +504,7 @@ export default function ChequeBookIssue({ onClose, onDisplayVouchers }: ChequeBo
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10 flex-shrink-0">
               <Image
-                src="/add-icn.png"
+                src={IMAGES.ADD_ICON}
                 alt="Person"
                 fill
                 className="object-contain"
@@ -626,3 +596,7 @@ export default function ChequeBookIssue({ onClose, onDisplayVouchers }: ChequeBo
     </div>
   );
 }
+
+
+
+export default ChequeBookIssue;

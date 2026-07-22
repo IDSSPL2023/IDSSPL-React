@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import React, { useState } from 'react';
 import { 
   X, 
@@ -303,7 +304,7 @@ export default function DisplayVouchers({ onClose }: DisplayVouchersProps) {
             {/* Custom User/Plus Logo Icon */}
             <div className="relative w-11 h-11 flex-shrink-0">
               <Image
-                src="/add-icn.png"
+                src={IMAGES.ADD_ICON}
                 alt="Person"
                 fill
                 className="object-contain"

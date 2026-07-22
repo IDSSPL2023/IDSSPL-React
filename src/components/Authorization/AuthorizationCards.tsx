@@ -1,6 +1,7 @@
+import { IMAGES } from "@/assets";
 import Image from "@/components/ui/Image";
-import { ArrowUpRight } from "lucide-react";
-import Link from "@/components/ui/Link";
+import { SubMenuScreen } from "@/components/common";
+import type { SubMenuItem } from "@/components/common";
 
 type AuthorizationItem = {
   key: string;
@@ -17,7 +18,7 @@ type AuthorizationItem = {
 const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   {
     key: "account",
-    iconSrc: "/money.png",
+    iconSrc: IMAGES.MONEY,
     titleEn: "Authorize Account",
     titleHi: "खाते अधिकृत करा",
     badge: "New",
@@ -27,7 +28,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "customer",
-    iconSrc: "/hand.png",
+    iconSrc: IMAGES.HAND,
     titleEn: "Authorize Customer",
     titleHi: "ग्राहक अधिकृत करा",
     badge: "New",
@@ -37,7 +38,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "user",
-    iconSrc: "/contact.png",
+    iconSrc: IMAGES.CONTACT,
     titleEn: "Authorize User",
     titleHi: "वापरकर्ता अधिकृत करा",
     badge: "New",
@@ -47,7 +48,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "roles",
-    iconSrc: "/settinguser.png",
+    iconSrc: IMAGES.SETTING_USER,
     titleEn: "Roles Authorization",
     titleHi: "भूमिका अधिकृत करा",
     badge: "New",
@@ -57,7 +58,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "transaction",
-    iconSrc: "/note1.png",
+    iconSrc: IMAGES.NOTE_1,
     titleEn: "Authorize Transaction",
     titleHi: "व्यवहार अधिकृत करा",
     badge: "New",
@@ -67,7 +68,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "clearing",
-    iconSrc: "/note2.png",
+    iconSrc: IMAGES.NOTE_2,
     titleEn: "Authorize Clearing",
     titleHi: "क्लिअरिंग अधिकृत करा",
     badge: "New",
@@ -77,7 +78,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "locker",
-    iconSrc: "/locker.png",
+    iconSrc: IMAGES.LOCKER,
     titleEn: "Authorize Locker",
     titleHi: "लॉकर अधिकृत करा",
     badge: "New",
@@ -86,7 +87,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "sms",
-    iconSrc: "/message.png",
+    iconSrc: IMAGES.MESSAGE,
     titleEn: "Authorize SMS",
     titleHi: "एसएमएस अधिकृत करा",
     badge: "New",
@@ -96,7 +97,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
   {
     key: "bill",
-    iconSrc: "/bill.png",
+    iconSrc: IMAGES.BILL,
     titleEn: "Authorize Bill",
     titleHi: "बिल अधिकृत करा",
     badge: "New",
@@ -106,77 +107,20 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
   },
 ];
 
-type AuthorizationCardProps = {
-  item: AuthorizationItem;
-};
+const SUB_MENU_ITEMS: SubMenuItem[] = AUTHORIZATION_ITEMS.map((item) => ({
+  key: item.key,
+  titleEn: item.titleEn,
+  titleHi: item.titleHi,
+  badge: item.badge,
+  description: item.description,
+  count: item.count,
+  href: item.href,
+  icon: (
+    <Image src={item.iconSrc!} alt={item.titleEn} width={80} height={80} className="h-full w-full object-contain" />
+  ),
+}));
 
-const AuthorizationCard = ({ item }: AuthorizationCardProps) => {
-  return (
-    <Link
-      href={item.href || "#"}
-      className="block no-underline"
-    >
-      <div
-        className="
-          flex flex-col gap-2 rounded-2xl border border-l-5 sm:border-l-6 border-primary
-          bg-white p-2 dark:bg-slate-900
-          transition-all duration-200 hover:border-[#1565D8] hover:shadow-md
-          sm:flex-row sm:items-center sm:justify-between
-        "
-      >
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden sm:h-16 sm:w-16 md:h-20 md:w-20">
-            <Image
-              src={item.iconSrc!}
-              alt={item.titleEn}
-              width={80}
-              height={80}
-              className="h-full w-full object-contain"
-            />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <h3 className="break-words text-[clamp(13px,3.4vw,16px)] font-bold leading-[1.35] text-black dark:text-slate-100">
-              {item.titleEn}{" "}
-              <span className="font-semibold text-[#64748B] dark:text-slate-400">
-                / {item.titleHi}
-              </span>
-            </h3>
-
-            <div className="mt-2 flex flex-wrap items-center gap-1.5 rounded-full border border-[#BEDBFF] bg-[#EEF6FF] py-0.5 pl-0.5 pr-2 dark:border-blue-900/40 dark:bg-blue-900/20">
-              <span className="shrink-0 rounded-full bg-[#DCFCE7] px-2.5 py-0.5 text-[clamp(9px,2vw,11px)] font-medium text-[#018D0A] dark:bg-green-900/30 dark:text-green-400">
-                {item.badge}
-              </span>
-              <span className="text-[clamp(10px,2.2vw,12px)] leading-[1.4] text-[#1C398E] dark:text-blue-300">
-                {item.description}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex shrink-0 items-center justify-between gap-3 self-stretch rounded-lg px-1 py-1 sm:justify-end sm:gap-4 md:gap-5">
-          <span className="text-[clamp(17px,3.8vw,24px)] font-semibold text-[#1565D8] dark:text-blue-400">
-            {item.count}
-          </span>
-          <ArrowUpRight
-            size={20}
-            strokeWidth={2.5}
-            className="shrink-0 text-[#111827] dark:text-slate-300"
-          />
-        </div>
-      </div>
-    </Link>
-  );
-};
-
-const AuthorizationCards = () => {
-  return (
-    <div className="p-4 grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-2">
-      {AUTHORIZATION_ITEMS.map((item) => (
-        <AuthorizationCard key={item.key} item={item} />
-      ))}
-    </div>
-  );
-};
+/** Config-only wrapper around the common `SubMenuScreen` — the `/authorization` submenu reference migration. */
+const AuthorizationCards = () => <SubMenuScreen items={SUB_MENU_ITEMS} />;
 
 export default AuthorizationCards;

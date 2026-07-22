@@ -16,10 +16,8 @@ import SetUserPasswordModal, { type SetUserPasswordData } from "./SetUserPasswor
 import SetOtpModal, { type SetOtpData } from "./SetOTP";
 import { type UserFilters } from "./FilterModal";
 import { useBilingual } from "@/i18n/useBilingual";
-import RowActionMenu, { type RowActionMenuItem } from "../shared/RowActionMenu";
-import SrNoBadge from "../shared/SrNoBadge";
-import StatusPill from "../shared/StatusPill";
-import SortableHeaderLabel from "../shared/SortableHeaderLabel";
+import { GlobalTable, StatusBadge } from "@/components/common";
+import type { ColumnDef, TableAction, TableActionMenuItem } from "@/components/common";
 
 /* ===================== Types ===================== */
 
@@ -44,25 +42,6 @@ export interface UserRow {
   employeeCode?: string;
 }
 
-export type SortableRowKey = Extract<
-  keyof UserRow,
-  "code" | "status" | "name" | "role" | "createdBy" | "date" | "branchCode" | "branchName"
->;
-
-interface ColumnDef {
-  key: string;
-  labelKey: string;
-  sortable: boolean;
-  sortKey?: SortableRowKey;
-}
-
-type SortDirection = "asc" | "desc";
-
-interface SortConfig {
-  key: SortableRowKey;
-  direction: SortDirection;
-}
-
 interface EditState {
   sr: number;
   fieldType: FieldType;
@@ -85,19 +64,6 @@ export interface UserFormData {
   mobileNumber: string;
   emailId: string;
 }
-
-const columns: ColumnDef[] = [
-  { key: "srNo", labelKey: "userMaster.table.srNo", sortable: false },
-  { key: "action", labelKey: "userMaster.table.action", sortable: false },
-  { key: "userDetails", labelKey: "userMaster.table.userDetails", sortable: true, sortKey: "code" },
-  { key: "status", labelKey: "userMaster.table.status", sortable: true, sortKey: "status" },
-  { key: "name", labelKey: "userMaster.table.userName", sortable: true, sortKey: "name" },
-  { key: "role", labelKey: "userMaster.table.userRole", sortable: true, sortKey: "role" },
-  { key: "createdBy", labelKey: "userMaster.table.createdBy", sortable: true, sortKey: "createdBy" },
-  { key: "date", labelKey: "userMaster.table.createdDate", sortable: true, sortKey: "date" },
-  { key: "branchCode", labelKey: "userMaster.table.branchCode", sortable: true, sortKey: "branchCode" },
-  { key: "branchName", labelKey: "userMaster.table.branchName", sortable: true, sortKey: "branchName" },
-];
 
 export const ROWS: UserRow[] = [
   { sr: 1, code: "AMT", phone: "8989567890", email: "akshay@gmail.com", status: "Active", name: "Appana M Telagi", role: "Administrator", createdBy: "Head Office", date: "26-Jun-2026", branchCode: "0002", branchName: "Bilagi" },
@@ -141,7 +107,7 @@ export interface UserTableProps {
   onSetOtp?: (row: UserRow) => void;
   onSetPassword?: (row: UserRow) => void;
   /** Overrides the default View/Edit/SetPassword/SetOtp/ToggleStatus row menu (e.g. for an Authorize workflow). */
-  renderMenuItems?: (row: UserRow) => RowActionMenuItem[];
+  renderMenuItems?: (row: UserRow) => TableActionMenuItem[];
   /** Whether clicking the Status pill opens the Status change modal. Defaults to true; the Authorization screen turns this off. */
   statusEditable?: boolean;
 }
@@ -158,7 +124,8 @@ export default function UserMasterTable({
 }: UserTableProps) {
   const { tRaw } = useBilingual();
   const [rows, setRows] = useState<UserRow[]>(initialRows);
-  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const [sortKey, setSortKey] = useState<string | null>(null);
+  const [sortAsc, setSortAsc] = useState(true);
   const [editState, setEditState] = useState<EditState | null>(null);
   const [modalState, setModalState] = useState<ModalState | null>(null);
   const [passwordRow, setPasswordRow] = useState<UserRow | null>(null);
@@ -176,22 +143,18 @@ export default function UserMasterTable({
     emailId: row.email,
   });
 
-  const handleSort = (col: ColumnDef) => {
-    if (!col.sortable || !col.sortKey) return;
-    const sortKey = col.sortKey;
-    setSortConfig((prev) => {
-      if (!prev || prev.key !== sortKey) {
-        return { key: sortKey, direction: "asc" };
-      }
-      if (prev.direction === "asc") return { key: sortKey, direction: "desc" };
-      return null; // third click clears sorting
-    });
+  const handleSort = (key: string) => {
+    if (sortKey === key) {
+      setSortAsc((prev) => !prev);
+    } else {
+      setSortKey(key);
+      setSortAsc(true);
+    }
   };
 
   const filteredRows = useMemo(() => {
     if (!filters) return rows;
     return rows.filter((r) => {
-      // if (filters.userName && !r.name.toLowerCase().includes(filters.userName.toLowerCase())) return false;
       if (filters.userId && !r.code.toLowerCase().includes(filters.userId.toLowerCase())) return false;
       if (filters.role && r.role.toLowerCase() !== filters.role.toLowerCase()) return false;
       if (filters.createdDate) {
@@ -210,24 +173,22 @@ export default function UserMasterTable({
   }, [rows, filters]);
 
   const sortedRows = useMemo(() => {
-    if (!sortConfig) return filteredRows;
-    const { key, direction } = sortConfig;
+    if (!sortKey) return filteredRows;
+    const key = sortKey as keyof UserRow;
     const sorted = [...filteredRows].sort((a, b) => {
       const aVal = String(a[key] ?? "").toLowerCase();
       const bVal = String(b[key] ?? "").toLowerCase();
-      if (aVal < bVal) return direction === "asc" ? -1 : 1;
-      if (aVal > bVal) return direction === "asc" ? 1 : -1;
+      if (aVal < bVal) return sortAsc ? -1 : 1;
+      if (aVal > bVal) return sortAsc ? 1 : -1;
       return 0;
     });
     return sorted;
-  }, [filteredRows, sortConfig]);
+  }, [filteredRows, sortKey, sortAsc]);
 
   const handleToggleStatus = (row: UserRow) => {
     setRows((prev) =>
       prev.map((r) =>
-        r.sr === row.sr
-          ? { ...r, status: r.status === "Active" ? "Inactive" : "Active" }
-          : r
+        r.sr === row.sr ? { ...r, status: r.status === "Active" ? "Inactive" : "Active" } : r
       )
     );
   };
@@ -238,26 +199,19 @@ export default function UserMasterTable({
     setStatusRow(null);
   };
 
-  const openFieldEdit = (sr: number, fieldType: FieldType) =>
-    setEditState({ sr, fieldType });
+  const openFieldEdit = (sr: number, fieldType: FieldType) => setEditState({ sr, fieldType });
   const closeFieldEdit = () => setEditState(null);
 
   const editingRow = editState ? rows.find((r) => r.sr === editState.sr) : null;
   const editingValue =
-    editingRow && editState
-      ? editState.fieldType === "mobile"
-        ? editingRow.phone
-        : editingRow.email
-      : "";
+    editingRow && editState ? (editState.fieldType === "mobile" ? editingRow.phone : editingRow.email) : "";
 
   const handleSubmitFieldEdit = (newValue: string) => {
     if (!editState) return;
     setRows((prev) =>
       prev.map((r) => {
         if (r.sr !== editState.sr) return r;
-        return editState.fieldType === "mobile"
-          ? { ...r, phone: newValue }
-          : { ...r, email: newValue };
+        return editState.fieldType === "mobile" ? { ...r, phone: newValue } : { ...r, email: newValue };
       })
     );
   };
@@ -292,76 +246,62 @@ export default function UserMasterTable({
     setOtpRow(null);
   };
 
+  const columns: ColumnDef<UserRow>[] = [
+    {
+      key: "code",
+      header: tRaw("userMaster.table.userDetails"),
+      sortable: true,
+      render: (r) => (
+        <div className="flex flex-col gap-1">
+          <span className="font-medium text-black dark:text-slate-100">{r.code}</span>
+          <ContactLine icon={Phone} value={r.phone} onEdit={() => openFieldEdit(r.sr, "mobile")} />
+          <ContactLine icon={Mail} value={r.email} onEdit={() => openFieldEdit(r.sr, "email")} />
+        </div>
+      ),
+    },
+    {
+      key: "status",
+      header: tRaw("userMaster.table.status"),
+      sortable: true,
+      render: (r) => (
+        <StatusBadge
+          label={r.status}
+          tone={r.status === "Active" ? "success" : "neutral"}
+          onClick={statusEditable ? () => setStatusRow(r) : undefined}
+        />
+      ),
+    },
+    { key: "name", header: tRaw("userMaster.table.userName"), sortable: true },
+    { key: "role", header: tRaw("userMaster.table.userRole"), sortable: true },
+    { key: "createdBy", header: tRaw("userMaster.table.createdBy"), sortable: true },
+    { key: "date", header: tRaw("userMaster.table.createdDate"), sortable: true },
+    { key: "branchCode", header: tRaw("userMaster.table.branchCode"), sortable: true },
+    { key: "branchName", header: tRaw("userMaster.table.branchName"), sortable: true },
+  ];
+
+  const defaultActions: TableAction<UserRow>[] = [
+    { key: "view", label: tRaw("common.view"), icon: Eye, onClick: handleView },
+    { key: "edit", label: tRaw("common.edit"), icon: SquarePenIcon, onClick: handleEdit },
+    { key: "setPassword", label: tRaw("userMaster.table.menuSetPassword"), icon: Lock, onClick: handleSetPassword },
+    { key: "setOtp", label: tRaw("userMaster.table.menuSetOtp"), icon: KeyRound, onClick: handleSetOtp },
+    { key: "toggleStatus", label: tRaw("userMaster.table.menuToggleStatus"), icon: Power, onClick: handleToggleStatus },
+  ];
+
   return (
-    <div className="w-full bg-white rounded-xl overflow-hidden shadow-sm dark:bg-slate-900">
-      <div className="overflow-x-auto no-scrollbar">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-primary rounded-t-xl">
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => handleSort(col)}
-                  className={`text-left text-[16px] font-semibold text-white px-4 py-2 whitespace-nowrap ${
-                    col.sortable ? "cursor-pointer select-none" : ""
-                  }`}
-                >
-                  <SortableHeaderLabel label={tRaw(col.labelKey)} sortable={col.sortable} />
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRows.map((r, idx) => (
-              <tr
-                key={r.sr}
-                className={`${idx !== sortedRows.length - 1 ? "border-b border-gray-100 dark:border-slate-800" : ""} hover:bg-gray-50 dark:hover:bg-slate-800`}
-              >
-                <td className="px-6 py-3">
-                  <SrNoBadge value={r.sr} />
-                </td>
-                <td className="px-6 py-3">
-                  <RowActionMenu
-                    items={
-                      renderMenuItems
-                        ? renderMenuItems(r)
-                        : [
-                            { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => handleView(r) },
-                            { key: "edit", label: tRaw("common.edit"), icon: SquarePenIcon, onClick: () => handleEdit(r) },
-                            { key: "setPassword", label: tRaw("userMaster.table.menuSetPassword"), icon: Lock, onClick: () => handleSetPassword(r) },
-                            { key: "setOtp", label: tRaw("userMaster.table.menuSetOtp"), icon: KeyRound, onClick: () => handleSetOtp(r) },
-                            { key: "toggleStatus", label: tRaw("userMaster.table.menuToggleStatus"), icon: Power, onClick: () => handleToggleStatus(r) },
-                          ]
-                    }
-                  />
-                </td>
-                <td className="px-6 py-3 text-[16px] text-primary">
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium text-black dark:text-slate-100">{r.code}</span>
-                    <ContactLine icon={Phone} value={r.phone} onEdit={() => openFieldEdit(r.sr, "mobile")} />
-                    <ContactLine icon={Mail} value={r.email} onEdit={() => openFieldEdit(r.sr, "email")} />
-                  </div>
-                </td>
-                <td className="px-6 py-3">
-                  {statusEditable ? (
-                    <button type="button" onClick={() => setStatusRow(r)} className="cursor-pointer">
-                      <StatusPill label={r.status} tone={r.status === "Active" ? "success" : "neutral"} />
-                    </button>
-                  ) : (
-                    <StatusPill label={r.status} tone={r.status === "Active" ? "success" : "neutral"} />
-                  )}
-                </td>
-                <td className="px-6 py-3 text-[16px] text-gray-700 dark:text-slate-300">{r.name}</td>
-                <td className="px-6 py-3 text-[16px] text-gray-700 dark:text-slate-300">{r.role}</td>
-                <td className="px-6 py-3 text-[16px] text-gray-700 dark:text-slate-300">{r.createdBy}</td>
-                <td className="px-6 py-3 text-[16px] text-gray-700 dark:text-slate-300">{r.date}</td>
-                <td className="px-6 py-3 text-[16px] text-gray-700 dark:text-slate-300">{r.branchCode}</td>
-                <td className="px-6 py-3 text-[16px] text-gray-700 dark:text-slate-300">{r.branchName}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div>
+      <GlobalTable<UserRow>
+        columns={columns}
+        rows={sortedRows}
+        rowKey={(r) => r.sr}
+        actions={renderMenuItems ? undefined : defaultActions}
+        renderRowActions={renderMenuItems}
+        actionsHeader={tRaw("userMaster.table.action")}
+        srNoHeader={tRaw("userMaster.table.srNo")}
+        sortKey={sortKey}
+        sortDirection={sortAsc ? "asc" : "desc"}
+        onSortChange={handleSort}
+        minWidth="1200px"
+      />
 
       <EditMobileEmailModal
         open={!!editState}
@@ -378,7 +318,7 @@ export default function UserMasterTable({
         mode={modalState?.mode}
         initialData={modalState ? rowToFormData(modalState.row) : undefined}
         onClose={() => setModalState(null)}
-        onSubmit={(updatedData: UserFormData) => {
+        onSubmit={() => {
           // persist updatedData back into your rows state here
         }}
       />

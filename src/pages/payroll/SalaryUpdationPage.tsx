@@ -4,11 +4,11 @@ import { Save } from "lucide-react";
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
 import SuccessModal from "@/components/shared/SuccessModal";
-import SalaryUpdationTable, { type SalaryUpdationRow, type SalaryFieldKey } from "@/components/Payroll/SalaryUpdationTable";
+import SalaryUpdationTable, { type SalaryUpdationRow, type SalaryFieldKey } from "@/pages/payroll/Master/SalaryUpdationTable";
 import SalaryUpdationFilterModal, {
   defaultValues,
   type SalaryUpdationFilters,
-} from "@/components/Payroll/SalaryUpdationFilterModal";
+} from "@/pages/payroll/Master/SalaryUpdationFilterModal";
 
 const initialRows: SalaryUpdationRow[] = [
   { id: 1, employeeId: "EMP001", employeeName: "Rahul Sharma", selected: false, basicSalary: "25000", other: "1500", travelAll: "800", diff: "0.0", totalAll: "27300", loan: "500.0", payAvd: "0.0", shares: "200.0", kkfFund: "150.0" },

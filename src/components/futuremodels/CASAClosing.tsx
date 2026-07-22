@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import {
   User,
@@ -382,7 +383,7 @@ export default function CASAClosingModal({ open, initialData, onClose, onSubmit 
           titleHi="स्क्रोल तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/person icon.png"
+          icon={IMAGES.PERSON_ICON}
         >
           <div className={grid3}>
             <FieldShell label="From Date" labelHi="प्रारंभ दिनांक" required error={!!errors.fromDate}>
@@ -428,7 +429,7 @@ export default function CASAClosingModal({ open, initialData, onClose, onSubmit 
           titleHi="व्याज तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/person icon.png"
+          icon={IMAGES.PERSON_ICON}
         >
           <div className={grid4}>
             <FieldShell label="Closing Interest" labelHi="अंतिम व्याज" required error={!!errors.closingInterest}>
@@ -476,7 +477,7 @@ export default function CASAClosingModal({ open, initialData, onClose, onSubmit 
           titleHi="पेमेंट तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/person icon.png"
+          icon={IMAGES.PERSON_ICON}
         >
           <div className={grid4}>
             <FieldShell label="Mode of Payment" labelHi="पेमेंट पद्धत" required error={!!errors.modeOfPayment}>
@@ -538,7 +539,7 @@ export default function CASAClosingModal({ open, initialData, onClose, onSubmit 
           titleHi="पेमेंट तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/person icon.png"
+          icon={IMAGES.PERSON_ICON}
         >
           <div className={grid4}>
             <FieldShell label="Particular" labelHi="तपशील" required error={!!errors.particular} className="lg:col-span-3">

@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useEffect, useState } from "react";
 import { Clock3 } from "lucide-react";
 import Image from "@/components/ui/Image";
@@ -57,7 +58,7 @@ export default function Header({ onMenuClick: _onMenuClick }: HeaderProps) {
       {/* Center */}
       <div className="flex items-center gap-2">
         <Image
-          src="/IDSSPL.png"
+          src={IMAGES.IDSSPL}
           alt="Logo"
           width={36}
           height={36}

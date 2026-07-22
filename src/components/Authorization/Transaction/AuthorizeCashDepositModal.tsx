@@ -1,35 +1,10 @@
 import { useState } from "react";
+import { User, Hash, CreditCard, IndianRupee, FileText, IdCard, Fingerprint, Phone, Landmark, MoreVertical } from "lucide-react";
+import { AuthorizeFormModal } from "@/components/common";
+import { IMAGES } from "@/assets";
 import Image from "@/components/ui/Image";
-import {
-  User,
-  CreditCard,
-  IndianRupee,
-  FileText,
-  Hash,
-  IdCard,
-  Fingerprint,
-  Phone,
-  Landmark,
-  MoreVertical,
-  ThumbsUp,
-  ThumbsDown,
-  X,
-} from "lucide-react";
-import FormModal from "@/components/shared/FormModal";
-import {
-  FieldShell,
-  TextInput,
-  DateInput,
-  SectionCard,
-  RadioYesNo,
-  RadioDayMonth,
-} from "@/components/shared/FormFields";
-import SuccessModal from "@/components/shared/SuccessModal";
-import RejectReasonModal from "@/components/shared/RejectReasonModal";
-import {
-  DEFAULT_CASH_DEPOSIT_DATA,
-  type CashDepositFormData,
-} from "@/components/TransactionMaster/AddCashDeposit";
+import { FieldShell, TextInput, DateInput, SectionCard, RadioYesNo, RadioDayMonth } from "@/components/shared/FormFields";
+import { DEFAULT_CASH_DEPOSIT_DATA, type CashDepositFormData } from "@/components/TransactionMaster/AddCashDeposit";
 
 export interface AuthorizeCashDepositModalProps {
   open: boolean;
@@ -62,45 +37,7 @@ const DisabledLookupTrigger = () => (
   </button>
 );
 
-const AuthorizeCashDepositFooter = ({
-  onReject,
-  onCancel,
-  onAuthorize,
-}: {
-  onReject: () => void;
-  onCancel: () => void;
-  onAuthorize: () => void;
-}) => (
-  <div className="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-4">
-    <button
-      type="button"
-      onClick={onReject}
-      className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-5 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
-    >
-      Reject
-      <ThumbsDown className="h-4 w-4" />
-    </button>
-
-    <button
-      type="button"
-      onClick={onCancel}
-      className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-5 py-2 text-sm font-medium text-primary transition hover:bg-slate-50"
-    >
-      Cancel
-      <X className="h-4 w-4" />
-    </button>
-
-    <button
-      type="button"
-      onClick={onAuthorize}
-      className="flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-white transition hover:bg-primary-700"
-    >
-      Authorize
-      <ThumbsUp className="h-4 w-4" />
-    </button>
-  </div>
-);
-
+/** Shared across the Authorization/Transaction (Cash Deposit) and HO-Officer Cash Deposit authorize flows. */
 const AuthorizeCashDepositModal = ({
   open,
   initialData,
@@ -118,34 +55,14 @@ const AuthorizeCashDepositModal = ({
     ...DEFAULT_CASH_DEPOSIT_DATA,
     ...initialData,
   }));
-  const [actionModal, setActionModal] = useState<"authorize" | "rejected" | null>(null);
-  const [showRejectReason, setShowRejectReason] = useState(false);
 
   if (!open) return null;
 
   const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
 
-  const handleAuthorize = () => {
-    setActionModal("authorize");
-    onAuthorize?.();
-  };
-
-  const handleReject = () => setShowRejectReason(true);
-
-  const handleConfirmReject = (reason: string) => {
-    setShowRejectReason(false);
-    setActionModal("rejected");
-    onReject?.(reason);
-  };
-
-  const handleDone = () => {
-    setActionModal(null);
-    onClose();
-  };
-
   return (
     <>
-      <FormModal
+      <AuthorizeFormModal
         onClose={onClose}
         titleEn={titleEn}
         titleHi={titleHi}
@@ -153,17 +70,17 @@ const AuthorizeCashDepositModal = ({
         subtitleHi={subtitleHi}
         headerIcon={
           <div className="flex h-12 w-12 items-center justify-center">
-            <Image src="/Authorize User.png" alt="Authorize Cash Deposit" width={50} height={50} />
+            <Image src={IMAGES.AUTHORIZE_USER} alt="Authorize Cash Deposit" width={50} height={50} />
           </div>
         }
-        tabs={[]}
-        activeTab=""
-        onTabChange={() => {}}
-        hideFooter
-        maxWidth="max-w-7/8"
-        customFooter={
-          <AuthorizeCashDepositFooter onReject={handleReject} onCancel={onClose} onAuthorize={handleAuthorize} />
-        }
+        onAuthorize={() => onAuthorize?.()}
+        onReject={(reason) => onReject?.(reason)}
+        successTitle={successTitle}
+        successSubtitle=""
+        rejectedTitle={rejectedTitle}
+        rejectedSubtitle=""
+        rejectReasonTitleEn="User Authorize Rejected"
+        rejectReasonTitleHi="युझर खात्याची स्थिती"
       >
         <SectionCard
           titleEn="Account Details"
@@ -342,36 +259,7 @@ const AuthorizeCashDepositModal = ({
             </FieldShell>
           </div>
         </SectionCard>
-
-        {showRejectReason && (
-          <RejectReasonModal
-            titleEn="User Authorize Rejected"
-            titleHi="युझर खात्याची स्थिती"
-            onClose={() => setShowRejectReason(false)}
-            onConfirm={handleConfirmReject}
-          />
-        )}
-
-        {actionModal === "authorize" && (
-          <SuccessModal
-            title={successTitle}
-            subtitle=""
-            onClose={handleDone}
-            onDone={handleDone}
-            variant="success"
-          />
-        )}
-
-        {actionModal === "rejected" && (
-          <SuccessModal
-            title={rejectedTitle}
-            subtitle=""
-            onClose={handleDone}
-            onDone={handleDone}
-            variant="critical"
-          />
-        )}
-      </FormModal>
+      </AuthorizeFormModal>
     </>
   );
 };

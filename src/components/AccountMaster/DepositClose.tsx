@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
  
 import { useState } from "react";
 import {
@@ -390,7 +391,7 @@ export default function DepositCloseModal({ open, initialData, onClose, onSubmit
           titleHi="खाते तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className={grid3}>
             <FieldShell label="Account Code" labelHi="खाते कोड" required>
@@ -473,7 +474,7 @@ export default function DepositCloseModal({ open, initialData, onClose, onSubmit
           titleHi="ठेव सारांश"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className={grid3}>
             <FieldShell label="Deposit Amount" labelHi="ठेव सारांश" required>
@@ -530,7 +531,7 @@ export default function DepositCloseModal({ open, initialData, onClose, onSubmit
           titleHi="व्याज तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className={grid3}>
             <FieldShell label="Interest Rate" labelHi="व्याज दर" required>
@@ -604,7 +605,7 @@ export default function DepositCloseModal({ open, initialData, onClose, onSubmit
           titleHi="कर (टीडीएस) माहिती"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className={grid3}>
             <FieldShell label="PAN Number" labelHi="पॅन क्रमांक" required>
@@ -640,7 +641,7 @@ export default function DepositCloseModal({ open, initialData, onClose, onSubmit
           titleHi="पेमेंट तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className={grid4}>
             <FieldShell label="Mode of Payment" labelHi="पेमेंट पद्धत" required>
@@ -668,7 +669,7 @@ export default function DepositCloseModal({ open, initialData, onClose, onSubmit
           titleHi="जीएल तपशील"
           subtitleEn="Manage customer's personal and identity information."
           subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
-          icon="/User.png"
+          icon={IMAGES.USER}
         >
           <div className={grid3}>
             <FieldShell label="Particular" labelHi="तपशील" required>
