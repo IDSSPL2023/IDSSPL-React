@@ -19,6 +19,8 @@ export interface SelectFieldProps {
   readOnly?: boolean;
   disabled?: boolean;
   error?: string;
+  /** Fires when the dropdown gains focus — e.g. to lazily fetch `options` on first open. */
+  onFocus?: () => void;
 }
 
 const normalizeOptions = (options: SelectFieldOption[] | string[]): SelectFieldOption[] =>
@@ -36,6 +38,7 @@ export default function SelectField({
   readOnly = false,
   disabled = false,
   error,
+  onFocus,
 }: SelectFieldProps) {
   const isNonEditable = readOnly || disabled;
   const normalized = normalizeOptions(options);
@@ -48,6 +51,7 @@ export default function SelectField({
         <select
           value={value}
           disabled={isNonEditable}
+          onFocus={onFocus}
           onChange={(e) => onChange(e.target.value)}
           className="w-full min-w-0 appearance-none bg-transparent text-sm outline-none disabled:cursor-not-allowed"
         >

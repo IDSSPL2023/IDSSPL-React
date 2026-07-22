@@ -1,7 +1,8 @@
 import {
   IdCard, Shield, FileText, User, Building2, Phone, Home, Landmark, Flag, Calendar,
-  Banknote, MapPin, Users, BookOpen, Globe, Car, Hash, Layers, type LucideIcon,
+  Banknote, MapPin, Hash, Layers, type LucideIcon,
 } from "lucide-react";
+import { fetchCountries } from "@/lib/masterMaintenanceApi";
 
 export type MasterItem = {
   icon: string;
@@ -21,6 +22,8 @@ export type MasterField = {
   type?: FieldType;
   options?: string[];
   readOnlyOnEdit?: boolean;
+  /** When set, the field's dropdown fetches and populates `options` lazily on first focus. */
+  loadOptions?: () => Promise<void>;
 };
 
 export type MasterColumn = {
@@ -40,6 +43,7 @@ export type MasterConfigEntry = {
   formColumns?: number;
   fields: MasterField[];
   filterFields: FilterField[];
+  hideActions?: boolean;
 };
 
 export const MASTERS: MasterItem[] = [
@@ -287,21 +291,25 @@ branchInterest: {
     columns: [
       { key: "cityCode", label: "City Code" },
       { key: "cityName", label: "City Name" },
-      { key: "stateName", label: "State" },
       { key: "country", label: "Country" },
     ],
     rows: cityRows,
     formColumns: 1,
     fields: [
-      { key: "cityCode", labelEn: "City Code", labelHi: "शहर कोड", placeholder: "Enter City Code", icon: "hash", readOnlyOnEdit: true },
       { key: "cityName", labelEn: "City Name", labelHi: "शहराचे नाव", placeholder: "Enter City Name", icon: "landmark" },
-      { key: "stateName", labelEn: "State", labelHi: "राज्य", placeholder: "Select State", icon: "landmark", type: "select", options: ["Maharashtra", "Karnataka", "Gujarat"] },
-      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"] },
+      {
+        key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"],
+        loadOptions: async () => {
+          const countries = await fetchCountries();
+          setCityCountryOptions(countries);
+        },
+      },
     ],
     filterFields: [
       { key: "cityCode", label: "City Code" },
       { key: "cityName", label: "City Name" },
     ],
+    hideActions: true,
   },
   state: {
     columns: [
@@ -327,6 +335,17 @@ branchInterest: {
       { key: "stateName", label: "State Name" },
     ],
   },
+};
+
+/** Populated at runtime from the master-maintenance countries API; maps a displayed country name back to its code. */
+export const cityCountryCodeByName: Record<string, string> = {};
+
+export const setCityCountryOptions = (countries: { code: string; name: string }[]): void => {
+  const field = MASTER_CONFIG.city.fields.find((f) => f.key === "country");
+  if (!field) return;
+  field.options = countries.map((c) => c.name);
+  Object.keys(cityCountryCodeByName).forEach((key) => delete cityCountryCodeByName[key]);
+  countries.forEach((c) => { cityCountryCodeByName[c.name] = c.code; });
 };
 
 const DEFAULT_CONFIG: MasterConfigEntry = {
@@ -383,6 +402,9 @@ export const buildRowFromForm = (masterKey: string, formData: Record<string, str
     row.status = row.status || "Active";
     row.ifscCode = row.ifscCode || `BK${Date.now().toString().slice(-6)}`;
     row.branchName = row.branchName || formData.branchName || "Main Branch";
+  }
+  if (masterKey === "city") {
+    row.cityCode = row.cityCode || String(Date.now()).slice(-4);
   }
   return row;
 };
