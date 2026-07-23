@@ -486,7 +486,6 @@ export default function UserDetailsModal({
                 readOnly={isView}
                 error={errors.state}
               />
-            </FieldShell>
             <CountryPicklistField
               label="Country"
               labelHi="देश"
