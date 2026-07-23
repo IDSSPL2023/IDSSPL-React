@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Nav from "@/components/HeadOfficeMaster/Nav";
 import ParameterModal from "@/components/HeadOfficeMaster/ParameterModal";
 import ProductParameterModal from "@/components/HeadOfficeMaster/ProductParameterModal";
+import GlAccountParameterModal from "@/components/HeadOfficeMaster/GlAccountParameterModal";
 import FilterModal from "@/components/HeadOfficeMaster/FilterModal";
 import { getMasterConfig, emptyFormData, MASTERS } from "@/components/HeadOfficeMaster/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
@@ -18,6 +19,14 @@ import {
   createInstallmentType,
   fetchInstrumentTypes,
   saveInstrumentType,
+  fetchIndustries,
+  createIndustry,
+  fetchDepositRules,
+  createDepositRule,
+  fetchFinalAccountGroups,
+  createFinalAccountGroup,
+  fetchGlAccounts,
+  createGlAccount,
   fetchBranchAccount,
   searchBranchAccounts,
   type ClearingTypeRecord,
@@ -25,7 +34,11 @@ import {
   type DepositInterestRateRecord,
   type InstallmentTypeRecord,
   type InstrumentTypeRecord,
-} from "@/lib/masterMaintenanceApi";
+  type IndustryRecord,
+  type DepositRuleRecord,
+  type FinalAccountGroupRecord,
+  type GlAccountRecord,
+} from "@/api/headoffice.api";
 
 interface BreadcrumbItem {
   label: string;
@@ -51,6 +64,16 @@ const mapProductRecordToRow = (record: ProductRecord): Record<string, unknown> =
   ...record,
 });
 
+const mapGlAccountRecordToRow = (record: GlAccountRecord): Record<string, unknown> => ({
+  id: record.glAccountCode,
+  ...record,
+});
+
+const mapFinalAccountGroupRecordToRow = (record: FinalAccountGroupRecord): Record<string, unknown> => ({
+  id: record.code,
+  ...record,
+});
+
 const formatDateOfApplication = (value: string): string => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
@@ -71,6 +94,14 @@ const mapInstallmentTypeRecordToRow = (record: InstallmentTypeRecord): Record<st
 
 const mapInstrumentTypeRecordToRow = (record: InstrumentTypeRecord): Record<string, unknown> => ({
   id: record.code,
+  ...record,
+});
+
+const mapIndustryRecordToRow = (record: IndustryRecord): Record<string, unknown> => ({
+  ...record,
+});
+
+const mapDepositRuleRecordToRow = (record: DepositRuleRecord): Record<string, unknown> => ({
   ...record,
 });
 
@@ -109,6 +140,28 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
     }
   }, []);
 
+  const loadFinalAccountGroups = useCallback(async () => {
+    try {
+      const records = await fetchFinalAccountGroups();
+      setTableRows(records.map(mapFinalAccountGroupRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load final account groups from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadGlAccounts = useCallback(async () => {
+    try {
+      const records = await fetchGlAccounts();
+      setTableRows(records.map(mapGlAccountRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load GL accounts from server.");
+      setTableRows([]);
+    }
+  }, []);
+
   const loadTdInterestRates = useCallback(async () => {
     try {
       const records = await fetchDepositInterestRates();
@@ -142,6 +195,28 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
     }
   }, []);
 
+  const loadIndustries = useCallback(async () => {
+    try {
+      const records = await fetchIndustries();
+      setTableRows(records.map(mapIndustryRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load industries from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadDepositRules = useCallback(async () => {
+    try {
+      const records = await fetchDepositRules();
+      setTableRows(records.map(mapDepositRuleRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load deposit rules from server.");
+      setTableRows([]);
+    }
+  }, []);
+
   const loadDefaultBranchAccounts = useCallback(async () => {
     try {
       const data = await fetchBranchAccount();
@@ -169,6 +244,18 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         return;
       }
 
+      if (master.key === "glAccount") {
+        setTableRows([]);
+        loadGlAccounts();
+        return;
+      }
+
+      if (master.key === "finalAccountGroup") {
+        setTableRows([]);
+        loadFinalAccountGroups();
+        return;
+      }
+
       if (master.key === "tdInterestRate") {
         setTableRows([]);
         loadTdInterestRates();
@@ -187,6 +274,18 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         return;
       }
 
+      if (master.key === "industry") {
+        setTableRows([]);
+        loadIndustries();
+        return;
+      }
+
+      if (master.key === "depositRule") {
+        setTableRows([]);
+        loadDepositRules();
+        return;
+      }
+
       if (master.key === "defaultBranchAccounts") {
         setTableRows([]);
         loadDefaultBranchAccounts();
@@ -196,7 +295,7 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
       const config = getMasterConfig(master.key);
       setTableRows([...config.rows]);
     },
-    [loadClearingTypes, loadProducts, loadTdInterestRates, loadInstallmentTypes, loadInstrumentTypes, loadDefaultBranchAccounts]
+    [loadClearingTypes, loadProducts, loadGlAccounts, loadTdInterestRates, loadInstallmentTypes, loadInstrumentTypes, loadIndustries, loadDepositRules, loadFinalAccountGroups, loadDefaultBranchAccounts]
   );
 
   useEffect(() => {
@@ -305,6 +404,48 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
       return;
     }
 
+    if (openMaster.key === "industry") {
+      try {
+        const created = await createIndustry({
+          id: formData.id,
+          description: formData.description,
+        });
+        setTableRows((prev) => [...prev, mapIndustryRecordToRow(created)]);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to create industry. Please try again.");
+        throw err;
+      }
+      return;
+    }
+
+    if (openMaster.key === "depositRule") {
+      try {
+        const created = await createDepositRule({
+          id: formData.id,
+          description: formData.description,
+        });
+        setTableRows((prev) => [...prev, mapDepositRuleRecordToRow(created)]);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to create deposit rule. Please try again.");
+        throw err;
+      }
+      return;
+    }
+
+    if (openMaster.key === "finalAccountGroup") {
+      try {
+        const created = await createFinalAccountGroup({
+          code: formData.code,
+          description: formData.description,
+        });
+        setTableRows((prev) => [...prev, mapFinalAccountGroupRecordToRow(created)]);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to create final account group. Please try again.");
+        throw err;
+      }
+      return;
+    }
+
     if (openMaster.key === "defaultBranchAccounts") {
       // The actual save/update call happens inside ParameterModal (it needs the
       // validate-then-save flow); once that resolves, just refresh the list.
@@ -339,6 +480,16 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
       setTableRows((prev) => [...prev, mapProductRecordToRow(created)]);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to create product. Please try again.");
+      throw err;
+    }
+  };
+
+  const handleGlAccountSave = async (payload: Parameters<typeof createGlAccount>[0]) => {
+    try {
+      const created = await createGlAccount(payload);
+      setTableRows((prev) => [...prev, mapGlAccountRecordToRow(created)]);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to create GL account. Please try again.");
       throw err;
     }
   };
@@ -393,7 +544,11 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         <ProductParameterModal onClose={() => setModalMode(null)} onSave={handleProductSave} />
       )}
 
-      {modalMode === "add" && openMaster && openMaster.key !== "productMaster" && (
+      {modalMode === "add" && openMaster && openMaster.key === "glAccount" && (
+        <GlAccountParameterModal onClose={() => setModalMode(null)} onSave={handleGlAccountSave} />
+      )}
+
+      {modalMode === "add" && openMaster && openMaster.key !== "productMaster" && openMaster.key !== "glAccount" && (
         <ParameterModal
           mode="add"
           masterKey={openMaster.key}

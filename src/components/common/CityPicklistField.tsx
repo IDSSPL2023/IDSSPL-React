@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import FormField, { READONLY_FIELD_CLASSES } from "./FormField";
 import PicklistField from "./PicklistField";
 import PicklistModal from "./PicklistModal";
-import { fetchCities, type CityRecord } from "@/lib/masterMaintenanceApi";
+import { fetchCities, type CityRecord } from "@/api/globalmaster.api";
 
 export interface CityPicklistFieldProps {
   label?: string;
@@ -110,11 +110,12 @@ export default function CityPicklistField({
     }
   };
 
+  // Opening the picklist never calls the API — results only load once the
+  // user presses Submit inside the picklist's own search form (or, if
+  // preFetch is enabled, once on mount).
   const openPicklist = () => {
     setOpen(true);
     setPage(1);
-    if (loaded || loading) return;
-    loadCities();
   };
 
   // Called when the user clicks "Submit" inside the picklist modal.

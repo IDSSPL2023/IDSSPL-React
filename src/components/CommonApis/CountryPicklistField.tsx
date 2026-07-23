@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import PicklistField from "../common/PicklistField";
 import PicklistModal from "../common/PicklistModal";
-import { fetchCountries, type CountryOption } from "@/lib/masterMaintenanceApi";
+import { fetchCountries, type CountryOption } from "@/api/globalmaster.api";
 
 export interface CountryPicklistFieldProps {
   label?: string;

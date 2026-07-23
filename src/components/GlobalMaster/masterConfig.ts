@@ -10,7 +10,7 @@ export type MasterItem = {
   key: string;
 };
 
-export type FieldType = "text" | "radio" | "select" | "country";
+export type FieldType = "text" | "radio" | "select" | "country" | "city";
 
 export type MasterField = {
   key: string;
@@ -293,7 +293,7 @@ export const MASTER_CONFIG: Record<string, MasterConfigEntry> = {
     rows: cityRows,
     formColumns: 1,
     fields: [
-      { key: "cityName", labelEn: "City Name", labelHi: "शहराचे नाव", placeholder: "Enter City Name", icon: "landmark" },
+      { key: "cityName", labelEn: "City Name", labelHi: "शहराचे नाव", placeholder: "Select City Name", icon: "landmark", type: "city" },
       { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
     ],
     filterFields: [

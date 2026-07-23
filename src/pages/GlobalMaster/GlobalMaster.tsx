@@ -23,7 +23,7 @@ import {
   createState,
   type CityRecord,
   type StateRecord,
-} from "@/lib/masterMaintenanceApi";
+} from "@/api/globalmaster.api";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Settings, GitBranch, Layers, BookOpen, IdCard, Hash, Users, Home, FileText,

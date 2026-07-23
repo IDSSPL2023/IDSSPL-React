@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "@/components/ui/Image";
 import { X, Check, ChevronDown, ThumbsUp, UserRound, SquarePen } from "lucide-react";
 import { getMasterConfig, getFieldIcon, emptyFormData } from "./masterConfig";
-import { validateBranchAccount, saveBranchAccount, updateBranchAccount } from "@/lib/masterMaintenanceApi";
+import { validateBranchAccount, saveBranchAccount, updateBranchAccount } from "@/api/headoffice.api";
 
 const MODAL_META = {
   add: {

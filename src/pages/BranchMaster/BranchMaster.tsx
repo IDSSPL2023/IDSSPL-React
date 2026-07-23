@@ -19,7 +19,7 @@ import {
   fetchBranchByCode,
   updateBranch,
   type BranchDetail,
-} from "@/lib/masterMaintenanceApi";
+} from "@/api/headoffice.api";
 import { CountryPicklistField } from "@/components/common";
 import CityPicklistField from "@/components/common/CityPicklistField";
 
