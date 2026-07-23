@@ -39,8 +39,8 @@ export default function StatePicklistField({
   value,
   placeholder = "Select State",
   required,
-  readOnly,
-  disabled,
+  readOnly = false,
+  disabled = false,
   error,
   onSelect,
   preFetch = false,
@@ -53,7 +53,7 @@ export default function StatePicklistField({
 
   // Pre-fetch on mount if enabled
   useEffect(() => {
-    if (preFetch && !loaded && !loading) {
+    if (preFetch && !loaded && !loading && !readOnly && !disabled) {
       fetchStates({ searchBy: "CODE", textToSearch: "" })
         .then((list) => {
           setStates(list);
@@ -62,9 +62,12 @@ export default function StatePicklistField({
         .catch(() => setLoadError("Failed to pre-load states"))
         .finally(() => setLoading(false));
     }
-  }, [preFetch]);
+  }, [preFetch, readOnly, disabled]);
 
   const openPicklist = () => {
+    // Don't open if readOnly or disabled
+    if (readOnly || disabled) return;
+
     setOpen(true);
     if (loaded || loading) return;
 
@@ -89,6 +92,9 @@ export default function StatePicklistField({
     searchBy: "CODE" | "STATE_NAME" | "COUNTRY_CODE",
     textToSearch: string,
   ) => {
+    // Don't search if readOnly or disabled
+    if (readOnly || disabled) return;
+
     setLoading(true);
     setLoadError("");
 
@@ -128,7 +134,7 @@ export default function StatePicklistField({
         error={error}
         onOpenPicklist={openPicklist}
       />
-      {open && (
+      {open && !readOnly && !disabled && (
         <StatePicklistModal
           title=""
           columns={COLUMNS}

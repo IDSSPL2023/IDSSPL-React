@@ -14,6 +14,7 @@ import { type UserFilters, defaultValues } from "@/components/UserMaster/FilterM
 import { userFilterFields } from "@/components/UserMaster/userFilterFields";
 import { useBilingual } from "@/i18n/useBilingual";
 import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from AddUserMaster.tsx ===== */
 /* ===================== AddUserMaster_AddUserForm ===================== */
@@ -133,6 +134,12 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
     onClose?.();
   };
 
+  // Handler for state selection
+  const handleStateSelect = (selectedState: { stateCode: string; stateName: string; countryCode: string }) => {
+    setState(selectedState.stateName);
+    clearError("state");
+  };
+
   if (showSuccess) {
     return (
       <SuccessModal
@@ -233,28 +240,7 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
               {errors.userName && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.userName}</p>}
             </FieldShell>
 
-            {/* <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
-              <TextInput
-                icon={<IdCard size={16} />}
-                value={customerId}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Customer ID"
-                error={!!errors.customerId}
-                trailing={
-                  <button
-                    type="button"
-                    onClick={() => setCustomerPickerOpen(true)}
-                    className="flex h-7 w-7 items-center justify-center rounded-md bg-primary-50 text-primary hover:bg-primary-100"
-                  >
-                    <MoreVertical size={14} />
-                  </button>
-                }
-              />
-              {errors.customerId && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.customerId}</p>}
-            </FieldShell> */}
-
-             <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
+            <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
               {existingCustomer ? (
                 <div className="flex items-center gap-2">
                   <div className="min-w-0 flex-1">
@@ -414,10 +400,18 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
               <TextInput icon={<Building2 size={16} />} value={city} onChange={() => {}} readOnly placeholder="City" error={!!errors.city} />
               {errors.city && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.city}</p>}
             </FieldShell>
-            <FieldShell label="State" labelHi="राज्य" required>
-              <TextInput icon={<Building2 size={16} />} value={state} onChange={() => {}} readOnly placeholder="Select State" error={!!errors.state} />
-              {errors.state && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.state}</p>}
-            </FieldShell>
+              <StatePicklistField
+                key={state}
+                label="State"
+                labelHi="राज्य"
+                icon={<Building2 size={16} />}
+                value={state}
+                onSelect={handleStateSelect}
+                placeholder="Select State"
+                required
+                readOnly={false}
+                error={errors.state}
+              />
             <FieldShell label="Country" labelHi="देश" required>
               <TextInput icon={<Flag size={16} />} value={country} onChange={() => {}} readOnly placeholder="Select Country" error={!!errors.country} />
               {errors.country && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.country}</p>}
