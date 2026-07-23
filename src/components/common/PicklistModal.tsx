@@ -42,6 +42,8 @@ export interface PicklistModalProps<T> {
   onSearchByChange?: (value: string) => void;
   textToSearch?: string;
   onTextToSearchChange?: (value: string) => void;
+  /** Fixed modal height for lookups that use paged result sets. */
+  modalHeightClassName?: string;
 }
 
 export default function PicklistModal<T>({
@@ -68,6 +70,7 @@ export default function PicklistModal<T>({
   onSearchByChange,
   textToSearch,
   onTextToSearchChange,
+  modalHeightClassName,
 }: PicklistModalProps<T>) {
   const [internalSearch, setInternalSearch] = useState("");
   const [internalSearchBy, setInternalSearchBy] = useState(
@@ -223,7 +226,7 @@ export default function PicklistModal<T>({
       onClose={onClose}
       maxWidthPx={841}
       ariaLabel={title}
-      contentClassName="rounded-[15px] p-6 min-h-[600px] max-h-[952px]"
+      contentClassName={`rounded-[36px] p-6 min-h-[600px] max-h-[852px] ${modalHeightClassName ?? ""}`}
       bodyClassName="flex flex-1 flex-col overflow-hidden"
       showCloseButton={false}
     >

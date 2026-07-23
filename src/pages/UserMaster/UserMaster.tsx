@@ -1,5 +1,6 @@
 import { IMAGES } from "@/assets";
 import { useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import { User, IdCard, Building2, Phone, Mail, Home, Flag, Check, X, ChevronDown, MoreVertical } from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
@@ -411,7 +412,7 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
               {errors.zip && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.zip}</p>}
             </FieldShell>
             <FieldShell label="City" labelHi="शहरे" required>
-              <TextInput icon={<Building2 size={16} />} value={city} onChange={() => {}} readOnly placeholder="City" error={!!errors.city} />
+              <CityPicklistField label="" icon={<Building2 size={16} />} value={city} onSelect={(selectedCity) => setCity(selectedCity.name)} error={errors.city} />
               {errors.city && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.city}</p>}
             </FieldShell>
             <FieldShell label="State" labelHi="राज्य" required>

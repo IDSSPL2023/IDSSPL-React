@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import {
   X,
   Plus,
@@ -575,9 +576,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <TextInput icon={<Hash size={16} />} value={row.zip} onChange={(v) => updateNominee(index, { zip: v })} error={errors[`nominee-${index}-zip`]} />
                   </FieldShell>
 
-                  <FieldShell label="City" labelHi="शहरे" required>
-                    <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => updateNominee(index, { city: v })} options={CITIES} />
-                  </FieldShell>
+                  <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateNominee(index, { city: city.name })} />
 
                   <FieldShell label="State" labelHi="राज्य" required>
                     <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateNominee(index, { state: v })} />
@@ -639,9 +638,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <TextInput icon={<Hash size={16} />} value={row.zip} onChange={(v) => updateJointHolder(index, { zip: v })} error={errors[`jh-${index}-zip`]} />
                   </FieldShell>
 
-                  <FieldShell label="City" labelHi="शहरे" required>
-                    <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => updateJointHolder(index, { city: v })} options={CITIES} />
-                  </FieldShell>
+                  <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateJointHolder(index, { city: city.name })} />
 
                   <FieldShell label="State" labelHi="राज्य" required>
                     <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateJointHolder(index, { state: v })} />
