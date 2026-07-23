@@ -334,6 +334,7 @@ export const router = createBrowserRouter([
       },
 
       { path: "/manager/branchmaster", element: <BranchMasterPage /> },
+      { path: "/branchmaster" ,element: <BranchMasterPage/>},
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },

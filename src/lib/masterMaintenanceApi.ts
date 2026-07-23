@@ -70,18 +70,85 @@ function extractList(data: unknown): Record<string, unknown>[] {
 }
 
 /** GET /cities — full CityDE data used to populate the City Master table. */
-export async function fetchCities(): Promise<CityRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities`);
-  if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
+// export async function fetchCities(): Promise<CityRecord[]> {
+//   const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities`);
+//   if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
+//   const data = await parseJson(response);
+//   return extractList(data).map((item) => ({
+//     cityCode: String(item.cityCode ?? ""),
+//     name: String(item.name ?? ""),
+//     countryCode: String(item.countryCode ?? ""),
+//     countryName: String(item.countryName ?? ""),
+//   }));
+// }
+
+// lib/masterMaintenanceApi.ts
+
+// lib/masterMaintenanceApi.ts
+
+export interface CityRecord {
+  cityCode: string;
+  name: string;
+  // countryCode?: string;
+  // countryName?: string;
+}
+
+export interface CitySearchParams {
+  searchBy?: "CODE" | "NAME";
+  textToSearch?: string;
+}
+
+export async function fetchCities(
+  params: CitySearchParams = {}
+): Promise<CityRecord[]> {
+  const { searchBy = "NAME", textToSearch = "" } = params;
+
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy, textToSearch }),
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to load cities (${response.status})`);
+  }
+  
   const data = await parseJson(response);
+  
   return extractList(data).map((item) => ({
-    cityCode: String(item.cityCode ?? ""),
-    name: String(item.name ?? ""),
+    cityCode: String(item.cityCode ?? item.code ?? item.value ?? ""),
+    name: String(item.name ?? item.cityName ?? item.label ?? item.text ?? ""),
     countryCode: String(item.countryCode ?? ""),
     countryName: String(item.countryName ?? ""),
   }));
 }
 
+// lib/masterMaintenanceApi.ts
+
+// export async function fetchCities(params?: {
+//   searchBy?: string;
+//   textToSearch?: string;
+// }): Promise<CityRecord[]> {
+//   let url = `${BASE_URL}/api/v1/master-maintenance/cities`;
+  
+//   // Build query params if provided
+//   if (params?.searchBy && params?.textToSearch) {
+//     const searchParams = new URLSearchParams();
+//     searchParams.append('searchBy', params.searchBy);
+//     searchParams.append('textToSearch', params.textToSearch);
+//     url += `?${searchParams.toString()}`;
+//   }
+  
+//   const response = await fetch(url);
+//   if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
+//   const data = await parseJson(response);
+//   return extractList(data).map((item) => ({
+//     cityCode: String(item.cityCode ?? ""),
+//     name: String(item.name ?? ""),
+//     countryCode: String(item.countryCode ?? ""),
+//     countryName: String(item.countryName ?? ""),
+//   }));
+// }
 /** POST /countries/search — empty textToSearch returns all countries; used for the Country dropdown. */
 export interface CountrySearchParams {
   searchBy?: string;   // "NAME" | "CODE" | ...

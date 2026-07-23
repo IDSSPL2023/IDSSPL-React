@@ -1,5 +1,6 @@
 import { IMAGES } from "@/assets";
 import { useEffect, useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import { User, IdCard, Building2, Phone, Mail, Home, Flag, Check, X, ChevronDown, MoreVertical, ShieldCheck, ThumbsUp, ThumbsDown } from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "../shared/FormModal";
@@ -467,13 +468,7 @@ export default function UserDetailsModal({
               />
             </FieldShell>
             <FieldShell label="City" labelHi="शहरे" required>
-              <TextInput
-                icon={<Building2 size={16} />}
-                value={data.city}
-                onChange={set("city")}
-                placeholder="City"
-                readOnly={isView}
-              />
+              <CityPicklistField label="" icon={<Building2 size={16} />} value={data.city} onSelect={(city) => set("city")(city.name)} readOnly={isView} />
             </FieldShell>
             <FieldShell label="State" labelHi="राज्य" required>
               <TextInput
