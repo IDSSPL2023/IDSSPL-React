@@ -601,7 +601,7 @@ const UserMasterPage = () => {
 
   const breadcrumbs: Breadcrumb[] = [
     { label: en("common.home"), href: "/" },
-    { label: en("common.misActivity"), href: "/" },
+    { label: en("common.misActivity"), href: "#" },
     { label: en("userMaster.breadcrumb"), href: "/" },
   ];
 
@@ -610,7 +610,7 @@ const UserMasterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] relative dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg relative dark:bg-slate-950">
       <AppNavbar
         titleEn={en("userMaster.title")}
         titleHi={t("userMaster.title")}

@@ -289,6 +289,10 @@
     "title": "मियादी जमा बंद करें",
     "breadcrumb": "मियादी जमा बंद करें"
   },
+  "cashDeposit": {
+    "title": "नकद जमा",
+    "subtitle": "नीचे नकद जमा लेनदेन का विवरण भरें।"
+  },
   "standingInstructions": {
     "title": "स्थायी निर्देश",
     "breadcrumb": "स्थायी निर्देश",

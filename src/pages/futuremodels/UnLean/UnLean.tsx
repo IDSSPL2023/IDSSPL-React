@@ -10,6 +10,7 @@ const UnLeanPage = () => {
   const hi = (key: string) => t(key) || undefined
 
   return (
+    <div className="min-h-screen app-page-bg px-3 py-4 dark:bg-slate-950">
     <div className="relative w-full max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-2xl p-8">
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
@@ -100,6 +101,7 @@ const UnLeanPage = () => {
           {en('common.revoke')} <ChevronDown className="w-4 h-4" />
         </button>
       </div>
+    </div>
     </div>
   )
 }

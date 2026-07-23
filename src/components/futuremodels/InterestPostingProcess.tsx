@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { Calendar, Check, FileText, Percent, UserRound, X } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
+import ModalCloseButton from "@/components/common/ModalCloseButton";
+import { formatDateDDMMMYYYY } from "@/lib/dateFormat";
 
 export interface InterestPostingProcessData {
   asOnDate: string;
@@ -115,24 +117,27 @@ export default function InterestPostingProcess({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-xl rounded-xl bg-white p-4 shadow-2xl">
         <div className="rounded-2xl p-3">
-          <div className="flex items-start gap-4 border-b border-slate-100 pb-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
-              <UserRound size={22} />
+          <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+            <div className="flex items-start gap-4 min-w-0">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary-300 bg-primary-50 text-primary shadow-sm">
+                <UserRound size={22} />
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
+                  {en("common.accountDetails")}
+                  {t("common.accountDetails") ? (
+                    <span className="text-[#64748B]"> / {t("common.accountDetails")}</span>
+                  ) : null}
+                </h2>
+                <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
+                  {en("interestPostingProcess.subtitle")}
+                  {t("interestPostingProcess.subtitle") ? (
+                    <span> / {t("interestPostingProcess.subtitle")}</span>
+                  ) : null}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <h2 className="text-[20px] font-bold leading-tight text-[#1F2858]">
-                {en("common.accountDetails")}
-                {t("common.accountDetails") ? (
-                  <span className="text-[#64748B]"> / {t("common.accountDetails")}</span>
-                ) : null}
-              </h2>
-              <p className="mt-1 text-[14px] leading-snug text-[#64748B]">
-                {en("interestPostingProcess.subtitle")}
-                {t("interestPostingProcess.subtitle") ? (
-                  <span> / {t("interestPostingProcess.subtitle")}</span>
-                ) : null}
-              </p>
-            </div>
+            <ModalCloseButton onClose={onClose} />
           </div>
 
           <div className="rounded-[18px] border border-primary border-t-4 bg-white px-6 pb-6 pt-6 shadow-[0_1px_8px_rgba(37,99,235,0.14)]">
@@ -158,7 +163,7 @@ export default function InterestPostingProcess({
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
           <button
             type="button"
             onClick={handleValidate}
@@ -236,7 +241,7 @@ function IconInput({
   type?: "text" | "date";
 }) {
   return (
-    <div className="flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+    <div className="relative flex h-11 items-center rounded-lg border border-[#7E8796] bg-white px-4 text-[15px] text-slate-700 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
       <span className="mr-3 shrink-0 text-[#64748B]">{icon}</span>
       <input
         type={type}
@@ -244,8 +249,13 @@ function IconInput({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         inputMode={inputMode}
-        className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5]"
+        className={`min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8B95A5] ${type === "date" ? "text-transparent caret-transparent" : ""}`}
       />
+      {type === "date" && (
+        <span className={`pointer-events-none absolute left-[42px] ${formatDateDDMMMYYYY(value) ? "" : "text-[#8B95A5]"}`}>
+          {formatDateDDMMMYYYY(value) || placeholder}
+        </span>
+      )}
     </div>
   );
 }

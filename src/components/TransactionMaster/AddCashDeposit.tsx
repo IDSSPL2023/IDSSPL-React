@@ -27,6 +27,7 @@ import {
 } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
+import { useBilingual } from "@/i18n/useBilingual";
 
 type PickRow = { code: string; name: string };
 
@@ -246,13 +247,18 @@ export interface AddCashDepositProps {
 const AddCashDeposit = ({
   onClose,
   onSave,
-  titleEn = "Cash Deposit",
-  titleHi = "रोख रक्कम जमा",
-  subtitleEn = "Fill in the cash deposit transaction details below.",
-  subtitleHi = "खालील रोख रक्कम जमा व्यवहाराचा तपशील भरा.",
+  titleEn,
+  titleHi,
+  subtitleEn,
+  subtitleHi,
   headerIcon = <Image src={IMAGES.CASH_DEPOSIT} alt="Cash Deposit" width={50} height={50} />,
   variant = "modal",
 }: AddCashDepositProps) => {
+  const { en, t } = useBilingual();
+  const resolvedTitleEn = titleEn ?? en("cashDeposit.title");
+  const resolvedTitleHi = titleHi ?? t("cashDeposit.title");
+  const resolvedSubtitleEn = subtitleEn ?? en("cashDeposit.subtitle");
+  const resolvedSubtitleHi = subtitleHi ?? t("cashDeposit.subtitle");
   const [form, setForm] = useState<CashDepositFormData>(DEFAULT_CASH_DEPOSIT_DATA);
   const [isValidated, setIsValidated] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof CashDepositFormData, boolean>>>({});
@@ -342,10 +348,10 @@ const AddCashDeposit = ({
   return (
     <FormModal
       onClose={onClose}
-      titleEn={titleEn}
-      titleHi={titleHi}
-      subtitleEn={subtitleEn}
-      subtitleHi={subtitleHi}
+      titleEn={resolvedTitleEn}
+      titleHi={resolvedTitleHi}
+      subtitleEn={resolvedSubtitleEn}
+      subtitleHi={resolvedSubtitleHi}
       headerIcon={headerIcon}
       tabs={[]}
       activeTab=""

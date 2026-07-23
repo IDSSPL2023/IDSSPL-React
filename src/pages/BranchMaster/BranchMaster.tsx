@@ -3494,7 +3494,7 @@ export default function BranchMasterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <GlobalNav
         titleEn={en("branchMaster.title")}
         titleHi={t("branchMaster.title")}

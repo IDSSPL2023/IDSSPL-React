@@ -1472,7 +1472,7 @@ function InterestPostingModal({
 
         {/* With TDS */}
         <div className="flex items-center gap-[120px]">
-          <label className="whitespace-nowrap text-sm font-medium text-[#1F2858]">
+          <label className="whitespace-nowrap text-sm font-medium text-black">
             With TDS
             <span className="text-slate-600"> / टीडीएससह</span>
           </label>
@@ -2667,13 +2667,13 @@ export default function InterestPostingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Interest Posting"
         titleHi="इंटरेस्ट पोस्टिंग"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "MIS Activity", href: "/" },
+          { label: "MIS Activity", href: "#" },
           { label: "Interest Posting", href: "#" },
         ]}
         onBack={() => router.back()}

@@ -28,7 +28,7 @@ const AuthorizeTransactionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Authorize Transaction"
         titleHi="व्यवहार मंजूर करणे"

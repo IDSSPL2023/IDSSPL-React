@@ -112,6 +112,8 @@
       "customerId": "Customer ID",
       "createdBy": "Created By",
       "openingDate": "Opening Date",
+      "closingDate": "Closing Date",
+      "requestedBy": "Requested By",
       "menuFreeze": "Account Freeze / Unfreeze",
       "menuCheque": "Cheque Book Issue",
       "menuFreezeUnfreeze": "Account Freeze / Unfreeze",
@@ -285,6 +287,10 @@
   "tdClose": {
     "title": "Term Deposit Close",
     "breadcrumb": "Term Deposit Close"
+  },
+  "cashDeposit": {
+    "title": "Cash Deposit",
+    "subtitle": "Fill in the cash deposit transaction details below."
   },
   "standingInstructions": {
     "title": "Standing Instructions",

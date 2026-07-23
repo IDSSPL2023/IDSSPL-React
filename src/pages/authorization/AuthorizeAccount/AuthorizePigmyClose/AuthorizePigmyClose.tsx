@@ -373,7 +373,7 @@ const AuthorizePigmyClosePage = () => {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <GlobalNav
         titleEn={en("accountAuthorizeMaster.cards.pigmyClosing")}
         titleHi={t("accountAuthorizeMaster.cards.pigmyClosing")}

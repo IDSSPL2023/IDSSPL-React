@@ -848,7 +848,7 @@ const RtgsAuthorizePage = () => {
   const handleResetFilters = () => setFilters(RtgsFilterModal_defaultRtgsFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="RTGS Authorize"
         titleHi="आरटीजीएस अधिकृत करणे"

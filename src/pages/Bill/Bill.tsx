@@ -146,7 +146,10 @@ function BillHero({
               className="flex-1 text-sm text-gray-700 outline-none placeholder:text-gray-400"
             />
 
-            <button className="rounded-md bg-primary-700 px-5 py-2 text-sm font-medium text-white hover:bg-primary-800">
+            <button
+              type="button"
+              className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
               {en("supportUtility.show")}
             </button>
           </div>
@@ -3639,7 +3642,7 @@ export default function BillUtilityPage() {
   const closeModal = () => setActiveModal(null);
 
   return (
-    <>
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <BillHero
         onOpenIBCEntry={() => setActiveModal("ibcEntry")}
         onOpenIBCMark={() => setActiveModal("ibcMark")}
@@ -3651,6 +3654,6 @@ export default function BillUtilityPage() {
       {activeModal === "ibcMark" && <IBCRealizeMarkModal onClose={closeModal} />}
       {activeModal === "obcEntry" && <OBCEntryModal onClose={closeModal} />}
       {activeModal === "obcMark" && <OBCRealizeMarkModal onClose={closeModal} />}
-    </>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import SrNoBadge from "@/components/shared/SrNoBadge";
 import StatusPill from "@/components/shared/StatusPill";
 import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
 import Image from "@/components/ui/Image";
+import { IMAGES } from "@/assets";
 import SuccessModal from "@/components/shared/SuccessModal";
 import RejectReasonModal from "@/components/shared/RejectReasonModal";
 
@@ -366,7 +367,7 @@ function RoleAuthorizationList({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen app-page-bg">
       <RoleAuthorizationList_ScreenHeader onBack={onBack} />
       <RoleAuthorizationList_TabBar activeTab={activeTab} counts={counts} onChange={handleTabChange} />
 
@@ -597,7 +598,7 @@ function AuthorizeAccountModal({
 <div className="relative z-10 mb-6 flex items-start justify-between">
   <div className="flex items-center gap-3">
     <Image
-      src="/role-authorization.png"
+      src={IMAGES.ROLES}
       alt="Role Authorization"
       width={44}
       height={44}

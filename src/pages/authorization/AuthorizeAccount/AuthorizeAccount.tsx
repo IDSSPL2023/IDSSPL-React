@@ -3611,7 +3611,7 @@ export const AuthorizeAccountPage = ({ accountType }: AuthorizeAccountPage_Autho
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <GlobalNav
         titleEn={en("authorization.title")}
         titleHi={t("authorization.title")}
@@ -3817,7 +3817,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "fixedAssetClosing",
     icon: ShieldAlert,
     cardKey: "fixedAssetClosing",
-    // href: "/authorization/authorizeaccountmain/fixed-close",
+    href: "/authorization/authorizeaccountmain/fixed-close",
   },
   {
     key: "investmentAuthorization",
@@ -3924,7 +3924,7 @@ const AuthorizeAccountMainPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn={en("accountAuthorizeMaster.navTitle")}
         titleHi={t("accountAuthorizeMaster.navTitle")}
@@ -3953,7 +3953,7 @@ const AuthorizeAccountMainPage = () => {
               />
               <button
                 type="button"
-                className="shrink-0 rounded-md bg-primary-700 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-800"
+                className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
               >
                 {en("accountAuthorizeMaster.show")}
               </button>

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
-import { ModalSize } from "./modal.types";
-// import type { BaseModalProps, ModalSize } from "./";
+import type { BaseModalProps, ModalSize } from "./modal.types";
+import ModalCloseButton from "./ModalCloseButton";
 
 const SIZE_CLASSES: Record<ModalSize, string> = {
   sm: "max-w-[500px]",
@@ -23,26 +22,6 @@ const HEIGHT_CLASSES: Record<ModalSize, string> = {
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-export interface BaseModalProps {
-  onClose: () => void;
-  title?: React.ReactNode;
-  subtitle?: React.ReactNode;
-  icon?: React.ReactNode;
-  footer?: React.ReactNode;
-  children: React.ReactNode;
-  size?: ModalSize;
-  maxWidthPx?: number;
-  maxHeightPx?: number;
-  minHeightPx?: number;
-  contentClassName?: string;
-  overlayClassName?: string;
-  bodyClassName?: string;
-  showCloseButton?: boolean;
-  closeOnBackdrop?: boolean;
-  closeOnEscape?: boolean;
-  ariaLabel?: string;
-}
 
 /**
  * Shared modal primitive: fixed overlay, z-index, backdrop, Escape handling,
@@ -146,16 +125,7 @@ export default function BaseModal({
                 {subtitle && <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
               </div>
             </div>
-            {showCloseButton && (
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-              >
-                <X className="h-5 w-5" strokeWidth={1.75} />
-              </button>
-            )}
+            {showCloseButton && <ModalCloseButton onClose={onClose} />}
           </div>
         )}
 

@@ -213,7 +213,7 @@ export default function DDMaintenancePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+      <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
         <GlobalNav
           titleEn="DD Maintenance"
           titleHi="डिमांड ड्राफ्ट देखभाल"

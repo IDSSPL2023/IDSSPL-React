@@ -1,6 +1,7 @@
 import { ChevronDown, Calendar, FileText, MoreVertical, X, Upload, Check, LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
+import { formatDateDDMMMYYYY } from "@/lib/dateFormat";
 
 // Figma "Read-only / filled" state — shared across TextInput, SelectInput and
 // DateInput so every pre-filled, non-editable field looks identical.
@@ -184,6 +185,11 @@ export interface DateInputProps {
 export const DateInput = ({ value, onChange, placeholder, error, readOnly }: DateInputProps) => {
   // Figma "Read-only / filled" state — see TextInput for details.
   const isFilledReadOnly = readOnly && value.trim() !== "";
+  // Native <input type="date"> can't be given a custom display format, so the
+  // native text is made transparent and a DD-MMM-YYYY overlay is drawn on top.
+  // Clicks still reach the native input underneath, which keeps the browser's
+  // date picker/keyboard entry working; onChange/value stay ISO (YYYY-MM-DD).
+  const displayValue = formatDateDDMMMYYYY(value);
 
   return (
     <div className="relative flex items-center">
@@ -203,14 +209,21 @@ export const DateInput = ({ value, onChange, placeholder, error, readOnly }: Dat
         tabIndex={readOnly ? -1 : undefined}
         className={
           isFilledReadOnly
-            ? `w-full h-12 rounded-lg border pointer-events-none ${READONLY_FILLED_BG}  pl-[38px] pr-[14px] text-sm text-slate-700 outline-none ${READONLY_FILLED_SHADOW} ${
+            ? `w-full h-12 rounded-lg border pointer-events-none ${READONLY_FILLED_BG}  pl-[38px] pr-[14px] text-sm text-transparent caret-transparent outline-none ${READONLY_FILLED_SHADOW} ${
                 error ? "border-red-400" : READONLY_FILLED_BORDER
               }`
-            : `w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
+            : `w-full rounded-lg border bg-white py-2.5 pl-9 pr-3 text-sm text-transparent caret-transparent outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
                 error ? "border-red-400" : "border-slate-600"
               }`
         }
       />
+      <span
+        className={`pointer-events-none absolute left-9 text-sm ${
+          displayValue ? (isFilledReadOnly ? READONLY_FILLED_ICON_COLOR : "text-slate-700") : "text-slate-400"
+        }`}
+      >
+        {displayValue || placeholder}
+      </span>
     </div>
   );
 };

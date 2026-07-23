@@ -21,6 +21,8 @@ export type * from "./filter.types";
 
 // modal
 export { default as BaseModal } from "./BaseModal";
+export { default as ModalCloseButton } from "./ModalCloseButton";
+export type { ModalCloseButtonProps } from "./ModalCloseButton";
 export { default as NormalFormModal } from "./NormalFormModal";
 export { default as AuthorizeFormModal } from "./AuthorizeFormModal";
 export { default as SuccessModal } from "./SuccessModal";
