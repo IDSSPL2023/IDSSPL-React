@@ -21,6 +21,7 @@ import {
   type BranchDetail,
 } from "@/lib/masterMaintenanceApi";
 import { CountryPicklistField } from "@/components/common";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from AddBranchModal.tsx ===== */
 export interface AddBranchModal_BranchFormData {
@@ -729,6 +730,21 @@ function AddParameterModal({
           icon={<Flag size={18} />}
           value={value as string}
           onSelect={(c) => handleChange(field.key, c.name)}
+          required
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
+
+     if (field.key === "state") {
+      return (
+        <StatePicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
+          value={value as string}
+          onSelect={(c) => handleChange(field.key, c.stateName)}
           required
           error={hasError ? "This field is required" : undefined}
         />
