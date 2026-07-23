@@ -345,6 +345,7 @@ export default function CalculatorPage({ onClose, onCalculate = () => {} }: TLCa
   const [isInstallmentListOpen, setIsInstallmentListOpen] = useState(false);
 
   return (
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="flex max-h-[90vh] w-[95vw] max-w-[1150px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900">
         {/* Header */}
@@ -451,6 +452,7 @@ export default function CalculatorPage({ onClose, onCalculate = () => {} }: TLCa
           onClose={() => setIsInstallmentListOpen(false)}
         />
       )}
+    </div>
     </div>
   );
 }

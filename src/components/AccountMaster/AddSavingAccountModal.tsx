@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import CityPicklistField from "@/components/common/CityPicklistField";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
   Plus,
@@ -22,6 +23,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import { CountryPicklistField } from "@/components/common";
+import CustomerIdPicklistField, { CustomerOption } from "../common/CustomerIdPicklistField";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -212,7 +214,7 @@ const SelectInput: React.FC<SelectInputProps> = ({ icon, value, onChange, option
   </div>
 );
 
-/* Small popover used for Customer ID / Introducer Account Code lookups */
+/* Small popover used for Introducer Account Code lookups */
 interface LookupButtonProps {
   items: string[];
   onPick: (item: string) => void;
@@ -291,19 +293,32 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
   const [jointHolders, setJointHolders] = useState<JointHolderRow[]>([emptyJointHolder(1)]);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
-  const applyCustomerLookup = (id: string) => {
-    const match = CUSTOMERS.find((c) => c.id === id);
-    if (match) {
-      setApplication((prev) => ({
-        ...prev,
-        customerId: match.id,
-        customerName: match.name,
-        categoryCode: match.category,
-        riskCategory: match.risk,
-      }));
-    } else {
-      setApplication((prev) => ({ ...prev, customerId: id }));
-    }
+  // Handler for customer selection in Application tab
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    setApplication((prev) => ({
+      ...prev,
+      customerId: customer.customerId,
+      customerName: customer.customerName,
+      // You can set category and risk if available from the customer data
+      // categoryCode: customer.category || prev.categoryCode,
+      // riskCategory: customer.risk || prev.riskCategory,
+    }));
+  };
+
+  // Handler for nominee customer selection
+  const handleNomineeSelect = (index: number, customer: CustomerOption) => {
+    updateNominee(index, {
+      nomineeCustomerId: customer.customerId,
+      nomineeName: customer.customerName,
+    });
+  };
+
+  // Handler for joint holder customer selection
+  const handleJointHolderSelect = (index: number, customer: CustomerOption) => {
+    updateJointHolder(index, {
+      jtHolderCustomerId: customer.customerId,
+      jtHolderName: customer.customerName,
+    });
   };
 
   const applyIntroducerLookup = (code: string) => {
@@ -321,16 +336,6 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
 
   const updateJointHolder = (index: number, patch: Partial<JointHolderRow>) => {
     setJointHolders((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
-  };
-
-  const applyNomineeLookup = (index: number, id: string) => {
-    const match = CUSTOMERS.find((c) => c.id === id);
-    updateNominee(index, match ? { nomineeCustomerId: match.id, nomineeName: match.name } : { nomineeCustomerId: id });
-  };
-
-  const applyJointHolderLookup = (index: number, id: string) => {
-    const match = CUSTOMERS.find((c) => c.id === id);
-    updateJointHolder(index, match ? { jtHolderCustomerId: match.id, jtHolderName: match.name } : { jtHolderCustomerId: id });
   };
 
   const validateActiveTab = (): boolean => {
@@ -353,6 +358,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
 
     if (activeTab === "Joint Holder") {
       jointHolders.forEach((row, i) => {
+        if (!row.jtHolderCustomerId) nextErrors[`jh-${i}-jtHolderCustomerId`] = true;
         if (!row.jtHolderName) nextErrors[`jh-${i}-jtHolderName`] = true;
         if (!row.zip) nextErrors[`jh-${i}-zip`] = true;
       });
@@ -420,7 +426,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
         </div>
 
         {/* Tabs */}
-        <div className=" flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
           <div className="flex gap-8">
             {TABS.map((tab) => (
               <button
@@ -451,31 +457,38 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
 
         {/* Content */}
         <div className="mt-3 max-h-[60vh] space-y-3 overflow-y-auto pr-1">
+          {/* Application Tab */}
           {activeTab === "Application" && (
             <div className="rounded-xl border border-primary-500 p-5 dark:bg-slate-900/40">
               <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                {/* Customer ID - Using CustomerIdPicklistField */}
                 <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={errors.customerId}>
-                  <TextInput
-                    icon={<IdCard size={16} />}
+                  <CustomerIdPicklistField
+                    label=""
                     value={application.customerId}
-                    onChange={(v) => setApplication((prev) => ({ ...prev, customerId: v }))}
-                    error={errors.customerId}
-                    trailing={<LookupButton items={CUSTOMERS.map((c) => c.id)} onPick={applyCustomerLookup} />}
+                    placeholder="Select Customer"
+                    onSelect={handleCustomerSelect}
+                    preFetch={false}
+                    pageSize={10}
                   />
                 </FieldShell>
 
+                {/* Customer Name */}
                 <FieldShell label="Customer Name" labelHi="ग्राहकाचे नाव" required error={errors.customerName}>
                   <TextInput icon={<User size={16} />} value={application.customerName} onChange={() => {}} readOnly />
                 </FieldShell>
 
+                {/* Category Code */}
                 <FieldShell label="Category Code" labelHi="कॅटेगरी कोड" required>
                   <TextInput icon={<Tag size={16} />} value={application.categoryCode} onChange={() => {}} readOnly />
                 </FieldShell>
 
+                {/* Risk Category */}
                 <FieldShell label="Risk Category" labelHi="धोक्याचा प्रकार" required>
                   <TextInput icon={<AlertTriangle size={16} />} value={application.riskCategory} onChange={() => {}} readOnly />
                 </FieldShell>
 
+                {/* Introducer Account Code */}
                 <FieldShell label="Introducer Account Code" labelHi="ओळखपत्र खात्याचा कोड" required error={errors.introducerAccountCode}>
                   <TextInput
                     icon={<ChevronsLeftRight size={16} />}
@@ -486,10 +499,12 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                   />
                 </FieldShell>
 
+                {/* Introducer Account Name */}
                 <FieldShell label="Introducer Account Name" labelHi="ओळखपत्र खात्याचे नाव" required>
                   <TextInput icon={<User size={16} />} value={application.introducerAccountName} onChange={() => {}} readOnly />
                 </FieldShell>
 
+                {/* Date of Application */}
                 <FieldShell label="Date of Application" labelHi="अर्जाची तारीख" required error={errors.dateOfApplication}>
                   <div className="relative flex items-center">
                     <span className="pointer-events-none absolute left-3 text-slate-400">
@@ -506,6 +521,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                   </div>
                 </FieldShell>
 
+                {/* Account Operation Capacity ID */}
                 <FieldShell label="Account Operation Capacity ID" labelHi="खाते ऑपरेशन क्षमता आयडी" required>
                   <SelectInput
                     icon={<User size={16} />}
@@ -515,6 +531,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                   />
                 </FieldShell>
 
+                {/* Min Balance ID */}
                 <FieldShell label="Min Balance ID" labelHi="किमान शिल्लक आयडी" required>
                   <SelectInput
                     icon={<Users size={16} />}
@@ -527,10 +544,12 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
             </div>
           )}
 
+          {/* Nominee Tab */}
           {activeTab === "Nominee" &&
             nominees.map((row, index) => (
               <div key={row.srNo} className="rounded-xl border border-primary-500 p-5 dark:bg-slate-900/40">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
+                  {/* Sr No */}
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Sr No</label>
                     <div className="flex h-[42px] w-16 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
@@ -538,49 +557,105 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     </div>
                   </div>
 
+                  {/* Salutation Code */}
                   <FieldShell label="Salutation Code" labelHi="संबोधनी" required>
-                    <SelectInput icon={<User size={16} />} value={row.salutationCode} onChange={(v) => updateNominee(index, { salutationCode: v })} options={SALUTATIONS} />
-                  </FieldShell>
-
-                  <FieldShell label="Nominee Customer ID" labelHi="नॉमिनी ग्राहक आयडी" required error={errors[`nominee-${index}-nomineeCustomerId`]}>
-                    <TextInput
-                      icon={<IdCard size={16} />}
-                      value={row.nomineeCustomerId}
-                      onChange={(v) => updateNominee(index, { nomineeCustomerId: v })}
-                      error={errors[`nominee-${index}-nomineeCustomerId`]}
-                      trailing={<LookupButton items={CUSTOMERS.map((c) => c.id)} onPick={(id) => applyNomineeLookup(index, id)} />}
+                    <SelectInput 
+                      icon={<User size={16} />} 
+                      value={row.salutationCode} 
+                      onChange={(v) => updateNominee(index, { salutationCode: v })} 
+                      options={SALUTATIONS} 
                     />
                   </FieldShell>
 
-                  <FieldShell label="Nominee Name" labelHi="नॉमिनी नाव" required error={errors[`nominee-${index}-nomineeName`]}>
-                    <TextInput icon={<User size={16} />} value={row.nomineeName} onChange={(v) => updateNominee(index, { nomineeName: v })} error={errors[`nominee-${index}-nomineeName`]} />
+                  {/* Nominee Customer ID - Using CustomerIdPicklistField */}
+                  <FieldShell 
+                    label="Nominee Customer ID" 
+                    labelHi="नॉमिनी ग्राहक आयडी" 
+                    required 
+                    error={errors[`nominee-${index}-nomineeCustomerId`]}
+                  >
+                    <CustomerIdPicklistField
+                      label=""
+                      value={row.nomineeCustomerId}
+                      placeholder="Select Nominee"
+                      onSelect={(customer) => handleNomineeSelect(index, customer)}
+                      preFetch={false}
+                      pageSize={10}
+                    />
                   </FieldShell>
 
+                  {/* Nominee Name */}
+                  <FieldShell 
+                    label="Nominee Name" 
+                    labelHi="नॉमिनी नाव" 
+                    required 
+                    error={errors[`nominee-${index}-nomineeName`]}
+                  >
+                    <TextInput 
+                      icon={<User size={16} />} 
+                      value={row.nomineeName} 
+                      onChange={(v) => updateNominee(index, { nomineeName: v })} 
+                      error={errors[`nominee-${index}-nomineeName`]} 
+                    />
+                  </FieldShell>
+
+                  {/* Relation */}
                   <FieldShell label="Relation" labelHi="नाते" required>
-                    <SelectInput icon={<Users size={16} />} value={row.relation} onChange={(v) => updateNominee(index, { relation: v })} options={RELATIONS} />
+                    <SelectInput 
+                      icon={<Users size={16} />} 
+                      value={row.relation} 
+                      onChange={(v) => updateNominee(index, { relation: v })} 
+                      options={RELATIONS} 
+                    />
                   </FieldShell>
 
+                  {/* Address 1 */}
                   <FieldShell label="Address 1" labelHi="पत्ता १" required>
-                    <TextInput icon={<Home size={16} />} value={row.address1} onChange={(v) => updateNominee(index, { address1: v })} />
+                    <TextInput 
+                      icon={<Home size={16} />} 
+                      value={row.address1} 
+                      onChange={(v) => updateNominee(index, { address1: v })} 
+                    />
                   </FieldShell>
 
+                  {/* Address 2 */}
                   <FieldShell label="Address 2" labelHi="पत्ता २" required>
-                    <TextInput icon={<Home size={16} />} value={row.address2} onChange={(v) => updateNominee(index, { address2: v })} />
+                    <TextInput 
+                      icon={<Home size={16} />} 
+                      value={row.address2} 
+                      onChange={(v) => updateNominee(index, { address2: v })} 
+                    />
                   </FieldShell>
 
+                  {/* Address 3 */}
                   <FieldShell label="Address 3" labelHi="पत्ता ३">
-                    <TextInput icon={<Home size={16} />} value={row.address3} onChange={(v) => updateNominee(index, { address3: v })} />
+                    <TextInput 
+                      icon={<Home size={16} />} 
+                      value={row.address3} 
+                      onChange={(v) => updateNominee(index, { address3: v })} 
+                    />
                   </FieldShell>
 
+                  {/* Zip */}
                   <FieldShell label="Zip" labelHi="पिन कोड" required error={errors[`nominee-${index}-zip`]}>
-                    <TextInput icon={<Hash size={16} />} value={row.zip} onChange={(v) => updateNominee(index, { zip: v })} error={errors[`nominee-${index}-zip`]} />
+                    <TextInput 
+                      icon={<Hash size={16} />} 
+                      value={row.zip} 
+                      onChange={(v) => updateNominee(index, { zip: v })} 
+                      error={errors[`nominee-${index}-zip`]} 
+                    />
                   </FieldShell>
 
                   <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateNominee(index, { city: city.name })} />
 
-                  <FieldShell label="State" labelHi="राज्य" required>
-                    <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateNominee(index, { state: v })} />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateNominee(index, { state: s.stateName })}
+                    required
+                  />
 
                   <CountryPicklistField
                     label="Country"
@@ -594,10 +669,12 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
               </div>
             ))}
 
+          {/* Joint Holder Tab */}
           {activeTab === "Joint Holder" &&
             jointHolders.map((row, index) => (
               <div key={row.srNo} className="rounded-xl border border-primary-500 p-5 dark:bg-slate-900/40">
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
+                  {/* Sr No */}
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Sr No</label>
                     <div className="flex h-[42px] w-16 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
@@ -605,44 +682,95 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     </div>
                   </div>
 
+                  {/* Salutation Code */}
                   <FieldShell label="Salutation Code" labelHi="संबोधनी" required>
-                    <SelectInput icon={<User size={16} />} value={row.salutationCode} onChange={(v) => updateJointHolder(index, { salutationCode: v })} options={SALUTATIONS} />
-                  </FieldShell>
-
-                  <FieldShell label="J/T Holder Customer ID" labelHi="J/T धारक ग्राहक आयडी">
-                    <TextInput
-                      icon={<IdCard size={16} />}
-                      value={row.jtHolderCustomerId}
-                      onChange={(v) => updateJointHolder(index, { jtHolderCustomerId: v })}
-                      trailing={<LookupButton items={CUSTOMERS.map((c) => c.id)} onPick={(id) => applyJointHolderLookup(index, id)} />}
+                    <SelectInput 
+                      icon={<User size={16} />} 
+                      value={row.salutationCode} 
+                      onChange={(v) => updateJointHolder(index, { salutationCode: v })} 
+                      options={SALUTATIONS} 
                     />
                   </FieldShell>
 
-                  <FieldShell label="J/T Holder Name" labelHi="J/T धारकाचे नाव" required error={errors[`jh-${index}-jtHolderName`]}>
-                    <TextInput icon={<User size={16} />} value={row.jtHolderName} onChange={(v) => updateJointHolder(index, { jtHolderName: v })} error={errors[`jh-${index}-jtHolderName`]} />
+                  {/* J/T Holder Customer ID - Using CustomerIdPicklistField */}
+                  <FieldShell 
+                    label="J/T Holder Customer ID" 
+                    labelHi="J/T धारक ग्राहक आयडी"
+                    required
+                    error={errors[`jh-${index}-jtHolderCustomerId`]}
+                  >
+                    <CustomerIdPicklistField
+                      label=""
+                      value={row.jtHolderCustomerId}
+                      placeholder="Select Joint Holder"
+                      onSelect={(customer) => handleJointHolderSelect(index, customer)}
+                      preFetch={false}
+                      pageSize={10}
+                    />
                   </FieldShell>
 
+                  {/* J/T Holder Name */}
+                  <FieldShell 
+                    label="J/T Holder Name" 
+                    labelHi="J/T धारकाचे नाव" 
+                    required 
+                    error={errors[`jh-${index}-jtHolderName`]}
+                  >
+                    <TextInput 
+                      icon={<User size={16} />} 
+                      value={row.jtHolderName} 
+                      onChange={(v) => updateJointHolder(index, { jtHolderName: v })} 
+                      error={errors[`jh-${index}-jtHolderName`]} 
+                    />
+                  </FieldShell>
+
+                  {/* Address 1 */}
                   <FieldShell label="Address 1" labelHi="पत्ता १" required>
-                    <TextInput icon={<Home size={16} />} value={row.address1} onChange={(v) => updateJointHolder(index, { address1: v })} />
+                    <TextInput 
+                      icon={<Home size={16} />} 
+                      value={row.address1} 
+                      onChange={(v) => updateJointHolder(index, { address1: v })} 
+                    />
                   </FieldShell>
 
+                  {/* Address 2 */}
                   <FieldShell label="Address 2" labelHi="पत्ता २" required>
-                    <TextInput icon={<Home size={16} />} value={row.address2} onChange={(v) => updateJointHolder(index, { address2: v })} />
+                    <TextInput 
+                      icon={<Home size={16} />} 
+                      value={row.address2} 
+                      onChange={(v) => updateJointHolder(index, { address2: v })} 
+                    />
                   </FieldShell>
 
+                  {/* Address 3 */}
                   <FieldShell label="Address 3" labelHi="पत्ता ३">
-                    <TextInput icon={<Home size={16} />} value={row.address3} onChange={(v) => updateJointHolder(index, { address3: v })} />
+                    <TextInput 
+                      icon={<Home size={16} />} 
+                      value={row.address3} 
+                      onChange={(v) => updateJointHolder(index, { address3: v })} 
+                    />
                   </FieldShell>
 
+                  {/* Zip */}
                   <FieldShell label="Zip" labelHi="पिन कोड" required error={errors[`jh-${index}-zip`]}>
-                    <TextInput icon={<Hash size={16} />} value={row.zip} onChange={(v) => updateJointHolder(index, { zip: v })} error={errors[`jh-${index}-zip`]} />
+                    <TextInput 
+                      icon={<Hash size={16} />} 
+                      value={row.zip} 
+                      onChange={(v) => updateJointHolder(index, { zip: v })} 
+                      error={errors[`jh-${index}-zip`]} 
+                    />
                   </FieldShell>
 
                   <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateJointHolder(index, { city: city.name })} />
 
-                  <FieldShell label="State" labelHi="राज्य" required>
-                    <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateJointHolder(index, { state: v })} />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateJointHolder(index, { state: s.stateName })}
+                    required
+                  />
 
                   <CountryPicklistField
                     label="Country"
@@ -689,7 +817,10 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
               </button>
               {saveMenuOpen && (
                 <div className="absolute bottom-12 right-0 w-40 rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-800 dark:bg-slate-900">
-                  <button onClick={handleSave} className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-100 dark:hover:bg-slate-800">
+                  <button 
+                    onClick={handleSave} 
+                    className="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-primary-50 dark:text-slate-100 dark:hover:bg-slate-800"
+                  >
                     Save
                   </button>
                   <button

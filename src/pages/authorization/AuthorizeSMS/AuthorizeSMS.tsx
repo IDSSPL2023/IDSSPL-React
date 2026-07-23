@@ -273,7 +273,7 @@ export default function AuthorizeSMS() {
   const grid4 = "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4";
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] p-4">
+    <div className="min-h-screen app-page-bg p-4">
       <div className="mx-auto max-w-[1600px]">
         {/* Header */}
         <div className="mb-4 flex items-center gap-3">

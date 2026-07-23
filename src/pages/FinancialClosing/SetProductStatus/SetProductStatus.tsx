@@ -1,11 +1,12 @@
-import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
-import { Check, X, ChevronDown, MoreVertical, PlusCircle, SquarePen, UserRound, ThumbsUp, Landmark, FileText, Hash, Calendar, Eye, SquarePenIcon, Plus } from "lucide-react";
+import { useState, useEffect, useMemo, forwardRef, useImperativeHandle, useRef } from "react";
+import { Check, X, ChevronDown, MoreVertical, PlusCircle, SquarePen, UserRound, ThumbsUp, Landmark, FileText, Hash, Calendar, Eye, SquarePenIcon, Filter, Search } from "lucide-react";
 import ListModal from "@/components/AccountMaster/ListModal";
 import SuccessModal from "@/components/shared/SuccessModal";
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu, { type RowActionMenuItem } from "@/components/shared/RowActionMenu";
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import NavbarAM from "@/components/UserMaster/NavbarAM";
+import ModalCloseButton from "@/components/common/ModalCloseButton";
 
 /* ===== from SetProductStatusModal.tsx ===== */
 type SetProductStatusModal_Mode = "add" | "view" | "edit";
@@ -231,13 +232,7 @@ function SetProductStatusModal({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-          >
-            <X size={18} strokeWidth={2.5} />
-          </button>
+          <ModalCloseButton onClose={() => onClose?.()} />
         </div>
 
         {/* Form */}
@@ -400,7 +395,7 @@ function SetProductStatusModal({
                   onClick={() => isValidated && setSaveMenuOpen((o) => !o)}
                   className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
                     isValidated
-                      ? "bg-primary-100 text-primary hover:bg-primary-200"
+                      ? "bg-primary text-white hover:bg-primary-700"
                       : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-500"
                   }`}
                 >
@@ -454,9 +449,139 @@ function SetProductStatusModal({
 }
 
 
+/* ===== SetProductStatus filter/search ===== */
+export interface SetProductStatusFilters {
+  query: string;
+  interestFlag: "" | "Yes" | "No";
+}
+
+export const SetProductStatusFilters_DEFAULT: SetProductStatusFilters = {
+  query: "",
+  interestFlag: "",
+};
+
+export const setProductStatusHasActiveFilters = (filters: SetProductStatusFilters): boolean =>
+  Boolean(filters.query.trim() || filters.interestFlag);
+
+export const setProductStatusActiveFilterSummary = (filters: SetProductStatusFilters): string => {
+  const active: string[] = [];
+  if (filters.query.trim()) active.push(`"${filters.query.trim()}"`);
+  if (filters.interestFlag) active.push(`Interest Flag: ${filters.interestFlag}`);
+  return active.join(", ");
+};
+
+function SetProductStatusFilterModal({
+  open,
+  initialValues,
+  onClose,
+  onApply,
+}: {
+  open: boolean;
+  initialValues: SetProductStatusFilters;
+  onClose: () => void;
+  onApply: (filters: SetProductStatusFilters) => void;
+}) {
+  const [values, setValues] = useState<SetProductStatusFilters>(initialValues);
+
+  useEffect(() => {
+    if (open) setValues(initialValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  if (!open) return null;
+
+  const handleClearAll = () => {
+    setValues(SetProductStatusFilters_DEFAULT);
+    onApply(SetProductStatusFilters_DEFAULT);
+    onClose();
+  };
+
+  const handleApply = () => {
+    onApply(values);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-900">
+        <div className="flex items-start justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EEF4FF] text-primary dark:bg-primary-950/40">
+              <Filter size={20} />
+            </div>
+            <h2 className="text-lg font-semibold text-[#1C398E] dark:text-slate-100">Filter Products</h2>
+          </div>
+          <ModalCloseButton onClose={onClose} />
+        </div>
+
+        <div className="mt-4 space-y-4">
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-black dark:text-slate-100">
+              Product Code / Description
+            </label>
+            <div className="flex h-11 items-center gap-2 rounded-lg border border-[#B8C2D6] bg-white px-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:border-slate-700 dark:bg-slate-900">
+              <Search size={16} className="shrink-0 text-slate-400" />
+              <input
+                type="text"
+                value={values.query}
+                onChange={(e) => setValues((prev) => ({ ...prev, query: e.target.value }))}
+                placeholder="Search product code or description"
+                className="w-full bg-transparent text-sm text-slate-700 outline-none dark:text-slate-100"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-black dark:text-slate-100">
+              Interest Flag
+            </label>
+            <div className="flex items-center gap-4">
+              {(["", "Yes", "No"] as const).map((opt) => (
+                <label
+                  key={opt || "all"}
+                  className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200"
+                >
+                  <input
+                    type="radio"
+                    name="interestFlag"
+                    checked={values.interestFlag === opt}
+                    onChange={() => setValues((prev) => ({ ...prev, interestFlag: opt }))}
+                    className="h-4 w-4"
+                    style={{ accentColor: "#1F67F4" }}
+                  />
+                  {opt || "All"}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={handleClearAll}
+            className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+          >
+            Clear All
+          </button>
+          <button
+            type="button"
+            onClick={handleApply}
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 /* ===== from SetProductStatusTable.tsx ===== */
 interface SetProductStatusTable_ProductRow {
   sr: number;
+  accountType: "loan" | "deposit";
   productCode: string;
   description: string;
   interestApplyDate: string;
@@ -472,7 +597,8 @@ const SetProductStatusTable_columns = [
   { key: "interestFlag", label: "Interest Flag" },
 ];
 
-const SetProductStatusTable = forwardRef<{ handleAdd: () => void }>((_, ref) => {
+const SetProductStatusTable = forwardRef<{ handleAdd: () => void }, { filters: SetProductStatusFilters }>(
+  ({ filters }, ref) => {
   const [accountType, setAccountType] = useState("loan");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "view" | "edit">("add");
@@ -489,13 +615,26 @@ const SetProductStatusTable = forwardRef<{ handleAdd: () => void }>((_, ref) => 
   }));
 
   // Sample data - replace with actual data from API
-  const products: SetProductStatusTable_ProductRow[] = [
-    { sr: 1, productCode: "L001", description: "Personal Loan", interestApplyDate: "01-Jan-2026", interestFlag: "Yes" },
-    { sr: 2, productCode: "L002", description: "Home Loan", interestApplyDate: "15-Jan-2026", interestFlag: "Yes" },
-    { sr: 3, productCode: "D001", description: "Fixed Deposit", interestApplyDate: "10-Jan-2026", interestFlag: "Yes" },
-    { sr: 4, productCode: "D002", description: "Recurring Deposit", interestApplyDate: "20-Jan-2026", interestFlag: "No" },
-    { sr: 5, productCode: "L003", description: "Car Loan", interestApplyDate: "05-Jan-2026", interestFlag: "Yes" },
+  const allProducts: SetProductStatusTable_ProductRow[] = [
+    { sr: 1, accountType: "loan", productCode: "L001", description: "Personal Loan", interestApplyDate: "01-Jan-2026", interestFlag: "Yes" },
+    { sr: 2, accountType: "loan", productCode: "L002", description: "Home Loan", interestApplyDate: "15-Jan-2026", interestFlag: "Yes" },
+    { sr: 3, accountType: "deposit", productCode: "D001", description: "Fixed Deposit", interestApplyDate: "10-Jan-2026", interestFlag: "Yes" },
+    { sr: 4, accountType: "deposit", productCode: "D002", description: "Recurring Deposit", interestApplyDate: "20-Jan-2026", interestFlag: "No" },
+    { sr: 5, accountType: "loan", productCode: "L003", description: "Car Loan", interestApplyDate: "05-Jan-2026", interestFlag: "Yes" },
   ];
+
+  const products = useMemo(() => {
+    const query = filters.query.trim().toLowerCase();
+    return allProducts.filter((row) => {
+      if (row.accountType !== accountType) return false;
+      if (filters.interestFlag && row.interestFlag !== filters.interestFlag) return false;
+      if (query && !row.productCode.toLowerCase().includes(query) && !row.description.toLowerCase().includes(query)) {
+        return false;
+      }
+      return true;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountType, filters]);
 
   const handleView = (row: SetProductStatusTable_ProductRow) => {
     setModalMode("view");
@@ -606,7 +745,7 @@ const SetProductStatusTable = forwardRef<{ handleAdd: () => void }>((_, ref) => 
 
       {products.length === 0 && (
         <div className="py-10 text-center text-slate-500 dark:text-slate-400">
-          No products found for this account type.
+          No products found for this account type and filter.
         </div>
       )}
 
@@ -640,12 +779,14 @@ interface Breadcrumb {
 
 const SetProductStatusPage = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [filters, setFilters] = useState<SetProductStatusFilters>(SetProductStatusFilters_DEFAULT);
   const tableRef = useRef<{ handleAdd: () => void }>(null);
 
   const breadcrumbs: Breadcrumb[] = [
     { label: "Home", href: "/" },
-    { label: "MIS Activity", href: "/misactivity" },
-    { label: "Financial Closing", href: "/financial-closing" },
+    { label: "MIS Activity", href: "#" },
+    { label: "Financial Closing", href: "/misactivity/financialclosing" },
     { label: "Set Product Status", href: "#" },
   ];
 
@@ -654,7 +795,7 @@ const SetProductStatusPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] relative dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg relative dark:bg-slate-950">
       <NavbarAM
         titleEn="Set Product Status"
         titleHi="उत्पादनाची स्थिती सेट करा"
@@ -663,13 +804,22 @@ const SetProductStatusPage = () => {
         onAdd={handleAdd}
         isSearchVisible={isSearchVisible}
         onToggleSearch={() => setIsSearchVisible((prev) => !prev)}
-        onOpenFilter={() => {}}
-        onResetFilters={() => {}}
+        onOpenFilter={() => setIsFilterModalOpen(true)}
+        onResetFilters={() => setFilters(SetProductStatusFilters_DEFAULT)}
+        hasActiveFilters={setProductStatusHasActiveFilters(filters)}
+        activeFilterSummary={setProductStatusActiveFilterSummary(filters)}
       />
 
       <div className="px-3 py-2">
-        <SetProductStatusTable ref={tableRef} />
+        <SetProductStatusTable ref={tableRef} filters={filters} />
       </div>
+
+      <SetProductStatusFilterModal
+        open={isFilterModalOpen}
+        initialValues={filters}
+        onClose={() => setIsFilterModalOpen(false)}
+        onApply={setFilters}
+      />
     </div>
   );
 };

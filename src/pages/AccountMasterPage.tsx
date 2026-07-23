@@ -41,7 +41,7 @@ const AccountMasterPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950 relative" >
+    <div className="min-h-screen app-page-bg dark:bg-slate-950 relative" >
       <NavbarAM
         titleEn={en("accountMaster.title")}
         titleHi={t("accountMaster.title")}

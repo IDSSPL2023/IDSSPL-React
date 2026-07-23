@@ -784,7 +784,7 @@ const TlCcInstallmentAuthorizePage = () => {
   const handleResetFilters = () => setFilters(TlCcInstallmentFilterModal_defaultTlCcInstallmentFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="TL/CC Installment Authorize"
         titleHi="TLCC हप्ता मंजूर करणे"

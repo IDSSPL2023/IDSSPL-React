@@ -3,8 +3,9 @@ import {
   Settings, GitBranch, Layers, BookOpen, IdCard, Hash, Users, Home, FileText,
   Shield, Globe, MapPin, Building2, User, Car, type LucideIcon,
 } from "lucide-react";
-import { AppNavbar, WelcomeScreen, FilterModal, SuccessModal, RejectModal } from "@/components/common";
+import { WelcomeScreen, FilterModal, SuccessModal, RejectModal } from "@/components/common";
 import type { FilterFieldDef, FilterValues } from "@/components/common";
+import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import MasterTable from "@/components/GlobalMaster/MasterTable";
 import MasterParameterModal from "@/components/GlobalMaster/MasterParameterModal";
 import {
@@ -92,7 +93,7 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
   const loadStates = useCallback(async () => {
     setTableLoading(true);
     try {
-      const records = await fetchStates();
+      const records = await fetchStates({searchBy: "CODE", textToSearch: ''});
       setTableRows(records.map(mapStateRecordToRow));
     } catch (err) {
       console.error(err);
@@ -198,16 +199,16 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
 
   const breadcrumbs = openMaster
     ? [
-      { label: en("common.home"), href: "/" },
-      { label: en("common.misActivity"), href: "/mis-activity" },
-      { label: en("globalMaster.title"), href: "#", onClick: handleCloseMaster },
-      { label: openMaster.titleEn, href: "#" },
-    ]
+        { label: en("common.home"), href: "/" },
+        { label: en("common.misActivity"), href: "#" },
+        { label: en("globalMaster.title"), href: "#", onClick: handleCloseMaster },
+        { label: openMaster.titleEn, href: "#" },
+      ]
     : [
-      { label: en("common.home"), href: "/" },
-      { label: en("common.misActivity"), href: "/mis-activity" },
-      { label: en("globalMaster.title"), href: "#" },
-    ];
+        { label: en("common.home"), href: "/" },
+        { label: en("common.misActivity"), href: "#" },
+        { label: en("globalMaster.title"), href: "#" },
+      ];
 
   const handleAddSave = async (formData: Record<string, string>) => {
     if (!openMaster) return;
@@ -275,8 +276,8 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
   }, [tileQuery]);
 
   return (
-    <div className="bg-[#E7EAEF] min-h-screen dark:bg-slate-950">
-      <AppNavbar
+    <div className="app-page-bg min-h-screen dark:bg-slate-950">
+      <GlobalNav
         titleEn={openMaster ? openMaster.titleEn : en("globalMaster.title")}
         titleHi={openMaster ? (isEnglish ? undefined : openMaster.titleHi) : t("globalMaster.title")}
         breadcrumbs={breadcrumbs}
@@ -287,9 +288,8 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onRefresh={handleRefresh}
-        hasActiveFilters={activeFilterCount > 0}
-        activeFilterSummary={filterSummary || `${activeFilterCount} filter(s)`}
-        onResetFilters={() => setFilters({})}
+        activeFilterCount={activeFilterCount}
+        filterSummary={filterSummary}
       />
 
       {openMaster ? (

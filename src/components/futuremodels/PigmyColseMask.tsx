@@ -1088,7 +1088,7 @@ export default function PigmyCloseMask() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Pigmy Closing"
         titleHi="पिग्मी बंद करा"

@@ -12,6 +12,10 @@ export interface BaseModalProps {
   size?: ModalSize;
   /** Exact pixel max-width, for targets that don't match a `size` preset (e.g. PicklistModal's 841px). Overrides `size`. */
   maxWidthPx?: number;
+  /** Exact pixel max-height for dynamic height control */
+  maxHeightPx?: number;
+  /** Exact pixel min-height for dynamic height control */
+  minHeightPx?: number;
   /** Extra classes merged onto the dialog card (width/radius/border/shadow overrides). */
   contentClassName?: string;
   /** Extra classes merged onto the fixed backdrop (e.g. blur). */

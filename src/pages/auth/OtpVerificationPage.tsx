@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "@/components/ui/Image";
+import { IMAGES } from "@/assets";
 import { useRouter, useSearchParams } from "@/lib/navigation";
 import { STATIC_LOGIN_ID, STATIC_OTP, createAuthSession } from "@/lib/auth";
 import AuthLayout from "@/layouts/AuthLayout";
@@ -86,7 +87,7 @@ const OtpVerificationPage = () => {
       <div className="flex flex-col justify-center items-center px-[54px] py-10 gap-2.5 w-[557px] h-[433px] bg-gradient-to-br from-white to-[#EAF8FB] shadow-[0px_10px_32px_rgba(0,0,0,0.15)] rounded-[22px] mt-8 dark:from-slate-900 dark:to-slate-900">
         <div className="flex flex-col items-center gap-2.5 w-[412px] h-[369px]">
           <Image
-            src="/Sidebar/Icon.png"
+            src={IMAGES.MESSAGE}
             alt="otp-icon"
             width={82}
             height={82}

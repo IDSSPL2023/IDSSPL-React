@@ -29,7 +29,7 @@ const AccountClosingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn={en("sidebar.accountClosing")}
         titleHi={t("sidebar.accountClosing")}

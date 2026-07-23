@@ -1,6 +1,7 @@
 // components/shared/ModalWrapper.tsx
 import React from "react";
-import { X, LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
+import ModalCloseButton from "@/components/common/ModalCloseButton";
 
 export interface ModalButton {
   label: string;
@@ -204,13 +205,7 @@ const ModalWrapperWithHeader = ({
               </div>
             </div>
             {showCloseButton && (headerOnClose || onClose) && (
-              <button
-                type="button"
-                onClick={headerOnClose || onClose}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-              >
-                <X size={18} strokeWidth={2.5} />
-              </button>
+              <ModalCloseButton onClose={headerOnClose || onClose!} />
             )}
           </div>
         </div>

@@ -1078,7 +1078,7 @@ export default function AssignUserRole() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarAUR
         titleEn="Assign User Role"
         titleHi="कस्टमर मास्टर"

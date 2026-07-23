@@ -7,7 +7,7 @@ const TLOtherChargesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <GlobalNav
         titleEn="TL Other Charges"
         titleHi="मुदत कर्जाचे इतर शुल्क / इतर आकार"

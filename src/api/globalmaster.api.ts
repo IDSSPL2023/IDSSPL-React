@@ -68,9 +68,19 @@ export interface StateRecord {
   stateName: string;
 }
 
-/** GET /master/states — browse returning stateCode, countryCode, stateName. */
-export async function fetchStates(): Promise<StateRecord[]> {
-  const response = await fetch(`${BASE_URL}/master/states`);
+export interface StateSearchParams {
+  searchBy?: "CODE" | "NAME" | "STATE_NAME" | "COUNTRY_CODE";
+  textToSearch?: string;
+}
+
+/** POST /states/search — empty textToSearch returns every state; used for the State Master table. */
+export async function fetchStates(params: StateSearchParams = {}): Promise<StateRecord[]> {
+  const { searchBy = "NAME", textToSearch = "" } = params;
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/states/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy, textToSearch }),
+  });
   if (!response.ok) throw new Error(`Failed to load states (${response.status})`);
   const data = await parseJson(response);
   return extractList(data).map((item) => ({

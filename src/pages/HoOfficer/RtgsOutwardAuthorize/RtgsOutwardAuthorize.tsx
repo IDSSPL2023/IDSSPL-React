@@ -592,7 +592,7 @@ const RtgsOutwardAuthorizePage = () => {
   const handleResetFilters = () => setFilters(RtgsOutwardFilterModal_defaultRtgsOutwardFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="RTGS Outward File Generation Authorize"
         titleHi="RTGS आउटवर्ड फाइल जनरेशन अधिकृत करणे"

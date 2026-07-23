@@ -1,4 +1,5 @@
 import { useState } from "react";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import CityPicklistField from "@/components/common/CityPicklistField";
 import {
   User,
@@ -748,9 +749,16 @@ function AddPigmyDepositForm({ onClose }: AddPigmyDepositFormProps) {
                     <CityPicklistField label="" icon={<Building2 size={16} />} value={pincodeLoadingKey === `nom.${index}` ? "Loading..." : row.city} onSelect={(city) => updateNominee(index, { city: city.name })} error={errors[`nom.${index}.city`]} />
                   </FieldShell>
 
-                  <FieldShell label="State" labelHi="राज्य" required error={!!errors[`nom.${index}.state`]}>
-                    <TextInput icon={<MapPin size={16} />} value={row.state} onChange={() => {}} readOnly placeholder="State" error={!!errors[`nom.${index}.state`]} />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateNominee(index, { state: s.stateName })}
+                    placeholder="Select State"
+                    required
+                    error={errors[`nom.${index}.state`]}
+                  />
 
                   <FieldShell label="Country" labelHi="देश" required error={!!errors[`nom.${index}.country`]}>
                     <TextInput icon={<Flag size={16} />} value={row.country} onChange={() => {}} readOnly placeholder="Country" error={!!errors[`nom.${index}.country`]} />
@@ -846,9 +854,16 @@ function AddPigmyDepositForm({ onClose }: AddPigmyDepositFormProps) {
                   <CityPicklistField label="" icon={<Building2 size={16} />} value={pincodeLoadingKey === "jh" ? "Loading..." : jointHolder.city} onSelect={(city) => setJH({ city: city.name })} error={errors["jh.city"]} />
                 </FieldShell>
 
-                <FieldShell label="State" labelHi="राज्य" required error={!!errors["jh.state"]}>
-                  <TextInput icon={<MapPin size={16} />} value={jointHolder.state} onChange={() => {}} readOnly placeholder="State" error={!!errors["jh.state"]} />
-                </FieldShell>
+                <StatePicklistField
+                  label="State"
+                  labelHi="राज्य"
+                  icon={<MapPin size={16} />}
+                  value={jointHolder.state}
+                  onSelect={(s) => setJH({ state: s.stateName })}
+                  placeholder="Select State"
+                  required
+                  error={errors["jh.state"]}
+                />
 
                 <FieldShell label="Country" labelHi="देश" required>
                   <TextInput icon={<Flag size={16} />} value={jointHolder.country} onChange={() => {}} readOnly placeholder="Country" />

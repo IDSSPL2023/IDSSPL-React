@@ -203,6 +203,7 @@ const TdCalculatePage = () => {
   }, [openingDate, product, rate, depositAmount, unitOfPeriod])
 
   return (
+    <div className="min-h-screen app-page-bg px-3 py-4 dark:bg-slate-950">
     <div className="relative w-full max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-2xl p-8">
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
@@ -348,6 +349,7 @@ const TdCalculatePage = () => {
           onClose={() => setShowSubProductList(false)}
         />
       )}
+    </div>
     </div>
   )
 }

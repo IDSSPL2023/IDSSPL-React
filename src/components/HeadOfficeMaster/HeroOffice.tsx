@@ -154,7 +154,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
             />
             <button
               type="button"
-              className="bg-primary-700 hover:bg-primary-800 text-white text-sm font-medium rounded-md px-5 py-2 transition-colors"
+              className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
             >
               Show
             </button>

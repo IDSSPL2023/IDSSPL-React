@@ -661,7 +661,7 @@ export default function TlClosePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarCM
         titleEn="TL/CC ClosQer"
         titleHi="मुदत कर्ज वितरण"
