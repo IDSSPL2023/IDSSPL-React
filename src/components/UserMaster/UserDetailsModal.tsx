@@ -5,8 +5,8 @@ import { User, IdCard, Building2, Phone, Mail, Home, Flag, Check, X, ChevronDown
 import Image from "@/components/ui/Image";
 import FormModal from "../shared/FormModal";
 import { FieldShell, TextInput, RadioYesNo, SectionCard } from "../shared/FormFields";
-import CustomerIdPickerModal, { type Customer } from "../common/CustomerPickListModal";
 import BranchListPickerModal, { type Branch } from "../common/BranchPickListModal";
+import CustomerIdPicklistField, { CustomerOption } from "../common/CustomerIdPicklistField";
 import { CountryPicklistField } from "../common";
 
 /* ===================== Shared types ===================== */
@@ -111,7 +111,6 @@ export default function UserDetailsModal({
   onReject,
 }: UserDetailsModalProps) {
   const [data, setData] = useState<UserFormData>({ ...DEFAULT_DATA, ...initialData });
-  const [customerPickerOpen, setCustomerPickerOpen] = useState<boolean>(false);
   const [branchPickerOpen, setBranchPickerOpen] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isValidated, setIsValidated] = useState(false);
@@ -141,6 +140,15 @@ export default function UserDetailsModal({
       setData((prev) => ({ ...prev, [key]: val }));
       clearError(key);
     };
+
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    setData((prev) => ({
+      ...prev,
+      customerId: customer.customerId,
+    }));
+    clearError("customerId");
+  };
 
   const validate = (): boolean => {
     const nextErrors: Record<string, string> = {};
@@ -323,32 +331,23 @@ export default function UserDetailsModal({
             </FieldShell>
 
             <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
-              {isEdit && data.existingCustomer ? (
-                <div className="flex items-center gap-2">
-                  <div className="min-w-0 flex-1">
-                    <TextInput
-                      icon={<IdCard size={16} />}
-                      value={data.customerId}
-                      onChange={() => {}}
-                      readOnly
-                      error={!!errors.customerId}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setCustomerPickerOpen(true)}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary-50 text-primary hover:bg-primary-100"
-                  >
-                    <MoreVertical size={14} />
-                  </button>
-                </div>
+              {isEdit ? (
+                <CustomerIdPicklistField
+                  label=""
+                  value={data.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerSelect}
+                  preFetch={false}
+                  pageSize={10}
+                  error={errors.customerId || ""}
+                />
               ) : (
                 <TextInput
                   icon={<IdCard size={16} />}
                   value={data.customerId}
-                  onChange={set("customerId")}
+                  onChange={() => {}}
                   placeholder="Enter Customer ID"
-                  readOnly={isView}
+                  readOnly
                   error={!!errors.customerId}
                 />
               )}
@@ -531,20 +530,13 @@ export default function UserDetailsModal({
       </FormModal>
 
       {isEdit && (
-        <>
-          <CustomerIdPickerModal
-            open={customerPickerOpen}
-            onClose={() => setCustomerPickerOpen(false)}
-            onSelect={(customer: Customer) => setData((prev) => ({ ...prev, customerId: customer.id }))}
-          />
-          <BranchListPickerModal
-            open={branchPickerOpen}
-            onClose={() => setBranchPickerOpen(false)}
-            onSelect={(branch: Branch) =>
-              setData((prev) => ({ ...prev, branchCode: branch.code, branchName: branch.name }))
-            }
-          />
-        </>
+        <BranchListPickerModal
+          open={branchPickerOpen}
+          onClose={() => setBranchPickerOpen(false)}
+          onSelect={(branch: Branch) =>
+            setData((prev) => ({ ...prev, branchCode: branch.code, branchName: branch.name }))
+          }
+        />
       )}
     </>
   );

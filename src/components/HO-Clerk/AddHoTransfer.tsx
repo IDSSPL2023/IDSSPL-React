@@ -24,6 +24,7 @@ import {
 } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
+import CustomerIdPicklistField, { type CustomerOption } from "../common/CustomerIdPicklistField";
 
 type PickRow = { code: string; name: string };
 
@@ -311,6 +312,17 @@ const AddHoTransfer = ({
     setForm((f) => ({ ...f, [field]: value }));
   };
 
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    markDirty("customerId");
+    markDirty("customerName");
+    setForm((f) => ({
+      ...f,
+      customerId: customer.customerId,
+      customerName: customer.customerName,
+    }));
+  };
+
   const handlePickRow = (row: PickRow) => {
     if (!activePicker) return;
     const { codeField, nameField } = PICKER_CONFIG[activePicker];
@@ -482,7 +494,15 @@ const AddHoTransfer = ({
             </FieldShell>
 
             <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={errors.customerId}>
-              <TextInput icon={<Hash size={16} />} value={form.customerId} onChange={() => {}} readOnly error={errors.customerId} />
+              <CustomerIdPicklistField
+                label=""
+                value={form.customerId}
+                placeholder="Select Customer"
+                onSelect={handleCustomerSelect}
+                preFetch={false}
+                pageSize={10}
+                error={errors.customerId ? "This field is required" : ""}
+              />
             </FieldShell>
 
             <FieldShell label="Customer Name" labelHi="ग्राहकाचे नाव" required error={errors.customerName}>

@@ -1,20 +1,44 @@
 import { IMAGES } from "@/assets";
 import { useState } from "react";
 import CityPicklistField from "@/components/common/CityPicklistField";
-import { User, IdCard, Building2, Phone, Mail, Home, Flag, Check, X, ChevronDown, MoreVertical } from "lucide-react";
+import {
+  User,
+  IdCard,
+  Building2,
+  Phone,
+  Mail,
+  Home,
+  Flag,
+  Check,
+  X,
+  ChevronDown,
+  MoreVertical,
+  UserRound,
+} from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "@/components/shared/FormModal";
-import { FieldShell, TextInput, RadioYesNo, SectionCard } from "@/components/shared/FormFields";
-import CustomerIdPickerModal from "@/components/common/CustomerPickListModal";
+import {
+  FieldShell,
+  TextInput,
+  RadioYesNo,
+  SectionCard,
+} from "@/components/shared/FormFields";
 import BranchListPickerModal from "@/components/common/BranchPickListModal";
 import SuccessModal from "@/components/shared/SuccessModal";
 import { fetchPincodeDetails } from "@/lib/pincode";
 import UserMasterTable from "@/components/UserMaster/UserMasterTable";
 import { AppNavbar, FilterModal, CountryPicklistField } from "@/components/common";
-import { type UserFilters, defaultValues } from "@/components/UserMaster/FilterModal";
+import {
+  type UserFilters,
+  defaultValues,
+} from "@/components/UserMaster/FilterModal";
 import { userFilterFields } from "@/components/UserMaster/userFilterFields";
 import { useBilingual } from "@/i18n/useBilingual";
-import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
+import {
+  hasActiveFilters,
+  getActiveFilterSummary,
+} from "@/components/shared/filterSummary";
+import CustomerIdPicklistField, { type CustomerOption } from "@/components/common/CustomerIdPicklistField";
 
 /* ===== from AddUserMaster.tsx ===== */
 /* ===================== AddUserMaster_AddUserForm ===================== */
@@ -23,13 +47,21 @@ interface AddUserMaster_AddUserFormProps {
   onClose?: () => void;
 }
 
-function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) {
+function AddUserMaster_AddUserForm({
+  onClose,
+}: AddUserMaster_AddUserFormProps) {
   const [existingCustomer, setExistingCustomer] = useState<boolean>(true);
   const [isTeller, setIsTeller] = useState<boolean>(true);
   const [isMainCashier, setIsMainCashier] = useState<boolean>(false);
   const [isSupportUser, setIsSupportUser] = useState<boolean>(false);
-  const [customerId, setCustomerId] = useState<string>("010");
-  const [customerPickerOpen, setCustomerPickerOpen] = useState<boolean>(false);
+
+  // Customer related state
+  const [customerId, setCustomerId] = useState<string>("");
+  const [customerName, setCustomerName] = useState<string>("");
+  const [customerAddress1, setCustomerAddress1] = useState<string>("");
+  const [customerAddress2, setCustomerAddress2] = useState<string>("");
+  const [customerPhone, setCustomerPhone] = useState<string>("");
+
   const [branchCode, setBranchCode] = useState<string>("0002");
   const [branchName, setBranchName] = useState<string>("Main Branch, Bilagi");
   const [branchPickerOpen, setBranchPickerOpen] = useState<boolean>(false);
@@ -62,10 +94,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
 
     if (!userId.trim()) nextErrors.userId = "User Id is required";
     if (!userName.trim()) nextErrors.userName = "User Name is required";
-     if (!existingCustomer && !customerId.trim()) {
+    if (existingCustomer && !customerId.trim()) {
       nextErrors.customerId = "Customer Id is required";
     }
-    if (!employeeCode.trim()) nextErrors.employeeCode = "Employee Code is required";
+    if (!employeeCode.trim())
+      nextErrors.employeeCode = "Employee Code is required";
     if (!branchCode.trim()) nextErrors.branchCode = "Branch Code is required";
     if (!mobileNumber.trim()) {
       nextErrors.mobileNumber = "Mobile Number is required";
@@ -78,7 +111,8 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
       nextErrors.emailId = "Enter a valid email address";
     }
 
-    if (!currentAddress1.trim()) nextErrors.currentAddress1 = "Current Address 1 is required";
+    if (!currentAddress1.trim())
+      nextErrors.currentAddress1 = "Current Address 1 is required";
     if (!zip.trim()) {
       nextErrors.zip = "Pin code is required";
     } else if (!/^\d{6}$/.test(zip.trim())) {
@@ -115,15 +149,34 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
     }
   };
 
-  const handleValidate = () => {
-  const isValid = validate();
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    setCustomerId(customer.customerId);
+    setCustomerName(customer.customerName);
+    setCustomerAddress1(customer.address1);
+    setCustomerAddress2(customer.address2);
+    setCustomerPhone(customer.phoneMobile);
 
-  if (isValid) {
-    setIsValidated(true);
-  } else {
-    setIsValidated(false);
-  }
-};
+    // Auto-fill address fields if customer is selected and addresses are empty
+    if (customer.address1 && !currentAddress1) {
+      setCurrentAddress1(customer.address1);
+    }
+    if (customer.address2 && !currentAddress2) {
+      setCurrentAddress2(customer.address2);
+    }
+
+    clearError("customerId");
+  };
+
+  const handleValidate = () => {
+    const isValid = validate();
+
+    if (isValid) {
+      setIsValidated(true);
+    } else {
+      setIsValidated(false);
+    }
+  };
+
   const handleSave = () => {
     if (!isValidated) return;
     setShowSuccess(true);
@@ -217,7 +270,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter User ID"
                 error={!!errors.userId}
               />
-              {errors.userId && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.userId}</p>}
+              {errors.userId && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.userId}
+                </p>
+              )}
             </FieldShell>
 
             <FieldShell label="User Name" labelHi="वापरकर्त्याचे नाव" required>
@@ -231,51 +288,29 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter User Name"
                 error={!!errors.userName}
               />
-              {errors.userName && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.userName}</p>}
+              {errors.userName && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.userName}
+                </p>
+              )}
             </FieldShell>
 
-            {/* <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
-              <TextInput
-                icon={<IdCard size={16} />}
-                value={customerId}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter Customer ID"
-                error={!!errors.customerId}
-                trailing={
-                  <button
-                    type="button"
-                    onClick={() => setCustomerPickerOpen(true)}
-                    className="flex h-7 w-7 items-center justify-center rounded-md bg-primary-50 text-primary hover:bg-primary-100"
-                  >
-                    <MoreVertical size={14} />
-                  </button>
-                }
-              />
-              {errors.customerId && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.customerId}</p>}
-            </FieldShell> */}
-
-             <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
+            {/* Customer ID Field with Picklist */}
+            <FieldShell label="Customer" labelHi="ग्राहक" required>
               {existingCustomer ? (
-                <div className="flex items-center gap-2">
-                  <div className="min-w-0 flex-1">
-                    <TextInput
-                      icon={<IdCard size={16} />}
-                      value={customerId}
-                      onChange={() => {}}
-                      readOnly
-                      placeholder="Enter Customer ID"
-                      error={!!errors.customerId}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setCustomerPickerOpen(true)}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary-50 text-primary hover:bg-primary-100"
-                  >
-                    <MoreVertical size={14} />
-                  </button>
-                </div>
+                <CustomerIdPicklistField
+                  label=""
+                  labelHi=""
+                  icon={<UserRound size={18} />}
+                  value={customerId}
+                  onSelect={handleCustomerSelect}
+                  preFetch={true}
+                  error={
+                    errors.customerId ? "This field is required" : undefined
+                  }
+                  placeholder="Search and select customer"
+                  pageSize={3}
+                />
               ) : (
                 <TextInput
                   icon={<IdCard size={16} />}
@@ -288,7 +323,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                   error={!!errors.customerId}
                 />
               )}
-              {errors.customerId && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.customerId}</p>}
+              {errors.customerId && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.customerId}
+                </p>
+              )}
             </FieldShell>
 
             <FieldShell label="Employee Code" labelHi="कर्मचारी कोड" required>
@@ -302,7 +341,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter Employee Code"
                 error={!!errors.employeeCode}
               />
-              {errors.employeeCode && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.employeeCode}</p>}
+              {errors.employeeCode && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.employeeCode}
+                </p>
+              )}
             </FieldShell>
           </div>
 
@@ -327,12 +370,21 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                   <MoreVertical size={14} />
                 </button>
               </div>
-              {errors.branchCode && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.branchCode}</p>}
+              {errors.branchCode && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.branchCode}
+                </p>
+              )}
             </FieldShell>
-           
 
             <FieldShell label="Branch Name" labelHi="शाखेचे नाव" required>
-              <TextInput icon={<Building2 size={16} />} value={branchName} onChange={() => {}} readOnly placeholder="Main Branch, Bilagi" />
+              <TextInput
+                icon={<Building2 size={16} />}
+                value={branchName}
+                onChange={() => {}}
+                readOnly
+                placeholder="Main Branch, Bilagi"
+              />
             </FieldShell>
 
             <FieldShell label="Mobile Number" labelHi="मोबाईल नंबर" required>
@@ -346,7 +398,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter Mobile Number"
                 error={!!errors.mobileNumber}
               />
-              {errors.mobileNumber && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.mobileNumber}</p>}
+              {errors.mobileNumber && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.mobileNumber}
+                </p>
+              )}
             </FieldShell>
 
             <FieldShell label="Email ID" labelHi="ईमेल आयडी" required>
@@ -360,7 +416,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter Email ID"
                 error={!!errors.emailId}
               />
-              {errors.emailId && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.emailId}</p>}
+              {errors.emailId && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.emailId}
+                </p>
+              )}
             </FieldShell>
           </div>
         </SectionCard>
@@ -374,7 +434,11 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
           icon={IMAGES.ADDRESS}
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <FieldShell label="Current Address 1" labelHi="सध्याचा पत्ता १" required>
+            <FieldShell
+              label="Current Address 1"
+              labelHi="सध्याचा पत्ता १"
+              required
+            >
               <TextInput
                 icon={<Home size={16} />}
                 value={currentAddress1}
@@ -385,13 +449,27 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter Current Address 1"
                 error={!!errors.currentAddress1}
               />
-              {errors.currentAddress1 && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.currentAddress1}</p>}
+              {errors.currentAddress1 && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.currentAddress1}
+                </p>
+              )}
             </FieldShell>
             <FieldShell label="Current Address 2" labelHi="सध्याचा पत्ता २">
-              <TextInput icon={<Home size={16} />} value={currentAddress2} onChange={setCurrentAddress2} placeholder="Enter Current Address 2" />
+              <TextInput
+                icon={<Home size={16} />}
+                value={currentAddress2}
+                onChange={setCurrentAddress2}
+                placeholder="Enter Current Address 2"
+              />
             </FieldShell>
             <FieldShell label="Current Address 3" labelHi="सध्याचा पत्ता ३">
-              <TextInput icon={<Home size={16} />} value={currentAddress3} onChange={setCurrentAddress3} placeholder="Enter Current Address 3" />
+              <TextInput
+                icon={<Home size={16} />}
+                value={currentAddress3}
+                onChange={setCurrentAddress3}
+                placeholder="Enter Current Address 3"
+              />
             </FieldShell>
           </div>
 
@@ -409,15 +487,30 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
                 placeholder="Enter Pin Code"
                 error={!!errors.zip}
               />
-              {errors.zip && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.zip}</p>}
+              {errors.zip && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.zip}
+                </p>
+              )}
             </FieldShell>
             <FieldShell label="City" labelHi="शहरे" required>
               <CityPicklistField label="" icon={<Building2 size={16} />} value={city} onSelect={(selectedCity) => setCity(selectedCity.name)} error={errors.city} />
               {errors.city && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.city}</p>}
             </FieldShell>
             <FieldShell label="State" labelHi="राज्य" required>
-              <TextInput icon={<Building2 size={16} />} value={state} onChange={() => {}} readOnly placeholder="Select State" error={!!errors.state} />
-              {errors.state && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.state}</p>}
+              <TextInput
+                icon={<Building2 size={16} />}
+                value={state}
+                onChange={() => {}}
+                readOnly
+                placeholder="Select State"
+                error={!!errors.state}
+              />
+              {errors.state && (
+                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                  {errors.state}
+                </p>
+              )}
             </FieldShell>
             <CountryPicklistField
               label="Country"
@@ -444,23 +537,29 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
           icon={IMAGES.ROLES}
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <RadioYesNo label="Is Teller" labelHi="टेलर आहे का" value={isTeller} onChange={setIsTeller} />
-            <RadioYesNo label="Is Main Cashier" labelHi="मुख्य कॅशियर आहे का" value={isMainCashier} onChange={setIsMainCashier} />
-            <RadioYesNo label="Is Support User" labelHi="सपोर्ट वापरकर्ता आहे का" value={isSupportUser} onChange={setIsSupportUser} />
+            <RadioYesNo
+              label="Is Teller"
+              labelHi="टेलर आहे का"
+              value={isTeller}
+              onChange={setIsTeller}
+            />
+            <RadioYesNo
+              label="Is Main Cashier"
+              labelHi="मुख्य कॅशियर आहे का"
+              value={isMainCashier}
+              onChange={setIsMainCashier}
+            />
+            <RadioYesNo
+              label="Is Support User"
+              labelHi="सपोर्ट वापरकर्ता आहे का"
+              value={isSupportUser}
+              onChange={setIsSupportUser}
+            />
           </div>
         </SectionCard>
 
         {footer}
       </FormModal>
-
-      <CustomerIdPickerModal
-        open={customerPickerOpen}
-        onClose={() => setCustomerPickerOpen(false)}
-        onSelect={(customer) => {
-          setCustomerId(customer.id);
-          clearError("customerId");
-        }}
-      />
 
       <BranchListPickerModal
         open={branchPickerOpen}
@@ -487,7 +586,6 @@ function AddUserModal({ open, onClose }: AddUserMaster_AddUserModalProps) {
 
   return <AddUserMaster_AddUserForm onClose={onClose} />;
 }
-
 
 /* ===== from UserMasterPage.tsx ===== */
 interface Breadcrumb {

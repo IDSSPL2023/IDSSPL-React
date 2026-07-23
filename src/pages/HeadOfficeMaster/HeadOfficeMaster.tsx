@@ -153,43 +153,43 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
   }, []);
 
   const handleOpenMaster = useCallback(
-    (master: MasterItem) => {
+    async (master: MasterItem) => {
       setOpenMaster(master);
       setFilters({});
 
+      if (master.key === "defaultBranchAccounts") {
+        setTableRows([]);
+        await loadDefaultBranchAccounts();
+        return;
+      }
+
       if (master.key === "clearingType") {
         setTableRows([]);
-        loadClearingTypes();
+        await loadClearingTypes();
         return;
       }
 
       if (master.key === "productMaster") {
         setTableRows([]);
-        loadProducts();
+        await loadProducts();
         return;
       }
 
       if (master.key === "tdInterestRate") {
         setTableRows([]);
-        loadTdInterestRates();
+        await loadTdInterestRates();
         return;
       }
 
       if (master.key === "installmentType") {
         setTableRows([]);
-        loadInstallmentTypes();
+        await loadInstallmentTypes();
         return;
       }
 
       if (master.key === "instrumentType") {
         setTableRows([]);
-        loadInstrumentTypes();
-        return;
-      }
-
-      if (master.key === "defaultBranchAccounts") {
-        setTableRows([]);
-        loadDefaultBranchAccounts();
+        await loadInstrumentTypes();
         return;
       }
 
@@ -202,9 +202,10 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
   useEffect(() => {
     if (!initialMasterKey) return;
     const master = MASTERS.find((m) => m.key === initialMasterKey);
-    if (master) handleOpenMaster(master);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialMasterKey]);
+    if (master) {
+      handleOpenMaster(master);
+    }
+  }, [initialMasterKey, handleOpenMaster]);
 
   const handleCloseMaster = useCallback(() => {
     setOpenMaster(null);
@@ -232,116 +233,122 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         { label: en("headOfficeMaster.title"), href: "#" },
       ];
 
-  const handleAddSave = async (formData: Record<string, string>) => {
-    if (!openMaster) return;
+  const handleAddSave = useCallback(
+    async (formData: Record<string, string>) => {
+      if (!openMaster) return;
 
-    if (openMaster.key === "clearingType") {
+      if (openMaster.key === "defaultBranchAccounts") {
+        // The actual save/update call happens inside ParameterModal (it needs the
+        // validate-then-save flow); once that resolves, just refresh the list.
+        try {
+          await loadDefaultBranchAccounts();
+        } catch (error) {
+          console.error("Failed to refresh branch accounts:", error);
+        }
+        return;
+      }
+
+      if (openMaster.key === "clearingType") {
+        try {
+          const created = await createClearingType({
+            id: formData.id,
+            description: formData.description,
+            clearingHouseCode: formData.clearingHouseCode,
+            payableRequired: formData.payableRequired,
+            payableHead: formData.payableHead,
+            receivableRequired: formData.receivableRequired,
+            receivableHead: formData.receivableHead,
+          });
+          setTableRows((prev) => [...prev, mapClearingTypeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create clearing type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "tdInterestRate") {
+        try {
+          const created = await createDepositInterestRate({
+            accountTypeCode: formData.accountTypeCode,
+            categoryCode: formData.categoryCode,
+            dateOfApplication: formData.dateOfApplication,
+            fromPeriod: Number(formData.fromPeriod) || 0,
+            toPeriod: Number(formData.toPeriod) || 0,
+            unitOfPeriod: formData.unitOfPeriod,
+            rateOfInterest: Number(formData.rateOfInterest) || 0,
+          });
+          setTableRows((prev) => [...prev, mapDepositInterestRateRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create TD interest rate. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "installmentType") {
+        try {
+          const created = await createInstallmentType({
+            id: formData.id,
+            description: formData.description,
+            diaryBased: formData.diaryBased,
+            principalArrearsOnDiary: formData.principalArrearsOnDiary,
+            interestArrearsOnDiary: formData.interestArrearsOnDiary,
+            installmentOn: formData.installmentOn,
+          });
+          setTableRows((prev) => [...prev, mapInstallmentTypeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create installment type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "instrumentType") {
+        try {
+          const saved = await saveInstrumentType({
+            code: formData.code,
+            description: formData.description,
+          });
+          setTableRows((prev) => [...prev, mapInstrumentTypeRecordToRow(saved)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to save instrument type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      const newRow: Record<string, unknown> = {
+        id: String(Date.now()),
+        ...formData,
+      };
+      if (openMaster.key === "accountType") {
+        newRow.createdDate = new Date().toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        }).toUpperCase();
+      }
+      setTableRows((prev) => [...prev, newRow]);
+    },
+    [openMaster, loadDefaultBranchAccounts]
+  );
+
+  const handleProductSave = useCallback(
+    async (payload: Parameters<typeof createProduct>[0]) => {
       try {
-        const created = await createClearingType({
-          id: formData.id,
-          description: formData.description,
-          clearingHouseCode: formData.clearingHouseCode,
-          payableRequired: formData.payableRequired,
-          payableHead: formData.payableHead,
-          receivableRequired: formData.receivableRequired,
-          receivableHead: formData.receivableHead,
-        });
-        setTableRows((prev) => [...prev, mapClearingTypeRecordToRow(created)]);
+        const created = await createProduct(payload);
+        setTableRows((prev) => [...prev, mapProductRecordToRow(created)]);
       } catch (err) {
-        alert(err instanceof Error ? err.message : "Failed to create clearing type. Please try again.");
+        alert(err instanceof Error ? err.message : "Failed to create product. Please try again.");
         throw err;
       }
-      return;
-    }
-
-    if (openMaster.key === "tdInterestRate") {
-      try {
-        const created = await createDepositInterestRate({
-          accountTypeCode: formData.accountTypeCode,
-          categoryCode: formData.categoryCode,
-          dateOfApplication: formData.dateOfApplication,
-          fromPeriod: Number(formData.fromPeriod) || 0,
-          toPeriod: Number(formData.toPeriod) || 0,
-          unitOfPeriod: formData.unitOfPeriod,
-          rateOfInterest: Number(formData.rateOfInterest) || 0,
-        });
-        setTableRows((prev) => [...prev, mapDepositInterestRateRecordToRow(created)]);
-      } catch (err) {
-        alert(err instanceof Error ? err.message : "Failed to create TD interest rate. Please try again.");
-        throw err;
-      }
-      return;
-    }
-
-    if (openMaster.key === "installmentType") {
-      try {
-        const created = await createInstallmentType({
-          id: formData.id,
-          description: formData.description,
-          diaryBased: formData.diaryBased,
-          principalArrearsOnDiary: formData.principalArrearsOnDiary,
-          interestArrearsOnDiary: formData.interestArrearsOnDiary,
-          installmentOn: formData.installmentOn,
-        });
-        setTableRows((prev) => [...prev, mapInstallmentTypeRecordToRow(created)]);
-      } catch (err) {
-        alert(err instanceof Error ? err.message : "Failed to create installment type. Please try again.");
-        throw err;
-      }
-      return;
-    }
-
-    if (openMaster.key === "instrumentType") {
-      try {
-        const saved = await saveInstrumentType({
-          code: formData.code,
-          description: formData.description,
-        });
-        setTableRows((prev) => [...prev, mapInstrumentTypeRecordToRow(saved)]);
-      } catch (err) {
-        alert(err instanceof Error ? err.message : "Failed to save instrument type. Please try again.");
-        throw err;
-      }
-      return;
-    }
-
-    if (openMaster.key === "defaultBranchAccounts") {
-      // The actual save/update call happens inside ParameterModal (it needs the
-      // validate-then-save flow); once that resolves, just refresh the list.
-      try {
-        await loadDefaultBranchAccounts();
-      } catch (error) {
-        console.error("Failed to refresh branch accounts:", error);
-      }
-      return;
-    }
-
-    const newRow: Record<string, unknown> = {
-      id: String(Date.now()),
-      ...formData,
-    };
-    if (openMaster.key === "accountType") {
-      newRow.createdDate = new Date().toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      }).toUpperCase();
-    }
-    setTableRows((prev) => [...prev, newRow]);
-  };
-
-  const handleProductSave = async (payload: Parameters<typeof createProduct>[0]) => {
-    try {
-      const created = await createProduct(payload);
-      setTableRows((prev) => [...prev, mapProductRecordToRow(created)]);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to create product. Please try again.");
-      throw err;
-    }
-  };
+    },
+    []
+  );
 
   const handleFilterApply = useCallback(
     async (newFilters: Record<string, string>) => {

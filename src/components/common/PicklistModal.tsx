@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { X } from "lucide-react";
 import BaseModal from "./BaseModal";
 import PaginationModal from "./PaginationModal";
 import type { PaginationState } from "./table.types";
@@ -25,7 +24,6 @@ export interface PicklistModalProps<T> {
   loading?: boolean;
   emptyMessage?: string;
   pagination?: PaginationState;
-  // Action configuration
   actions?: {
     label: string;
     icon?: ReactNode;
@@ -35,14 +33,16 @@ export interface PicklistModalProps<T> {
   }[];
   showDefaultAction?: boolean;
   actionColumnWidth?: string;
-  // Search by configuration
   searchByOptions?: { label: string; value: string }[];
   onSearchSubmit?: (searchBy: string, textToSearch: string) => void;
   searchByValue?: string;
   onSearchByChange?: (value: string) => void;
   textToSearch?: string;
   onTextToSearchChange?: (value: string) => void;
-  /** Fixed modal height for lookups that use paged result sets. */
+  maxWidthPx?: number;
+  maxHeightPx?: number;
+  minHeightPx?: number;
+  /** Overrides the modal's height with an explicit Tailwind class (e.g. "h-[930px]"). */
   modalHeightClassName?: string;
 }
 
@@ -70,6 +70,9 @@ export default function PicklistModal<T>({
   onSearchByChange,
   textToSearch,
   onTextToSearchChange,
+  maxWidthPx = 1400,
+  maxHeightPx = 900,
+  minHeightPx = 600,
   modalHeightClassName,
 }: PicklistModalProps<T>) {
   const [internalSearch, setInternalSearch] = useState("");
@@ -171,7 +174,7 @@ export default function PicklistModal<T>({
         <button
           type="button"
           onClick={() => onSelect(row)}
-          className="rounded-sm cursor-pointer bg-primary-50 px-3 py-1 text-[15px] font-medium text-primary transition hover:bg-primary-100"
+          className="rounded-full bg-primary-50 px-4 py-1.5 text-sm font-medium text-primary transition hover:bg-primary-100"
         >
           Select
         </button>
@@ -209,7 +212,7 @@ export default function PicklistModal<T>({
             <button
               type="button"
               onClick={() => onSelect(row)}
-              className="rounded-md bg-primary-50 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary-100"
+              className="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary-100"
             >
               Select
             </button>
@@ -224,24 +227,27 @@ export default function PicklistModal<T>({
   return (
     <BaseModal
       onClose={onClose}
-      maxWidthPx={841}
+      maxWidthPx={maxWidthPx}
+      maxHeightPx={modalHeightClassName ? undefined : maxHeightPx}
+      minHeightPx={minHeightPx}
+      size="full"
       ariaLabel={title}
-      contentClassName={`rounded-[36px] p-6 min-h-[600px] max-h-[852px] ${modalHeightClassName ?? ""}`}
+      contentClassName={`rounded-[36px] p-6 ${modalHeightClassName ?? ""}`}
       bodyClassName="flex flex-1 flex-col overflow-hidden"
       showCloseButton={false}
     >
       <div className="relative flex flex-1 flex-col overflow-hidden">
+        <div className="pointer-events-none absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[#DCEBFC] opacity-70 blur-[1px]" />
+        <div className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-[#DCEBFC] opacity-70 blur-[1px]" />
 
         {/* Header with Centered Title */}
-        <div className="relative z-10 flex flex-col gap-6 rounded-[15px] px-2">
-
-
+        <div className="relative z-10 flex flex-col gap-6 rounded-[20px] px-2">
           {/* Search Section */}
-          <div className="w-full  border border-gray-400 text-sm">
+          <div className="w-full border border-gray-500 text-sm">
             {/* Search By Row */}
-            <div className="flex border-b border-gray-400">
+            <div className="flex border-b border-gray-600">
               {/* Left Label */}
-              <div className="w-48 border-r border-gray-400 bg-[#DCEBFC] px-3 py-2 font-semibold">
+              <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
                 Search By
               </div>
 
@@ -268,7 +274,7 @@ export default function PicklistModal<T>({
             {/* Text To Search Row */}
             <div className="flex">
               {/* Left Label */}
-              <div className="w-48 border-r border-gray-400 bg-[#DCEBFC] px-3 py-2 font-semibold">
+              <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
                 Text To Search
               </div>
 
@@ -296,9 +302,9 @@ export default function PicklistModal<T>({
         </div>
 
         {/* Table Section - Border only around the table */}
-        <div className="relative z-10 mt-4 flex flex-1 flex-col overflow-hidden rounded-md border border-gray-300">
+        <div className="relative z-10 mt-6 flex flex-1 flex-col overflow-hidden rounded-xl border border-gray-300">
           {/* Table Header */}
-          <div className="flex h-[40px] shrink-0 items-center bg-[#DCEBFC]">
+          <div className="flex h-[46px] shrink-0 items-center bg-[#DCEBFC]">
             {columns.map((col) => (
               <div
                 key={col.key}
@@ -321,14 +327,14 @@ export default function PicklistModal<T>({
           {/* Table Body */}
           <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <div className="flex h-[50px] items-center justify-center text-sm text-gray-400">Loading…</div>
+              <div className="flex h-[64px] items-center justify-center text-sm text-gray-400">Loading…</div>
             ) : filteredRows.length === 0 ? (
-              <div className="flex h-[50px] items-center justify-center text-sm text-gray-400">{emptyMessage}</div>
+              <div className="flex h-[64px] items-center justify-center text-sm text-gray-400">{emptyMessage}</div>
             ) : (
               filteredRows.map((row) => (
                 <div
                   key={rowKey(row)}
-                  className="flex h-[50px] items-center border-b border-gray-300 px-0 last:border-b-0"
+                  className="flex h-[64px] items-center border-b border-gray-200 px-0 last:border-b-0"
                 >
                   {columns.map((col) => (
                     <div
@@ -352,7 +358,11 @@ export default function PicklistModal<T>({
 
         {pagination && (
           <div className="relative z-10 mt-4 shrink-0">
-            <PaginationModal page={pagination.page} totalPages={pagination.totalPages} onPageChange={pagination.onPageChange} />
+            <PaginationModal 
+              page={pagination.page} 
+              totalPages={pagination.totalPages} 
+              onPageChange={pagination.onPageChange} 
+            />
           </div>
         )}
       </div>
