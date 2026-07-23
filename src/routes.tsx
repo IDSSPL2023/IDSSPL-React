@@ -201,56 +201,32 @@ export const router = createBrowserRouter([
         path: "/authorization/authorizeaccountmain",
         element: <AuthorizeAccountMainPage />,
       },
-      
+
       {
         path: "/authorization/authorizerole",
         element: <RoleAuthorizationFlowRoute />,
       },
-      { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
-      // { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       {
-        path: "/authorization",
-        children: [
-          {
-            index: true,
-            element: <AuthorizationPage />,
-          },
-          {
-            path: "authorizeaccountmain",
-            children: [
-              {
-                index: true,
-                element: <AuthorizeAccountMainPage />,
-              },
-              {
-                path: "casa",
-                element: <AuthorizeAccountPage accountType="casa" />,
-              },
-              {
-                path: "deposite",
-                element: <AuthorizeAccountPage accountType="deposite" />,
-              },
-              {
-                path: "loan",
-                element: <AuthorizeAccountPage accountType="loan" />,
-              },
-              {
-                path: "fixed",
-                element: <AuthorizeAccountPage accountType="fixed" />,
-              },
-              {
-                path: "investment",
-                element: <AuthorizeAccountPage accountType="investment" />,
-              },
-            ],
-          },
-        ],
+        path: "/authorization/authorizeaccountmain/casa",
+        element: <AuthorizeAccountPage accountType="casa" />,
       },
       {
-        path: "/authorization/authorizerole",
-        element: <RoleAuthorizationFlowRoute />,
+        path: "/authorization/authorizeaccountmain/deposite",
+        element: <AuthorizeAccountPage accountType="deposite" />,
+      },
+      {
+        path: "/authorization/authorizeaccountmain/loan",
+        element: <AuthorizeAccountPage accountType="loan" />,
+      },
+      {
+        path: "/authorization/authorizeaccountmain/fixed",
+        element: <AuthorizeAccountPage accountType="fixed" />,
+      },
+      {
+        path: "/authorization/authorizeaccountmain/investment",
+        element: <AuthorizeAccountPage accountType="investment" />,
       },
       {
         path: "/authorization/authorizecustomer",
@@ -263,10 +239,6 @@ export const router = createBrowserRouter([
       {
         path: "/authorization/pigmy/close",
         element: <AuthorizePigmyClosePage />,
-      },
-      {
-        path: "/authorization/authorizecustomer",
-        element: <AuthorizationCustomerPage />,
       },
       {
         path: "/authorization/clearing",
@@ -330,24 +302,17 @@ export const router = createBrowserRouter([
         path: "/authorization/transaction/term-deposit-interest-payment",
         element: <TermDepositInterestPayment />,
       },
-      { path: "/authorization/user", element: <AuthorizationUserPage /> },
       {
         path: "/authorization/BillAuthorize",
         element: <BillAuthorizationOptions />,
       },
 
       { path: "/manager/branchmaster", element: <BranchMasterPage /> },
-      { path: "/branchmaster" ,element: <BranchMasterPage/>},
+      { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },
-
-
-
-
       { path: "/loan-calculators", element: <LoanCalculatorsPage /> },
-
-
       { path: "/futuremodels/casa-closing", element: <CasaClosingPage /> },
       { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
       {
@@ -365,10 +330,6 @@ export const router = createBrowserRouter([
       {
         path: "/authorization/authorizeaccountmain/FixedAsset",
         element: <FixedAssetPage />,
-      },
-      {
-        path: "/futuremodels/investment-account",
-        element: <InvestmentAccountPage />,
       },
       {
         path: "/authorization/authorizeaccountmain/investment-account-close",
@@ -396,10 +357,6 @@ export const router = createBrowserRouter([
         element: <TDClosingReinvestPage />,
       },
       { path: "/futuremodels/tl-close", element: <TlClosePage /> },
-      {
-        path: "/futuremodels/TDClosingReinvest",
-        element: <TDClosingReinvestPage />,
-      },
       {
         path: "/authorization/authorizeaccountmain/tl-close",
         element: <TlClosePage />,
@@ -525,13 +482,13 @@ export const router = createBrowserRouter([
       // { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
       // { path: "/payroll/transaction/salary-updation", element: /<SalaryUpdationPage /> },
       // { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
-//       { path: "/payroll/employee-promotion", element: <EmployeePromotionPage /> },
-// { path: "/payroll/employee-resignation", element: <EmployeeResignationPage /> },
-// { path: "/payroll/employee-suspension", element: <EmployeeSuspensionPage /> },
-// { path: "/payroll/employee-transfer", element: <EmployeeTransferPage /> },
-// { path: "/payroll/leave-application", element: <LeaveApplicationPage /> },
-// { path: "/payroll/employee-termination", element: <EmployeeTerminationPage /> },
-// 
+      //       { path: "/payroll/employee-promotion", element: <EmployeePromotionPage /> },
+      // { path: "/payroll/employee-resignation", element: <EmployeeResignationPage /> },
+      // { path: "/payroll/employee-suspension", element: <EmployeeSuspensionPage /> },
+      // { path: "/payroll/employee-transfer", element: <EmployeeTransferPage /> },
+      // { path: "/payroll/leave-application", element: <LeaveApplicationPage /> },
+      // { path: "/payroll/employee-termination", element: <EmployeeTerminationPage /> },
+      // 
       // Shares
       // { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
     ],
