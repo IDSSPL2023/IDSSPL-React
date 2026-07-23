@@ -34,7 +34,6 @@ import RecurringInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTr
 import RtgsAuthorizePage from "@/pages/authorization/AuthorizeTransaction/RtgsAuthorize/RtgsAuthorize";
 import TdInterestPaymentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdInterestPaymentAuthorize/TdInterestPaymentAuthorize";
 import TdsTransactionAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdsTransactionAuthorize/TdsTransactionAuthorize";
-// import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
 import TlDisbursementAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlDisbursementAuthorize/TlDisbursementAuthorize";
 import TlOtherChargesAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlOtherChargesAuthorize/TlOtherChargesAuthorize";
 import TransferAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TransferAuthorize/TransferAuthorize";
@@ -107,21 +106,12 @@ import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
 import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
-// import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
-// import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
-// import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
-// import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
 import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
-
 import SMSRegistrationPage from "@/pages/SMS/SMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-// import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
-// import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
-// import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-// import PayrollMaster from "./pages/payroll/Master/Master";
-
 import TlCcInstallmentAuthorizePage from "./pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+import PayrollMaster from "./pages/payroll/Master/Master";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -507,7 +497,7 @@ export const router = createBrowserRouter([
       { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage />, },
 
       // Payroll
-      // { path: "/payroll/master", element: <PayrollMaster /> },
+      { path: "/payroll/master", element: <PayrollMaster /> },
       // { path: "/payroll/transaction", element: <PayrollTransaction /> },
       // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
       { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
