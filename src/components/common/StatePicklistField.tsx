@@ -68,24 +68,8 @@ export default function StatePicklistField({
     // Don't open if readOnly or disabled
     if (readOnly || disabled) return;
 
+    // Data loads only when a filter is applied via handleSearchSubmit, not on open
     setOpen(true);
-    if (loaded || loading) return;
-
-    setLoading(true);
-    setLoadError("");
-    fetchStates({ searchBy: "CODE", textToSearch: "" })
-      .then((list) => {
-        if (list.length === 0) {
-          setLoadError("No states available");
-        } else {
-          setStates(list);
-          setLoaded(true);
-        }
-      })
-      .catch((err) => {
-        setLoadError(err.message || "Failed to load states");
-      })
-      .finally(() => setLoading(false));
   };
 
   const handleSearchSubmit = (
@@ -106,6 +90,7 @@ export default function StatePicklistField({
     fetchStates(payload)
       .then((list) => {
         setStates(list);
+        setLoaded(true);
         if (list.length === 0) {
           setLoadError("No states found");
         }
@@ -143,7 +128,7 @@ export default function StatePicklistField({
           searchByOptions={SEARCH_BY_OPTIONS}
           onSearchSubmit={handleSearchSubmit}
           loading={loading}
-          emptyMessage={loadError || "No states found"}
+          emptyMessage={loadError || (loaded ? "No states found" : "Apply a filter to search for states")}
           onSelect={(row) => {
             onSelect(row);
             setOpen(false);
