@@ -1,8 +1,8 @@
+import { fetchCountries } from "@/lib/masterMaintenanceApi";
 import {
   IdCard, Shield, FileText, User, Building2, Phone, Home, Landmark, Flag, Calendar,
   Banknote, MapPin, Hash, Layers, type LucideIcon,
 } from "lucide-react";
-import { fetchCountries } from "@/lib/masterMaintenanceApi";
 
 export type MasterItem = {
   icon: string;
@@ -11,7 +11,7 @@ export type MasterItem = {
   key: string;
 };
 
-export type FieldType = "text" | "radio" | "select";
+export type FieldType = "text" | "radio" | "select" | "country";
 
 export type MasterField = {
   key: string;
@@ -22,7 +22,8 @@ export type MasterField = {
   type?: FieldType;
   options?: string[];
   readOnlyOnEdit?: boolean;
-  /** When set, the field's dropdown fetches and populates `options` lazily on first focus. */
+
+  // NEW
   loadOptions?: () => Promise<void>;
 };
 
@@ -48,7 +49,7 @@ export type MasterConfigEntry = {
 
 export const MASTERS: MasterItem[] = [
   { icon: "Settings", titleEn: "Operation Capacity Master", titleHi: "ऑपरेशन कॅपॅसिटी मास्टर", key: "operationCapacity" },
-   {
+  {
     titleEn: 'Branch wise Next Interest Apply Date',
     titleHi: 'शाखानिहाय पुढील व्याज लागू होण्याची तारीख',
     key: 'branchInterest',
@@ -172,66 +173,66 @@ export const MASTER_CONFIG: Record<string, MasterConfigEntry> = {
     ],
   },
   // Add this to the MASTER_CONFIG object
-branchInterest: {
-  columns: [
-    { key: "srNo", label: "Sr No." },
-    { key: "productCode", label: "Product Code" },
-    { key: "description", label: "Description" },
-    { key: "interestApplyDate", label: "Interest Apply Date" },
-    { key: "interestFlag", label: "Interest Flag", type: "badge" },
-  ],
-  rows: [
-    { id: "1", srNo: "1", productCode: "301", description: "Cash Credit Loan", interestApplyDate: "27/04/2026", interestFlag: "Y" },
-    { id: "2", srNo: "2", productCode: "303", description: "Personal Loan", interestApplyDate: "20/07/2025", interestFlag: "Y" },
-    { id: "3", srNo: "3", productCode: "306", description: "Education Loan", interestApplyDate: "10/10/2025", interestFlag: "Y" },
-    { id: "4", srNo: "4", productCode: "305", description: "Gold Loan", interestApplyDate: "15/09/2025", interestFlag: "Y" },
-    { id: "5", srNo: "5", productCode: "309", description: "Medical Loan", interestApplyDate: "15/01/2026", interestFlag: "Y" },
-    { id: "6", srNo: "6", productCode: "307", description: "Business Loan", interestApplyDate: "25/11/2025", interestFlag: "Y" },
-    { id: "7", srNo: "7", productCode: "304", description: "Vehicle Loan", interestApplyDate: "01/08/2025", interestFlag: "Y" },
-    { id: "8", srNo: "8", productCode: "308", description: "Travel Loan", interestApplyDate: "05/12/2025", interestFlag: "Y" },
-    { id: "9", srNo: "9", productCode: "310", description: "Wedding Loan", interestApplyDate: "01/02/2026", interestFlag: "Y" },
-  ],
-  formColumns: 2,
-  fields: [
-    { 
-      key: "productCode", 
-      labelEn: "Product Code", 
-      labelHi: "उत्पादन कोड", 
-      placeholder: "Enter Product Code (e.g., 301)", 
-      icon: "hash", 
-      readOnlyOnEdit: true 
-    },
-    { 
-      key: "description", 
-      labelEn: "Description", 
-      labelHi: "वर्णन", 
-      placeholder: "Enter Loan Description", 
-      icon: "text" 
-    },
-    { 
-      key: "interestApplyDate", 
-      labelEn: "Interest Apply Date", 
-      labelHi: "व्याज लागू तारीख", 
-      placeholder: "DD/MM/YYYY", 
-      icon: "calendar" 
-    },
-    { 
-      key: "interestFlag", 
-      labelEn: "Interest Flag", 
-      labelHi: "व्याज फ्लॅग", 
-      placeholder: "Select Flag", 
-      icon: "flag",
-      type: "select",
-      options: ["Y", "N"]
-    },
-  ],
-  filterFields: [
-    { key: "productCode", label: "Product Code" },
-    { key: "description", label: "Description" },
-    { key: "interestApplyDate", label: "Interest Apply Date" },
-    { key: "interestFlag", label: "Interest Flag" },
-  ],
-},
+  branchInterest: {
+    columns: [
+      { key: "srNo", label: "Sr No." },
+      { key: "productCode", label: "Product Code" },
+      { key: "description", label: "Description" },
+      { key: "interestApplyDate", label: "Interest Apply Date" },
+      { key: "interestFlag", label: "Interest Flag", type: "badge" },
+    ],
+    rows: [
+      { id: "1", srNo: "1", productCode: "301", description: "Cash Credit Loan", interestApplyDate: "27/04/2026", interestFlag: "Y" },
+      { id: "2", srNo: "2", productCode: "303", description: "Personal Loan", interestApplyDate: "20/07/2025", interestFlag: "Y" },
+      { id: "3", srNo: "3", productCode: "306", description: "Education Loan", interestApplyDate: "10/10/2025", interestFlag: "Y" },
+      { id: "4", srNo: "4", productCode: "305", description: "Gold Loan", interestApplyDate: "15/09/2025", interestFlag: "Y" },
+      { id: "5", srNo: "5", productCode: "309", description: "Medical Loan", interestApplyDate: "15/01/2026", interestFlag: "Y" },
+      { id: "6", srNo: "6", productCode: "307", description: "Business Loan", interestApplyDate: "25/11/2025", interestFlag: "Y" },
+      { id: "7", srNo: "7", productCode: "304", description: "Vehicle Loan", interestApplyDate: "01/08/2025", interestFlag: "Y" },
+      { id: "8", srNo: "8", productCode: "308", description: "Travel Loan", interestApplyDate: "05/12/2025", interestFlag: "Y" },
+      { id: "9", srNo: "9", productCode: "310", description: "Wedding Loan", interestApplyDate: "01/02/2026", interestFlag: "Y" },
+    ],
+    formColumns: 2,
+    fields: [
+      {
+        key: "productCode",
+        labelEn: "Product Code",
+        labelHi: "उत्पादन कोड",
+        placeholder: "Enter Product Code (e.g., 301)",
+        icon: "hash",
+        readOnlyOnEdit: true
+      },
+      {
+        key: "description",
+        labelEn: "Description",
+        labelHi: "वर्णन",
+        placeholder: "Enter Loan Description",
+        icon: "text"
+      },
+      {
+        key: "interestApplyDate",
+        labelEn: "Interest Apply Date",
+        labelHi: "व्याज लागू तारीख",
+        placeholder: "DD/MM/YYYY",
+        icon: "calendar"
+      },
+      {
+        key: "interestFlag",
+        labelEn: "Interest Flag",
+        labelHi: "व्याज फ्लॅग",
+        placeholder: "Select Flag",
+        icon: "flag",
+        type: "select",
+        options: ["Y", "N"]
+      },
+    ],
+    filterFields: [
+      { key: "productCode", label: "Product Code" },
+      { key: "description", label: "Description" },
+      { key: "interestApplyDate", label: "Interest Apply Date" },
+      { key: "interestFlag", label: "Interest Flag" },
+    ],
+  },
   addressProof: {
     columns: [
       { key: "addressProofCode", label: "Address Proof Code" },
@@ -277,7 +278,7 @@ branchInterest: {
       { key: "zipCode", labelEn: "Zip Code", labelHi: "झिप कोड", placeholder: "Enter Zip Code", icon: "home" },
       { key: "city", labelEn: "City", labelHi: "शहर", placeholder: "Select City", icon: "landmark", type: "select", options: ["Mumbai", "Pune", "Nagpur"] },
       { key: "state", labelEn: "State", labelHi: "राज्य", placeholder: "Select State", icon: "landmark", type: "select", options: ["Maharashtra", "Karnataka", "Gujarat"] },
-      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"] },
+      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
       { key: "floatDays", labelEn: "Float Days", labelHi: "अतिरिक्त सुट्टीचे दिवस", placeholder: "Select Date", icon: "calendar", type: "text" },
       { key: "branchHoliday", labelEn: "Branch Holiday", labelHi: "शाखेची सुट्टी", placeholder: "Select Date", icon: "calendar", type: "text" },
     ],
@@ -301,6 +302,7 @@ branchInterest: {
         key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"],
         loadOptions: () => loadCountryOptions(),
       },
+      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
     ],
     filterFields: [
       { key: "cityCode", label: "City Code" },
@@ -329,6 +331,7 @@ branchInterest: {
         key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "select", options: ["India"],
         loadOptions: () => loadCountryOptions(),
       },
+      { key: "country", labelEn: "Country", labelHi: "देश", placeholder: "Select Country", icon: "flag", type: "country" },
     ],
     filterFields: [
       { key: "stateCode", label: "State Code" },
@@ -355,6 +358,9 @@ const loadCountryOptions = async (): Promise<void> => {
   const countries = await fetchCountries();
   setCountryOptions(countries);
 };
+
+/** Populated at runtime as countries are picked in the Country picklist; maps a displayed country name back to its code. */
+export const cityCountryCodeByName: Record<string, string> = {};
 
 const DEFAULT_CONFIG: MasterConfigEntry = {
   columns: [

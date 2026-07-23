@@ -2,6 +2,7 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 import { User, IdCard, Baby, Heart, Car, AlertTriangle, Home, Phone, Flag, Building2, MapPin, Hash, X, Upload, Mail, UserCircle2, Smartphone, Eye, SquarePen, List, Copy, Pencil, Check, ChevronRight } from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
 import { FieldShell, TextInput, SelectInput, DateInput, RadioYesNo, SectionCard, DocumentRow, UploadZone } from "@/components/shared/FormFields";
+import { CountryPicklistField } from "@/components/common";
 import FilterModal, { type CustomerFilters, defaultValues } from "@/components/CustomerMaster/FilterModal";
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu from "@/components/shared/RowActionMenu";
@@ -34,7 +35,6 @@ const AddCM_RESIDENCE_TYPES = ["Owned", "Rented", "Company Provided"];
 const AddCM_RESIDENCE_STATUS = ["Permanent", "Temporary"];
 const AddCM_CITIES = ["Kolhapur", "Mumbai", "Pune", "Nagpur"];
 const AddCM_STATES = ["Maharashtra", "Karnataka", "Goa"];
-const AddCM_COUNTRIES = ["India"];
 const AddCM_VEHICLE_OPTIONS = ["Yes", "No"];
 const AddCM_RISK_CATEGORIES = ["Low", "Medium", "High"];
 const AddCM_CATEGORY_CODES = ["Public", "Private", "Staff"];
@@ -525,9 +525,7 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
               <FieldShell label="State" labelHi="राज्य" required>
                 <SelectInput icon={<Building2 size={16} />} value={currentAddress.state} onChange={(v) => setCurrentAddress((p) => ({ ...p, state: v }))} options={AddCM_STATES} placeholder="Select State" />
               </FieldShell>
-              <FieldShell label="Country" labelHi="देश" required>
-                <SelectInput icon={<Flag size={16} />} value={currentAddress.country} onChange={(v) => setCurrentAddress((p) => ({ ...p, country: v }))} options={AddCM_COUNTRIES} placeholder="Select Country" />
-              </FieldShell>
+              <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={currentAddress.country} onSelect={(c) => setCurrentAddress((p) => ({ ...p, country: c.name }))} />
             </div>
           </SectionCard>
 
@@ -560,9 +558,7 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
                 <FieldShell label="State" labelHi="राज्य" required>
                   <SelectInput icon={<Building2 size={16} />} value={permanentAddress.state} onChange={(v) => setPermanentAddress((p) => ({ ...p, state: v }))} options={AddCM_STATES} placeholder="Select State" />
                 </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={permanentAddress.country} onChange={(v) => setPermanentAddress((p) => ({ ...p, country: v }))} options={AddCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={permanentAddress.country} onSelect={(c) => setPermanentAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -596,9 +592,7 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
                 <FieldShell label="State" labelHi="राज्य" required>
                   <SelectInput icon={<Building2 size={16} />} value={officeAddress.state} onChange={(v) => setOfficeAddress((p) => ({ ...p, state: v }))} options={AddCM_STATES} placeholder="Select State" />
                 </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={officeAddress.country} onChange={(v) => setOfficeAddress((p) => ({ ...p, country: v }))} options={AddCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={officeAddress.country} onSelect={(c) => setOfficeAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -1446,7 +1440,6 @@ const ViewEditCM_RESIDENCE_TYPES = ["Owned", "Rented", "Company Provided"];
 const ViewEditCM_RESIDENCE_STATUS = ["Permanent", "Temporary"];
 const ViewEditCM_CITIES = ["Kolhapur", "Mumbai", "Pune", "Nagpur"];
 const ViewEditCM_STATES = ["Maharashtra", "Karnataka", "Goa"];
-const ViewEditCM_COUNTRIES = ["India"];
 const ViewEditCM_VEHICLE_OPTIONS = ["Yes", "No"];
 const ViewEditCM_RISK_CATEGORIES = ["Low", "Medium", "High"];
 const ViewEditCM_CATEGORY_CODES = ["Public", "Private", "Staff"];
@@ -2090,9 +2083,7 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
               <FieldShell label="State" labelHi="राज्य" required>
                 <SelectInput icon={<Building2 size={16} />} value={currentAddress.state} onChange={(v) => !isView && setCurrentAddress((p) => ({ ...p, state: v }))} options={ViewEditCM_STATES} placeholder="Select State" />
               </FieldShell>
-              <FieldShell label="Country" labelHi="देश" required>
-                <SelectInput icon={<Flag size={16} />} value={currentAddress.country} onChange={(v) => !isView && setCurrentAddress((p) => ({ ...p, country: v }))} options={ViewEditCM_COUNTRIES} placeholder="Select Country" />
-              </FieldShell>
+              <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={currentAddress.country} readOnly={isView} onSelect={(c) => !isView && setCurrentAddress((p) => ({ ...p, country: c.name }))} />
             </div>
           </SectionCard>
 
@@ -2127,9 +2118,7 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
                 <FieldShell label="State" labelHi="राज्य" required>
                   <SelectInput icon={<Building2 size={16} />} value={permanentAddress.state} onChange={(v) => !isView && setPermanentAddress((p) => ({ ...p, state: v }))} options={ViewEditCM_STATES} placeholder="Select State" />
                 </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={permanentAddress.country} onChange={(v) => !isView && setPermanentAddress((p) => ({ ...p, country: v }))} options={ViewEditCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={permanentAddress.country} readOnly={isView} onSelect={(c) => !isView && setPermanentAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -2165,9 +2154,7 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
                 <FieldShell label="State" labelHi="राज्य" required>
                   <SelectInput icon={<Building2 size={16} />} value={officeAddress.state} onChange={(v) => !isView && setOfficeAddress((p) => ({ ...p, state: v }))} options={ViewEditCM_STATES} placeholder="Select State" />
                 </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={officeAddress.country} onChange={(v) => !isView && setOfficeAddress((p) => ({ ...p, country: v }))} options={ViewEditCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={officeAddress.country} readOnly={isView} onSelect={(c) => !isView && setOfficeAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>

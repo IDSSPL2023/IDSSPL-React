@@ -34,7 +34,7 @@ import RecurringInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTr
 import RtgsAuthorizePage from "@/pages/authorization/AuthorizeTransaction/RtgsAuthorize/RtgsAuthorize";
 import TdInterestPaymentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdInterestPaymentAuthorize/TdInterestPaymentAuthorize";
 import TdsTransactionAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdsTransactionAuthorize/TdsTransactionAuthorize";
-import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+// import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
 import TlDisbursementAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlDisbursementAuthorize/TlDisbursementAuthorize";
 import TlOtherChargesAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlOtherChargesAuthorize/TlOtherChargesAuthorize";
 import TransferAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TransferAuthorize/TransferAuthorize";
@@ -121,6 +121,7 @@ import AuthorizationClearingTablePage from "./pages/authorization/Clearing/Autho
 // import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
 // import PayrollMaster from "./pages/payroll/Master/Master";
 
+import TlCcInstallmentAuthorizePage from "./pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -273,6 +274,10 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      // {
+      //   path: "/authorization/sms-authorize",
+      //   element: <SMSAuthorizeModal />
+      // },
       {
         path: "/authorization/transaction",
         element: <AuthorizeTransactionPage />,
