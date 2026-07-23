@@ -168,8 +168,6 @@ export const router = createBrowserRouter([
       { path: "/branch-activity", element: <BranchActivityPage /> },
       { path: "/misactivity/interestposting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
-      { path: "/shares", element: <SharesPage /> },
-      { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage />, },
       { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute />, },
       { path: "/sms", element: <SMSRegistrationPage /> },
