@@ -698,11 +698,13 @@ export const menuItems: NavItemData[] = [
         icon: ArrowLeftRight,
         href: "/payroll/transaction"
       },
-      {
-        id: "payroll-transaction-entry",
-        title: "Transaction Entry",
-        icon: ArrowLeftRight,
-      },
+       {
+      id: "payroll-transaction-entry",
+      title: "Transaction Entry",
+      icon: ArrowLeftRight,
+      href: "/transaction-entry"
+    },
+    
       {
         id: "payroll-authrization",
         title: "Authorization",

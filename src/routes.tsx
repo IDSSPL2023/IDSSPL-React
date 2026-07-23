@@ -34,7 +34,7 @@ import RecurringInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTr
 import RtgsAuthorizePage from "@/pages/authorization/AuthorizeTransaction/RtgsAuthorize/RtgsAuthorize";
 import TdInterestPaymentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdInterestPaymentAuthorize/TdInterestPaymentAuthorize";
 import TdsTransactionAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TdsTransactionAuthorize/TdsTransactionAuthorize";
-// import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+import TlCcInstallmentAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
 import TlDisbursementAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlDisbursementAuthorize/TlDisbursementAuthorize";
 import TlOtherChargesAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TlOtherChargesAuthorize/TlOtherChargesAuthorize";
 import TransferAuthorizePage from "@/pages/authorization/AuthorizeTransaction/TransferAuthorize/TransferAuthorize";
@@ -106,22 +106,30 @@ import DDMaintenancePage from "./pages/dd/Maintenance/Maintenance";
 import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
-import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
-// import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
-// import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
-// import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
-// import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
-import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
+import PayrollMaster from "./pages/Payroll/Master/Master";
+import PayrollTransaction from "./pages/Payroll/Transaction/Transaction";
+// import EmployeeLeaveBalancePage from "./pages/Payroll/EmployeeLeaveBalancePage";
+import EmployeeLoanDetailsPage from "./pages/Payroll/EmployeeLoanDetailsPage";
+// import LeaveOpeningBalancePage from "./pages/Payroll/LeaveOpeningBalancePage";
+// import SalaryInstructionPage from "./pages/Payroll/SalaryInstructionPage";
+// import SalaryUpd/ationPage from "./pages/Payroll/SalaryUpdationPage";
+// import UpdateAttendancePage from "./pages/Payroll/UpdateAttendancePage";
+import AnnualMeetingAttendancePage from "./pages/Shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+import EmployeeDeputationPage from "@/pages/Payroll/TrasationEntry/EmployeeDeputation ";
+import EmployeePromotionPage from "@/pages/Payroll/TrasationEntry/EmployeePromotion";
+import EmployeeResignationPage from "@/pages/Payroll/TrasationEntry/EmployeeResignation";
+import EmployeeSuspensionPage from "@/pages/Payroll/TrasationEntry/EmployeeSuspensionInformation";
+import EmployeeTransferPage from "@/pages/Payroll/TrasationEntry/EmployeeTransferEntry";
+import LeaveApplicationPage from "@/pages/Payroll/TrasationEntry/LeaveApplicationEntry";
+import EmployeeTerminationPage from "@/pages/Payroll/TrasationEntry/EmployeeTermination";
 
 import SMSRegistrationPage from "@/pages/SMS/SMS";
+import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-// import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
-// import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
-// import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-// import PayrollMaster from "./pages/payroll/Master/Master";
 
-import TlCcInstallmentAuthorizePage from "./pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+// import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -174,6 +182,7 @@ export const router = createBrowserRouter([
         path: "/account-master/deposit",
         element: <AccountMasterTypePage accountType="deposit" />,
       },
+      { path: "/transaction-entry", element: <EmployeeDeputationPage /> },
       {
         path: "/account-master/investment",
         element: <AccountMasterTypePage accountType="investment" />,
@@ -195,13 +204,14 @@ export const router = createBrowserRouter([
         path: "/authorization/authorizeaccountmain",
         element: <AuthorizeAccountMainPage />,
       },
+      
       {
         path: "/authorization/authorizerole",
         element: <RoleAuthorizationFlowRoute />,
       },
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
-      // { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
+      { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       {
         path: "/authorization",
@@ -274,10 +284,6 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   path: "/authorization/sms-authorize",
-      //   element: <SMSAuthorizeModal />
-      // },
       {
         path: "/authorization/transaction",
         element: <AuthorizeTransactionPage />,
@@ -431,8 +437,6 @@ export const router = createBrowserRouter([
       },
       { path: "/clerk/branchmaster", element: <BranchMasterPage /> },
       { path: "/globalmaster", element: <GlobalMasterPage /> },
-      { path: "/globalmaster/citymaster", element: <GlobalMasterPage initialMasterKey="city" /> },
-      { path: "/globalmaster/statemaster", element: <GlobalMasterPage initialMasterKey="state" /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
@@ -504,20 +508,29 @@ export const router = createBrowserRouter([
         path: "/ho-officer/rtgs-outward-file-generation",
         element: <RtgsOutwardAuthorizePage />,
       },
-      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage />, },
+      {
+        path: "/ho-officer/reconciliation",
+        element: <ReconciliationAuthorizePage />,
+      },
 
       // Payroll
-      // { path: "/payroll/master", element: <PayrollMaster /> },
-      // { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      { path: "/payroll/master", element: <PayrollMaster /> },
+      { path: "/payroll/transaction", element: <PayrollTransaction /> },
       // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
-      { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
+      // { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
       // { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
       // { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
-      // { path: "/payroll/transaction/salary-updation", element: <SalaryUpdationPage /> },
+      // { path: "/payroll/transaction/salary-updation", element: /<SalaryUpdationPage /> },
       // { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
-
+      { path: "/payroll/employee-promotion", element: <EmployeePromotionPage /> },
+{ path: "/payroll/employee-resignation", element: <EmployeeResignationPage /> },
+{ path: "/payroll/employee-suspension", element: <EmployeeSuspensionPage /> },
+// { path: "/payroll/employee-transfer", element: <EmployeeTransferPage /> },
+// { path: "/payroll/leave-application", element: <LeaveApplicationPage /> },
+// { path: "/payroll/employee-termination", element: <EmployeeTerminationPage /> },
+// 
       // Shares
-      { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
+      // { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },

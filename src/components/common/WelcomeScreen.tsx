@@ -3,6 +3,7 @@ import { ChevronRight, Search } from "lucide-react";
 import Image from "@/components/ui/Image";
 import { IMAGES } from "@/assets";
 
+
 export interface WelcomeScreenItem {
   id: string;
   title: string;
@@ -111,3 +112,4 @@ export default function WelcomeScreen({
     </div>
   );
 }
+   
