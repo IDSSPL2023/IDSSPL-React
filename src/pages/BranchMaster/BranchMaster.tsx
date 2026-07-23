@@ -14,6 +14,13 @@ import ListModal, { type ListModalItem } from "@/components/shared/Modals/ListMo
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu from "@/components/shared/RowActionMenu";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
+import {
+  fetchBranches,
+  fetchBranchByCode,
+  updateBranch,
+  type BranchDetail,
+} from "@/lib/masterMaintenanceApi";
+import { CountryPicklistField } from "@/components/common";
 
 /* ===== from AddBranchModal.tsx ===== */
 export interface AddBranchModal_BranchFormData {
@@ -54,7 +61,6 @@ export const AddBranchModal_emptyBranchFormData: AddBranchModal_BranchFormData =
 
 const AddBranchModal_CITY_OPTIONS = ["Ilkal", "Chikmagalur", "Davangere", "Haveri", "Bagalkot", "Koppal", "Belagavi", "Udupi", "Karwar", "Ranebennur", "Kolar", "Sirsi", "Shimoga"];
 const AddBranchModal_STATE_OPTIONS = ["Karnataka", "Maharashtra", "Gujarat", "Tamil Nadu", "Uttar Pradesh"];
-const AddBranchModal_COUNTRY_OPTIONS = ["India"];
 
 export type AddBranchModal_BranchModalMode = "add" | "view";
 
@@ -106,10 +112,10 @@ function AddBranchModal_TextField({ labelEn, labelHi, icon: Icon, placeholder, v
       </label>
       <div
         className={`flex h-11 items-center rounded-lg border px-3 transition-colors ${hasError
-            ? "border-red-400 bg-white dark:bg-slate-900"
-            : readOnly
-              ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
-              : "border-[#B8C2D6] bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700"
+          ? "border-red-400 bg-white dark:bg-slate-900"
+          : readOnly
+            ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+            : "border-[#B8C2D6] bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700"
           }`}
       >
         <Icon size={18} className="shrink-0 text-[#6B7280] dark:text-slate-400" />
@@ -295,7 +301,7 @@ function AddBranchModal({ open, mode = "add", initialData = AddBranchModal_empty
             <AddBranchModal_SelectField labelEn="City Code" labelHi="शहर कोड" icon={Building2} placeholder="Select City Code" value={formData.cityCode} options={AddBranchModal_CITY_OPTIONS} onChange={(v) => handleChange("cityCode", v)} hasError={errors.cityCode} readOnly={isView} />
             <AddBranchModal_SelectField labelEn="State" labelHi="राज्य" icon={Building2} placeholder="Select State" value={formData.state} options={AddBranchModal_STATE_OPTIONS} onChange={(v) => handleChange("state", v)} hasError={errors.state} readOnly={isView} />
 
-            <AddBranchModal_SelectField labelEn="Country" labelHi="देश" icon={Flag} placeholder="Select Country" value={formData.country} options={AddBranchModal_COUNTRY_OPTIONS} onChange={(v) => handleChange("country", v)} hasError={errors.country} readOnly={isView} />
+            <CountryPicklistField label="Country" labelHi="देश" icon={<Flag size={18} />} value={formData.country} onSelect={(c) => handleChange("country", c.name)} required readOnly={isView} error={errors.country ? "This field is required" : undefined} />
             <AddBranchModal_TextField labelEn="Email ID" labelHi="ईमेल आयडी" icon={Mail} placeholder="Enter Email ID" value={formData.emailId} onChange={(v) => handleChange("emailId", v)} hasError={errors.emailId} readOnly={isView} />
             <AddBranchModal_YesNoField value={formData.isImplemented} onChange={(v) => handleChange("isImplemented", v)} readOnly={isView} />
 
@@ -542,7 +548,7 @@ function AddParameterModal({
     },
     {
       label: "Cancel",
-      onClick: onClose || (() => {}),
+      onClick: onClose || (() => { }),
       variant: "outline" as const,
       icon: <X size={16} />,
     },
@@ -713,6 +719,21 @@ function AddParameterModal({
       ? errors[field.key as AddNewParameter_RequiredFieldKey]
       : false;
     const value = formData[field.key];
+
+    if (field.key === "country") {
+      return (
+        <CountryPicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
+          value={value as string}
+          onSelect={(c) => handleChange(field.key, c.name)}
+          required
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
 
     if (field.type === "select") {
       return (
@@ -958,13 +979,13 @@ function BranchAreaSubAreaModal({
       return [
         {
           label: "Cancel",
-          onClick: onClose || (() => {}),
+          onClick: onClose || (() => { }),
           variant: "outline" as const,
           icon: <X size={16} />,
         },
         {
           label: "Ok, Got It",
-          onClick: onClose || (() => {}),
+          onClick: onClose || (() => { }),
           variant: "primary" as const,
           icon: <ThumbsUp size={16} />,
         },
@@ -980,7 +1001,7 @@ function BranchAreaSubAreaModal({
       },
       {
         label: "Cancel",
-        onClick: onClose || (() => {}),
+        onClick: onClose || (() => { }),
         variant: "outline" as const,
         icon: <X size={16} />,
       },
@@ -1211,7 +1232,7 @@ export interface ViewAndEditParameter_ParameterModalProps {
   mode: ViewAndEditParameter_ParameterModalMode;
   initialData?: ViewAndEditParameter_ParameterFormData;
   onClose?: () => void;
-  onSave?: (data: ViewAndEditParameter_ParameterFormData) => void;
+  onSave?: (data: ViewAndEditParameter_ParameterFormData) => void | Promise<void>;
   onValidate?: (data: ViewAndEditParameter_ParameterFormData) => void;
 }
 
@@ -1229,6 +1250,7 @@ function ViewEditParameterModal({
     Partial<Record<ViewAndEditParameter_RequiredFieldKey, boolean>>
   >({});
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setFormData(initialData);
@@ -1267,7 +1289,7 @@ function ViewEditParameterModal({
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const newErrors: Partial<Record<ViewAndEditParameter_RequiredFieldKey, boolean>> = {};
     ViewAndEditParameter_REQUIRED_FIELDS.forEach((key) => {
       if (!formData[key]?.toString().trim()) newErrors[key] = true;
@@ -1275,11 +1297,20 @@ function ViewEditParameterModal({
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
     setValidated(isValid);
-    if (!isValid) return;
+    if (!isValid || saving) return;
 
-    onSave?.(formData);
-    // Show success modal
-    setShowSuccessModal(true);
+    setSaving(true);
+    try {
+      await onSave?.(formData);
+      // Show success modal only once the save actually succeeded — the caller
+      // is responsible for surfacing its own error UI (e.g. a rejection modal)
+      // and rethrows so this modal stays open for the user to retry.
+      setShowSuccessModal(true);
+    } catch {
+      // swallow — the parent already reports the failure via its own error modal
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSuccessClose = () => {
@@ -1325,13 +1356,13 @@ function ViewEditParameterModal({
       return [
         {
           label: "Cancel",
-          onClick: onClose || (() => {}),
+          onClick: onClose || (() => { }),
           variant: "outline" as const,
           icon: <X size={16} />,
         },
         {
           label: "Ok, Got It",
-          onClick: onClose || (() => {}),
+          onClick: onClose || (() => { }),
           variant: "primary" as const,
           icon: <Check size={16} />,
         },
@@ -1348,17 +1379,17 @@ function ViewEditParameterModal({
       },
       {
         label: "Cancel",
-        onClick: onClose || (() => {}),
+        onClick: onClose || (() => { }),
         variant: "outline" as const,
         icon: <X size={16} />,
       },
       {
-        label: "Save",
+        label: saving ? "Saving..." : "Save",
         onClick: handleSave,
         variant: "primary" as const,
         icon: <Check size={16} />,
-        disabled: !validated,
-        className: validated
+        disabled: !validated || saving,
+        className: validated && !saving
           ? "bg-primary-100 text-primary hover:bg-primary-200"
           : "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-slate-800 dark:text-slate-600",
       },
@@ -1523,6 +1554,22 @@ function ViewEditParameterModal({
     // Check if field should be read-only in edit mode
     const isFieldReadOnly = isView || field.readOnly === true;
 
+    if (field.key === "country") {
+      return (
+        <CountryPicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
+          value={value as string}
+          onSelect={(c) => handleChange(field.key, c.name)}
+          required
+          readOnly={isFieldReadOnly}
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
+
     if (field.type === "select") {
       return (
         <SelectInput
@@ -1669,10 +1716,10 @@ function BranchChequeBookLotModal_TextField({ labelEn, labelHi, icon: Icon, plac
       <div className="flex items-center gap-2">
         <div
           className={`flex h-11 w-full items-center rounded-lg border px-3 transition-colors ${hasError
-              ? "border-red-400 bg-white dark:bg-slate-900"
-              : readOnly
-                ? "border-slate-400 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
-                : "border-[#B8C2D6] bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700"
+            ? "border-red-400 bg-white dark:bg-slate-900"
+            : readOnly
+              ? "border-slate-400 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+              : "border-[#B8C2D6] bg-white focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:bg-slate-900 dark:border-slate-700"
             }`}
         >
           <Icon size={18} className="shrink-0 text-[#6B7280] dark:text-slate-400" />
@@ -1920,13 +1967,12 @@ function BranchNonCBS_TextField({
         <span className="text-red-500">*</span>
       </label>
       <div
-        className={`group flex items-center w-full h-8 rounded-[10px] border px-2.5 transition-all duration-200 ${
-          readOnly
+        className={`group flex items-center w-full h-8 rounded-[10px] border px-2.5 transition-all duration-200 ${readOnly
             ? "bg-[#f0f2f5] border-slate-200 cursor-not-allowed"
             : hasError
               ? "bg-white border-red-400 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500"
               : "bg-white border-slate-300 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
-        }`}
+          }`}
       >
         {Icon && <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
         <input
@@ -1935,9 +1981,8 @@ function BranchNonCBS_TextField({
           placeholder={placeholder}
           readOnly={readOnly}
           onChange={(e) => onChange(e.target.value)}
-          className={`ml-2 w-full bg-transparent outline-none text-[11px] placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal ${
-            readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
-          }`}
+          className={`ml-2 w-full bg-transparent outline-none text-[11px] placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal ${readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
+            }`}
         />
       </div>
       {hasError && <p className="mt-1 text-[10px] text-red-500">Required</p>}
@@ -2150,198 +2195,197 @@ export function BranchNonCBS_BranchNonCBSModal({ open, initialData, onClose, onS
   return (
     <>
       {open && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]" onClick={onClose}>
-        <div
-          className="max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-[20px] bg-white p-6 sm:p-8 shadow-2xl"
-          onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="mb-5 flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <Image
-                src={IMAGES.ADD_ICON}
-                alt="Branch Parameter Non CBS"
-                width={36}
-                height={36}
-                className="shrink-0"
-              />
-              <h2 className="text-xl font-bold text-slate-800">
-                Branch Parameter Non CBS <span className="text-slate-400 font-normal text-sm">/ शाखा मापदंड (Non-CBS)</span>
-              </h2>
-            </div>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-            >
-              <X size={16} strokeWidth={2.5} />
-            </button>
-          </div>
-
-          {/* Branch Details */}
-          <BranchNonCBS_CardSection
-            icon={Landmark}
-            titleEn="Branch Details"
-            titleHi="शाखेचा तपशील"
-            descriptionEn="Bank and branch identification for this Non-CBS parameter."
-            descriptionHi="या Non-CBS मापदंडासाठी बँक व शाखा माहिती."
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]" onClick={onClose}>
+          <div
+            className="max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-[20px] bg-white p-6 sm:p-8 shadow-2xl"
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              <BranchNonCBS_TextField 
-                labelEn="Bank Code" 
-                labelHi="बँक कोड" 
-                icon={Landmark} 
-                placeholder="Enter Bank Code" 
-                value={formData.bankCode} 
-                onChange={(v) => handleChange("bankCode", v)} 
-                hasError={errors.bankCode} 
-              />
-              <BranchNonCBS_TextField 
-                labelEn="Bank Name" 
-                labelHi="बँकेचे नाव" 
-                icon={Landmark} 
-                placeholder="Enter Bank Name" 
-                value={formData.bankName} 
-                onChange={(v) => handleChange("bankName", v)} 
-                hasError={errors.bankName} 
-              />
-              <BranchNonCBS_TextField 
-                labelEn="Branch Code" 
-                labelHi="शाखा कोड" 
-                icon={Landmark} 
-                placeholder="Enter Branch Code" 
-                value={formData.branchCode} 
-                onChange={(v) => handleChange("branchCode", v)} 
-                hasError={errors.branchCode} 
-                readOnly 
-              />
-              <BranchNonCBS_TextField 
-                labelEn="Branch Name" 
-                labelHi="शाखेचे नाव" 
-                icon={Landmark} 
-                placeholder="Enter Branch Name" 
-                value={formData.branchName} 
-                onChange={(v) => handleChange("branchName", v)} 
-                hasError={errors.branchName} 
-              />
+            {/* Header */}
+            <div className="mb-5 flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <Image
+                  src={IMAGES.ADD_ICON}
+                  alt="Branch Parameter Non CBS"
+                  width={36}
+                  height={36}
+                  className="shrink-0"
+                />
+                <h2 className="text-xl font-bold text-slate-800">
+                  Branch Parameter Non CBS <span className="text-slate-400 font-normal text-sm">/ शाखा मापदंड (Non-CBS)</span>
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
+              >
+                <X size={16} strokeWidth={2.5} />
+              </button>
             </div>
-          </BranchNonCBS_CardSection>
 
-          {/* Details (Yes/No settings) */}
-          <div className="mt-4">
+            {/* Branch Details */}
             <BranchNonCBS_CardSection
-              icon={UserRound}
-              titleEn="Details"
-              titleHi="तपशील"
-              descriptionEn="Day-end, interest posting and renewal settings for this branch."
-              descriptionHi="या शाखेसाठी दिवस-अखेर, व्याज पोस्टिंग व नूतनीकरण सेटिंग्ज."
+              icon={Landmark}
+              titleEn="Branch Details"
+              titleHi="शाखेचा तपशील"
+              descriptionEn="Bank and branch identification for this Non-CBS parameter."
+              descriptionHi="या Non-CBS मापदंडासाठी बँक व शाखा माहिती."
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
-                <BranchNonCBS_RadioField 
-                  name="isDayBeginExecuted" 
-                  labelEn="Is Day Begin Executed" 
-                  labelHi="दिवस प्रारंभ" 
-                  value={formData.isDayBeginExecuted} 
-                  onChange={(v) => handleChange("isDayBeginExecuted", v)} 
-                  hasError={errors.isDayBeginExecuted} 
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <BranchNonCBS_TextField
+                  labelEn="Bank Code"
+                  labelHi="बँक कोड"
+                  icon={Landmark}
+                  placeholder="Enter Bank Code"
+                  value={formData.bankCode}
+                  onChange={(v) => handleChange("bankCode", v)}
+                  hasError={errors.bankCode}
                 />
-                <BranchNonCBS_RadioField 
-                  name="isDayEndExecuted" 
-                  labelEn="Is Day End Executed" 
-                  labelHi="दिवस समाप्त" 
-                  value={formData.isDayEndExecuted} 
-                  onChange={(v) => handleChange("isDayEndExecuted", v)} 
-                  hasError={errors.isDayEndExecuted} 
+                <BranchNonCBS_TextField
+                  labelEn="Bank Name"
+                  labelHi="बँकेचे नाव"
+                  icon={Landmark}
+                  placeholder="Enter Bank Name"
+                  value={formData.bankName}
+                  onChange={(v) => handleChange("bankName", v)}
+                  hasError={errors.bankName}
                 />
-                <BranchNonCBS_RadioField 
-                  name="isDenominationRequired" 
-                  labelEn="Is Denomination Required" 
-                  labelHi="चलन तपशील" 
-                  value={formData.isDenominationRequired} 
-                  onChange={(v) => handleChange("isDenominationRequired", v)} 
-                  hasError={errors.isDenominationRequired} 
+                <BranchNonCBS_TextField
+                  labelEn="Branch Code"
+                  labelHi="शाखा कोड"
+                  icon={Landmark}
+                  placeholder="Enter Branch Code"
+                  value={formData.branchCode}
+                  onChange={(v) => handleChange("branchCode", v)}
+                  hasError={errors.branchCode}
+                  readOnly
                 />
-                <BranchNonCBS_RadioField 
-                  name="isYearAutoRenewalAtDayBegin" 
-                  labelEn="Is Year Auto Renewal At Day Begin" 
-                  labelHi="वर्ष नूतनीकरण" 
-                  value={formData.isYearAutoRenewalAtDayBegin} 
-                  onChange={(v) => handleChange("isYearAutoRenewalAtDayBegin", v)} 
-                  hasError={errors.isYearAutoRenewalAtDayBegin} 
-                />
-                <BranchNonCBS_RadioField 
-                  name="isSBInterestPostAtDayEnd" 
-                  labelEn="Is SB Interest Post At Day End" 
-                  labelHi="एसबी व्याज पोस्ट" 
-                  value={formData.isSBInterestPostAtDayEnd} 
-                  onChange={(v) => handleChange("isSBInterestPostAtDayEnd", v)} 
-                  hasError={errors.isSBInterestPostAtDayEnd} 
-                />
-                <BranchNonCBS_RadioField 
-                  name="isCAInterestPostAtDayEnd" 
-                  labelEn="Is CA Interest Post At Day End" 
-                  labelHi="सीए व्याज पोस्ट" 
-                  value={formData.isCAInterestPostAtDayEnd} 
-                  onChange={(v) => handleChange("isCAInterestPostAtDayEnd", v)} 
-                  hasError={errors.isCAInterestPostAtDayEnd} 
-                />
-                <BranchNonCBS_RadioField 
-                  name="isTDInterestPostAtDayEnd" 
-                  labelEn="Is TD Interest Post At Day End" 
-                  labelHi="TD व्याज पोस्ट" 
-                  value={formData.isTDInterestPostAtDayEnd} 
-                  onChange={(v) => handleChange("isTDInterestPostAtDayEnd", v)} 
-                  hasError={errors.isTDInterestPostAtDayEnd} 
-                />
-                <BranchNonCBS_RadioField 
-                  name="isTLInterestPostAtDayEnd" 
-                  labelEn="Is TL Interest Post At Day End" 
-                  labelHi="TL व्याज पोस्ट" 
-                  value={formData.isTLInterestPostAtDayEnd} 
-                  onChange={(v) => handleChange("isTLInterestPostAtDayEnd", v)} 
-                  hasError={errors.isTLInterestPostAtDayEnd} 
-                />
-                <BranchNonCBS_RadioField 
-                  name="isCCInterestPostAtDayEnd" 
-                  labelEn="Is CC Interest Post At Day End" 
-                  labelHi="CC व्याज पोस्ट" 
-                  value={formData.isCCInterestPostAtDayEnd} 
-                  onChange={(v) => handleChange("isCCInterestPostAtDayEnd", v)} 
-                  hasError={errors.isCCInterestPostAtDayEnd} 
+                <BranchNonCBS_TextField
+                  labelEn="Branch Name"
+                  labelHi="शाखेचे नाव"
+                  icon={Landmark}
+                  placeholder="Enter Branch Name"
+                  value={formData.branchName}
+                  onChange={(v) => handleChange("branchName", v)}
+                  hasError={errors.branchName}
                 />
               </div>
             </BranchNonCBS_CardSection>
-          </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-end gap-3 mt-6 pb-1 flex-wrap">
-            <button
-              type="button"
-              onClick={handleValidate}
-              className="flex items-center gap-1.5 px-5 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-            >
-              Validate <Check size={14} />
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex items-center gap-1.5 px-5 py-2 bg-white border border-[#0b66c2] text-[#0b66c2] hover:bg-slate-50 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-            >
-              Cancel <X size={14} />
-            </button>
-            <button
-              type="button"
-              disabled={!validated}
-              onClick={handleSave}
-              className={`flex items-center gap-1.5 px-6 py-2 text-xs font-semibold rounded-md transition-all duration-200 ${
-                validated ? "bg-[#1F67F4] text-white hover:bg-[#0E57EA] shadow-sm" : "bg-[#e2e8f0] text-slate-400 cursor-not-allowed"
-              }`}
-            >
-              Modify <ChevronDown size={14} />
-            </button>
+            {/* Details (Yes/No settings) */}
+            <div className="mt-4">
+              <BranchNonCBS_CardSection
+                icon={UserRound}
+                titleEn="Details"
+                titleHi="तपशील"
+                descriptionEn="Day-end, interest posting and renewal settings for this branch."
+                descriptionHi="या शाखेसाठी दिवस-अखेर, व्याज पोस्टिंग व नूतनीकरण सेटिंग्ज."
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
+                  <BranchNonCBS_RadioField
+                    name="isDayBeginExecuted"
+                    labelEn="Is Day Begin Executed"
+                    labelHi="दिवस प्रारंभ"
+                    value={formData.isDayBeginExecuted}
+                    onChange={(v) => handleChange("isDayBeginExecuted", v)}
+                    hasError={errors.isDayBeginExecuted}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isDayEndExecuted"
+                    labelEn="Is Day End Executed"
+                    labelHi="दिवस समाप्त"
+                    value={formData.isDayEndExecuted}
+                    onChange={(v) => handleChange("isDayEndExecuted", v)}
+                    hasError={errors.isDayEndExecuted}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isDenominationRequired"
+                    labelEn="Is Denomination Required"
+                    labelHi="चलन तपशील"
+                    value={formData.isDenominationRequired}
+                    onChange={(v) => handleChange("isDenominationRequired", v)}
+                    hasError={errors.isDenominationRequired}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isYearAutoRenewalAtDayBegin"
+                    labelEn="Is Year Auto Renewal At Day Begin"
+                    labelHi="वर्ष नूतनीकरण"
+                    value={formData.isYearAutoRenewalAtDayBegin}
+                    onChange={(v) => handleChange("isYearAutoRenewalAtDayBegin", v)}
+                    hasError={errors.isYearAutoRenewalAtDayBegin}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isSBInterestPostAtDayEnd"
+                    labelEn="Is SB Interest Post At Day End"
+                    labelHi="एसबी व्याज पोस्ट"
+                    value={formData.isSBInterestPostAtDayEnd}
+                    onChange={(v) => handleChange("isSBInterestPostAtDayEnd", v)}
+                    hasError={errors.isSBInterestPostAtDayEnd}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isCAInterestPostAtDayEnd"
+                    labelEn="Is CA Interest Post At Day End"
+                    labelHi="सीए व्याज पोस्ट"
+                    value={formData.isCAInterestPostAtDayEnd}
+                    onChange={(v) => handleChange("isCAInterestPostAtDayEnd", v)}
+                    hasError={errors.isCAInterestPostAtDayEnd}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isTDInterestPostAtDayEnd"
+                    labelEn="Is TD Interest Post At Day End"
+                    labelHi="TD व्याज पोस्ट"
+                    value={formData.isTDInterestPostAtDayEnd}
+                    onChange={(v) => handleChange("isTDInterestPostAtDayEnd", v)}
+                    hasError={errors.isTDInterestPostAtDayEnd}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isTLInterestPostAtDayEnd"
+                    labelEn="Is TL Interest Post At Day End"
+                    labelHi="TL व्याज पोस्ट"
+                    value={formData.isTLInterestPostAtDayEnd}
+                    onChange={(v) => handleChange("isTLInterestPostAtDayEnd", v)}
+                    hasError={errors.isTLInterestPostAtDayEnd}
+                  />
+                  <BranchNonCBS_RadioField
+                    name="isCCInterestPostAtDayEnd"
+                    labelEn="Is CC Interest Post At Day End"
+                    labelHi="CC व्याज पोस्ट"
+                    value={formData.isCCInterestPostAtDayEnd}
+                    onChange={(v) => handleChange("isCCInterestPostAtDayEnd", v)}
+                    hasError={errors.isCCInterestPostAtDayEnd}
+                  />
+                </div>
+              </BranchNonCBS_CardSection>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 mt-6 pb-1 flex-wrap">
+              <button
+                type="button"
+                onClick={handleValidate}
+                className="flex items-center gap-1.5 px-5 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
+              >
+                Validate <Check size={14} />
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex items-center gap-1.5 px-5 py-2 bg-white border border-[#0b66c2] text-[#0b66c2] hover:bg-slate-50 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
+              >
+                Cancel <X size={14} />
+              </button>
+              <button
+                type="button"
+                disabled={!validated}
+                onClick={handleSave}
+                className={`flex items-center gap-1.5 px-6 py-2 text-xs font-semibold rounded-md transition-all duration-200 ${validated ? "bg-[#1F67F4] text-white hover:bg-[#0E57EA] shadow-sm" : "bg-[#e2e8f0] text-slate-400 cursor-not-allowed"
+                  }`}
+              >
+                Modify <ChevronDown size={14} />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       )}
 
       {showSuccess && (
@@ -2393,13 +2437,12 @@ function BranchTDReciptLot_TextField({
         {required && <span className="text-red-500">*</span>}
       </label>
       <div
-        className={`group flex items-center w-full h-8 rounded-[10px] border px-2.5 transition-all duration-200 ${
-          readOnly
+        className={`group flex items-center w-full h-8 rounded-[10px] border px-2.5 transition-all duration-200 ${readOnly
             ? "bg-[#f0f2f5] border-slate-200 cursor-not-allowed"
             : hasError
               ? "bg-white border-red-400 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500"
               : "bg-white border-slate-300 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
-        }`}
+          }`}
       >
         {Icon && <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
         <input
@@ -2408,9 +2451,8 @@ function BranchTDReciptLot_TextField({
           placeholder={placeholder}
           readOnly={readOnly}
           onChange={(e) => onChange(e.target.value)}
-          className={`ml-2 w-full bg-transparent outline-none text-[11px] placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal ${
-            readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
-          }`}
+          className={`ml-2 w-full bg-transparent outline-none text-[11px] placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal ${readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-600"
+            }`}
         />
       </div>
       {hasError && <p className="mt-1 text-[10px] text-red-500">This field is required</p>}
@@ -2587,141 +2629,140 @@ export function BranchTDReciptLot_BranchTdReceiptLotModal({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]"
           onClick={onClose}
         >
-        <div
-          className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[20px] bg-white p-6 sm:p-8 shadow-2xl"
-          onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="mb-5 flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <Image
-                src={IMAGES.TD_LOT}
-                alt="Branch TD Receipt Lot"
-                width={36}
-                height={36}
-                className="shrink-0"
-              />
-              <h2 className="text-xl font-bold text-slate-800">
-                Branch TD Receipt Lot{" "}
-                <span className="text-slate-400 font-normal text-sm">
-                  / शाखा मुद्दत ठेव पावती लॉट
-                </span>
-              </h2>
-            </div>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
-            >
-              <X size={16} strokeWidth={2.5} />
-            </button>
-          </div>
-
-          {/* Branch Details */}
-          <BranchTDReciptLot_CardSection
-            icon={Building2}
-            titleEn="Branch Details"
-            titleHi="शाखेचा तपशील"
-            descriptionEn=""
-            descriptionHi=""
+          <div
+            className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[20px] bg-white p-6 sm:p-8 shadow-2xl"
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              <BranchTDReciptLot_TextField
-                labelEn="Branch Code"
-                labelHi="शाखा कोड"
-                icon={Hash}
-                placeholder="Enter Branch Code"
-                value={formData.branchCode}
-                onChange={(v) => handleChange("branchCode", v)}
-                hasError={errors.branchCode}
-                required
-                readOnly
-              />
-              <BranchTDReciptLot_TextField
-                labelEn="Branch Name"
-                labelHi="शाखेचे नाव"
-                icon={Building2}
-                placeholder="Enter Branch Name"
-                value={formData.branchName}
-                onChange={(v) => handleChange("branchName", v)}
-                hasError={errors.branchName}
-                required
-              />
-              <BranchTDReciptLot_TextField
-                labelEn="Account Type"
-                labelHi="खात्याचा प्रकार"
-                icon={CreditCard}
-                placeholder="Enter Account Type"
-                value={formData.accountType}
-                onChange={(v) => handleChange("accountType", v)}
-                hasError={errors.accountType}
-                required
-              />
+            {/* Header */}
+            <div className="mb-5 flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <Image
+                  src={IMAGES.TD_LOT}
+                  alt="Branch TD Receipt Lot"
+                  width={36}
+                  height={36}
+                  className="shrink-0"
+                />
+                <h2 className="text-xl font-bold text-slate-800">
+                  Branch TD Receipt Lot{" "}
+                  <span className="text-slate-400 font-normal text-sm">
+                    / शाखा मुद्दत ठेव पावती लॉट
+                  </span>
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100"
+              >
+                <X size={16} strokeWidth={2.5} />
+              </button>
             </div>
-          </BranchTDReciptLot_CardSection>
 
-          {/* Term Deposit Details */}
-          <div className="mt-4">
+            {/* Branch Details */}
             <BranchTDReciptLot_CardSection
-              icon={Hash}
-              titleEn="Term Deposit Details"
-              titleHi="मुद्दत ठेव तपशील"
+              icon={Building2}
+              titleEn="Branch Details"
+              titleHi="शाखेचा तपशील"
               descriptionEn=""
               descriptionHi=""
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <BranchTDReciptLot_TextField
-                  labelEn="From Receipt Number"
-                  labelHi="चेक क्रमांकापासून"
+                  labelEn="Branch Code"
+                  labelHi="शाखा कोड"
                   icon={Hash}
-                  placeholder="Enter From Receipt Number"
-                  value={formData.fromReceiptNumber}
-                  onChange={(v) => handleChange("fromReceiptNumber", v)}
-                  hasError={errors.fromReceiptNumber}
+                  placeholder="Enter Branch Code"
+                  value={formData.branchCode}
+                  onChange={(v) => handleChange("branchCode", v)}
+                  hasError={errors.branchCode}
+                  required
+                  readOnly
+                />
+                <BranchTDReciptLot_TextField
+                  labelEn="Branch Name"
+                  labelHi="शाखेचे नाव"
+                  icon={Building2}
+                  placeholder="Enter Branch Name"
+                  value={formData.branchName}
+                  onChange={(v) => handleChange("branchName", v)}
+                  hasError={errors.branchName}
                   required
                 />
                 <BranchTDReciptLot_TextField
-                  labelEn="To Receipt Number"
-                  labelHi="चेक क्रमांकापर्यंत"
-                  icon={Hash}
-                  placeholder="Enter To Receipt Number"
-                  value={formData.toReceiptNumber}
-                  onChange={(v) => handleChange("toReceiptNumber", v)}
-                  hasError={errors.toReceiptNumber}
+                  labelEn="Account Type"
+                  labelHi="खात्याचा प्रकार"
+                  icon={CreditCard}
+                  placeholder="Enter Account Type"
+                  value={formData.accountType}
+                  onChange={(v) => handleChange("accountType", v)}
+                  hasError={errors.accountType}
                   required
                 />
               </div>
             </BranchTDReciptLot_CardSection>
-          </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-end gap-3 mt-6 pb-1 flex-wrap">
-            <button
-              type="button"
-              onClick={handleValidate}
-              className="flex items-center gap-1.5 px-5 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-            >
-              Validate <Check size={14} />
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex items-center gap-1.5 px-5 py-2 bg-white border border-[#0b66c2] text-[#0b66c2] hover:bg-slate-50 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-            >
-              Cancel <X size={14} />
-            </button>
-            <button
-              type="button"
-              disabled={!validated}
-              onClick={handleSave}
-              className={`flex items-center gap-1.5 px-6 py-2 text-xs font-semibold rounded-md transition-all duration-200 ${
-                validated ? "bg-[#1F67F4] text-white hover:bg-[#0E57EA] shadow-sm" : "bg-[#e2e8f0] text-slate-400 cursor-not-allowed"
-              }`}
-            >
-              Save <ChevronDown size={14} />
-            </button>
+            {/* Term Deposit Details */}
+            <div className="mt-4">
+              <BranchTDReciptLot_CardSection
+                icon={Hash}
+                titleEn="Term Deposit Details"
+                titleHi="मुद्दत ठेव तपशील"
+                descriptionEn=""
+                descriptionHi=""
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                  <BranchTDReciptLot_TextField
+                    labelEn="From Receipt Number"
+                    labelHi="चेक क्रमांकापासून"
+                    icon={Hash}
+                    placeholder="Enter From Receipt Number"
+                    value={formData.fromReceiptNumber}
+                    onChange={(v) => handleChange("fromReceiptNumber", v)}
+                    hasError={errors.fromReceiptNumber}
+                    required
+                  />
+                  <BranchTDReciptLot_TextField
+                    labelEn="To Receipt Number"
+                    labelHi="चेक क्रमांकापर्यंत"
+                    icon={Hash}
+                    placeholder="Enter To Receipt Number"
+                    value={formData.toReceiptNumber}
+                    onChange={(v) => handleChange("toReceiptNumber", v)}
+                    hasError={errors.toReceiptNumber}
+                    required
+                  />
+                </div>
+              </BranchTDReciptLot_CardSection>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 mt-6 pb-1 flex-wrap">
+              <button
+                type="button"
+                onClick={handleValidate}
+                className="flex items-center gap-1.5 px-5 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
+              >
+                Validate <Check size={14} />
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex items-center gap-1.5 px-5 py-2 bg-white border border-[#0b66c2] text-[#0b66c2] hover:bg-slate-50 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
+              >
+                Cancel <X size={14} />
+              </button>
+              <button
+                type="button"
+                disabled={!validated}
+                onClick={handleSave}
+                className={`flex items-center gap-1.5 px-6 py-2 text-xs font-semibold rounded-md transition-all duration-200 ${validated ? "bg-[#1F67F4] text-white hover:bg-[#0E57EA] shadow-sm" : "bg-[#e2e8f0] text-slate-400 cursor-not-allowed"
+                  }`}
+              >
+                Save <ChevronDown size={14} />
+              </button>
+            </div>
           </div>
-        </div>
         </div>
       )}
 
@@ -2848,11 +2889,10 @@ function FilterModal({
                 <button
                   type="button"
                   onClick={() => setActiveFilter(option.id)}
-                  className={`flex w-full items-center gap-3 rounded-2xl border px-5 py-4 text-left transition-colors ${
-                    isActive
+                  className={`flex w-full items-center gap-3 rounded-2xl border px-5 py-4 text-left transition-colors ${isActive
                       ? "border-primary bg-[#E8F1FD] dark:bg-slate-800"
                       : "border-primary bg-white dark:bg-slate-900"
-                  }`}
+                    }`}
                 >
                   {option.icon}
                   <span className="text-lg font-medium text-gray-900 dark:text-slate-100">
@@ -3024,11 +3064,10 @@ function BranchMasterTable_ImplementedBadge({ value }: BranchMasterTable_BadgePr
   const isYes = value === "Y";
   return (
     <span
-      className={`inline-flex rounded-md border px-2.5 py-0.5 text-xs font-medium ${
-        isYes
+      className={`inline-flex rounded-md border px-2.5 py-0.5 text-xs font-medium ${isYes
           ? "border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
           : "border-red-200 bg-red-50 text-red-500 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400"
-      }`}
+        }`}
     >
       {value}
     </span>
@@ -3055,7 +3094,7 @@ function BranchMasterTable_SortableHeader({ label, active, direction }: BranchMa
 }
 
 export interface BranchMasterTable_BranchActionHandlers {
-  handleOpenEditViewParameter: (mode: ViewAndEditParameter_ParameterModalMode) => void;
+  handleOpenEditViewParameter: (mode: ViewAndEditParameter_ParameterModalMode, row: BranchMasterTable_BranchRow) => void;
   onBranchNonCbsParameter?: (row: BranchMasterTable_BranchRow) => void;
   onBranchChequeBookLot?: (row: BranchMasterTable_BranchRow) => void;
   onBranchTdReceiptLot?: (row: BranchMasterTable_BranchRow) => void;
@@ -3100,81 +3139,139 @@ function BranchMasterTable({
 
   return (
     <>
-    <div className="w-full bg-white rounded-xl overflow-hidden shadow-sm dark:bg-slate-900">
-      <div className="overflow-x-auto no-scrollbar">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-primary">
-              <th className="text-left text-[15px] font-medium text-white px-4 py-3 whitespace-nowrap">{tRaw("branchMaster.table.srNo")}</th>
-              <th className="text-left text-[15px] font-medium text-white px-4 py-3 whitespace-nowrap">{tRaw("common.actions")}</th>
-              {BranchMasterTable_columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => handleSort(col)}
-                  className="text-left text-[15px] font-medium text-white px-4 py-3 whitespace-nowrap cursor-pointer select-none"
-                >
-                  <BranchMasterTable_SortableHeader
-                    label={tRaw(col.labelKey)}
-                    active={sortConfig?.key === col.sortKey}
-                    direction={sortConfig && sortConfig.key === col.sortKey ? sortConfig.direction : null}
-                  />
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-            {sortedRows.length === 0 ? (
-              <tr>
-                <td colSpan={BranchMasterTable_columns.length + 2} className="px-4 py-8 text-center text-gray-400 dark:text-slate-500">
-                  {tRaw("branchMaster.table.noRecordsFound")}
-                </td>
-              </tr>
-            ) : (
-              sortedRows.map((r) => (
-                <tr key={r.sr} className="bg-white hover:bg-slate-50 transition-colors dark:bg-slate-900 dark:hover:bg-slate-800">
-                  <td className="px-4 py-3 align-middle">
-                    <span className="inline-flex items-center justify-center px-3 py-1.5 bg-indigo-50 rounded-md text-primary-700 text-sm font-medium dark:bg-indigo-900/30">
-                      {r.sr}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 align-middle">
-                    <RowActionMenu
-                      menuWidth={224}
-                      triggerClassName="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 dark:hover:bg-slate-800 dark:text-slate-400"
-                      items={[
-                        { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => handleOpenEditViewParameter("view") },
-                        { key: "edit", label: "Edit", icon: Landmark, onClick: () =>  handleOpenEditViewParameter("edit") },
-                        { key: "area", label: "Branch Area/Sub Area", icon: CreditCard, onClick: () => setOpenBranchArea(true) },
-                      ]}
+      <div className="w-full bg-white rounded-xl overflow-hidden shadow-sm dark:bg-slate-900">
+        <div className="overflow-x-auto no-scrollbar">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-primary">
+                <th className="text-left text-[15px] font-medium text-white px-4 py-3 whitespace-nowrap">{tRaw("branchMaster.table.srNo")}</th>
+                <th className="text-left text-[15px] font-medium text-white px-4 py-3 whitespace-nowrap">{tRaw("common.actions")}</th>
+                {BranchMasterTable_columns.map((col) => (
+                  <th
+                    key={col.key}
+                    onClick={() => handleSort(col)}
+                    className="text-left text-[15px] font-medium text-white px-4 py-3 whitespace-nowrap cursor-pointer select-none"
+                  >
+                    <BranchMasterTable_SortableHeader
+                      label={tRaw(col.labelKey)}
+                      active={sortConfig?.key === col.sortKey}
+                      direction={sortConfig && sortConfig.key === col.sortKey ? sortConfig.direction : null}
                     />
-                  </td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.branchCode}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.ifscCode}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.branchName}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.shortName}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.address}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.cityCode}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.emailId}</td>
-                  <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.phoneNo}</td>
-                  <td className="px-4 py-3 align-middle whitespace-nowrap">
-                    <BranchMasterTable_ImplementedBadge value={r.isImplemented} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+              {sortedRows.length === 0 ? (
+                <tr>
+                  <td colSpan={BranchMasterTable_columns.length + 2} className="px-4 py-8 text-center text-gray-400 dark:text-slate-500">
+                    {tRaw("branchMaster.table.noRecordsFound")}
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                sortedRows.map((r) => (
+                  <tr key={r.sr} className="bg-white hover:bg-slate-50 transition-colors dark:bg-slate-900 dark:hover:bg-slate-800">
+                    <td className="px-4 py-3 align-middle">
+                      <span className="inline-flex items-center justify-center px-3 py-1.5 bg-indigo-50 rounded-md text-primary-700 text-sm font-medium dark:bg-indigo-900/30">
+                        {r.sr}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 align-middle">
+                      <RowActionMenu
+                        menuWidth={224}
+                        triggerClassName="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 dark:hover:bg-slate-800 dark:text-slate-400"
+                        items={[
+                          { key: "view", label: tRaw("common.view"), icon: Eye, onClick: () => handleOpenEditViewParameter("view", r) },
+                          { key: "edit", label: "Edit", icon: Landmark, onClick: () => handleOpenEditViewParameter("edit", r) },
+                          { key: "area", label: "Branch Area/Sub Area", icon: CreditCard, onClick: () => setOpenBranchArea(true) },
+                        ]}
+                      />
+                    </td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.branchCode}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.ifscCode}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.branchName}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.shortName}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.address}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.cityCode}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.emailId}</td>
+                    <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">{r.phoneNo}</td>
+                    <td className="px-4 py-3 align-middle whitespace-nowrap">
+                      <BranchMasterTable_ImplementedBadge value={r.isImplemented} />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    {
-      <BranchAreaSubAreaModal open={openBranchArea} onClose={()=>setOpenBranchArea(false)} />
-    }
+      {
+        <BranchAreaSubAreaModal open={openBranchArea} onClose={() => setOpenBranchArea(false)} />
+      }
     </>
   );
 }
 
 
 /* ===== from BranchMasterPage.tsx ===== */
+
+function mapBranchDetailToRow(detail: BranchDetail, sr: number): BranchMasterTable_BranchRow {
+  return {
+    sr,
+    branchCode: detail.branchCode,
+    ifscCode: detail.rtgsCode,
+    branchName: detail.name,
+    shortName: detail.nameShort,
+    address: [detail.address1, detail.address2, detail.address3].filter(Boolean).join(", "),
+    cityCode: detail.cityCode,
+    emailId: detail.emailId,
+    phoneNo: detail.phone1,
+    isImplemented: detail.isImplemented === "Y" ? "Y" : "N",
+  };
+}
+
+function mapBranchDetailToParameterFormData(detail: BranchDetail): ViewAndEditParameter_ParameterFormData {
+  return {
+    branchCode: detail.branchCode,
+    branchName: detail.name,
+    shortName: detail.nameShort,
+    address1: detail.address1,
+    address2: detail.address2,
+    address3: detail.address3,
+    zipCode: detail.zip,
+    cityCode: detail.cityCode,
+    state: "",
+    country: "",
+    emailId: detail.emailId,
+    phoneNumber1: detail.phone1,
+    phoneNumber2: detail.phone2,
+    phoneNumber3: detail.phone3,
+    isImplemented: detail.isImplemented === "Y" ? "Yes" : "No",
+  };
+}
+
+/** Merges form edits back onto the original detail record — the server model has no state/country fields. */
+function buildBranchDetailPayload(
+  formData: ViewAndEditParameter_ParameterFormData,
+  base: BranchDetail,
+): BranchDetail {
+  return {
+    ...base,
+    name: formData.branchName,
+    nameShort: formData.shortName,
+    address1: formData.address1,
+    address2: formData.address2,
+    address3: formData.address3,
+    cityCode: formData.cityCode,
+    zip: formData.zipCode,
+    emailId: formData.emailId,
+    phone1: formData.phoneNumber1,
+    phone2: formData.phoneNumber2,
+    phone3: formData.phoneNumber3,
+    isImplemented: formData.isImplemented === "Yes" ? "Y" : "N",
+  };
+}
+
 export default function BranchMasterPage() {
   const { t, en } = useBilingual();
 
@@ -3191,7 +3288,9 @@ export default function BranchMasterPage() {
     isImplemented: en("branchMaster.filters.isImplemented"),
   };
 
-  const [rows, setRows] = useState<BranchMasterTable_BranchRow[]>(BranchMasterTable_DEFAULT_BRANCH_ROWS);
+  const [rows, setRows] = useState<BranchMasterTable_BranchRow[]>([]);
+  const [tableLoading, setTableLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [viewRow, setViewRow] = useState<BranchMasterTable_BranchRow | null>(null);
@@ -3246,6 +3345,23 @@ export default function BranchMasterPage() {
     return `${FILTER_LABELS[firstKey]}:${firstVal}${extra}`;
   }, [filters, FILTER_LABELS]);
 
+  const loadBranches = useCallback(async () => {
+    setTableLoading(true);
+    try {
+      const details = await fetchBranches();
+      setRows(details.map((d, idx) => mapBranchDetailToRow(d, idx + 1)));
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to load branches.");
+      setRows([]);
+    } finally {
+      setTableLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadBranches();
+  }, [loadBranches]);
+
   const handleAddSave = useCallback((formData: AddBranchModal_BranchFormData) => {
     setRows((prev) => [
       ...prev,
@@ -3282,74 +3398,54 @@ export default function BranchMasterPage() {
     setTdReceiptLotRow(null);
   }, []);
 
-  // Sample data for View/Edit modes
-  const sampleParameterData: ViewAndEditParameter_ParameterFormData = {
-    branchCode: "0100",
-    branchName: "Ilkal Branch",
-    shortName: "Ilkal",
-    address1: "Gongada Shetti Building",
-    address2: "Gongada Shetti Building",
-    address3: "Gongada Shetti Building",
-    zipCode: "400001",
-    cityCode: "Ilkal",
-    state: "Maharashtra",
-    country: "India",
-    emailId: "ilkal@gmail.com",
-    phoneNumber1: "9876543210",
-    phoneNumber2: "9876543210",
-    phoneNumber3: "9876543210",
-    isImplemented: "Yes",
-  };
-
-  // Sample data with different values
-  const sampleParameterData2: ViewAndEditParameter_ParameterFormData = {
-    branchCode: "0200",
-    branchName: "Mumbai Main Branch",
-    shortName: "MMB",
-    address1: "123 Marine Drive",
-    address2: "Near Gateway of India",
-    address3: "Colaba",
-    zipCode: "400005",
-    cityCode: "MUM",
-    state: "Maharashtra",
-    country: "India",
-    emailId: "mumbai@branch.com",
-    phoneNumber1: "9876543211",
-    phoneNumber2: "9876543212",
-    phoneNumber3: "9876543213",
-    isImplemented: "No",
-  };
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<ViewAndEditParameter_ParameterModalMode>("view");
-  const [currentData, setCurrentData] =
-    useState<ViewAndEditParameter_ParameterFormData>(sampleParameterData);
+  const [currentData, setCurrentData] = useState<ViewAndEditParameter_ParameterFormData>(
+    ViewAndEditParameter_emptyParameterFormData,
+  );
+  const [currentBranchDetail, setCurrentBranchDetail] = useState<BranchDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
-  const handleOpenView = (mode:ViewAndEditParameter_ParameterModalMode) => {
+  const handleOpenEditViewParameter = async (
+    mode: ViewAndEditParameter_ParameterModalMode,
+    row: BranchMasterTable_BranchRow,
+  ) => {
     setModalMode(mode);
-    setCurrentData(sampleParameterData);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenEditViewParameter = (mode:ViewAndEditParameter_ParameterModalMode) => {
-    setModalMode(mode);
-    setCurrentData(sampleParameterData);
-    setIsModalOpen(true);
+    setDetailLoading(true);
+    try {
+      const detail = await fetchBranchByCode(row.branchCode);
+      setCurrentBranchDetail(detail);
+      setCurrentData(mapBranchDetailToParameterFormData(detail));
+      setIsModalOpen(true);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to load branch details.");
+    } finally {
+      setDetailLoading(false);
+    }
   };
 
   const handleClose = () => {
     setIsModalOpen(false);
+    setCurrentBranchDetail(null);
   };
 
-  const handleSave = (data: ViewAndEditParameter_ParameterFormData) => {
-    console.log("Saved data:", data);
-    setCurrentData(data);
-    // Here you would typically make an API call to save the data
+  const handleSave = async (data: ViewAndEditParameter_ParameterFormData) => {
+    if (!currentBranchDetail) return;
+    try {
+      const updated = await updateBranch(buildBranchDetailPayload(data, currentBranchDetail));
+      setCurrentBranchDetail(updated);
+      setCurrentData(mapBranchDetailToParameterFormData(updated));
+      setRows((prev) =>
+        prev.map((r) => (r.branchCode === updated.branchCode ? mapBranchDetailToRow(updated, r.sr) : r)),
+      );
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : "Failed to update branch.");
+      throw err;
+    }
   };
 
   const handleValidate = (data: ViewAndEditParameter_ParameterFormData) => {
     console.log("Validated data:", data);
-    // Here you would typically perform additional validation
   };
 
   return (
@@ -3367,18 +3463,25 @@ export default function BranchMasterPage() {
         onRefresh={() => {
           setFilters(FilterModal_defaultBranchFilterValues);
           setSearchQuery("");
+          loadBranches();
         }}
         activeFilterCount={activeFilterCount}
         filterSummary={filterSummary}
       />
       <div className="p-4">
-        <BranchMasterTable
-          rows={filteredRows}
-          handleOpenEditViewParameter={handleOpenEditViewParameter}
-          onBranchNonCbsParameter={setBranchNonCbsRow}
-          onBranchChequeBookLot={setChequeBookLotRow}
-          onBranchTdReceiptLot={setTdReceiptLotRow}
-        />
+        {tableLoading && rows.length === 0 ? (
+          <div className="flex w-full items-center justify-center rounded-xl bg-white py-16 text-sm text-gray-400 shadow-sm dark:bg-slate-900 dark:text-slate-500">
+            Loading branches...
+          </div>
+        ) : (
+          <BranchMasterTable
+            rows={filteredRows}
+            handleOpenEditViewParameter={handleOpenEditViewParameter}
+            onBranchNonCbsParameter={setBranchNonCbsRow}
+            onBranchChequeBookLot={setChequeBookLotRow}
+            onBranchTdReceiptLot={setTdReceiptLotRow}
+          />
+        )}
       </div>
       {/* Add Branch Modal */}
       <AddParameterModal
@@ -3448,6 +3551,22 @@ export default function BranchMasterPage() {
               onClose={() => setShowFilter(false)}
               onApply={setFilters}
             />
+          </div>
+        </div>
+      )}
+      {errorMessage && (
+        <SuccessModal
+          variant="critical"
+          title="Something Went Wrong"
+          subtitle={errorMessage}
+          onClose={() => setErrorMessage(null)}
+          onDone={() => setErrorMessage(null)}
+        />
+      )}
+      {detailLoading && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/20">
+          <div className="rounded-lg bg-white px-5 py-3 text-sm font-medium text-slate-700 shadow-lg dark:bg-slate-900 dark:text-slate-200">
+            Loading branch details...
           </div>
         </div>
       )}
