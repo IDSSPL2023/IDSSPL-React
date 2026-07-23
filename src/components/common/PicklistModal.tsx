@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { X } from "lucide-react";
 import BaseModal from "./BaseModal";
 import PaginationModal from "./PaginationModal";
 import type { PaginationState } from "./table.types";
@@ -25,7 +24,6 @@ export interface PicklistModalProps<T> {
   loading?: boolean;
   emptyMessage?: string;
   pagination?: PaginationState;
-  // Action configuration
   actions?: {
     label: string;
     icon?: ReactNode;
@@ -35,13 +33,15 @@ export interface PicklistModalProps<T> {
   }[];
   showDefaultAction?: boolean;
   actionColumnWidth?: string;
-  // Search by configuration
   searchByOptions?: { label: string; value: string }[];
   onSearchSubmit?: (searchBy: string, textToSearch: string) => void;
   searchByValue?: string;
   onSearchByChange?: (value: string) => void;
   textToSearch?: string;
   onTextToSearchChange?: (value: string) => void;
+  maxWidthPx?: number;
+  maxHeightPx?: number;
+  minHeightPx?: number;
 }
 
 export default function PicklistModal<T>({
@@ -68,6 +68,9 @@ export default function PicklistModal<T>({
   onSearchByChange,
   textToSearch,
   onTextToSearchChange,
+  maxWidthPx = 1400,
+  maxHeightPx = 900,
+  minHeightPx = 600,
 }: PicklistModalProps<T>) {
   const [internalSearch, setInternalSearch] = useState("");
   const [internalSearchBy, setInternalSearchBy] = useState(
@@ -221,9 +224,12 @@ export default function PicklistModal<T>({
   return (
     <BaseModal
       onClose={onClose}
-      maxWidthPx={841}
+      maxWidthPx={maxWidthPx}
+      maxHeightPx={maxHeightPx}
+      minHeightPx={minHeightPx}
+      size="full"
       ariaLabel={title}
-      contentClassName="rounded-[36px] p-6 min-h-[600px] max-h-[952px]"
+      contentClassName="rounded-[36px] p-6"
       bodyClassName="flex flex-1 flex-col overflow-hidden"
       showCloseButton={false}
     >
@@ -233,65 +239,63 @@ export default function PicklistModal<T>({
 
         {/* Header with Centered Title */}
         <div className="relative z-10 flex flex-col gap-6 rounded-[20px] px-2">
-        
-
           {/* Search Section */}
-         <div className="w-full border border-gray-500 text-sm">
-  {/* Search By Row */}
-  <div className="flex border-b border-gray-600">
-    {/* Left Label */}
-    <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
-      Search By
-    </div>
+          <div className="w-full border border-gray-500 text-sm">
+            {/* Search By Row */}
+            <div className="flex border-b border-gray-600">
+              {/* Left Label */}
+              <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
+                Search By
+              </div>
 
-    {/* Right Content */}
-    <div className="flex flex-1 items-center gap-6 bg-[#DCEBFC] px-3 py-2">
-      {searchByOptions.map((option) => (
-        <label key={option.value} className="flex items-center gap-2">
-          <input
-            type="radio"
-            name="searchBy"
-            value={option.value}
-            checked={searchBy === option.value}
-            onChange={(e) => {
-              setSearchBy(e.target.value);
-              setTextSearch("");
-            }}
-          />
-          {option.label}
-        </label>
-      ))}
-    </div>
-  </div>
+              {/* Right Content */}
+              <div className="flex flex-1 items-center gap-6 bg-[#DCEBFC] px-3 py-2">
+                {searchByOptions.map((option) => (
+                  <label key={option.value} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="searchBy"
+                      value={option.value}
+                      checked={searchBy === option.value}
+                      onChange={(e) => {
+                        setSearchBy(e.target.value);
+                        setTextSearch("");
+                      }}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+            </div>
 
-  {/* Text To Search Row */}
-  <div className="flex">
-    {/* Left Label */}
-    <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
-      Text To Search
-    </div>
+            {/* Text To Search Row */}
+            <div className="flex">
+              {/* Left Label */}
+              <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
+                Text To Search
+              </div>
 
-    {/* Right Content */}
-    <div className="flex flex-1 items-center gap-2 bg-[#DCEBFC] p-2">
-      <input
-        type="text"
-        value={textSearch}
-        onChange={(e) => setTextSearch(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder={`Enter ${searchBy === "code" ? "Branch Code" : "Name"}`}
-        className="flex-1 border border-gray-400 px-2 py-1 outline-none"
-      />
+              {/* Right Content */}
+              <div className="flex flex-1 items-center gap-2 bg-[#DCEBFC] p-2">
+                <input
+                  type="text"
+                  value={textSearch}
+                  onChange={(e) => setTextSearch(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder={`Enter ${searchBy === "code" ? "Branch Code" : "Name"}`}
+                  className="flex-1 border border-gray-400 px-2 py-1 outline-none"
+                />
 
-      <button
-        type="button"
-        onClick={handleSearchSubmit}
-        className="border border-gray-500 bg-gray-200 px-4 py-1 hover:bg-gray-300"
-      >
-        Submit
-      </button>
-    </div>
-  </div>
-</div>
+                <button
+                  type="button"
+                  onClick={handleSearchSubmit}
+                  className="border border-gray-500 bg-gray-200 px-4 py-1 hover:bg-gray-300"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Table Section - Border only around the table */}
@@ -351,7 +355,11 @@ export default function PicklistModal<T>({
 
         {pagination && (
           <div className="relative z-10 mt-4 shrink-0">
-            <PaginationModal page={pagination.page} totalPages={pagination.totalPages} onPageChange={pagination.onPageChange} />
+            <PaginationModal 
+              page={pagination.page} 
+              totalPages={pagination.totalPages} 
+              onPageChange={pagination.onPageChange} 
+            />
           </div>
         )}
       </div>

@@ -12,6 +12,8 @@ import ListModal, { type ListModalItem } from "@/components/shared/Modals/ListMo
 import { useRouter } from "@/lib/navigation";
 import Image from "@/components/ui/Image";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
+import CustomerIdPicklistField, { CustomerOption } from "@/components/common/CustomerIdPicklistField";
+// import CustomerIdPicklistField, { type CustomerOption } from "./CustomerIdPicklistField";
 
 /* ===== from FlagUpdation.tsx ===== */
 export interface FlagUpdation_CustomerTDSFlagFormData {
@@ -322,8 +324,7 @@ const ReportAll_REQUIRED_FIELDS: ReportAll_RequiredFieldKey[] = [
 type ReportAll_ListType =
   | "accountType"
   | "productCode"
-  | "interestDepositCode"
-  | "customerId";
+  | "interestDepositCode";
 
 const ReportAll_ACCOUNT_TYPE_DATA: ListModalItem[] = [
   { id: "1", code: "TD", name: "Term Deposit" },
@@ -342,12 +343,6 @@ const ReportAll_INTEREST_DEPOSIT_CODE_DATA: ListModalItem[] = [
   { id: "1", code: "TD", name: "Term Deposit Interest" },
   { id: "2", code: "QLY", name: "Quarterly Interest" },
   { id: "3", code: "MLY", name: "Monthly Interest" },
-];
-
-const ReportAll_CUSTOMER_DATA: ListModalItem[] = [
-  { id: "1", code: "TD", name: "Test Deposit Customer" },
-  { id: "2", code: "CUST002", name: "Ramesh Kumar" },
-  { id: "3", code: "CUST003", name: "Suresh Patil" },
 ];
 
 const ReportAll_REPORT_TYPE_OPTIONS = ["Details", "Summary"];
@@ -428,12 +423,14 @@ function TDSReportAllModal({
       case "interestDepositCode":
         handleChange("interestDepositCode", row.code);
         break;
-      case "customerId":
-        handleChange("customerId", row.code);
-        handleChange("customerName", row.name);
-        break;
     }
     setOpenList(false);
+  };
+
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    handleChange("customerId", customer.customerId);
+    handleChange("customerName", customer.customerName);
   };
 
   const getListData = () => {
@@ -458,13 +455,6 @@ function TDSReportAllModal({
           rows: ReportAll_INTEREST_DEPOSIT_CODE_DATA,
           codeLabel: "Code",
           nameLabel: "Description",
-        };
-      case "customerId":
-        return {
-          title: "Customer List",
-          rows: ReportAll_CUSTOMER_DATA,
-          codeLabel: "Customer ID",
-          nameLabel: "Customer Name",
         };
     }
   };
@@ -617,18 +607,32 @@ function TDSReportAllModal({
               handleOpenList={() => handleOpenList("interestDepositCode")}
             />
 
-            {/* Customer ID */}
-            <PickerInput
-              labelEn="Customer ID"
-              labelHi="ग्राहक आयडी"
-              icon={User}
-              placeholder="Enter Customer ID"
-              value={formData.customerId}
-              onChange={(v) => handleChange("customerId", v)}
-              hasError={errors.customerId}
-              readOnly={isView}
-              handleOpenList={() => handleOpenList("customerId")}
-            />
+            {/* Customer ID - Picklist only in add mode; plain readOnly in view mode */}
+            {isView ? (
+              <TextInput
+                labelEn="Customer ID"
+                labelHi="ग्राहक आयडी"
+                icon={User}
+                placeholder="Customer ID"
+                value={formData.customerId}
+                onChange={() => {}}
+                required={false}
+                readOnly
+              />
+            ) : (
+              <div className="flex flex-col">
+                <CustomerIdPicklistField
+                  label="Customer ID"
+                  labelHi="ग्राहक आयडी"
+                  value={formData.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerSelect}
+                  preFetch={false}
+                  pageSize={10}
+                  error={errors.customerId ? "Customer ID is required" : ""}
+                />
+              </div>
+            )}
 
             {/* Customer Name - Always readOnly */}
             <TextInput
@@ -1203,8 +1207,7 @@ const ProvisonAndVlcc_REQUIRED_FIELDS: ProvisonAndVlcc_RequiredFieldKey[] = [
 type ProvisonAndVlcc_ListType =
   | "accountType"
   | "productCode"
-  | "interestDepositCode"
-  | "customerId";
+  | "interestDepositCode";
 
 const ProvisonAndVlcc_ACCOUNT_TYPE_DATA: ListModalItem[] = [
   { id: "1", code: "TD", name: "Term Deposit" },
@@ -1223,12 +1226,6 @@ const ProvisonAndVlcc_INTEREST_DEPOSIT_CODE_DATA: ListModalItem[] = [
   { id: "1", code: "TD", name: "Term Deposit Interest" },
   { id: "2", code: "QLY", name: "Quarterly Interest" },
   { id: "3", code: "MLY", name: "Monthly Interest" },
-];
-
-const ProvisonAndVlcc_CUSTOMER_DATA: ListModalItem[] = [
-  { id: "1", code: "TD", name: "Test Deposit Customer" },
-  { id: "2", code: "CUST002", name: "Ramesh Kumar" },
-  { id: "3", code: "CUST003", name: "Suresh Patil" },
 ];
 
 const ProvisonAndVlcc_REPORT_TYPE_OPTIONS = ["Details", "Summary"];
@@ -1309,12 +1306,14 @@ function ProvisonAndVlcc({
       case "interestDepositCode":
         handleChange("interestDepositCode", row.code);
         break;
-      case "customerId":
-        handleChange("customerId", row.code);
-        handleChange("customerName", row.name);
-        break;
     }
     setOpenList(false);
+  };
+
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    handleChange("customerId", customer.customerId);
+    handleChange("customerName", customer.customerName);
   };
 
   const getListData = () => {
@@ -1339,13 +1338,6 @@ function ProvisonAndVlcc({
           rows: ProvisonAndVlcc_INTEREST_DEPOSIT_CODE_DATA,
           codeLabel: "Code",
           nameLabel: "Description",
-        };
-      case "customerId":
-        return {
-          title: "Customer List",
-          rows: ProvisonAndVlcc_CUSTOMER_DATA,
-          codeLabel: "Customer ID",
-          nameLabel: "Customer Name",
         };
     }
   };
@@ -1498,18 +1490,32 @@ function ProvisonAndVlcc({
               handleOpenList={() => handleOpenList("interestDepositCode")}
             />
 
-            {/* Customer ID - Disabled in view mode */}
-            <PickerInput
-              labelEn="Customer ID"
-              labelHi="ग्राहक आयडी"
-              icon={User}
-              placeholder="Enter Customer ID"
-              value={formData.customerId}
-              onChange={(v) => handleChange("customerId", v)}
-              hasError={errors.customerId}
-              readOnly={isView}
-              handleOpenList={() => handleOpenList("customerId")}
-            />
+            {/* Customer ID - Picklist only in add mode; plain readOnly in view mode */}
+            {isView ? (
+              <TextInput
+                labelEn="Customer ID"
+                labelHi="ग्राहक आयडी"
+                icon={User}
+                placeholder="Customer ID"
+                value={formData.customerId}
+                onChange={() => {}}
+                required={false}
+                readOnly
+              />
+            ) : (
+              <div className="flex flex-col">
+                <CustomerIdPicklistField
+                  label="Customer ID"
+                  labelHi="ग्राहक आयडी"
+                  value={formData.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerSelect}
+                  preFetch={false}
+                  pageSize={10}
+                  error={errors.customerId ? "Customer ID is required" : ""}
+                />
+              </div>
+            )}
 
             {/* Customer Name - Always readOnly */}
             <TextInput

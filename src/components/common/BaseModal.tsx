@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import type { BaseModalProps, ModalSize } from "./modal.types";
+import { ModalSize } from "./modal.types";
+// import type { BaseModalProps, ModalSize } from "./";
 
 const SIZE_CLASSES: Record<ModalSize, string> = {
   sm: "max-w-[500px]",
@@ -11,8 +12,37 @@ const SIZE_CLASSES: Record<ModalSize, string> = {
   full: "max-w-[95vw]",
 };
 
+const HEIGHT_CLASSES: Record<ModalSize, string> = {
+  sm: "max-h-[400px]",
+  md: "max-h-[600px]",
+  lg: "max-h-[800px]",
+  xl: "max-h-[900px]",
+  "2xl": "max-h-[1000px]",
+  full: "max-h-[95vh]",
+};
+
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+export interface BaseModalProps {
+  onClose: () => void;
+  title?: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
+  footer?: React.ReactNode;
+  children: React.ReactNode;
+  size?: ModalSize;
+  maxWidthPx?: number;
+  maxHeightPx?: number;
+  minHeightPx?: number;
+  contentClassName?: string;
+  overlayClassName?: string;
+  bodyClassName?: string;
+  showCloseButton?: boolean;
+  closeOnBackdrop?: boolean;
+  closeOnEscape?: boolean;
+  ariaLabel?: string;
+}
 
 /**
  * Shared modal primitive: fixed overlay, z-index, backdrop, Escape handling,
@@ -29,6 +59,8 @@ export default function BaseModal({
   children,
   size = "md",
   maxWidthPx,
+  maxHeightPx,
+  minHeightPx,
   contentClassName = "",
   overlayClassName = "",
   bodyClassName = "",
@@ -94,8 +126,16 @@ export default function BaseModal({
         aria-modal="true"
         aria-label={typeof title === "string" ? title : ariaLabel}
         tabIndex={-1}
-        style={maxWidthPx ? { maxWidth: `${maxWidthPx}px` } : undefined}
-        className={`relative flex max-h-[90vh] w-full ${maxWidthPx ? "" : SIZE_CLASSES[size]} flex-col overflow-hidden rounded-2xl bg-white shadow-2xl outline-none dark:bg-slate-900 ${contentClassName}`}
+        style={{
+          maxWidth: maxWidthPx ? `${maxWidthPx}px` : undefined,
+          maxHeight: maxHeightPx ? `${maxHeightPx}px` : undefined,
+          minHeight: minHeightPx ? `${minHeightPx}px` : undefined,
+          height: maxHeightPx ? '100%' : 'auto',
+          width: '100%',
+        }}
+        className={`relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-2xl outline-none dark:bg-slate-900 ${
+          !maxWidthPx ? SIZE_CLASSES[size] : ''
+        } ${!maxHeightPx ? HEIGHT_CLASSES[size] : ''} ${contentClassName}`}
       >
         {!hasCustomHeader && (
           <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5 dark:border-slate-800">
