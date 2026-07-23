@@ -106,25 +106,25 @@ import DDMaintenancePage from "./pages/dd/Maintenance/Maintenance";
 import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
-import PayrollMaster from "./pages/payroll/Master/Master";
-import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-// import EmployeeLeaveBalancePage from "./pages/payroll/EmployeeLeaveBalancePage";
-import EmployeeLoanDetailsPage from "./pages/payroll/EmployeeLoanDetailsPage";
-// import LeaveOpeningBalancePage from "./pages/payroll/LeaveOpeningBalancePage";
-// import SalaryInstructionPage from "./pages/payroll/SalaryInstructionPage";
-// import SalaryUpdationPage from "./pages/payroll/SalaryUpdationPage";
-// import UpdateAttendancePage from "./pages/payroll/UpdateAttendancePage";
-import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
-import EmployeeDeputationPage from "@/pages/payroll/TrasationEntry/EmployeeDeputation ";
-import EmployeePromotionPage from "@/pages/payroll/TrasationEntry/EmployeePromotion";
-import EmployeeResignationPage from "@/pages/payroll/TrasationEntry/EmployeeResignation";
-import EmployeeSuspensionPage from "@/pages/payroll/TrasationEntry/EmployeeSuspensionInformation";
-import EmployeeTransferPage from "@/pages/payroll/TrasationEntry/EmployeeTransferEntry";
-import LeaveApplicationPage from "@/pages/payroll/TrasationEntry/LeaveApplicationEntry";
-import EmployeeTerminationPage from "@/pages/payroll/TrasationEntry/EmployeeTermination";
+// import PayrollMaster from "./pages/payroll/Master/Master";
+// import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
+// // import EmployeeLeaveBalancePage from "./pages/payroll/EmployeeLeaveBalancePage";
+// import EmployeeLoanDetailsPage from "./pages/payroll/EmployeeLoanDetailsPage";
+// // import LeaveOpeningBalancePage from "./pages/payroll/LeaveOpeningBalancePage";
+// // import SalaryInstructionPage from "./pages/payroll/SalaryInstructionPage";
+// // import SalaryUpdationPage from "./pages/payroll/SalaryUpdationPage";
+// // import UpdateAttendancePage from "./pages/payroll/UpdateAttendancePage";
+// import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+// import EmployeeDeputationPage from "@/pages/payroll/TrasationEntry/EmployeeDeputation ";
+// import EmployeePromotionPage from "@/pages/payroll/TrasationEntry/EmployeePromotion";
+// import EmployeeResignationPage from "@/pages/payroll/TrasationEntry/EmployeeResignation";
+// import EmployeeSuspensionPage from "@/pages/payroll/TrasationEntry/EmployeeSuspensionInformation";
+// import EmployeeTransferPage from "@/pages/payroll/TrasationEntry/EmployeeTransferEntry";
+// import LeaveApplicationPage from "@/pages/payroll/TrasationEntry/LeaveApplicationEntry";
+// import EmployeeTerminationPage from "@/pages/payroll/TrasationEntry/EmployeeTermination";
 
 import SMSRegistrationPage from "@/pages/SMS/SMS";
-import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
+// import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
 
@@ -179,7 +179,7 @@ export const router = createBrowserRouter([
         path: "/account-master/deposit",
         element: <AccountMasterTypePage accountType="deposit" />,
       },
-      { path: "/transaction-entry", element: <EmployeeDeputationPage /> },
+      // { path: "/transaction-entry", element: <EmployeeDeputationPage /> },
       {
         path: "/account-master/investment",
         element: <AccountMasterTypePage accountType="investment" />,
@@ -208,7 +208,7 @@ export const router = createBrowserRouter([
       },
       { path: "/interest-posting", element: <InterestPostingPage /> },
       { path: "/sms", element: <SMSRegistrationPage /> },
-      { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
+      // { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
       {
         path: "/authorization",
@@ -512,17 +512,17 @@ export const router = createBrowserRouter([
       },
 
       // Payroll
-      { path: "/payroll/master", element: <PayrollMaster /> },
-      { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      // { path: "/payroll/master", element: <PayrollMaster /> },
+      // { path: "/payroll/transaction", element: <PayrollTransaction /> },
       // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
       // { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
       // { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
       // { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
       // { path: "/payroll/transaction/salary-updation", element: /<SalaryUpdationPage /> },
       // { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
-      { path: "/payroll/employee-promotion", element: <EmployeePromotionPage /> },
-{ path: "/payroll/employee-resignation", element: <EmployeeResignationPage /> },
-{ path: "/payroll/employee-suspension", element: <EmployeeSuspensionPage /> },
+//       { path: "/payroll/employee-promotion", element: <EmployeePromotionPage /> },
+// { path: "/payroll/employee-resignation", element: <EmployeeResignationPage /> },
+// { path: "/payroll/employee-suspension", element: <EmployeeSuspensionPage /> },
 // { path: "/payroll/employee-transfer", element: <EmployeeTransferPage /> },
 // { path: "/payroll/leave-application", element: <LeaveApplicationPage /> },
 // { path: "/payroll/employee-termination", element: <EmployeeTerminationPage /> },
