@@ -1,4 +1,5 @@
 import { useMemo, useState, useRef } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import RowActionMenu from "@/components/shared/RowActionMenu";
 import StatusPill from "@/components/shared/StatusPill";
 import { ArrowUpDown, ChevronUp, ChevronDown, Eye, Edit, User, IdCard, Heart, Phone, Mail, Home, MapPin, Hash, Building2, BookOpen, Award, Flag, IndianRupee, FileText, Briefcase, Upload, CheckCircle2, Clock } from "lucide-react";
@@ -584,15 +585,7 @@ const AddEmployee = ({ onClose, onSave, nextEmployeeId = "" }: AddEmployee_AddEm
                 error={personalErrors.pincode}
               />
             </FieldShell>
-            <FieldShell label="City" labelHi="शहर" required error={personalErrors.city}>
-              <TextInput
-                icon={<Building2 size={16} />}
-                value={personal.city}
-                onChange={(v) => setPersonal((p) => ({ ...p, city: v }))}
-                placeholder="Enter City"
-                error={personalErrors.city}
-              />
-            </FieldShell>
+            <CityPicklistField label="City" labelHi="शहर" required icon={<Building2 size={16} />} value={personal.city} onSelect={(city) => setPersonal((p) => ({ ...p, city: city.name }))} error={personalErrors.city ? "This field is required" : undefined} />
             <FieldShell label="Taluka" labelHi="तालुका" required error={personalErrors.taluka}>
               <TextInput
                 icon={<MapPin size={16} />}

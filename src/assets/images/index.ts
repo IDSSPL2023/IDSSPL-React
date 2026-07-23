@@ -50,9 +50,10 @@ import tdLot from "./modules/td-lot.png";
 import transfer from "./modules/transfer.png";
 import user from "./common/user.png";
 import xls from "./common/xls.png";
+import bg from "./background1.jpg"
 
 export const IMAGES = {
-  WELCOME_HERO_BG: welcomeHero,
+  WELCOME_HERO_BG: bg,
   ACCOUNT_STATUS: accountStatus,
   ADD_ICON: addIcon,
   ADDRESS: address,
