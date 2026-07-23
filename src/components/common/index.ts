@@ -47,14 +47,14 @@ export { default as TextField } from "./TextField";
 export { default as SelectField } from "./SelectField";
 export { default as DateField } from "./DateField";
 export { default as PicklistField } from "./PicklistField";
-export { default as CountryPicklistField } from "./CountryPicklistField";
+export { default as CountryPicklistField } from "../CommonApis/CountryPicklistField";
 export { default as RadioGroupField } from "./RadioGroupField";
 export type { FormFieldProps } from "./FormField";
 export type { TextFieldProps } from "./TextField";
 export type { SelectFieldProps, SelectFieldOption } from "./SelectField";
 export type { DateFieldProps } from "./DateField";
 export type { PicklistFieldProps } from "./PicklistField";
-export type { CountryPicklistFieldProps } from "./CountryPicklistField";
+export type { CountryPicklistFieldProps } from "../CommonApis/CountryPicklistField";
 export type { RadioGroupFieldProps, RadioGroupOption } from "./RadioGroupField";
 export * from "./validation";
 

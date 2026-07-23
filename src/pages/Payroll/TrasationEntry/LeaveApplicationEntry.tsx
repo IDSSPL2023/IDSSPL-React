@@ -53,6 +53,7 @@ const MOCK_EMPLOYEES: EmployeeLookup[] = [
   },
 ];
 
+/* Leave history rows shown in the table below the form */
 interface LeaveHistoryRow {
   recordId: string;
   empCode: string;
@@ -161,7 +162,7 @@ export default function LeaveApplicationEntryModal({
     onClose();
   };
 
-  const grid4 = "grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 border border-black rounded-[20px] p-6";
+  const grid4 = "grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4";
   const natureOfLeaveOptions = [
     { value: "Sick Leave", label: "Sick Leave" },
     { value: "Privilege Leave", label: "Privilege Leave" },
@@ -291,8 +292,6 @@ export default function LeaveApplicationEntryModal({
                 icon={<User size={16} />}
                 required
                 error={errors.employeeName}
-                readOnly
-                disabled
               />
 
               <DateField
@@ -459,8 +458,8 @@ export default function LeaveApplicationEntryModal({
               </div>
             </div>
 
-            {/* Leave Reason - Textarea with black border */}
-            <div className="mt-5 flex flex-col border border-black rounded-[20px] p-6">
+            {/* Leave Reason: multi-line textarea (was single-line TextField) */}
+            <div className="mt-5 flex flex-col">
               <label className="mb-1.5 block text-sm font-medium text-[#1F2858]">
                 Leave Reason
                 <span className="ml-2 font-normal text-[#64748B]">/ रजेचे कारण</span>
@@ -481,41 +480,41 @@ export default function LeaveApplicationEntryModal({
                 <span className="mt-1 text-xs text-red-500">{errors.leaveReason}</span>
               )}
             </div>
+          </div>
 
-            {/* Leave History Table */}
-            <div className="mt-6 overflow-hidden rounded-xl border border-black">
-              <table className="w-full text-sm border-collapse">
-                <thead>
-                  <tr className="bg-[#1B2143] text-white">
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">Record ID</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">Emp Code</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">Emp Name</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">From Date</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">To Date</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">Leave Code</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">Leave Days</th>
-                    <th className="px-6 py-3.5 text-left font-semibold text-sm">Leave Bal</th>
+          {/* Leave History table — separate card below, matching GlobalDayEndModal's Branch Status Table pattern */}
+          <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-[#1B2143] text-white">
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">Record ID</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">Emp Code</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">Emp Name</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">From Date</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">To Date</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">Leave Code</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">Leave Days</th>
+                  <th className="px-6 py-3.5 text-left font-semibold text-sm">Leave Bal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {MOCK_LEAVE_HISTORY.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className="border-t border-gray-200 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:border-slate-800"
+                  >
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.recordId}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.empCode}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.empName}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.fromDate}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.toDate}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.leaveCode}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.leaveDays}</td>
+                    <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.leaveBal}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {MOCK_LEAVE_HISTORY.map((row, idx) => (
-                    <tr
-                      key={idx}
-                      className="border-t border-gray-200 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:border-slate-800"
-                    >
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.recordId}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.empCode}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.empName}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.fromDate}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.toDate}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.leaveCode}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.leaveDays}</td>
-                      <td className="px-6 py-4 text-slate-800 dark:text-slate-200 font-medium">{row.leaveBal}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </FormModal>

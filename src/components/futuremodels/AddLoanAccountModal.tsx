@@ -35,6 +35,7 @@ import {
   Calculator,
   Ruler,
 } from "lucide-react";
+import { CountryPicklistField } from "@/components/common";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -601,9 +602,14 @@ const PartyTab: React.FC<PartyTabProps> = ({ rows, entityLabel, entityLabelHi, e
             <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => onUpdate(index, { state: v })} />
           </FieldShell>
 
-          <FieldShell label="Country" labelHi="देश" required>
-            <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => onUpdate(index, { country: v })} />
-          </FieldShell>
+          <CountryPicklistField
+            label="Country"
+            labelHi="देश"
+            icon={<Flag size={16} />}
+            value={row.country}
+            onSelect={(c) => onUpdate(index, { country: c.name })}
+            required
+          />
         </div>
       </div>
     ))}

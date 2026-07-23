@@ -20,6 +20,7 @@ import {
   Flag,
   UserPlus,
 } from "lucide-react";
+import { CountryPicklistField } from "@/components/common";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -75,6 +76,7 @@ interface JointHolderRow {
   zip: string;
   city: string;
   state: string;
+  country: string;
 }
 
 type TabKey = "Application" | "Nominee" | "Joint Holder";
@@ -127,6 +129,7 @@ const emptyJointHolder = (srNo: number): JointHolderRow => ({
   zip: "",
   city: "Kolhapur",
   state: "Maharashtra",
+  country: "India",
 });
 
 /* ------------------------------------------------------------------ */
@@ -580,9 +583,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateNominee(index, { state: v })} />
                   </FieldShell>
 
-                  <FieldShell label="Country" labelHi="देश" required>
-                    <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => updateNominee(index, { country: v })} />
-                  </FieldShell>
+                  <CountryPicklistField
+                    label="Country"
+                    labelHi="देश"
+                    icon={<Flag size={16} />}
+                    value={row.country}
+                    onSelect={(c) => updateNominee(index, { country: c.name })}
+                    required
+                  />
                 </div>
               </div>
             ))}
@@ -638,6 +646,15 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                   <FieldShell label="State" labelHi="राज्य" required>
                     <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateJointHolder(index, { state: v })} />
                   </FieldShell>
+
+                  <CountryPicklistField
+                    label="Country"
+                    labelHi="देश"
+                    icon={<Flag size={16} />}
+                    value={row.country}
+                    onSelect={(c) => updateJointHolder(index, { country: c.name })}
+                    required
+                  />
                 </div>
               </div>
             ))}
