@@ -117,12 +117,14 @@ import SMSRegistrationPage from "@/pages/SMS/SMS";
 import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-// import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
 // import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
 // import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
 // import PayrollMaster from "./pages/payroll/Master/Master";
-
-import TlCcInstallmentAuthorizePage from "./pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+import EmployeeDeputationPage from "./pages/payroll/TrasationEntry/EmployeeDeputation ";
+import EmployeePromotionPage from "./pages/payroll/TrasationEntry/EmployeePromotion";
+import EmployeeResignationPage from "./pages/payroll/TrasationEntry/EmployeeResignation";
+import EmployeeSuspensionPage from "./pages/payroll/TrasationEntry/EmployeeSuspensionInformation";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
