@@ -161,7 +161,7 @@ export async function createState(payload: {
   countryCode: string;
   stateName: string;
 }): Promise<StateRecord> {
-  const response = await fetch(`${BASE_URL}/master/states`, {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/states`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
