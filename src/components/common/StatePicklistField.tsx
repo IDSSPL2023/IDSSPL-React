@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import PicklistField from "./PicklistField";
-import PicklistModal from "./PicklistModal";
 import { fetchStates, type StateRecord } from "@/lib/masterMaintenanceApi";
+import StatePicklistModal from "./StatePicklistModal";
 
 export interface StatePicklistFieldProps {
   label?: string;
@@ -14,28 +14,23 @@ export interface StatePicklistFieldProps {
   readOnly?: boolean;
   disabled?: boolean;
   error?: string;
-  /** Fires with the selected country's name and code. */
+  /** Fires with the selected state */
   onSelect: (state: StateRecord) => void;
-  /** Pre-fetch countries on mount (default: false) */
+  /** Pre-fetch states on mount (default: false) */
   preFetch?: boolean;
 }
 
 const COLUMNS = [
-  { key: "stateName", header: "State Name" },
-  { key: "stateCode", header: "State Code", width: "180px" },
+  { key: "stateCode", header: "State Code" },
+  { key: "stateName", header: "State Name", width: "180px" },
+  { key: "countryCode", header: "Country Code" },
 ];
 
-// PicklistModal's radio "value" (lowercase, matches column keys) mapped to
-// whatever the API expects in the "searchBy" field.
 const SEARCH_BY_OPTIONS = [
-  { label: "Code", value: "stateCode" },
-  { label: "Name", value: "stateName" },
+  { label: "Code", value: "CODE" },
+  { label: "State Name", value: "STATE_NAME" },
+  { label: "Country Code", value: "COUNTRY_CODE" },
 ];
-
-const SEARCH_BY_API_MAP: Record<string, string> = {
-  stateCode: "CODE",
-  name: "NAME",
-};
 
 export default function StatePicklistField({
   label = "State",
@@ -59,12 +54,12 @@ export default function StatePicklistField({
   // Pre-fetch on mount if enabled
   useEffect(() => {
     if (preFetch && !loaded && !loading) {
-      fetchStates()
+      fetchStates({ searchBy: "CODE", textToSearch: "" })
         .then((list) => {
           setStates(list);
           setLoaded(true);
         })
-        .catch(() => setLoadError("Failed to pre-load countries"))
+        .catch(() => setLoadError("Failed to pre-load states"))
         .finally(() => setLoading(false));
     }
   }, [preFetch]);
@@ -75,7 +70,7 @@ export default function StatePicklistField({
 
     setLoading(true);
     setLoadError("");
-    fetchStates()
+    fetchStates({ searchBy: "CODE", textToSearch: "" })
       .then((list) => {
         if (list.length === 0) {
           setLoadError("No states available");
@@ -90,19 +85,19 @@ export default function StatePicklistField({
       .finally(() => setLoading(false));
   };
 
-  // Called when the user clicks "Submit" inside the picklist modal.
-  // searchBy comes in as "code" | "name" (from SEARCH_BY_OPTIONS values);
-  // textToSearch is exactly what the user typed into the input.
-  const handleSearchSubmit = (searchBy: string, textToSearch: string) => {
+  const handleSearchSubmit = (
+    searchBy: "CODE" | "STATE_NAME" | "COUNTRY_CODE",
+    textToSearch: string,
+  ) => {
     setLoading(true);
     setLoadError("");
 
     const payload = {
-      searchBy: SEARCH_BY_API_MAP[searchBy] ?? searchBy.toUpperCase(),
+      searchBy,
       textToSearch,
     };
 
-    fetchStates()
+    fetchStates(payload)
       .then((list) => {
         setStates(list);
         if (list.length === 0) {
@@ -119,15 +114,13 @@ export default function StatePicklistField({
   const displayValue =
     states.find((c) => c.stateCode === value)?.stateName || value;
 
-  console.log(value);
-
   return (
     <>
       <PicklistField
         label={label}
         labelHi={labelHi}
         icon={icon}
-        value={displayValue} // Show name instead of code
+        value={displayValue}
         placeholder={placeholder}
         required={required}
         readOnly={readOnly}
@@ -136,7 +129,7 @@ export default function StatePicklistField({
         onOpenPicklist={openPicklist}
       />
       {open && (
-        <PicklistModal<StateRecord>
+        <StatePicklistModal
           title=""
           columns={COLUMNS}
           rows={states}
@@ -144,7 +137,7 @@ export default function StatePicklistField({
           searchByOptions={SEARCH_BY_OPTIONS}
           onSearchSubmit={handleSearchSubmit}
           loading={loading}
-          emptyMessage={loadError || "No countries found"}
+          emptyMessage={loadError || "No states found"}
           onSelect={(row) => {
             onSelect(row);
             setOpen(false);
