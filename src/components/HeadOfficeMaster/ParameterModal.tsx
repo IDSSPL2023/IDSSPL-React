@@ -122,7 +122,7 @@ const ParameterModal = ({
   };
 
   const handleSave = async (keepOpen = false) => {
-    if (!validated) return;
+    if (!validated || isSaving) return;
     setSaveMenuOpen(false);
 
     // Call save/update API for defaultBranchAccounts
@@ -153,13 +153,21 @@ const ParameterModal = ({
       } finally {
         setIsSaving(false);
       }
-    } else {
+      return;
+    }
+
+    setIsSaving(true);
+    try {
       await onSave?.(formData);
       if (keepOpen) {
         resetForNewEntry();
       } else {
         onClose();
       }
+    } catch {
+      // onSave is responsible for surfacing the error; keep the modal open so the user can retry.
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -199,70 +207,223 @@ const ParameterModal = ({
 
         {/* Form */}
         <div className="bg-white rounded-[20px] border-x border-b border-t-4 border-primary p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900">
-          {config.fields.map((field) => {
-            const Icon = getFieldIcon(field.icon);
-            const isReadOnly =
-              isView || (isEdit && field.readOnlyOnEdit);
-            const hasError = errors[field.key];
-
-            return (
-              <div key={field.key} className="mb-4 last:mb-0">
-                <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
-                  {field.labelEn}
-                  <span className="font-medium text-gray-500 dark:text-slate-400"> / {field.labelHi}</span>
-                  <span className="text-red-500">*</span>
-                </label>
-                <div
-                  className={`flex h-11 items-center rounded-lg border bg-white px-3 transition-colors dark:bg-slate-900 ${
-                    hasError
-                      ? "border-red-400"
-                      : isReadOnly
-                        ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
-                        : "border-[#B8C2D6] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:border-slate-700"
-                  }`}
-                >
-                  <Icon size={18} className="shrink-0 text-[#6B7280]" />
-                  <input
-                    type="text"
-                    value={formData[field.key] ?? ""}
-                    readOnly={isReadOnly}
-                    placeholder={field.placeholder}
-                    onChange={(e) => handleChange(field.key, e.target.value)}
-                    className={`ml-3 w-full bg-transparent text-[15px] outline-none ${
-                      isReadOnly ? "text-slate-500 dark:text-slate-400" : "text-[#4B5563] placeholder:text-[#7C879B] dark:text-slate-100 dark:placeholder:text-slate-500"
+          {(() => {
+            const isReadOnly = isView;
+            const renderTextField = (field) => {
+              const Icon = getFieldIcon(field.icon);
+              const fieldReadOnly = isReadOnly || (isEdit && field.readOnlyOnEdit);
+              const hasError = errors[field.key];
+              return (
+                <div key={field.key}>
+                  <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
+                    {field.labelEn}
+                    <span className="font-medium text-gray-500 dark:text-slate-400"> / {field.labelHi}</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <div
+                    className={`flex h-11 items-center rounded-lg border bg-white px-3 transition-colors dark:bg-slate-900 ${
+                      hasError
+                        ? "border-red-400"
+                        : fieldReadOnly
+                          ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+                          : "border-[#B8C2D6] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:border-slate-700"
                     }`}
-                  />
+                  >
+                    <Icon size={18} className="shrink-0 text-[#6B7280]" />
+                    <input
+                      type="text"
+                      value={formData[field.key] ?? ""}
+                      readOnly={fieldReadOnly}
+                      placeholder={field.placeholder}
+                      onChange={(e) => handleChange(field.key, e.target.value)}
+                      className={`ml-3 w-full bg-transparent text-[15px] outline-none ${
+                        fieldReadOnly ? "text-slate-500 dark:text-slate-400" : "text-[#4B5563] placeholder:text-[#7C879B] dark:text-slate-100 dark:placeholder:text-slate-500"
+                      }`}
+                    />
+                  </div>
+                  {hasError && (
+                    <p className="mt-1 text-xs text-red-500">This field is required</p>
+                  )}
                 </div>
-                {hasError && (
-                  <p className="mt-1 text-xs text-red-500">This field is required</p>
-                )}
-              </div>
-            );
-          })}
+              );
+            };
+
+            const renderRadioField = (field) => {
+              const fieldReadOnly = isReadOnly || (isEdit && field.readOnlyOnEdit);
+              const value = formData[field.key] ?? "N";
+              return (
+                <div key={field.key}>
+                  <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
+                    {field.labelEn}
+                    <span className="font-medium text-gray-500 dark:text-slate-400"> / {field.labelHi}</span>
+                  </label>
+                  <div className="flex h-11 items-center gap-6">
+                    {[
+                      { label: "Yes", value: "Y" },
+                      { label: "No", value: "N" },
+                    ].map((opt) => (
+                      <label
+                        key={opt.value}
+                        className={`flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 ${fieldReadOnly ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+                      >
+                        <input
+                          type="radio"
+                          name={field.key}
+                          checked={value === opt.value}
+                          disabled={fieldReadOnly}
+                          onChange={() => handleChange(field.key, opt.value)}
+                          className="h-4 w-4 accent-primary"
+                        />
+                        {opt.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            };
+
+            const renderSelectField = (field) => {
+              const Icon = getFieldIcon(field.icon);
+              const fieldReadOnly = isReadOnly || (isEdit && field.readOnlyOnEdit);
+              const hasError = errors[field.key];
+              return (
+                <div key={field.key}>
+                  <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
+                    {field.labelEn}
+                    <span className="font-medium text-gray-500 dark:text-slate-400"> / {field.labelHi}</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <div
+                    className={`flex h-11 items-center rounded-lg border bg-white px-3 transition-colors dark:bg-slate-900 ${
+                      hasError
+                        ? "border-red-400"
+                        : fieldReadOnly
+                          ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+                          : "border-[#B8C2D6] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:border-slate-700"
+                    }`}
+                  >
+                    <Icon size={18} className="shrink-0 text-[#6B7280]" />
+                    <select
+                      value={formData[field.key] ?? ""}
+                      disabled={fieldReadOnly}
+                      onChange={(e) => handleChange(field.key, e.target.value)}
+                      className={`ml-3 w-full appearance-none bg-transparent text-[15px] outline-none ${
+                        formData[field.key] ? "text-[#4B5563] dark:text-slate-100" : "text-[#7C879B] dark:text-slate-500"
+                      } ${fieldReadOnly ? "text-slate-500 dark:text-slate-400" : ""}`}
+                    >
+                      <option value="" disabled>
+                        {field.placeholder}
+                      </option>
+                      {(field.options ?? []).map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown size={16} className="shrink-0 text-[#6B7280]" />
+                  </div>
+                  {hasError && (
+                    <p className="mt-1 text-xs text-red-500">This field is required</p>
+                  )}
+                </div>
+              );
+            };
+
+            const renderDateField = (field) => {
+              const Icon = getFieldIcon(field.icon);
+              const fieldReadOnly = isReadOnly || (isEdit && field.readOnlyOnEdit);
+              const hasError = errors[field.key];
+              return (
+                <div key={field.key}>
+                  <label className="mb-1.5 block text-[16px] font-semibold text-[#1F2858] dark:text-slate-100">
+                    {field.labelEn}
+                    <span className="font-medium text-gray-500 dark:text-slate-400"> / {field.labelHi}</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <div
+                    className={`flex h-11 items-center rounded-lg border bg-white px-3 transition-colors dark:bg-slate-900 ${
+                      hasError
+                        ? "border-red-400"
+                        : fieldReadOnly
+                          ? "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+                          : "border-[#B8C2D6] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 dark:border-slate-700"
+                    }`}
+                  >
+                    <Icon size={18} className="shrink-0 text-[#6B7280]" />
+                    <input
+                      type="date"
+                      value={formData[field.key] ?? ""}
+                      readOnly={fieldReadOnly}
+                      disabled={fieldReadOnly}
+                      onChange={(e) => handleChange(field.key, e.target.value)}
+                      className={`ml-3 w-full bg-transparent text-[15px] outline-none ${
+                        fieldReadOnly ? "text-slate-500 dark:text-slate-400" : "text-[#4B5563] dark:text-slate-100"
+                      }`}
+                    />
+                  </div>
+                  {hasError && (
+                    <p className="mt-1 text-xs text-red-500">This field is required</p>
+                  )}
+                </div>
+              );
+            };
+
+            const renderField = (field) => {
+              if (field.type === "radio") return renderRadioField(field);
+              if (field.type === "select") return renderSelectField(field);
+              if (field.type === "date") return renderDateField(field);
+              return renderTextField(field);
+            };
+
+            const consumed = new Set();
+            const items = [];
+            config.fields.forEach((field) => {
+              if (consumed.has(field.key)) return;
+
+              if (field.pairWith) {
+                const pairField = config.fields.find((f) => f.key === field.pairWith);
+                consumed.add(field.pairWith);
+                items.push(
+                  <div key={field.key} className="mb-4 grid grid-cols-1 gap-4 last:mb-0 md:grid-cols-2">
+                    {renderField(field)}
+                    {pairField && renderField(pairField)}
+                  </div>
+                );
+                return;
+              }
+
+              items.push(
+                <div key={field.key} className="mb-4 last:mb-0">
+                  {renderField(field)}
+                </div>
+              );
+            });
+            return items;
+          })()}
 
           {/* Validation Result Display for defaultBranchAccounts */}
           {masterKey === "defaultBranchAccounts" && validationResult && (
-            <div className={`mt-4 p-4 rounded-lg border ${
-              validationResult.addModifyEnabled
-                ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800"
-                : "bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-800"
-            }`}>
+            <div
+              className={`mt-4 rounded-lg border p-4 ${
+                validationResult.addModifyEnabled
+                  ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800"
+                  : "bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-800"
+              }`}
+            >
               {validationResult.branchName && (
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                   <span className="font-semibold">Branch Name:</span> {validationResult.branchName}
                 </p>
               )}
-              <p className={`text-sm mt-1 ${
-                validationResult.addModifyEnabled
-                  ? "text-green-700 dark:text-green-400"
-                  : "text-red-700 dark:text-red-400"
-              }`}>
+              <p
+                className={`mt-1 text-sm ${
+                  validationResult.addModifyEnabled ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"
+                }`}
+              >
                 {validationResult.message}
               </p>
               {validationResult.existingMapping && (
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                  Existing mapping found
-                </p>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">Existing mapping found</p>
               )}
             </div>
           )}
@@ -294,9 +455,7 @@ const ParameterModal = ({
                 onClick={handleValidate}
                 disabled={isValidating}
                 className={`flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-colors ${
-                  isValidating
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-primary hover:bg-primary-700"
+                  isValidating ? "cursor-not-allowed bg-slate-400" : "bg-primary hover:bg-primary-700"
                 }`}
               >
                 {isValidating ? "Validating..." : "Validate"} <Check size={16} />
@@ -304,7 +463,8 @@ const ParameterModal = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50"
+                disabled={isSaving}
+                className="flex items-center gap-1.5 rounded-lg border border-primary-500 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel <X size={16} />
               </button>
