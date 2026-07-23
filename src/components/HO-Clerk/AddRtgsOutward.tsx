@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -145,7 +146,7 @@ const AddRtgsOutward = ({
   titleHi = "RTGS आउटवर्ड फाइल जनरेशन",
   subtitleEn = "Fill in the RTGS outward file generation details below.",
   subtitleHi = "खालील RTGS आउटवर्ड फाइल तपशील भरा.",
-  headerIcon = <Image src="/RTGS.png" alt="RTGS Outward" width={50} height={50} />,
+  headerIcon = <Image src={IMAGES.RTGS} alt="RTGS Outward" width={50} height={50} />,
   variant = "modal",
 }: AddRtgsOutwardProps) => {
   const [form, setForm] = useState<RtgsOutwardFormData>(DEFAULT_RTGS_OUTWARD_DATA);

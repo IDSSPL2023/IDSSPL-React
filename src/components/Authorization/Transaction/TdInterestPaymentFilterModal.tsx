@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { ChangeEvent } from "react";
 import { X, Filter as FilterIcon, User, Hash } from "lucide-react";
 
+/** Shared with TermDepositInterest/TermDepositInterestPayment.tsx — kept standalone, not inlined. */
+/* ===== from TdInterestPaymentFilterModal.tsx ===== */
 const filterOptions = [
   {
     id: "accountName",
@@ -39,7 +41,7 @@ export const defaultTdInterestPaymentFilters: TdInterestPaymentFilters = {
   scrollNo: "",
 };
 
-export default function TdInterestPaymentFilterModal({
+function TdInterestPaymentFilterModal({
   onClose,
   onApply,
   initialValues = defaultTdInterestPaymentFilters,
@@ -156,3 +158,7 @@ export default function TdInterestPaymentFilterModal({
     </div>
   );
 }
+
+
+
+export default TdInterestPaymentFilterModal;

@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -413,7 +414,7 @@ const AddRtgs = ({ onClose, onSave, variant = "modal" }: AddRtgsProps) => {
       titleHi="आरटीजीएस"
       subtitleEn="Fill in the RTGS transaction details below."
       subtitleHi="खालील आरटीजीएस व्यवहाराचा तपशील भरा."
-      headerIcon={<Image src="/RTGS.png" alt="RTGS" width={50} height={50} />}
+      headerIcon={<Image src={IMAGES.RTGS} alt="RTGS" width={50} height={50} />}
       tabs={[]}
       activeTab=""
       onTabChange={() => {}}

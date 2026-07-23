@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -249,7 +250,7 @@ const AddCashDeposit = ({
   titleHi = "रोख रक्कम जमा",
   subtitleEn = "Fill in the cash deposit transaction details below.",
   subtitleHi = "खालील रोख रक्कम जमा व्यवहाराचा तपशील भरा.",
-  headerIcon = <Image src="/cash deposite.png" alt="Cash Deposit" width={50} height={50} />,
+  headerIcon = <Image src={IMAGES.CASH_DEPOSIT} alt="Cash Deposit" width={50} height={50} />,
   variant = "modal",
 }: AddCashDepositProps) => {
   const [form, setForm] = useState<CashDepositFormData>(DEFAULT_CASH_DEPOSIT_DATA);

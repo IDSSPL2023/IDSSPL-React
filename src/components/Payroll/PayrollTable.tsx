@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import RowActionMenu from '@/components/shared/RowActionMenu'
+import RowActionMenu, { type RowActionMenuItem } from '@/components/shared/RowActionMenu'
 import StatusPill from '@/components/shared/StatusPill'
 import { ArrowUpDown, ChevronUp, ChevronDown, Eye, Edit } from 'lucide-react'
 
@@ -20,9 +20,11 @@ type PayrollTableProps = {
   rows: PayrollRow[];
   onView?: (row: PayrollRow) => void;
   onEdit?: (row: PayrollRow) => void;
+  /** Overrides the default View/Edit row actions with a custom action list. */
+  actions?: (row: PayrollRow) => RowActionMenuItem[];
 }
 
-export default function PayrollTable({ rows, onView, onEdit }: PayrollTableProps) {
+export default function PayrollTable({ rows, onView, onEdit, actions }: PayrollTableProps) {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null)
 
   const sorted = useMemo(() => {
@@ -96,10 +98,14 @@ export default function PayrollTable({ rows, onView, onEdit }: PayrollTableProps
                     <RowActionMenu
                       menuWidth={180}
                       triggerClassName="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 dark:hover:bg-slate-800 dark:text-slate-400"
-                      items={[
-                        { key: 'view', label: 'View', icon: Eye, onClick: () => onView?.(row) ?? console.log('view', row) },
-                        { key: 'edit', label: 'Edit', icon: Edit, onClick: () => onEdit?.(row) ?? console.log('edit', row) },
-                      ]}
+                      items={
+                        actions
+                          ? actions(row)
+                          : [
+                              { key: 'view', label: 'View', icon: Eye, onClick: () => onView?.(row) ?? console.log('view', row) },
+                              { key: 'edit', label: 'Edit', icon: Edit, onClick: () => onEdit?.(row) ?? console.log('edit', row) },
+                            ]
+                      }
                     />
                   </td>
                   <td className="px-4 py-3 align-middle text-slate-800 text-sm font-medium whitespace-nowrap dark:text-slate-100">

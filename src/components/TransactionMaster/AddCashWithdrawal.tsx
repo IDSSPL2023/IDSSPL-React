@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
@@ -332,7 +333,7 @@ const AddCashWithdrawal = ({
   titleHi = "कॅश काढणे",
   subtitleEn = "All Information's are related to Interest Payment Mark.",
   subtitleHi = "सर्व माहिती व्याज भरण्याच्या मार्कशी संबंधित आहे.",
-  headerIcon = <Image src="/Cash Withdrawal form icon.png" alt="Cash Withdrawal" width={50} height={50} />,
+  headerIcon = <Image src={IMAGES.CASH_WITHDRAWAL_FORM_ICON} alt="Cash Withdrawal" width={50} height={50} />,
   variant = "modal",
 }: AddCashWithdrawalProps) => {
   const [form, setForm] = useState<CashWithdrawalFormData>(DEFAULT_CASH_WITHDRAWAL_DATA);

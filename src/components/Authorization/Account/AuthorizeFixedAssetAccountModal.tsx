@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { MouseEventHandler, useEffect, useState } from "react";
 import {
   IdCard,
@@ -39,7 +40,7 @@ export interface AuthorizeFixedAssetAccountData {
 /* ===================== Config ===================== */
 
 const CONFIG = {
-  icon: "/shield-check.png",
+  icon: IMAGES.SHIELD_CHECK,
   titleEn: "Authorize Fixed Asset Account",
   titleHi: "स्थिर मालमत्ता खात्याला मंजुरी द्या",
   descEn: "Check information related to the Fixed Asset Account and Authorize them.",

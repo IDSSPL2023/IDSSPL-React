@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { useState, useMemo } from "react";
 import type { ChangeEvent } from "react";
 import {
@@ -315,7 +316,7 @@ export default function AddAccountFlow({ onClose = () => { } }: AddAccountFlowPr
           </button>
 
           <div className="flex items-start gap-3 mb-6">
-            <Image src="/add-icn.png" alt="Account Icon" width={50} height={50} />
+            <Image src={IMAGES.ADD_ICON} alt="Account Icon" width={50} height={50} />
 
             <div>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">

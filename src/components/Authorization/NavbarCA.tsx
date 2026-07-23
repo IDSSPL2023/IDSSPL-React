@@ -1,6 +1,6 @@
 import { ArrowLeft, Home, ChevronRight, Filter, Search, RefreshCw } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
-import { type AuthTab } from "./CustomerAuthorizationTable";
+import { type CustomerAuthorizationTable_AuthTab as AuthTab } from "@/pages/authorization/AuthorizeCustomer/AuthorizeCustomer";
 import { type UserFilters } from "../UserMaster/FilterModal";
 
 type BreadcrumbItem = {

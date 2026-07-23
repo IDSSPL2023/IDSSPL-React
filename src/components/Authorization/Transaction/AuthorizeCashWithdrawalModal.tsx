@@ -1,32 +1,15 @@
 import { useState } from "react";
+import { X, User, Hash, CreditCard, IndianRupee, FileText, MoreVertical, ThumbsUp, ThumbsDown } from "lucide-react";
+import { IMAGES } from "@/assets";
 import Image from "@/components/ui/Image";
-import {
-  User,
-  CreditCard,
-  IndianRupee,
-  FileText,
-  Hash,
-  MoreVertical,
-  ThumbsUp,
-  ThumbsDown,
-  X,
-} from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
-import {
-  FieldShell,
-  TextInput,
-  DateInput,
-  SectionCard,
-  RadioYesNo,
-  RadioDayMonth,
-} from "@/components/shared/FormFields";
+import { FieldShell, TextInput, DateInput, SectionCard, RadioYesNo, RadioDayMonth } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import RejectReasonModal from "@/components/shared/RejectReasonModal";
-import {
-  DEFAULT_CASH_WITHDRAWAL_DATA,
-  type CashWithdrawalFormData,
-} from "@/components/TransactionMaster/AddCashWithdrawal";
+import { DEFAULT_CASH_WITHDRAWAL_DATA, type CashWithdrawalFormData } from "@/components/TransactionMaster/AddCashWithdrawal";
 
+/** Shared with the HO-Officer Cash Withdrawal authorize flow — kept standalone, not inlined. */
+/* ===== from AuthorizeCashWithdrawalModal.tsx ===== */
 export interface AuthorizeCashWithdrawalModalProps {
   open: boolean;
   initialData?: Partial<CashWithdrawalFormData>;
@@ -149,7 +132,7 @@ const AuthorizeCashWithdrawalModal = ({
         subtitleHi={subtitleHi}
         headerIcon={
           <div className="flex h-12 w-12 items-center justify-center">
-            <Image src="/Authorize User.png" alt="Authorize Cash Withdrawal" width={50} height={50} />
+            <Image src={IMAGES.AUTHORIZE_USER} alt="Authorize Cash Withdrawal" width={50} height={50} />
           </div>
         }
         tabs={[]}
@@ -452,5 +435,6 @@ const AuthorizeCashWithdrawalModal = ({
     </>
   );
 };
+
 
 export default AuthorizeCashWithdrawalModal;

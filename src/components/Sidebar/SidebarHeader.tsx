@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import { Search } from "lucide-react";
 import { useBilingual } from "@/i18n/useBilingual";
 
@@ -15,7 +16,7 @@ export default function SidebarHeader({ collapsed = false, search = "", onSearch
       {/* Logo */}
       <div className="flex items-center justify-center gap-2">
         <img
-          src="/logo.png"
+          src={IMAGES.LOGO}
           alt={tRaw("sidebar.logoAlt")}
           className={collapsed ? "h-7 w-full object-contain" : "h-10 w-auto object-contain"}
         />

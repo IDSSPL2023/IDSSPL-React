@@ -1,3 +1,7 @@
+import { IMAGES } from "@/assets";
+
+/** Shared with HoOfficer.tsx / PayrollTransaction.tsx (via AuthorizeTransactionCard) — kept standalone. */
+/* ===== from authorizeTransactionData.ts ===== */
 export type AuthorizeTransactionItem = {
   id: string;
   title: string;
@@ -6,7 +10,7 @@ export type AuthorizeTransactionItem = {
   icon: string;
 };
 
-const ICON = "/authorize transaction list icon.png";
+const ICON = IMAGES.AUTHORIZE_TRANSACTION_LIST_ICON;
 
 export const AUTHORIZE_TRANSACTION_ITEMS: AuthorizeTransactionItem[] = [
   {
@@ -108,3 +112,5 @@ export const AUTHORIZE_TRANSACTION_ITEMS: AuthorizeTransactionItem[] = [
     icon: ICON,
   },
 ];
+
+

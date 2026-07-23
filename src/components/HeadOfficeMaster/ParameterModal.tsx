@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { IMAGES } from "@/assets";
 import { useState, useEffect } from "react";
 import Image from "@/components/ui/Image";
 import { X, Check, ChevronDown, ThumbsUp, UserRound, SquarePen } from "lucide-react";
@@ -10,7 +11,7 @@ const MODAL_META = {
     titleHi: "नवीन मापदंड जोडा",
     subtitleEn: "Fill in the details below to create a new parameter.",
     subtitleHi: "नवीन पॅरामीटर जोडण्यासाठी खालील तपशील प्रविष्ट करा.",
-    icon: "/add-icn.png",
+    icon: IMAGES.ADD_ICON,
     useImage: true,
   },
   edit: {

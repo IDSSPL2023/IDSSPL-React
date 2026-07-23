@@ -1,8 +1,8 @@
 import { Check, ChevronDown, LucideIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ComponentType, useEffect, useRef, useState } from "react";
 
 interface SelectInputProps {
-  icon?: LucideIcon;
+  icon?: LucideIcon | ComponentType<{ className?: string }> | string;
   labelEn: string;
   labelMr?: string;
   value?: string;

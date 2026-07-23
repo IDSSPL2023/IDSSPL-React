@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import React, { useState } from "react";
 import Image from "@/components/ui/Image";
 import {
@@ -1377,8 +1378,8 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
         <div className="flex items-start justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
           <div className="flex items-start gap-3">
             <div className="relative h-10 w-10 flex-shrink-0">
-               {mode === "view" ? <Image src="/person icon.png" alt="" width={40} height={40} /> : mode === "edit" ? <Image src="/person edit icon.png" alt="" width={40} height={40} /> : <Image src="/person icon.png" alt="" width={40} height={40} />}{" "}
-              {/* <Image src="/person icon.png" alt="" width={40} height={40} /> */}
+               {mode === "view" ? <Image src={IMAGES.PERSON_ICON} alt="" width={40} height={40} /> : mode === "edit" ? <Image src={IMAGES.PERSON_EDIT_ICON} alt="" width={40} height={40} /> : <Image src={IMAGES.PERSON_ICON} alt="" width={40} height={40} />}{" "}
+              {/* <Image src={IMAGES.PERSON_ICON} alt="" width={40} height={40} /> */}
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">

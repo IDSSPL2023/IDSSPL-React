@@ -1,3 +1,4 @@
+import { IMAGES } from "@/assets";
 import type { ReactNode } from "react";
 import Image from "@/components/ui/Image";
 
@@ -20,7 +21,7 @@ export default function AuthLayout({
       <div className="flex w-full h-screen">
         {/* Left Image */}
         <img
-          src="/login.png"
+          src={IMAGES.LOGIN}
           alt="bank"
           className="h-screen w-auto object-cover flex-shrink-0"
         />
@@ -30,7 +31,7 @@ export default function AuthLayout({
           {/* Logo */}
           <div className="absolute left-1/2 -translate-x-1/2">
             <Image
-              src="/logo.png"
+              src={IMAGES.LOGO}
               alt="IDSSPL Logo"
               width={353}
               height={118}
