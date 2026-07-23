@@ -36,7 +36,7 @@ import {
   Calculator,
   Ruler,
 } from "lucide-react";
-import { CountryPicklistField } from "@/components/common";
+import CustomerIdPicklistField, { CustomerOption } from "../common/CustomerIdPicklistField";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -531,10 +531,19 @@ interface PartyTabProps {
   errors: Record<string, boolean>;
   onUpdate: (index: number, patch: Partial<PartyRow>) => void;
   onDelete: (index: number) => void;
-  onLookup: (index: number, id: string) => void;
+  onCustomerSelect: (index: number, customer: CustomerOption) => void;
 }
 
-const PartyTab: React.FC<PartyTabProps> = ({ rows, entityLabel, entityLabelHi, errorPrefix, errors, onUpdate, onDelete, onLookup }) => (
+const PartyTab: React.FC<PartyTabProps> = ({ 
+  rows, 
+  entityLabel, 
+  entityLabelHi, 
+  errorPrefix, 
+  errors, 
+  onUpdate, 
+  onDelete, 
+  onCustomerSelect 
+}) => (
   <>
     {rows.map((row, index) => (
       <div key={row.srNo} className="relative rounded-[20px] border-x border-b border-t-4 border-primary bg-white dark:bg-slate-900 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
@@ -557,11 +566,13 @@ const PartyTab: React.FC<PartyTabProps> = ({ rows, entityLabel, entityLabelHi, e
 
           <div className="flex-1">
             <FieldShell label={`${entityLabel} Customer ID`} labelHi={`${entityLabelHi} ग्राहक आयडी`} required error={errors[`${errorPrefix}-${index}-customerId`]}>
-              <TextInput
-                icon={<IdCard size={16} />}
+              <CustomerIdPicklistField
+                label=""
                 value={row.customerId}
-                onChange={(v) => onLookup(index, v)}
-                error={errors[`${errorPrefix}-${index}-customerId`]}
+                placeholder={`Select ${entityLabel}`}
+                onSelect={(customer) => onCustomerSelect(index, customer)}
+                preFetch={false}
+                pageSize={10}
               />
             </FieldShell>
           </div>
@@ -1219,21 +1230,6 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
 
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
-  const applyCustomerLookup = (id: string) => {
-    const match = CUSTOMERS.find((c) => c.id === id);
-    if (match) {
-      setDetails((prev) => ({
-        ...prev,
-        customerId: match.id,
-        customerName: match.name,
-        categoryCode: match.category,
-        riskCategory: match.risk,
-      }));
-    } else {
-      setDetails((prev) => ({ ...prev, customerId: id }));
-    }
-  };
-
   const applyIntroducerLookup = (code: string) => {
     const match = INTRODUCER_ACCOUNTS.find((a) => a.code === code);
     if (match) {
@@ -1241,11 +1237,6 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
     } else {
       setDetails((prev) => ({ ...prev, introducerAccountCode: code }));
     }
-  };
-
-  const applyPartyLookup = (setter: React.Dispatch<React.SetStateAction<PartyRow[]>>, index: number, id: string) => {
-    const match = CUSTOMERS.find((c) => c.id === id);
-    updateRow(setter, index, match ? { customerId: match.id, name: match.name } : { customerId: id });
   };
 
   const recalculateGoldValuation = () => {
@@ -1338,6 +1329,31 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
 
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
+  };
+
+  // Handler for main customer selection
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    setDetails((prev) => ({
+      ...prev,
+      customerId: customer.customerId,
+      customerName: customer.customerName,
+    }));
+  };
+
+  // Handler for nominee customer selection
+  const handleNomineeSelect = (index: number, customer: CustomerOption) => {
+    updateRow(setNominees, index, {
+      customerId: customer.customerId,
+      name: customer.customerName,
+    });
+  };
+
+  // Handler for guarantor customer selection
+  const handleGuarantorSelect = (index: number, customer: CustomerOption) => {
+    updateRow(setGuarantors, index, {
+      customerId: customer.customerId,
+      name: customer.customerName,
+    });
   };
 
   const handleValidate = () => {
@@ -1437,11 +1453,13 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
             <div className="relative rounded-[20px] border-x border-b border-t-4 border-primary bg-white dark:bg-slate-900 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
               <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                 <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={errors.customerId}>
-                  <TextInput
-                    icon={<IdCard size={16} />}
+                  <CustomerIdPicklistField
+                    label=""
                     value={details.customerId}
-                    onChange={applyCustomerLookup}
-                    error={errors.customerId}
+                    placeholder="Select Customer"
+                    onSelect={handleCustomerSelect}
+                    preFetch={false}
+                    pageSize={10}
                   />
                 </FieldShell>
 
@@ -1551,7 +1569,7 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
               errors={errors}
               onUpdate={(index, patch) => updateRow(setNominees, index, patch)}
               onDelete={(index) => deleteRow(setNominees, index)}
-              onLookup={(index, id) => applyPartyLookup(setNominees, index, id)}
+              onCustomerSelect={handleNomineeSelect}
             />
           )}
 
@@ -1564,7 +1582,7 @@ const AddLoanAccountModal: React.FC<AddLoanAccountModalProps> = ({ productDescri
               errors={errors}
               onUpdate={(index, patch) => updateRow(setGuarantors, index, patch)}
               onDelete={(index) => deleteRow(setGuarantors, index)}
-              onLookup={(index, id) => applyPartyLookup(setGuarantors, index, id)}
+              onCustomerSelect={handleGuarantorSelect}
             />
           )}
 
