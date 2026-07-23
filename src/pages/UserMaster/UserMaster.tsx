@@ -10,7 +10,7 @@ import BranchListPickerModal from "@/components/common/BranchPickListModal";
 import SuccessModal from "@/components/shared/SuccessModal";
 import { fetchPincodeDetails } from "@/lib/pincode";
 import UserMasterTable from "@/components/UserMaster/UserMasterTable";
-import { AppNavbar, FilterModal } from "@/components/common";
+import { AppNavbar, FilterModal, CountryPicklistField } from "@/components/common";
 import { type UserFilters, defaultValues } from "@/components/UserMaster/FilterModal";
 import { userFilterFields } from "@/components/UserMaster/userFilterFields";
 import { useBilingual } from "@/i18n/useBilingual";
@@ -419,10 +419,19 @@ function AddUserMaster_AddUserForm({ onClose }: AddUserMaster_AddUserFormProps) 
               <TextInput icon={<Building2 size={16} />} value={state} onChange={() => {}} readOnly placeholder="Select State" error={!!errors.state} />
               {errors.state && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.state}</p>}
             </FieldShell>
-            <FieldShell label="Country" labelHi="देश" required>
-              <TextInput icon={<Flag size={16} />} value={country} onChange={() => {}} readOnly placeholder="Select Country" error={!!errors.country} />
-              {errors.country && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.country}</p>}
-            </FieldShell>
+            <CountryPicklistField
+              label="Country"
+              labelHi="देश"
+              icon={<Flag size={16} />}
+              value={country}
+              onSelect={(c) => {
+                setCountry(c.name);
+                clearError("country");
+              }}
+              placeholder="Select Country"
+              required
+              error={errors.country}
+            />
           </div>
         </SectionCard>
 

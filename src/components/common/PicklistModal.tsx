@@ -171,7 +171,7 @@ export default function PicklistModal<T>({
         <button
           type="button"
           onClick={() => onSelect(row)}
-          className="rounded-full bg-primary-50 px-4 py-1.5 text-sm font-medium text-primary transition hover:bg-primary-100"
+          className="rounded-sm cursor-pointer bg-primary-50 px-3 py-1 text-[15px] font-medium text-primary transition hover:bg-primary-100"
         >
           Select
         </button>
@@ -209,7 +209,7 @@ export default function PicklistModal<T>({
             <button
               type="button"
               onClick={() => onSelect(row)}
-              className="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary-100"
+              className="rounded-md bg-primary-50 px-3 py-1 text-xs font-medium text-primary transition hover:bg-primary-100"
             >
               Select
             </button>
@@ -231,76 +231,74 @@ export default function PicklistModal<T>({
       showCloseButton={false}
     >
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        <div className="pointer-events-none absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[#DCEBFC] opacity-70 blur-[1px]" />
-        <div className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-[#DCEBFC] opacity-70 blur-[1px]" />
 
         {/* Header with Centered Title */}
-        <div className="relative z-10 flex flex-col gap-6 rounded-[20px] px-2">
-        
+        <div className="relative z-10 flex flex-col gap-6 rounded-[15px] px-2">
+
 
           {/* Search Section */}
-         <div className="w-full border border-gray-500 text-sm">
-  {/* Search By Row */}
-  <div className="flex border-b border-gray-600">
-    {/* Left Label */}
-    <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
-      Search By
-    </div>
+          <div className="w-full  border border-gray-400 text-sm">
+            {/* Search By Row */}
+            <div className="flex border-b border-gray-400">
+              {/* Left Label */}
+              <div className="w-48 border-r border-gray-400 bg-[#DCEBFC] px-3 py-2 font-semibold">
+                Search By
+              </div>
 
-    {/* Right Content */}
-    <div className="flex flex-1 items-center gap-6 bg-[#DCEBFC] px-3 py-2">
-      {searchByOptions.map((option) => (
-        <label key={option.value} className="flex items-center gap-2">
-          <input
-            type="radio"
-            name="searchBy"
-            value={option.value}
-            checked={searchBy === option.value}
-            onChange={(e) => {
-              setSearchBy(e.target.value);
-              setTextSearch("");
-            }}
-          />
-          {option.label}
-        </label>
-      ))}
-    </div>
-  </div>
+              {/* Right Content */}
+              <div className="flex flex-1 items-center gap-6 bg-[#DCEBFC] px-3 py-2">
+                {searchByOptions.map((option) => (
+                  <label key={option.value} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="searchBy"
+                      value={option.value}
+                      checked={searchBy === option.value}
+                      onChange={(e) => {
+                        setSearchBy(e.target.value);
+                        setTextSearch("");
+                      }}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+            </div>
 
-  {/* Text To Search Row */}
-  <div className="flex">
-    {/* Left Label */}
-    <div className="w-48 border-r border-gray-600 bg-[#DCEBFC] px-3 py-2 font-semibold">
-      Text To Search
-    </div>
+            {/* Text To Search Row */}
+            <div className="flex">
+              {/* Left Label */}
+              <div className="w-48 border-r border-gray-400 bg-[#DCEBFC] px-3 py-2 font-semibold">
+                Text To Search
+              </div>
 
-    {/* Right Content */}
-    <div className="flex flex-1 items-center gap-2 bg-[#DCEBFC] p-2">
-      <input
-        type="text"
-        value={textSearch}
-        onChange={(e) => setTextSearch(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder={`Enter ${searchBy === "code" ? "Branch Code" : "Name"}`}
-        className="flex-1 border border-gray-400 px-2 py-1 outline-none"
-      />
+              {/* Right Content */}
+              <div className="flex flex-1 items-center gap-2 bg-[#DCEBFC] p-2">
+                <input
+                  type="text"
+                  value={textSearch}
+                  onChange={(e) => setTextSearch(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder={`Enter ${searchBy === "code" ? "Branch Code" : "Name"}`}
+                  className="flex-1 border border-gray-400 px-2 py-1 outline-none"
+                />
 
-      <button
-        type="button"
-        onClick={handleSearchSubmit}
-        className="border border-gray-500 bg-gray-200 px-4 py-1 hover:bg-gray-300"
-      >
-        Submit
-      </button>
-    </div>
-  </div>
-</div>
+                <button
+                  type="button"
+                  onClick={handleSearchSubmit}
+                  className="border border-gray-500 bg-gray-200 px-4 py-1 hover:bg-gray-300"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Table Section - Border only around the table */}
-        <div className="relative z-10 mt-6 flex flex-1 flex-col overflow-hidden rounded-xl border border-gray-300">
+        <div className="relative z-10 mt-4 flex flex-1 flex-col overflow-hidden rounded-md border border-gray-300">
           {/* Table Header */}
-          <div className="flex h-[46px] shrink-0 items-center bg-[#DCEBFC]">
+          <div className="flex h-[40px] shrink-0 items-center bg-[#DCEBFC]">
             {columns.map((col) => (
               <div
                 key={col.key}
@@ -323,14 +321,14 @@ export default function PicklistModal<T>({
           {/* Table Body */}
           <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <div className="flex h-[64px] items-center justify-center text-sm text-gray-400">Loading…</div>
+              <div className="flex h-[50px] items-center justify-center text-sm text-gray-400">Loading…</div>
             ) : filteredRows.length === 0 ? (
-              <div className="flex h-[64px] items-center justify-center text-sm text-gray-400">{emptyMessage}</div>
+              <div className="flex h-[50px] items-center justify-center text-sm text-gray-400">{emptyMessage}</div>
             ) : (
               filteredRows.map((row) => (
                 <div
                   key={rowKey(row)}
-                  className="flex h-[64px] items-center border-b border-gray-200 px-0 last:border-b-0"
+                  className="flex h-[50px] items-center border-b border-gray-300 px-0 last:border-b-0"
                 >
                   {columns.map((col) => (
                     <div
