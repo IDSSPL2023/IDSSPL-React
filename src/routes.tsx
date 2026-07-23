@@ -106,23 +106,30 @@ import DDMaintenancePage from "./pages/dd/Maintenance/Maintenance";
 import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
-import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
-// import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
-// import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
-// import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
-// import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
-import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
+import PayrollMaster from "./pages/Payroll/Master/Master";
+import PayrollTransaction from "./pages/Payroll/Transaction/Transaction";
+// import EmployeeLeaveBalancePage from "./pages/Payroll/EmployeeLeaveBalancePage";
+import EmployeeLoanDetailsPage from "./pages/Payroll/EmployeeLoanDetailsPage";
+// import LeaveOpeningBalancePage from "./pages/Payroll/LeaveOpeningBalancePage";
+// import SalaryInstructionPage from "./pages/Payroll/SalaryInstructionPage";
+// import SalaryUpd/ationPage from "./pages/Payroll/SalaryUpdationPage";
+// import UpdateAttendancePage from "./pages/Payroll/UpdateAttendancePage";
+import AnnualMeetingAttendancePage from "./pages/Shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+import EmployeeDeputationPage from "@/pages/Payroll/TrasationEntry/EmployeeDeputation ";
+import EmployeePromotionPage from "@/pages/Payroll/TrasationEntry/EmployeePromotion";
+import EmployeeResignationPage from "@/pages/Payroll/TrasationEntry/EmployeeResignation";
+import EmployeeSuspensionPage from "@/pages/Payroll/TrasationEntry/EmployeeSuspensionInformation";
+import EmployeeTransferPage from "@/pages/Payroll/TrasationEntry/EmployeeTransferEntry";
+import LeaveApplicationPage from "@/pages/Payroll/TrasationEntry/LeaveApplicationEntry";
+import EmployeeTerminationPage from "@/pages/Payroll/TrasationEntry/EmployeeTermination";
 
 import SMSRegistrationPage from "@/pages/SMS/SMS";
 import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-// import AnnualMeetingAttendancePage from "./pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
-// import EmployeeLeaveBalancePage from "./pages/payroll/Transaction/EmployeeLeaveBalancePage";
-// import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-// import PayrollMaster from "./pages/payroll/Master/Master";
 
-import TlCcInstallmentAuthorizePage from "./pages/authorization/AuthorizeTransaction/TlCcInstallmentAuthorize/TlCcInstallmentAuthorize";
+// import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
@@ -507,8 +514,8 @@ export const router = createBrowserRouter([
       },
 
       // Payroll
-      // { path: "/payroll/master", element: <PayrollMaster /> },
-      // { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      { path: "/payroll/master", element: <PayrollMaster /> },
+      { path: "/payroll/transaction", element: <PayrollTransaction /> },
       // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
       // { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
       // { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
