@@ -112,6 +112,23 @@ export const MASTER_CONFIG = {
       { key: "loanDeposit", label: "Loan Deposit" },
     ],
   },
+  defaultBranchAccounts: {
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "inwardClearingAccountCode", label: "Inward Clearing Account Code" },
+      { key: "outwardClearingAccountCode", label: "Outward Clearing Account Code" },
+    ],
+    rows: [],
+    fields: [
+      { key: "branchCode", labelEn: "Branch Code", labelHi: "शाखा कोड", placeholder: "Enter Branch Code", icon: "id", readOnlyOnEdit: true },
+      { key: "inwardClearingAccountCode", labelEn: "Inward Clearing Account Code", labelHi: "इनवर्ड क्लीयरिंग खाते कोड", placeholder: "Enter Inward Clearing Account Code", icon: "user" },
+      { key: "outwardClearingAccountCode", labelEn: "Outward Clearing Account Code", labelHi: "आउटवर्ड क्लीयरिंग खाते कोड", placeholder: "Enter Outward Clearing Account Code", icon: "user" },
+    ],
+    filterFields: [
+      { key: "searchBy", label: "Search By", type: "select", options: ["NAME", "BRANCH_CODE"] },
+      { key: "textToSearch", label: "Search Text", placeholder: "Enter branch name or code" },
+    ],
+  },
 };
 
 const DEFAULT_CONFIG = {
