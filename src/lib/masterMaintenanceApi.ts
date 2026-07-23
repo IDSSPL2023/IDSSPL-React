@@ -349,9 +349,20 @@ export async function createCity(payload: {
 }
 
 /** GET /master/states — browse returning stateCode, countryCode, stateName. */
-export async function fetchStates(): Promise<StateRecord[]> {
-  const response = await fetch(`${BASE_URL}/master/states`);
-  if (!response.ok) throw new Error(`Failed to load states (${response.status})`);
+export async function fetchStates(payload?: {
+  searchBy: "CODE" | "NAME" | "STATE_NAME" | "COUNTRY_CODE";
+  textToSearch: string;
+}): Promise<StateRecord[]> {
+  const response = await fetch(
+    `${BASE_URL}/api/v1/master-maintenance/states/search`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+  );
+  if (!response.ok)
+    throw new Error(`Failed to load states (${response.status})`);
   const data = await parseJson(response);
   return extractList(data).map((item) => ({
     stateCode: String(item.stateCode ?? ""),
@@ -370,7 +381,7 @@ export async function createState(payload: {
   countryCode: string;
   stateName: string;
 }): Promise<StateRecord> {
-  const response = await fetch(`${BASE_URL}/master/states`, {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/states`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),

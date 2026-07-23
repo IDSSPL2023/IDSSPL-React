@@ -17,7 +17,7 @@ import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import Pagination from "@/components/shared/Pagination";
 import { CountryPicklistField } from "@/components/common";
 import CustomerIdPicklistField, { CustomerOption } from "@/components/common/CustomerIdPicklistField";
-// import CustomerIdPicklistField, { type CustomerOption } from "../common/CustomerIdPicklistField";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from LockerTable.tsx ===== */
 export interface LockerTable_LockerRow {
@@ -556,9 +556,15 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
         </FieldShell>
 
         <CityPicklistField label="City" labelHi="शहरे" required icon={<MapPin size={16} />} value={row.city} onSelect={(city) => onUpdate(i, { city: city.name })} error={errors[`${i}-city`] ? "This field is required" : undefined} />
-        <FieldShell label="State" labelHi="राज्य" required error={errors[`${i}-state`]}>
-          <TextInput icon={<Building2 size={16} />} value={row.state} onChange={(v) => onUpdate(i, { state: v })} error={errors[`${i}-state`]} />
-        </FieldShell>
+        <StatePicklistField
+          label="State"
+          labelHi="राज्य"
+          icon={<Building2 size={16} />}
+          value={row.state}
+          onSelect={(s) => onUpdate(i, { state: s.stateName })}
+          required
+          error={errors[`${i}-state`] ? "This field is required" : undefined}
+        />
         <CountryPicklistField
           label="Country"
           labelHi="देश"

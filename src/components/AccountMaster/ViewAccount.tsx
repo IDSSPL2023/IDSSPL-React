@@ -1,6 +1,7 @@
 import { IMAGES } from "@/assets";
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import Image from "@/components/ui/Image";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
   Calendar,
@@ -929,7 +930,7 @@ function NomineeTab({
 
           <Field icon={Home} labelEn="Zip" labelMr="पिन कोड" value={formData.zip} onChange={updateRow(index, "zip")} />
           <SelectField icon={Landmark} labelEn="City" labelMr="शहरे" value={formData.city} onChange={updateRow(index, "city")} />
-          <Field icon={Landmark} labelEn="State" labelMr="राज्य" value={formData.state} onChange={updateRow(index, "state")} />
+          <StatePicklistField icon={<Landmark size={16} />} label="State" labelHi="राज्य" value={formData.state || ""} onSelect={(s) => updateRow(index, "state")(s.stateName)} />
           <Field icon={Flag} labelEn="Country" labelMr="देश" value={formData.country} onChange={updateRow(index, "country")} />
         </div>
       </div>
@@ -993,7 +994,7 @@ function JointHolderTab({ data }: { data: JointHolderDetails }) {
 
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 [&>*]:min-w-0">
         <SelectField icon={Home} labelEn="City" labelMr="शहरे" value={formData.city} onChange={update("city")} />
-        <Field icon={Landmark} labelEn="State" labelMr="राज्य" value={formData.state} onChange={update("state")} />
+        <StatePicklistField icon={<Landmark size={16} />} label="State" labelHi="राज्य" value={formData.state || ""} onSelect={(s) => update("state")(s.stateName)} />
         <Field icon={Flag} labelEn="Country" labelMr="देश" value={formData.country} onChange={update("country")} />
       </div>
     </div>

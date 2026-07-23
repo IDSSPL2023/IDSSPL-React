@@ -93,7 +93,7 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
   const loadStates = useCallback(async () => {
     setTableLoading(true);
     try {
-      const records = await fetchStates();
+      const records = await fetchStates({searchBy: "CODE", textToSearch: ''});
       setTableRows(records.map(mapStateRecordToRow));
     } catch (err) {
       console.error(err);

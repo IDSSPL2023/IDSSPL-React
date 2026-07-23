@@ -10,6 +10,7 @@ import ListModal from "@/components/AccountMaster/ListModal";
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import { useRouter } from "@/lib/navigation";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from AddTDClosingReinvest.tsx ===== */
 const AddTDClosingReinvest_INTEREST_PAY_MODE_OPTIONS = ["Monthly", "Quarterly", "Half-Yearly", "Yearly", "On Maturity"];
@@ -914,15 +915,16 @@ const AddTDClosingReinvest = ({ onClose, onSave, variant = "modal" }: AddTDClosi
               />
             </FieldShell>
 
-            <FieldShell label="State" labelHi="राज्य" required error={errors.nomineeState}>
-              <TextInput
-                icon={<MapPin size={16} />}
-                value={form.nomineeState}
-                onChange={(v) => updateField("nomineeState", v)}
-                placeholder="Enter State"
-                error={errors.nomineeState}
-              />
-            </FieldShell>
+            <StatePicklistField
+              label="State"
+              labelHi="राज्य"
+              icon={<MapPin size={16} />}
+              value={form.nomineeState}
+              onSelect={(s) => updateField("nomineeState", s.stateName)}
+              placeholder="Select State"
+              required
+              error={errors.nomineeState ? "This field is required" : undefined}
+            />
 
             <FieldShell label="Country" labelHi="देश" required error={errors.nomineeCountry}>
               <TextInput
@@ -1064,16 +1066,16 @@ const AddTDClosingReinvest = ({ onClose, onSave, variant = "modal" }: AddTDClosi
               />
             </FieldShell>
 
-            <FieldShell label="State" labelHi="राज्य" required error={errors.jtState}>
-              <TextInput
-                icon={<MapPin size={16} />}
-                value={form.jtState}
-                onChange={() => {}}
-                readOnly
-                placeholder="Enter State"
-                error={errors.jtState}
-              />
-            </FieldShell>
+            <StatePicklistField
+              label="State"
+              labelHi="राज्य"
+              icon={<MapPin size={16} />}
+              value={form.jtState}
+              onSelect={(s) => updateField("jtState", s.stateName)}
+              placeholder="Select State"
+              required
+              error={errors.jtState ? "This field is required" : undefined}
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-4">

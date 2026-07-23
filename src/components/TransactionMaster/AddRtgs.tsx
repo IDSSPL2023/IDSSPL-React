@@ -27,6 +27,7 @@ import {
 } from "@/components/shared/FormFields";
 import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 const TRANSACTION_MODE_OPTIONS = ["Cash", "Transfer", "Cheque"];
 const TRANSACTION_TYPE_OPTIONS = ["RTGS", "NEFT"];
@@ -806,15 +807,16 @@ const AddRtgs = ({ onClose, onSave, variant = "modal" }: AddRtgsProps) => {
 
           <CityPicklistField label="City" labelHi="शहर" required icon={<MapPin size={16} />} value={form.city} onSelect={(city) => updateField("city", city.name)} error={errors.city ? "This field is required" : undefined} />
 
-          <FieldShell label="State" labelHi="राज्य" required error={errors.state}>
-            <TextInput
-              icon={<MapPin size={16} />}
-              value={form.state}
-              onChange={(v) => updateField("state", v)}
-              placeholder="Enter State"
-              error={errors.state}
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<MapPin size={16} />}
+            value={form.state}
+            onSelect={(s) => updateField("state", s.stateName)}
+            placeholder="Select State"
+            required
+            error={errors.state ? "This field is required" : undefined}
+          />
 
           <FieldShell label="Sender To Receiver Info" labelHi="प्रेषक ते प्राप्तकर्ता माहिती" required error={errors.senderToReceiverInfo}>
             <TextInput

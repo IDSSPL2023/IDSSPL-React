@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import CityPicklistField from "@/components/common/CityPicklistField";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
   Plus,
@@ -647,14 +648,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
 
                   <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateNominee(index, { city: city.name })} />
 
-                  {/* State */}
-                  <FieldShell label="State" labelHi="राज्य" required>
-                    <TextInput 
-                      icon={<MapPin size={16} />} 
-                      value={row.state} 
-                      onChange={(v) => updateNominee(index, { state: v })} 
-                    />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateNominee(index, { state: s.stateName })}
+                    required
+                  />
 
                   <CountryPicklistField
                     label="Country"
@@ -762,14 +763,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
 
                   <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateJointHolder(index, { city: city.name })} />
 
-                  {/* State */}
-                  <FieldShell label="State" labelHi="राज्य" required>
-                    <TextInput 
-                      icon={<MapPin size={16} />} 
-                      value={row.state} 
-                      onChange={(v) => updateJointHolder(index, { state: v })} 
-                    />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateJointHolder(index, { state: s.stateName })}
+                    required
+                  />
 
                   <CountryPicklistField
                     label="Country"

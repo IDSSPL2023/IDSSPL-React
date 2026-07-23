@@ -21,6 +21,7 @@ import {
   type BranchDetail,
 } from "@/lib/masterMaintenanceApi";
 import { CountryPicklistField } from "@/components/common";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import CityPicklistField from "@/components/common/CityPicklistField";
 
 /* ===== from AddBranchModal.tsx ===== */
@@ -311,7 +312,7 @@ function AddBranchModal({ open, mode = "add", initialData = AddBranchModal_empty
                 error={errors.cityCode ? "This field is required" : undefined}
                 preFetch={true}
               />
-            <AddBranchModal_SelectField labelEn="State" labelHi="राज्य" icon={Building2} placeholder="Select State" value={formData.state} options={AddBranchModal_STATE_OPTIONS} onChange={(v) => handleChange("state", v)} hasError={errors.state} readOnly={isView} />
+            <StatePicklistField label="State" labelHi="राज्य" icon={<Building2 size={16} />} value={formData.state} onSelect={(c) => handleChange("state", c.stateName)} placeholder="Select State" required error={errors.state ? "This field is required" : undefined} readOnly={isView} />
 
             <CountryPicklistField label="Country" labelHi="देश" icon={<Flag size={18} />} value={formData.country} onSelect={(c) => handleChange("country", c.name)} required readOnly={isView} error={errors.country ? "This field is required" : undefined} />
             <AddBranchModal_TextField labelEn="Email ID" labelHi="ईमेल आयडी" icon={Mail} placeholder="Enter Email ID" value={formData.emailId} onChange={(v) => handleChange("emailId", v)} hasError={errors.emailId} readOnly={isView} />
@@ -763,18 +764,17 @@ function AddParameterModal({
       );
     }
 
-    if (field.type === "select") {
+     if (field.key === "state") {
       return (
-        <SelectInput
+        <StatePicklistField
           key={field.id}
-          labelEn={field.labelEn}
-          labelMr={field.labelHi}
-          icon={field.icon}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
           value={value as string}
-          options={field.options.map((v) => v.label) || []}
-          onChange={(v) => handleChange(field.key, v)}
-          required={AddNewParameter_REQUIRED_FIELDS.includes(field.key as AddNewParameter_RequiredFieldKey)}
-          editable
+          onSelect={(c) => handleChange(field.key, c.stateName)}
+          required
+          error={hasError ? "This field is required" : undefined}
         />
       );
     }
@@ -1615,18 +1615,18 @@ function ViewEditParameterModal({
       );
     }
 
-    if (field.type === "select") {
+    if (field.key === "state") {
       return (
-        <SelectInput
+        <StatePicklistField
           key={field.id}
-          labelEn={field.labelEn}
-          labelMr={field.labelHi}
-          icon={field.icon}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
           value={value as string}
-          options={field.options.map((v) => v.label) || []}
-          onChange={(v: string) => handleChange(field.key, v)}
-          required={ViewAndEditParameter_REQUIRED_FIELDS.includes(field.key as ViewAndEditParameter_RequiredFieldKey)}
-          editable={!isFieldReadOnly}
+          onSelect={(c) => handleChange(field.key, c.stateName)}
+          required
+          readOnly={isFieldReadOnly}
+          error={hasError ? "This field is required" : undefined}
         />
       );
     }

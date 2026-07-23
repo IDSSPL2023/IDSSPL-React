@@ -7,6 +7,7 @@ import FormModal from "../shared/FormModal";
 import { FieldShell, TextInput, RadioYesNo, SectionCard } from "../shared/FormFields";
 import BranchListPickerModal, { type Branch } from "../common/BranchPickListModal";
 import CustomerIdPicklistField, { CustomerOption } from "../common/CustomerIdPicklistField";
+import StatePicklistField from "../common/StatePicklistField";
 import { CountryPicklistField } from "../common";
 
 /* ===================== Shared types ===================== */
@@ -470,15 +471,20 @@ export default function UserDetailsModal({
             <FieldShell label="City" labelHi="शहरे" required>
               <CityPicklistField label="" icon={<Building2 size={16} />} value={data.city} onSelect={(city) => set("city")(city.name)} readOnly={isView} />
             </FieldShell>
-            <FieldShell label="State" labelHi="राज्य" required>
-              <TextInput
+              <StatePicklistField
+                key={data.state}
+                label="State"
+                labelHi="राज्य"
                 icon={<Building2 size={16} />}
                 value={data.state}
-                onChange={set("state")}
+                onSelect={(state) => {
+                  set("state")(state.stateName);
+                }}
                 placeholder="Select State"
+                required
                 readOnly={isView}
+                error={errors.state}
               />
-            </FieldShell>
             <CountryPicklistField
               label="Country"
               labelHi="देश"

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Controller, type Control, type FieldValues, type Path, useFormContext, FormProvider, useForm } from "react-hook-form";
 import { FieldShell, TextInput, SelectInput, DateInput, SectionCard, RadioYesNo, DocumentRow } from "@/components/shared/FormFields";
 import { CountryPicklistField } from "@/components/common";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import { IMAGES } from "@/assets";
 import { User, IdCard, Heart, Baby, Car, AlertTriangle, Flag, Home, Phone, Hash, Building2, MapPin, Coins, Calendar, IndianRupee, Eye, ShieldCheck, Mail, X, ChevronDown, ThumbsUp, ThumbsDown } from "lucide-react";
 import Image from "@/components/ui/Image";
@@ -414,7 +415,7 @@ interface ControlledField_ControlledFieldProps<T extends FieldValues> {
   icon?: ReactNode;
   placeholder?: string;
   options?: string[];
-  kind?: "text" | "select" | "date" | "country" | "city";
+  kind?: "text" | "select" | "date" | "country" | "state" | "city";
 }
 
 function ControlledField<T extends FieldValues>({
@@ -455,6 +456,16 @@ function ControlledField<T extends FieldValues>({
               error={!!fieldState.error}
             />
           </FieldShell>
+        ) : kind === "state" ? (
+          <StatePicklistField
+            label={label}
+            labelHi={labelHi}
+            icon={icon}
+            value={(field.value as string) ?? ""}
+            onSelect={(state) => field.onChange(state.stateName)}
+            required={required}
+            error={fieldState.error ? "This field is required" : undefined}
+          />
         ) : (
         <FieldShell label={label} labelHi={labelHi} required={required} error={!!fieldState.error}>
           {kind === "select" ? (
@@ -1030,11 +1041,10 @@ function Step2AddressDetails() {
           <ControlledField
             control={control}
             name="state"
-            kind="select"
+            kind="state"
             label="State"
             labelHi="राज्य"
             icon={<Building2 size={16} />}
-            options={[...FormTypes_STATE_OPTIONS]}
             placeholder="Select State"
             required
           />
@@ -1125,11 +1135,10 @@ function Step2AddressDetails() {
               <ControlledField
                 control={control}
                 name="permanentState"
-                kind="select"
+                kind="state"
                 label="State"
                 labelHi="राज्य"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_STATE_OPTIONS]}
                 placeholder="Select State"
                 required
               />
@@ -1222,11 +1231,10 @@ function Step2AddressDetails() {
               <ControlledField
                 control={control}
                 name="officeState"
-                kind="select"
+                kind="state"
                 label="State"
                 labelHi="राज्य"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_STATE_OPTIONS]} 
                 placeholder="Select State"
                 required
               />

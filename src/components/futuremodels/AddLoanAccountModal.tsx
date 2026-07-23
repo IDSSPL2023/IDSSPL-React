@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import CityPicklistField from "@/components/common/CityPicklistField";
 import { CountryPicklistField } from "@/components/common";
 import Image from "@/components/ui/Image";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
   Plus,
@@ -609,9 +610,14 @@ const PartyTab: React.FC<PartyTabProps> = ({
 
           <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => onUpdate(index, { city: city.name })} />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => onUpdate(index, { state: v })} />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<MapPin size={16} />}
+            value={row.state}
+            onSelect={(s) => onUpdate(index, { state: s.stateName })}
+            required
+          />
 
           <CountryPicklistField
             label="Country"

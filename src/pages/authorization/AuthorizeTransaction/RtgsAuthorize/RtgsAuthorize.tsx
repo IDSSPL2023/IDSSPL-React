@@ -16,6 +16,7 @@ import { useRouter } from "@/lib/navigation";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import AuthorizationTabs, { type AuthorizationTabKey } from "@/components/Authorization/AuthorizationTabs";
 import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from RtgsAuthorizeTable.tsx ===== */
 export type RtgsAuthorizeTable_RtgsAuthorizeTab = "new" | "rejected";
@@ -754,9 +755,15 @@ const AuthorizeRtgsModal = ({
               <TextInput icon={<MapPin size={16} />} value={data.city} onChange={() => {}} readOnly />
             </FieldShell>
 
-            <FieldShell label="State" labelHi="राज्य" required>
-              <TextInput icon={<MapPin size={16} />} value={data.state} onChange={() => {}} readOnly />
-            </FieldShell>
+            <StatePicklistField
+              label="State"
+              labelHi="राज्य"
+              icon={<MapPin size={16} />}
+              value={data.state}
+              onSelect={() => {}}
+              required
+              readOnly
+            />
 
             <FieldShell label="Sender To Receiver Info" labelHi="प्रेषक ते प्राप्तकर्ता माहिती" required>
               <TextInput icon={<FileText size={16} />} value={data.senderToReceiverInfo} onChange={() => {}} readOnly />

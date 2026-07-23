@@ -39,6 +39,7 @@ import {
   getActiveFilterSummary,
 } from "@/components/shared/filterSummary";
 import CustomerIdPicklistField, { type CustomerOption } from "@/components/common/CustomerIdPicklistField";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from AddUserMaster.tsx ===== */
 /* ===================== AddUserMaster_AddUserForm ===================== */
@@ -187,6 +188,12 @@ function AddUserMaster_AddUserForm({
     onClose?.();
   };
 
+  // Handler for state selection
+  const handleStateSelect = (selectedState: { stateCode: string; stateName: string; countryCode: string }) => {
+    setState(selectedState.stateName);
+    clearError("state");
+  };
+
   if (showSuccess) {
     return (
       <SuccessModal
@@ -296,7 +303,7 @@ function AddUserMaster_AddUserForm({
             </FieldShell>
 
             {/* Customer ID Field with Picklist */}
-            <FieldShell label="Customer" labelHi="ग्राहक" required>
+            <FieldShell label="Customer Id" labelHi="ग्राहक आयडी" required>
               {existingCustomer ? (
                 <CustomerIdPicklistField
                   label=""
@@ -497,21 +504,18 @@ function AddUserMaster_AddUserForm({
               <CityPicklistField label="" icon={<Building2 size={16} />} value={city} onSelect={(selectedCity) => setCity(selectedCity.name)} error={errors.city} />
               {errors.city && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.city}</p>}
             </FieldShell>
-            <FieldShell label="State" labelHi="राज्य" required>
-              <TextInput
-                icon={<Building2 size={16} />}
-                value={state}
-                onChange={() => {}}
-                readOnly
-                placeholder="Select State"
-                error={!!errors.state}
-              />
-              {errors.state && (
-                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                  {errors.state}
-                </p>
-              )}
-            </FieldShell>
+            <StatePicklistField
+              key={state}
+              label="State"
+              labelHi="राज्य"
+              icon={<Building2 size={16} />}
+              value={state}
+              onSelect={handleStateSelect}
+              placeholder="Select State"
+              required
+              readOnly={false}
+              error={errors.state}
+            />
             <CountryPicklistField
               label="Country"
               labelHi="देश"
