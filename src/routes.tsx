@@ -111,8 +111,6 @@ import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/Author
 import SMSRegistrationPage from "@/pages/SMS/SMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
-import SharesPage from "@/pages/shares/Shares";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
