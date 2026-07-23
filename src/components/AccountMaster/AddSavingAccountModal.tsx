@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
   Plus,
@@ -576,9 +577,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => updateNominee(index, { city: v })} options={CITIES} />
                   </FieldShell>
 
-                  <FieldShell label="State" labelHi="राज्य" required>
-                    <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateNominee(index, { state: v })} />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateNominee(index, { state: s.stateName })}
+                    required
+                  />
 
                   <FieldShell label="Country" labelHi="देश" required>
                     <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => updateNominee(index, { country: v })} />
@@ -635,9 +641,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => updateJointHolder(index, { city: v })} options={CITIES} />
                   </FieldShell>
 
-                  <FieldShell label="State" labelHi="राज्य" required>
-                    <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => updateJointHolder(index, { state: v })} />
-                  </FieldShell>
+                  <StatePicklistField
+                    label="State"
+                    labelHi="राज्य"
+                    icon={<MapPin size={16} />}
+                    value={row.state}
+                    onSelect={(s) => updateJointHolder(index, { state: s.stateName })}
+                    required
+                  />
                 </div>
               </div>
             ))}

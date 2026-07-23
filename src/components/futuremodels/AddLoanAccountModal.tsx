@@ -1,6 +1,7 @@
 import { IMAGES } from "@/assets";
 import React, { useState } from "react";
 import Image from "@/components/ui/Image";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
   Plus,
@@ -597,9 +598,14 @@ const PartyTab: React.FC<PartyTabProps> = ({ rows, entityLabel, entityLabelHi, e
             <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => onUpdate(index, { city: v })} options={CITIES} />
           </FieldShell>
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput icon={<MapPin size={16} />} value={row.state} onChange={(v) => onUpdate(index, { state: v })} />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<MapPin size={16} />}
+            value={row.state}
+            onSelect={(s) => onUpdate(index, { state: s.stateName })}
+            required
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => onUpdate(index, { country: v })} />

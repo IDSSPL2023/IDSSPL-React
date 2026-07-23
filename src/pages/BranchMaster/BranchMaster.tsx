@@ -300,7 +300,7 @@ function AddBranchModal({ open, mode = "add", initialData = AddBranchModal_empty
 
             <AddBranchModal_TextField labelEn="Zip Code" labelHi="झिप कोड" icon={Home} placeholder="Enter Zip Code" value={formData.zipCode} onChange={(v) => handleChange("zipCode", v)} hasError={errors.zipCode} readOnly={isView} />
             <AddBranchModal_SelectField labelEn="City Code" labelHi="शहर कोड" icon={Building2} placeholder="Select City Code" value={formData.cityCode} options={AddBranchModal_CITY_OPTIONS} onChange={(v) => handleChange("cityCode", v)} hasError={errors.cityCode} readOnly={isView} />
-            <AddBranchModal_SelectField labelEn="State" labelHi="राज्य" icon={Building2} placeholder="Select State" value={formData.state} options={AddBranchModal_STATE_OPTIONS} onChange={(v) => handleChange("state", v)} hasError={errors.state} readOnly={isView} />
+            <StatePicklistField label="State" labelHi="राज्य" icon={<Building2 size={16} />} value={formData.state} onSelect={(c) => handleChange("state", c.stateName)} placeholder="Select State" required error={errors.state ? "This field is required" : undefined} readOnly={isView} />
 
             <CountryPicklistField label="Country" labelHi="देश" icon={<Flag size={18} />} value={formData.country} onSelect={(c) => handleChange("country", c.name)} required readOnly={isView} error={errors.country ? "This field is required" : undefined} />
             <AddBranchModal_TextField labelEn="Email ID" labelHi="ईमेल आयडी" icon={Mail} placeholder="Enter Email ID" value={formData.emailId} onChange={(v) => handleChange("emailId", v)} hasError={errors.emailId} readOnly={isView} />
@@ -1579,6 +1579,22 @@ function ViewEditParameterModal({
           icon={<Flag size={18} />}
           value={value as string}
           onSelect={(c) => handleChange(field.key, c.name)}
+          required
+          readOnly={isFieldReadOnly}
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
+
+    if (field.key === "state") {
+      return (
+        <StatePicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Flag size={18} />}
+          value={value as string}
+          onSelect={(c) => handleChange(field.key, c.stateName)}
           required
           readOnly={isFieldReadOnly}
           error={hasError ? "This field is required" : undefined}

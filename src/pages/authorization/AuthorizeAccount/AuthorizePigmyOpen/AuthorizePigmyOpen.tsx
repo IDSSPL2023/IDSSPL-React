@@ -12,6 +12,7 @@ import { useBilingual } from "@/i18n/useBilingual";
 import FilterModal, { type AccountFilters } from "@/components/shared/FilterModal";
 import AccountMasterTable, { type ColumnConfig, type RowData } from "@/components/AccountMaster/AccountMasterTable";
 import AuthorizationTabs, { type AuthorizationTabKey } from "@/components/Authorization/AuthorizationTabs";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from AuthorizePigmyOpenModal.tsx ===== */
 /* ===================== Shared types ===================== */
@@ -384,9 +385,15 @@ function AuthorizePigmyOpenModal({
 
           <SelectField labelEn="City" labelMr="शहरे" editable={false} icon={HomeIcon} value={data.city || "Kolhapur"} onChange={() => {}} />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput icon={<HomeIcon size={16} />} value={data.state || "Maharashtra"} onChange={() => {}} readOnly />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput icon={<FlagIcon size={16} />} value={data.country || "India"} onChange={() => {}} readOnly />
@@ -438,9 +445,15 @@ function AuthorizePigmyOpenModal({
 
           <SelectField labelEn="City" labelMr="शहरे" editable={false} icon={Building2} value={data.city || "Kolhapur"} onChange={() => {}} />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput icon={<Building2 size={16} />} value={data.state || "Maharashtra"} onChange={() => {}} readOnly />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<Building2 size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput icon={<FlagIcon size={16} />} value={data.country || "India"} onChange={() => {}} readOnly />

@@ -13,6 +13,7 @@ import FilterModal, { type AccountFilters } from "@/components/shared/FilterModa
 import AuthorizationTabs, { type AuthorizationTabKey } from "@/components/Authorization/AuthorizationTabs";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import RowActionMenu, { type RowActionMenuItem } from "@/components/shared/RowActionMenu";
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
@@ -455,14 +456,15 @@ function AuthorizeSavingAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -576,14 +578,15 @@ function AuthorizeSavingAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<Building2 size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<Building2 size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -1263,14 +1266,15 @@ function AuthorizeLoanAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -1939,14 +1943,15 @@ function AuthorizeLoanAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.guarantorState || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.guarantorState || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -2104,14 +2109,15 @@ function AuthorizeLoanAccountModal({
           onChange={() => {}}
         />
 
-        <FieldShell label="State" labelHi="राज्य" required>
-          <TextInput
-            icon={<Building2 size={16} />}
-            value={data.salaryState || "Maharashtra"}
-            onChange={() => {}}
-            readOnly
-          />
-        </FieldShell>
+        <StatePicklistField
+          label="State"
+          labelHi="राज्य"
+          icon={<Building2 size={16} />}
+          value={data.salaryState || "Maharashtra"}
+          onSelect={() => {}}
+          required
+          readOnly
+        />
 
         <FieldShell label="Country" labelHi="देश" required>
           <TextInput
@@ -2867,14 +2873,15 @@ function AuthorizeDepositAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -2988,14 +2995,15 @@ function AuthorizeDepositAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<Building2 size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<Building2 size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput

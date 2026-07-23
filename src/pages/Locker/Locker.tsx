@@ -13,6 +13,7 @@ import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import Pagination from "@/components/shared/Pagination";
+import StatePicklistField from "@/components/common/StatePicklistField";
 
 /* ===== from LockerTable.tsx ===== */
 export interface LockerTable_LockerRow {
@@ -553,9 +554,15 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
         <FieldShell label="City" labelHi="शहरे" required error={errors[`${i}-city`]}>
           <SelectInput icon={<MapPin size={16} />} value={row.city} onChange={(v) => onUpdate(i, { city: v })} options={AddLocker_CITIES} error={errors[`${i}-city`]} />
         </FieldShell>
-        <FieldShell label="State" labelHi="राज्य" required error={errors[`${i}-state`]}>
-          <TextInput icon={<Building2 size={16} />} value={row.state} onChange={(v) => onUpdate(i, { state: v })} error={errors[`${i}-state`]} />
-        </FieldShell>
+        <StatePicklistField
+          label="State"
+          labelHi="राज्य"
+          icon={<Building2 size={16} />}
+          value={row.state}
+          onSelect={(s) => onUpdate(i, { state: s.stateName })}
+          required
+          error={errors[`${i}-state`] ? "This field is required" : undefined}
+        />
         <FieldShell label="Country" labelHi="देश" required error={errors[`${i}-country`]}>
           <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => onUpdate(i, { country: v })} error={errors[`${i}-country`]} />
         </FieldShell>
