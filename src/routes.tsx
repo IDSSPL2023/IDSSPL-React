@@ -107,10 +107,10 @@ import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
 import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
-import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
-import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
-import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
-import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
+// import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
+// import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
+// import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
+// import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
 import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
 
 import SMSRegistrationPage from "@/pages/SMS/SMS";
@@ -504,20 +504,17 @@ export const router = createBrowserRouter([
         path: "/ho-officer/rtgs-outward-file-generation",
         element: <RtgsOutwardAuthorizePage />,
       },
-      {
-        path: "/ho-officer/reconciliation",
-        element: <ReconciliationAuthorizePage />,
-      },
+      { path: "/ho-officer/reconciliation", element: <ReconciliationAuthorizePage />, },
 
       // Payroll
       // { path: "/payroll/master", element: <PayrollMaster /> },
       // { path: "/payroll/transaction", element: <PayrollTransaction /> },
       // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
       { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
-      { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
-      { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
-      { path: "/payroll/transaction/salary-updation", element: <SalaryUpdationPage /> },
-      { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
+      // { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
+      // { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
+      // { path: "/payroll/transaction/salary-updation", element: <SalaryUpdationPage /> },
+      // { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
 
       // Shares
       { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
