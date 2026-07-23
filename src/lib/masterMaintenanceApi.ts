@@ -56,6 +56,22 @@ export interface BranchDetail {
   modifiedDate: string | null;
 }
 
+export interface BranchAccount {
+  branchCode: string;
+  inwardClearingAccountCode: string;
+  outwardClearingAccountCode: string;
+}
+
+export interface BranchAccountValidation {
+  branchCode: string;
+  branchName: string;
+  inwardClearingAccountCode: string;
+  outwardClearingAccountCode: string;
+  existingMapping: boolean;
+  addModifyEnabled: boolean;
+  message: string;
+}
+
 async function parseJson(response: Response): Promise<unknown> {
   const text = await response.text();
   return text ? JSON.parse(text) : null;
@@ -70,18 +86,192 @@ function extractList(data: unknown): Record<string, unknown>[] {
 }
 
 /** GET /cities — full CityDE data used to populate the City Master table. */
-export async function fetchCities(): Promise<CityRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities`);
-  if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
+// export async function fetchCities(): Promise<CityRecord[]> {
+//   const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities`);
+//   if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
+//   const data = await parseJson(response);
+//   return extractList(data).map((item) => ({
+//     cityCode: String(item.cityCode ?? ""),
+//     name: String(item.name ?? ""),
+//     countryCode: String(item.countryCode ?? ""),
+//     countryName: String(item.countryName ?? ""),
+//   }));
+// }
+
+// lib/masterMaintenanceApi.ts
+
+// lib/masterMaintenanceApi.ts
+
+export interface CityRecord {
+  cityCode: string;
+  name: string;
+  // countryCode?: string;
+  // countryName?: string;
+}
+
+export interface CitySearchParams {
+  searchBy?: "CODE" | "NAME";
+  textToSearch?: string;
+}
+
+export async function fetchCities(
+  params: CitySearchParams = {}
+): Promise<CityRecord[]> {
+  const { searchBy = "NAME", textToSearch = "" } = params;
+
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy, textToSearch }),
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to load cities (${response.status})`);
+  }
+  
   const data = await parseJson(response);
+  
   return extractList(data).map((item) => ({
-    cityCode: String(item.cityCode ?? ""),
-    name: String(item.name ?? ""),
+    cityCode: String(item.cityCode ?? item.code ?? item.value ?? ""),
+    name: String(item.name ?? item.cityName ?? item.label ?? item.text ?? ""),
     countryCode: String(item.countryCode ?? ""),
     countryName: String(item.countryName ?? ""),
   }));
 }
 
+/** GET /cities — full CityDE data used to populate the City Master table. */
+export async function fetchBranchAccount(): Promise<BranchAccount[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/default-branch-accounts`);
+  if (!response.ok) throw new Error(`Failed to load Bank Accounts (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    branchCode: String(item.branchCode ?? ""),
+    inwardClearingAccountCode: String(item.inwardClearingAccountCode ?? ""),
+    outwardClearingAccountCode: String(item.outwardClearingAccountCode ?? ""),
+  }));
+}
+
+/** POST /default-branch-accounts/branches/search — search branch accounts by branch code or name. */
+export interface BranchAccountSearchParams {
+  searchBy?: "BRANCH_CODE" | "NAME";
+  textToSearch?: string;
+}
+
+export async function searchBranchAccounts(
+  params: BranchAccountSearchParams = {}
+): Promise<BranchAccount[]> {
+  const { searchBy = "NAME", textToSearch = "" } = params;
+
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/default-branch-accounts/branches/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy, textToSearch }),
+  });
+  if (!response.ok) throw new Error(`Failed to search branch accounts (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    branchCode: String(item.branchCode ?? ""),
+    inwardClearingAccountCode: String(item.inwardClearingAccountCode ?? ""),
+    outwardClearingAccountCode: String(item.outwardClearingAccountCode ?? ""),
+  }));
+}
+
+/** POST /default-branch-accounts/validate — validate branch account entry. */
+export async function validateBranchAccount(
+  payload: {
+    branchCode: string;
+    inwardClearingAccountCode: string;
+    outwardClearingAccountCode: string;
+  }
+): Promise<BranchAccountValidation> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/default-branch-accounts/validate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(`Failed to validate branch account (${response.status})`);
+  const data = (await parseJson(response)) as Record<string, unknown>;
+  return {
+    branchCode: String(data.branchCode ?? ""),
+    branchName: String(data.branchName ?? ""),
+    inwardClearingAccountCode: String(data.inwardClearingAccountCode ?? ""),
+    outwardClearingAccountCode: String(data.outwardClearingAccountCode ?? ""),
+    existingMapping: Boolean(data.existingMapping),
+    addModifyEnabled: Boolean(data.addModifyEnabled),
+    message: String(data.message ?? ""),
+  };
+}
+
+/** POST /default-branch-accounts/save — save branch account entry. */
+export async function saveBranchAccount(
+  payload: {
+    branchCode: string;
+    inwardClearingAccountCode: string;
+    outwardClearingAccountCode: string;
+  }
+): Promise<BranchAccount> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/default-branch-accounts/save`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(`Failed to save branch account (${response.status})`);
+  const data = (await parseJson(response)) as Record<string, unknown>;
+  return {
+    branchCode: String(data.branchCode ?? payload.branchCode),
+    inwardClearingAccountCode: String(data.inwardClearingAccountCode ?? payload.inwardClearingAccountCode),
+    outwardClearingAccountCode: String(data.outwardClearingAccountCode ?? payload.outwardClearingAccountCode),
+  };
+}
+
+/** PUT /default-branch-accounts/{branchCode} — update branch account entry. */
+export async function updateBranchAccount(
+  branchCode: string,
+  payload: {
+    inwardClearingAccountCode: string;
+    outwardClearingAccountCode: string;
+  }
+): Promise<BranchAccount> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/default-branch-accounts/${encodeURIComponent(branchCode)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(`Failed to update branch account (${response.status})`);
+  const data = (await parseJson(response)) as Record<string, unknown>;
+  return {
+    branchCode: String(data.branchCode ?? branchCode),
+    inwardClearingAccountCode: String(data.inwardClearingAccountCode ?? payload.inwardClearingAccountCode),
+    outwardClearingAccountCode: String(data.outwardClearingAccountCode ?? payload.outwardClearingAccountCode),
+  };
+}
+
+// lib/masterMaintenanceApi.ts
+
+// export async function fetchCities(params?: {
+//   searchBy?: string;
+//   textToSearch?: string;
+// }): Promise<CityRecord[]> {
+//   let url = `${BASE_URL}/api/v1/master-maintenance/cities`;
+  
+//   // Build query params if provided
+//   if (params?.searchBy && params?.textToSearch) {
+//     const searchParams = new URLSearchParams();
+//     searchParams.append('searchBy', params.searchBy);
+//     searchParams.append('textToSearch', params.textToSearch);
+//     url += `?${searchParams.toString()}`;
+//   }
+  
+//   const response = await fetch(url);
+//   if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
+//   const data = await parseJson(response);
+//   return extractList(data).map((item) => ({
+//     cityCode: String(item.cityCode ?? ""),
+//     name: String(item.name ?? ""),
+//     countryCode: String(item.countryCode ?? ""),
+//     countryName: String(item.countryName ?? ""),
+//   }));
+// }
 /** POST /countries/search — empty textToSearch returns all countries; used for the Country dropdown. */
 export interface CountrySearchParams {
   searchBy?: string;   // "NAME" | "CODE" | ...

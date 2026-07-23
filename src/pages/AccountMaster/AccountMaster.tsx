@@ -563,11 +563,12 @@ const AccountTypeMenuConfig_addInsuranceDetailsItem = (
   onClick: () => handlers.onAddInsuranceDetails(row),
 });
 
-// CA/SA Account Type - Menu 1
+// CA/SA Account Type - Menu 1 (Edit only — no View, per this account type's own requirement)
 const AccountTypeMenuConfig_caSaMenuConfig: AccountTypeMenuConfig_AccountTypeMenuConfig = {
   accountType: "ca-sa",
   getMenuItems: (row, tRaw, handlers) => [
-    ...AccountTypeMenuConfig_viewEditFreezeItems(row, tRaw, handlers),
+    { key: "edit", label: tRaw("common.edit"), icon: SquarePen, onClick: () => handlers.onEdit(row) },
+    { key: "freeze", label: tRaw("accountMaster.table.menuFreezeUnfreeze"), icon: Lock, onClick: () => handlers.onFreeze(row) },
     { key: "chequeBookIssue", label: tRaw("accountMaster.table.menuChequeBookIssue"), icon: BookOpenCheck, onClick: () => handlers.onChequeBookIssue(row) },
     { key: "standingInstruction", label: tRaw("accountMaster.table.menuStandingInstruction"), icon: ClipboardList, onClick: () => handlers.onStandingInstruction(row) },
     { key: "memo", label: tRaw("accountMaster.table.menuMemo"), icon: StickyNote, onClick: () => handlers.onMemo(row) },

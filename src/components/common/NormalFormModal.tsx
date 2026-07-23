@@ -46,7 +46,7 @@ export default function NormalFormModal({
   return (
     <BaseModal
       onClose={onClose}
-      maxWidthPx={1475}
+      maxWidthPx={800}
       title={
         <>
           {titleEn}
@@ -64,7 +64,7 @@ export default function NormalFormModal({
         )
       }
       icon={headerIcon}
-      contentClassName="rounded-2xl min-h-[500px] max-h-[632px]"
+      contentClassName="rounded-xl  max-h-[632px]"
       bodyClassName="px-6 py-5"
       footer={
         <div className="flex items-center justify-end gap-3 px-6 py-4">
@@ -90,9 +90,8 @@ export default function NormalFormModal({
             type="button"
             onClick={onSave}
             disabled={!isValid || saving}
-            className={`flex h-10 min-w-[92px] items-center justify-center gap-1.5 rounded-lg px-5 text-sm font-medium transition ${
-              isValid && !saving ? "bg-primary text-white hover:bg-primary-700" : "cursor-not-allowed bg-slate-100 text-slate-400"
-            }`}
+            className={`flex h-10 min-w-[92px] items-center justify-center gap-1.5 rounded-lg px-5 text-sm font-medium transition ${isValid && !saving ? "bg-primary text-white hover:bg-primary-700" : "cursor-not-allowed bg-slate-100 text-slate-400"
+              }`}
           >
             {saving ? (
               <>

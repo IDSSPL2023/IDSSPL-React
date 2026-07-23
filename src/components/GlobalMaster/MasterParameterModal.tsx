@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SquarePen, UserRound } from "lucide-react";
+import { Building2, SquarePen, UserRound } from "lucide-react";
 import Image from "@/components/ui/Image";
 import {
   NormalFormModal,
@@ -11,8 +11,9 @@ import {
   isFormValid,
   required,
   type Validator,
+  CityPicklistField,
 } from "@/components/common";
-import { getMasterConfig, getFieldIcon, cityCountryCodeByName, type MasterField } from "./masterConfig";
+import { getMasterConfig, getFieldIcon, countryCodeByName, type MasterField } from "./masterConfig";
 
 const MODAL_META = {
   add: {
@@ -47,7 +48,6 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
   const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
   const [validated, setValidated] = useState(false);
-  const [loadingField, setLoadingField] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -56,30 +56,12 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
     setValidated(false);
   }, [initialData, mode, masterKey]);
 
-  useEffect(() => {
-    // Kick off any lazy dropdown options as soon as the modal opens rather than
-    // waiting for focus — a native <select>'s open list is a snapshot taken at
-    // click time, so fetching on focus alone shows stale options on first click.
-    config.fields.forEach((field) => {
-      if (!field.loadOptions) return;
-      setLoadingField(field.key);
-      field.loadOptions().finally(() => setLoadingField((prev) => (prev === field.key ? null : prev)));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [masterKey]);
-
   const isEdit = mode === "edit";
 
   const handleChange = (key: string, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
     setValidated(false);
     setErrors((prev) => ({ ...prev, [key]: undefined }));
-  };
-
-  const handleDropdownFocus = (field: MasterField) => {
-    if (!field.loadOptions || loadingField === field.key) return;
-    setLoadingField(field.key);
-    field.loadOptions().finally(() => setLoadingField((prev) => (prev === field.key ? null : prev)));
   };
 
   const handleValidate = () => {
@@ -138,7 +120,7 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
             value={value}
             onSelect={(country) => {
               handleChange(field.key, country.name);
-              if (masterKey === "city") cityCountryCodeByName[country.name] = country.code;
+              countryCodeByName[country.name] = country.code;
             }}
             required
             readOnly={isReadOnly}
@@ -159,8 +141,6 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
             onChange={(v) => handleChange(field.key, v)}
             options={field.options ?? []}
             placeholder={field.placeholder}
-            loading={loadingField === field.key}
-            loadingText="Loading options..."
             required
             readOnly={isReadOnly}
             error={error}
@@ -171,17 +151,16 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
 
     return (
       <div key={field.key} className="mb-4 last:mb-0">
-        <TextField
-          label={field.labelEn}
-          labelHi={field.labelHi}
-          icon={<Icon size={18} />}
-          value={value}
-          onChange={(v) => handleChange(field.key, v)}
-          placeholder={field.placeholder}
-          required
-          readOnly={isReadOnly}
-          error={error}
-        />
+         <CityPicklistField
+                label="City Code"
+                labelHi="शहर कोड"
+                icon={<Building2 size={18} />}
+                value={formData.cityCode}
+                onSelect={(city) => handleChange("cityCode", city.cityCode)}
+                required
+                error={errors.cityCode ? "This field is required" : undefined}
+                preFetch={true}
+              />
       </div>
     );
   };

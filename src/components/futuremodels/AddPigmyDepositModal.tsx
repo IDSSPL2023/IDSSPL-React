@@ -1,5 +1,6 @@
 import { useState } from "react";
 import StatePicklistField from "@/components/common/StatePicklistField";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import {
   User,
   IdCard,
@@ -745,14 +746,7 @@ function AddPigmyDepositForm({ onClose }: AddPigmyDepositFormProps) {
                   </FieldShell>
 
                   <FieldShell label="City" labelHi="शहरे" required error={!!errors[`nom.${index}.city`]}>
-                    <TextInput
-                      icon={<Building2 size={16} />}
-                      value={pincodeLoadingKey === `nom.${index}` ? "Loading..." : row.city}
-                      onChange={() => {}}
-                      readOnly
-                      placeholder="City"
-                      error={!!errors[`nom.${index}.city`]}
-                    />
+                    <CityPicklistField label="" icon={<Building2 size={16} />} value={pincodeLoadingKey === `nom.${index}` ? "Loading..." : row.city} onSelect={(city) => updateNominee(index, { city: city.name })} error={errors[`nom.${index}.city`]} />
                   </FieldShell>
 
                   <StatePicklistField
@@ -857,14 +851,7 @@ function AddPigmyDepositForm({ onClose }: AddPigmyDepositFormProps) {
                 </FieldShell>
 
                 <FieldShell label="City" labelHi="शहरे" required error={!!errors["jh.city"]}>
-                  <TextInput
-                    icon={<Building2 size={16} />}
-                    value={pincodeLoadingKey === "jh" ? "Loading..." : jointHolder.city}
-                    onChange={() => {}}
-                    readOnly
-                    placeholder="City"
-                    error={!!errors["jh.city"]}
-                  />
+                  <CityPicklistField label="" icon={<Building2 size={16} />} value={pincodeLoadingKey === "jh" ? "Loading..." : jointHolder.city} onSelect={(city) => setJH({ city: city.name })} error={errors["jh.city"]} />
                 </FieldShell>
 
                 <StatePicklistField

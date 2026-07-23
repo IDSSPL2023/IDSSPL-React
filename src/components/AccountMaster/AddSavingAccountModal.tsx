@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import StatePicklistField from "@/components/common/StatePicklistField";
 import {
   X,
@@ -21,6 +22,7 @@ import {
   Flag,
   UserPlus,
 } from "lucide-react";
+import { CountryPicklistField } from "@/components/common";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -76,6 +78,7 @@ interface JointHolderRow {
   zip: string;
   city: string;
   state: string;
+  country: string;
 }
 
 type TabKey = "Application" | "Nominee" | "Joint Holder";
@@ -128,6 +131,7 @@ const emptyJointHolder = (srNo: number): JointHolderRow => ({
   zip: "",
   city: "Kolhapur",
   state: "Maharashtra",
+  country: "India",
 });
 
 /* ------------------------------------------------------------------ */
@@ -573,9 +577,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <TextInput icon={<Hash size={16} />} value={row.zip} onChange={(v) => updateNominee(index, { zip: v })} error={errors[`nominee-${index}-zip`]} />
                   </FieldShell>
 
-                  <FieldShell label="City" labelHi="शहरे" required>
-                    <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => updateNominee(index, { city: v })} options={CITIES} />
-                  </FieldShell>
+                  <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateNominee(index, { city: city.name })} />
 
                   <StatePicklistField
                     label="State"
@@ -586,9 +588,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     required
                   />
 
-                  <FieldShell label="Country" labelHi="देश" required>
-                    <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => updateNominee(index, { country: v })} />
-                  </FieldShell>
+                  <CountryPicklistField
+                    label="Country"
+                    labelHi="देश"
+                    icon={<Flag size={16} />}
+                    value={row.country}
+                    onSelect={(c) => updateNominee(index, { country: c.name })}
+                    required
+                  />
                 </div>
               </div>
             ))}
@@ -637,9 +644,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     <TextInput icon={<Hash size={16} />} value={row.zip} onChange={(v) => updateJointHolder(index, { zip: v })} error={errors[`jh-${index}-zip`]} />
                   </FieldShell>
 
-                  <FieldShell label="City" labelHi="शहरे" required>
-                    <SelectInput icon={<Building2 size={16} />} value={row.city} onChange={(v) => updateJointHolder(index, { city: v })} options={CITIES} />
-                  </FieldShell>
+                  <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateJointHolder(index, { city: city.name })} />
 
                   <StatePicklistField
                     label="State"
@@ -647,6 +652,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     icon={<MapPin size={16} />}
                     value={row.state}
                     onSelect={(s) => updateJointHolder(index, { state: s.stateName })}
+                    required
+                  />
+                           <CountryPicklistField
+                    label="Country"
+                    labelHi="देश"
+                    icon={<Flag size={16} />}
+                    value={row.country}
+                    onSelect={(c) => updateJointHolder(index, { country: c.name })}
                     required
                   />
                 </div>

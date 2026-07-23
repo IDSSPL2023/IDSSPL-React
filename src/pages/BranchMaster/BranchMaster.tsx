@@ -22,6 +22,7 @@ import {
 } from "@/lib/masterMaintenanceApi";
 import { CountryPicklistField } from "@/components/common";
 import StatePicklistField from "@/components/common/StatePicklistField";
+import CityPicklistField from "@/components/common/CityPicklistField";
 
 /* ===== from AddBranchModal.tsx ===== */
 export interface AddBranchModal_BranchFormData {
@@ -299,7 +300,18 @@ function AddBranchModal({ open, mode = "add", initialData = AddBranchModal_empty
             <AddBranchModal_TextField labelEn="Address 3" labelHi="पत्ता ३" icon={Home} placeholder="Enter Address 3" value={formData.address3} onChange={(v) => handleChange("address3", v)} hasError={errors.address3} readOnly={isView} />
 
             <AddBranchModal_TextField labelEn="Zip Code" labelHi="झिप कोड" icon={Home} placeholder="Enter Zip Code" value={formData.zipCode} onChange={(v) => handleChange("zipCode", v)} hasError={errors.zipCode} readOnly={isView} />
-            <AddBranchModal_SelectField labelEn="City Code" labelHi="शहर कोड" icon={Building2} placeholder="Select City Code" value={formData.cityCode} options={AddBranchModal_CITY_OPTIONS} onChange={(v) => handleChange("cityCode", v)} hasError={errors.cityCode} readOnly={isView} />
+            {/* <CityPicklistField labelEn="City Code" labelHi="शहर कोड" icon={Building2} placeholder="Select City Code" value={formData.cityCode} options={AddBranchModal_CITY_OPTIONS} onChange={(v) => handleChange("cityCode", v)} hasError={errors.cityCode} readOnly={isView} /> */}
+            <CityPicklistField
+                label="City Code"
+                labelHi="शहर कोड"
+                icon={<Building2 size={18} />}
+                value={formData.cityCode}
+                onSelect={(city) => handleChange("cityCode", city.cityCode)}
+                required
+                readOnly={isView}
+                error={errors.cityCode ? "This field is required" : undefined}
+                preFetch={true}
+              />
             <StatePicklistField label="State" labelHi="राज्य" icon={<Building2 size={16} />} value={formData.state} onSelect={(c) => handleChange("state", c.stateName)} placeholder="Select State" required error={errors.state ? "This field is required" : undefined} readOnly={isView} />
 
             <CountryPicklistField label="Country" labelHi="देश" icon={<Flag size={18} />} value={formData.country} onSelect={(c) => handleChange("country", c.name)} required readOnly={isView} error={errors.country ? "This field is required" : undefined} />
@@ -720,6 +732,22 @@ function AddParameterModal({
       ? errors[field.key as AddNewParameter_RequiredFieldKey]
       : false;
     const value = formData[field.key];
+
+    if (field.key === "cityCode") {
+      return (
+        <CityPicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Building2 size={18} />}
+          value={value as string}
+          onSelect={(city) => handleChange(field.key, city.cityCode)}
+          required
+          preFetch={true}
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
 
     if (field.key === "country") {
       return (
@@ -1569,6 +1597,23 @@ function ViewEditParameterModal({
 
     // Check if field should be read-only in edit mode
     const isFieldReadOnly = isView || field.readOnly === true;
+
+    if (field.key === "cityCode") {
+      return (
+        <CityPicklistField
+          key={field.id}
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Building2 size={18} />}
+          value={value as string}
+          onSelect={(city) => handleChange(field.key, city.cityCode)}
+          required
+          readOnly={isFieldReadOnly}
+          preFetch={true}
+          error={hasError ? "This field is required" : undefined}
+        />
+      );
+    }
 
     if (field.key === "country") {
       return (

@@ -5,6 +5,7 @@ import RowActionMenu from "../shared/RowActionMenu";
 import { getMasterConfig, rowToFormData } from "./masterConfig";
 import ParameterModal from "./ParameterModal";
 import BranchEnableDisableModal from "./BranchEnableDisableModal";
+import { fetchBranchAccount } from "@/lib/masterMaintenanceApi";
 
 const menuOptions = [
   { key: "view", label: "View", icon: Eye },
@@ -38,6 +39,10 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
   };
 
   const filteredRows = useMemo(() => {
+    // defaultBranchAccounts filtering is done server-side via the search API,
+    // so `rows` already reflects the active filter — don't re-filter client-side.
+    if (master.key === "defaultBranchAccounts") return rows;
+
     const activeFilters = Object.entries(filters || {}).filter(([, v]) => v?.trim());
     if (activeFilters.length === 0) return rows;
 
@@ -46,7 +51,7 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
         String(row[key] ?? "").toLowerCase().includes(value.toLowerCase())
       )
     );
-  }, [rows, filters]);
+  }, [rows, filters, master.key]);
 
   const sortedRows = useMemo(() => {
     if (!sortKey) return filteredRows;
@@ -74,7 +79,19 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
     });
   };
 
-  const handleSave = (formData) => {
+  const handleSave = async (formData) => {
+    // Refresh from API so the table reflects the authoritative saved values
+    if (master.key === "defaultBranchAccounts") {
+      try {
+        const data = await fetchBranchAccount();
+        onRowsChange(data.map((item, idx) => ({ id: String(idx), ...item })));
+      } catch (error) {
+        console.error("Failed to refresh branch accounts:", error);
+      }
+      setModal(null);
+      return;
+    }
+
     if (modal?.mode === "add") {
       const newRow = {
         id: String(Date.now()),

@@ -1,5 +1,6 @@
 import { IMAGES } from "@/assets";
 import { useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import { toast } from "react-toastify";
 import Image from "@/components/ui/Image";
 import {
@@ -804,15 +805,7 @@ const AddRtgs = ({ onClose, onSave, variant = "modal" }: AddRtgsProps) => {
             />
           </FieldShell>
 
-          <FieldShell label="City" labelHi="शहर" required error={errors.city}>
-            <TextInput
-              icon={<MapPin size={16} />}
-              value={form.city}
-              onChange={(v) => updateField("city", v)}
-              placeholder="Enter City"
-              error={errors.city}
-            />
-          </FieldShell>
+          <CityPicklistField label="City" labelHi="शहर" required icon={<MapPin size={16} />} value={form.city} onSelect={(city) => updateField("city", city.name)} error={errors.city ? "This field is required" : undefined} />
 
           <StatePicklistField
             label="State"
