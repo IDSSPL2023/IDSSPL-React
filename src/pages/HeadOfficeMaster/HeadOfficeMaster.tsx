@@ -1,10 +1,30 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Nav from "@/components/HeadOfficeMaster/Nav";
 import ParameterModal from "@/components/HeadOfficeMaster/ParameterModal";
+import ProductParameterModal from "@/components/HeadOfficeMaster/ProductParameterModal";
 import FilterModal from "@/components/HeadOfficeMaster/FilterModal";
-import { getMasterConfig, emptyFormData } from "@/components/HeadOfficeMaster/masterConfig";
+import { getMasterConfig, emptyFormData, MASTERS } from "@/components/HeadOfficeMaster/masterConfig";
 import { useBilingual } from "@/i18n/useBilingual";
 import HeroOffice from "@/components/HeadOfficeMaster/HeroOffice";
+import { fetchBranchAccount, searchBranchAccounts } from "@/lib/masterMaintenanceApi";
+import { useRouter } from "@/lib/navigation";
+import {
+  fetchClearingTypes,
+  createClearingType,
+  fetchProducts,
+  createProduct,
+  fetchDepositInterestRates,
+  createDepositInterestRate,
+  fetchInstallmentTypes,
+  createInstallmentType,
+  fetchInstrumentTypes,
+  saveInstrumentType,
+  type ClearingTypeRecord,
+  type ProductRecord,
+  type DepositInterestRateRecord,
+  type InstallmentTypeRecord,
+  type InstrumentTypeRecord,
+} from "@/lib/masterMaintenanceApi";
 
 interface BreadcrumbItem {
   label: string;
@@ -21,20 +41,171 @@ interface MasterItem {
 
 type ModalMode = "add" | null;
 
-const HeadOfficeMasterPage: React.FC = () => {
+const mapClearingTypeRecordToRow = (record: ClearingTypeRecord): Record<string, unknown> => ({
+  ...record,
+});
+
+const mapProductRecordToRow = (record: ProductRecord): Record<string, unknown> => ({
+  id: record.productCode,
+  ...record,
+});
+
+const formatDateOfApplication = (value: string): string => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date
+    .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+    .replace(/ /g, "-");
+};
+
+const mapDepositInterestRateRecordToRow = (record: DepositInterestRateRecord): Record<string, unknown> => ({
+  id: [record.accountTypeCode, record.categoryCode, record.dateOfApplication, record.fromPeriod, record.toPeriod, record.unitOfPeriod].join("-"),
+  ...record,
+  dateOfApplication: formatDateOfApplication(record.dateOfApplication),
+});
+
+const mapInstallmentTypeRecordToRow = (record: InstallmentTypeRecord): Record<string, unknown> => ({
+  ...record,
+});
+
+const mapInstrumentTypeRecordToRow = (record: InstrumentTypeRecord): Record<string, unknown> => ({
+  id: record.code,
+  ...record,
+});
+
+interface HeadOfficeMasterPageProps {
+  initialMasterKey?: string;
+}
+
+const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMasterKey }) => {
   const { t, en, isEnglish } = useBilingual();
+  const router = useRouter();
   const [openMaster, setOpenMaster] = useState<MasterItem | null>(null);
   const [tableRows, setTableRows] = useState<Record<string, unknown>[]>([]);
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [showFilter, setShowFilter] = useState(false);
 
-  const handleOpenMaster = useCallback((master: MasterItem) => {
-    const config = getMasterConfig(master.key);
-    setOpenMaster(master);
-    setTableRows([...config.rows]);
-    setFilters({});
+  // Load clearing types
+  const loadClearingTypes = useCallback(async () => {
+    try {
+      const records = await fetchClearingTypes();
+      setTableRows(records.map(mapClearingTypeRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load clearing types from server.");
+      setTableRows([]);
+    }
   }, []);
+
+  // Load products
+  const loadProducts = useCallback(async () => {
+    try {
+      const records = await fetchProducts();
+      setTableRows(records.map(mapProductRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load products from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  // Load TD interest rates
+  const loadTdInterestRates = useCallback(async () => {
+    try {
+      const records = await fetchDepositInterestRates();
+      setTableRows(records.map(mapDepositInterestRateRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load TD interest rates from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  // Load installment types
+  const loadInstallmentTypes = useCallback(async () => {
+    try {
+      const records = await fetchInstallmentTypes();
+      setTableRows(records.map(mapInstallmentTypeRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load installment types from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  // Load instrument types
+  const loadInstrumentTypes = useCallback(async () => {
+    try {
+      const records = await fetchInstrumentTypes();
+      setTableRows(records.map(mapInstrumentTypeRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load instrument types from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const handleOpenMaster = useCallback(
+    async (master: MasterItem) => {
+      setOpenMaster(master);
+      setFilters({});
+
+      if (master.key === "defaultBranchAccounts") {
+        try {
+          const data = await fetchBranchAccount();
+          setTableRows(data.map((item, idx) => ({ id: String(idx), ...item })));
+        } catch (error) {
+          console.error("Failed to load branch accounts:", error);
+          setTableRows([]);
+        }
+        return;
+      }
+
+      if (master.key === "clearingType") {
+        setTableRows([]);
+        await loadClearingTypes();
+        return;
+      }
+
+      if (master.key === "productMaster") {
+        setTableRows([]);
+        await loadProducts();
+        return;
+      }
+
+      if (master.key === "tdInterestRate") {
+        setTableRows([]);
+        await loadTdInterestRates();
+        return;
+      }
+
+      if (master.key === "installmentType") {
+        setTableRows([]);
+        await loadInstallmentTypes();
+        return;
+      }
+
+      if (master.key === "instrumentType") {
+        setTableRows([]);
+        await loadInstrumentTypes();
+        return;
+      }
+
+      const config = getMasterConfig(master.key);
+      setTableRows([...config.rows]);
+    },
+    [loadClearingTypes, loadProducts, loadTdInterestRates, loadInstallmentTypes, loadInstrumentTypes]
+  );
+
+  // Handle initial master key
+  useEffect(() => {
+    if (!initialMasterKey) return;
+    const master = MASTERS.find((m) => m.key === initialMasterKey);
+    if (master) {
+      handleOpenMaster(master);
+    }
+  }, [initialMasterKey, handleOpenMaster]);
 
   const handleCloseMaster = useCallback(() => {
     setOpenMaster(null);
@@ -42,7 +213,8 @@ const HeadOfficeMasterPage: React.FC = () => {
     setFilters({});
     setModalMode(null);
     setShowFilter(false);
-  }, []);
+    if (initialMasterKey) router.push("/headofficemaster");
+  }, [initialMasterKey, router]);
 
   const breadcrumbs: BreadcrumbItem[] = openMaster
     ? [
@@ -61,25 +233,147 @@ const HeadOfficeMasterPage: React.FC = () => {
         { label: en("headOfficeMaster.title"), href: "#" },
       ];
 
-  const handleAddSave = (formData: Record<string, string>) => {
-    if (!openMaster) return;
-    const newRow: Record<string, unknown> = {
-      id: String(Date.now()),
-      ...formData,
-    };
-    if (openMaster.key === "accountType") {
-      newRow.createdDate = new Date().toLocaleString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      }).toUpperCase();
-    }
-    setTableRows((prev) => [...prev, newRow]);
-    setModalMode(null);
-  };
+  const handleAddSave = useCallback(
+    async (formData: Record<string, string>) => {
+      if (!openMaster) return;
+
+      // For defaultBranchAccounts, refresh data from API after save
+      if (openMaster.key === "defaultBranchAccounts") {
+        try {
+          const data = await fetchBranchAccount();
+          setTableRows(data.map((item, idx) => ({ id: String(idx), ...item })));
+        } catch (error) {
+          console.error("Failed to refresh branch accounts:", error);
+        }
+        return;
+      }
+
+      if (openMaster.key === "clearingType") {
+        try {
+          const created = await createClearingType({
+            id: formData.id,
+            description: formData.description,
+            clearingHouseCode: formData.clearingHouseCode,
+            payableRequired: formData.payableRequired,
+            payableHead: formData.payableHead,
+            receivableRequired: formData.receivableRequired,
+            receivableHead: formData.receivableHead,
+          });
+          setTableRows((prev) => [...prev, mapClearingTypeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create clearing type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "tdInterestRate") {
+        try {
+          const created = await createDepositInterestRate({
+            accountTypeCode: formData.accountTypeCode,
+            categoryCode: formData.categoryCode,
+            dateOfApplication: formData.dateOfApplication,
+            fromPeriod: Number(formData.fromPeriod) || 0,
+            toPeriod: Number(formData.toPeriod) || 0,
+            unitOfPeriod: formData.unitOfPeriod,
+            rateOfInterest: Number(formData.rateOfInterest) || 0,
+          });
+          setTableRows((prev) => [...prev, mapDepositInterestRateRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create TD interest rate. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "installmentType") {
+        try {
+          const created = await createInstallmentType({
+            id: formData.id,
+            description: formData.description,
+            diaryBased: formData.diaryBased,
+            principalArrearsOnDiary: formData.principalArrearsOnDiary,
+            interestArrearsOnDiary: formData.interestArrearsOnDiary,
+            installmentOn: formData.installmentOn,
+          });
+          setTableRows((prev) => [...prev, mapInstallmentTypeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create installment type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "instrumentType") {
+        try {
+          const saved = await saveInstrumentType({
+            code: formData.code,
+            description: formData.description,
+          });
+          setTableRows((prev) => [...prev, mapInstrumentTypeRecordToRow(saved)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to save instrument type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      // Handle generic master types
+      const newRow: Record<string, unknown> = {
+        id: String(Date.now()),
+        ...formData,
+      };
+      if (openMaster.key === "accountType") {
+        newRow.createdDate = new Date().toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        }).toUpperCase();
+      }
+      setTableRows((prev) => [...prev, newRow]);
+    },
+    [openMaster]
+  );
+
+  const handleProductSave = useCallback(
+    async (payload: Parameters<typeof createProduct>[0]) => {
+      try {
+        const created = await createProduct(payload);
+        setTableRows((prev) => [...prev, mapProductRecordToRow(created)]);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to create product. Please try again.");
+        throw err;
+      }
+    },
+    []
+  );
+
+  const handleFilterApply = useCallback(
+    async (newFilters: Record<string, string>) => {
+      setFilters(newFilters);
+
+      if (openMaster?.key === "defaultBranchAccounts") {
+        try {
+          const [matches, allAccounts] = await Promise.all([
+            searchBranchAccounts({
+              searchBy: (newFilters.searchBy as "BRANCH_CODE" | "NAME") || "NAME",
+              textToSearch: newFilters.textToSearch || "",
+            }),
+            fetchBranchAccount(),
+          ]);
+          const matchedCodes = new Set(matches.map((m) => m.branchCode));
+          const filtered = allAccounts.filter((acc) => matchedCodes.has(acc.branchCode));
+          setTableRows(filtered.map((item, idx) => ({ id: String(idx), ...item })));
+        } catch (error) {
+          console.error("Failed to search branch accounts:", error);
+        }
+      }
+    },
+    [openMaster]
+  );
 
   return (
     <div className="bg-[#E7EAEF] min-h-screen dark:bg-slate-950">
@@ -100,7 +394,11 @@ const HeadOfficeMasterPage: React.FC = () => {
         filters={filters}
       />
 
-      {modalMode === "add" && openMaster && (
+      {modalMode === "add" && openMaster && openMaster.key === "productMaster" && (
+        <ProductParameterModal onClose={() => setModalMode(null)} onSave={handleProductSave} />
+      )}
+
+      {modalMode === "add" && openMaster && openMaster.key !== "productMaster" && (
         <ParameterModal
           mode="add"
           masterKey={openMaster.key}
@@ -115,7 +413,7 @@ const HeadOfficeMasterPage: React.FC = () => {
           masterKey={openMaster.key}
           initialFilters={filters}
           onClose={() => setShowFilter(false)}
-          onApply={setFilters}
+          onApply={handleFilterApply}
         />
       )}
     </div>

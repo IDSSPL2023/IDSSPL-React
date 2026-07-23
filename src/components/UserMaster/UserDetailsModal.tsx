@@ -1,11 +1,13 @@
 import { IMAGES } from "@/assets";
 import { useEffect, useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import { User, IdCard, Building2, Phone, Mail, Home, Flag, Check, X, ChevronDown, MoreVertical, ShieldCheck, ThumbsUp, ThumbsDown } from "lucide-react";
 import Image from "@/components/ui/Image";
 import FormModal from "../shared/FormModal";
 import { FieldShell, TextInput, RadioYesNo, SectionCard } from "../shared/FormFields";
 import BranchListPickerModal, { type Branch } from "../common/BranchPickListModal";
 import CustomerIdPicklistField, { CustomerOption } from "../common/CustomerIdPicklistField";
+import { CountryPicklistField } from "../common";
 
 /* ===================== Shared types ===================== */
 
@@ -466,13 +468,7 @@ export default function UserDetailsModal({
               />
             </FieldShell>
             <FieldShell label="City" labelHi="शहरे" required>
-              <TextInput
-                icon={<Building2 size={16} />}
-                value={data.city}
-                onChange={set("city")}
-                placeholder="City"
-                readOnly={isView}
-              />
+              <CityPicklistField label="" icon={<Building2 size={16} />} value={data.city} onSelect={(city) => set("city")(city.name)} readOnly={isView} />
             </FieldShell>
             <FieldShell label="State" labelHi="राज्य" required>
               <TextInput
@@ -483,15 +479,17 @@ export default function UserDetailsModal({
                 readOnly={isView}
               />
             </FieldShell>
-            <FieldShell label="Country" labelHi="देश" required>
-              <TextInput
-                icon={<Flag size={16} />}
-                value={data.country}
-                onChange={set("country")}
-                placeholder="Select Country"
-                readOnly={isView}
-              />
-            </FieldShell>
+            <CountryPicklistField
+              label="Country"
+              labelHi="देश"
+              icon={<Flag size={16} />}
+              value={data.country}
+              onSelect={(c) => set("country")(c.name)}
+              placeholder="Select Country"
+              required
+              readOnly={isView}
+              error={errors.country}
+            />
           </div>
         </SectionCard>
 

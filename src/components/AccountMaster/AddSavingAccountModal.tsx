@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import {
   X,
   Plus,
@@ -20,6 +21,7 @@ import {
   Flag,
   UserPlus,
 } from "lucide-react";
+import { CountryPicklistField } from "@/components/common";
 import CustomerIdPicklistField, { CustomerOption } from "../common/CustomerIdPicklistField";
 
 /* ------------------------------------------------------------------ */
@@ -76,6 +78,7 @@ interface JointHolderRow {
   zip: string;
   city: string;
   state: string;
+  country: string;
 }
 
 type TabKey = "Application" | "Nominee" | "Joint Holder";
@@ -128,6 +131,7 @@ const emptyJointHolder = (srNo: number): JointHolderRow => ({
   zip: "",
   city: "Kolhapur",
   state: "Maharashtra",
+  country: "India",
 });
 
 /* ------------------------------------------------------------------ */
@@ -641,15 +645,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     />
                   </FieldShell>
 
-                  {/* City */}
-                  <FieldShell label="City" labelHi="शहरे" required>
-                    <SelectInput 
-                      icon={<Building2 size={16} />} 
-                      value={row.city} 
-                      onChange={(v) => updateNominee(index, { city: v })} 
-                      options={CITIES} 
-                    />
-                  </FieldShell>
+                  <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateNominee(index, { city: city.name })} />
 
                   {/* State */}
                   <FieldShell label="State" labelHi="राज्य" required>
@@ -660,14 +656,14 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     />
                   </FieldShell>
 
-                  {/* Country */}
-                  <FieldShell label="Country" labelHi="देश" required>
-                    <TextInput 
-                      icon={<Flag size={16} />} 
-                      value={row.country} 
-                      onChange={(v) => updateNominee(index, { country: v })} 
-                    />
-                  </FieldShell>
+                  <CountryPicklistField
+                    label="Country"
+                    labelHi="देश"
+                    icon={<Flag size={16} />}
+                    value={row.country}
+                    onSelect={(c) => updateNominee(index, { country: c.name })}
+                    required
+                  />
                 </div>
               </div>
             ))}
@@ -764,15 +760,7 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                     />
                   </FieldShell>
 
-                  {/* City */}
-                  <FieldShell label="City" labelHi="शहरे" required>
-                    <SelectInput 
-                      icon={<Building2 size={16} />} 
-                      value={row.city} 
-                      onChange={(v) => updateJointHolder(index, { city: v })} 
-                      options={CITIES} 
-                    />
-                  </FieldShell>
+                  <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={row.city} onSelect={(city) => updateJointHolder(index, { city: city.name })} />
 
                   {/* State */}
                   <FieldShell label="State" labelHi="राज्य" required>
@@ -782,6 +770,15 @@ const AddSavingAccountModal: React.FC<AddSavingAccountModalProps> = ({ onClose, 
                       onChange={(v) => updateJointHolder(index, { state: v })} 
                     />
                   </FieldShell>
+
+                  <CountryPicklistField
+                    label="Country"
+                    labelHi="देश"
+                    icon={<Flag size={16} />}
+                    value={row.country}
+                    onSelect={(c) => updateJointHolder(index, { country: c.name })}
+                    required
+                  />
                 </div>
               </div>
             ))}

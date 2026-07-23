@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import type { ChangeEvent } from "react";
 import { ArrowUpDown, ChevronUp, ChevronDown, DoorOpen, ArrowLeftRight, Grid3x3, KeyRound, Hash, CreditCard, User, IdCard, Settings2, FileText, Tag, Phone, Home, MapPin, Flag, Building2, Users, Plus, MoreVertical, Trash2, X, Filter as FilterIcon, ShieldCheck, Calendar, Percent, IndianRupee } from "lucide-react";
 import RowActionMenu from "@/components/shared/RowActionMenu";
@@ -13,6 +14,7 @@ import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import Pagination from "@/components/shared/Pagination";
+import { CountryPicklistField } from "@/components/common";
 import CustomerIdPicklistField, { CustomerOption } from "@/components/common/CustomerIdPicklistField";
 // import CustomerIdPicklistField, { type CustomerOption } from "../common/CustomerIdPicklistField";
 
@@ -205,6 +207,7 @@ export interface AddLocker_LockerFormData {
   address3: string;
   pin: string;
   city: string;
+  country: string;
 }
 
 export interface AddLocker_LockerPersonRow {
@@ -259,6 +262,7 @@ export const AddLocker_DEFAULT_LOCKER_FORM_DATA: AddLocker_LockerFormData = {
   address3: "",
   pin: "",
   city: "",
+  country: "",
 };
 
 const AddLocker_TAB1_REQUIRED_KEYS: (keyof AddLocker_LockerFormData)[] = [
@@ -276,6 +280,7 @@ const AddLocker_TAB1_REQUIRED_KEYS: (keyof AddLocker_LockerFormData)[] = [
   "address3",
   "pin",
   "city",
+  "country",
 ];
 
 const AddLocker_PERSON_REQUIRED_KEYS: (keyof AddLocker_LockerPersonRow)[] = [
@@ -549,15 +554,19 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
           <TextInput icon={<Home size={16} />} value={row.zip} onChange={(v) => onUpdate(i, { zip: v })} error={errors[`${i}-zip`]} />
         </FieldShell>
 
-        <FieldShell label="City" labelHi="शहरे" required error={errors[`${i}-city`]}>
-          <SelectInput icon={<MapPin size={16} />} value={row.city} onChange={(v) => onUpdate(i, { city: v })} options={AddLocker_CITIES} error={errors[`${i}-city`]} />
-        </FieldShell>
+        <CityPicklistField label="City" labelHi="शहरे" required icon={<MapPin size={16} />} value={row.city} onSelect={(city) => onUpdate(i, { city: city.name })} error={errors[`${i}-city`] ? "This field is required" : undefined} />
         <FieldShell label="State" labelHi="राज्य" required error={errors[`${i}-state`]}>
           <TextInput icon={<Building2 size={16} />} value={row.state} onChange={(v) => onUpdate(i, { state: v })} error={errors[`${i}-state`]} />
         </FieldShell>
-        <FieldShell label="Country" labelHi="देश" required error={errors[`${i}-country`]}>
-          <TextInput icon={<Flag size={16} />} value={row.country} onChange={(v) => onUpdate(i, { country: v })} error={errors[`${i}-country`]} />
-        </FieldShell>
+        <CountryPicklistField
+          label="Country"
+          labelHi="देश"
+          icon={<Flag size={16} />}
+          value={row.country}
+          onSelect={(c) => onUpdate(i, { country: c.name })}
+          required
+          error={errors[`${i}-country`] ? "Country is required" : undefined}
+        />
         </div>
       </div>
     ));
@@ -686,9 +695,7 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
               <FieldShell label="Pin" required error={tab1Errors.pin}>
                 <TextInput icon={<Hash size={16} />} value={form.pin} onChange={(v) => updateForm("pin", v)} placeholder="Pincode" error={tab1Errors.pin} />
               </FieldShell>
-              <FieldShell label="City" required error={tab1Errors.city}>
-                <TextInput icon={<MapPin size={16} />} value={form.city} onChange={(v) => updateForm("city", v)} placeholder="City" error={tab1Errors.city} />
-              </FieldShell>
+              <CityPicklistField label="City" required icon={<MapPin size={16} />} value={form.city} onSelect={(city) => updateForm("city", city.name)} error={tab1Errors.city ? "This field is required" : undefined} />
             </div>
           </SectionCard>
         </>

@@ -414,7 +414,7 @@ interface ControlledField_ControlledFieldProps<T extends FieldValues> {
   icon?: ReactNode;
   placeholder?: string;
   options?: string[];
-  kind?: "text" | "select" | "date" | "country";
+  kind?: "text" | "select" | "date" | "country" | "city";
 }
 
 function ControlledField<T extends FieldValues>({
@@ -444,6 +444,17 @@ function ControlledField<T extends FieldValues>({
             required={required}
             error={fieldState.error ? "This field is required" : undefined}
           />
+        ) : kind === "city" ? (
+          <FieldShell label={label} labelHi={labelHi} required={required} error={!!fieldState.error}>
+            <TextInput
+              icon={icon}
+              value={(field.value as string) ?? ""}
+              onChange={() => {}}
+              placeholder={placeholder}
+              readOnly
+              error={!!fieldState.error}
+            />
+          </FieldShell>
         ) : (
         <FieldShell label={label} labelHi={labelHi} required={required} error={!!fieldState.error}>
           {kind === "select" ? (
@@ -1009,11 +1020,10 @@ function Step2AddressDetails() {
           <ControlledField
             control={control}
             name="city"
-            kind="select"
+            kind="city"
             label="City"
             labelHi="शहर"
             icon={<Building2 size={16} />}
-            options={[...FormTypes_CITY_OPTIONS]}
             placeholder="Select City"
             required
           />
@@ -1105,11 +1115,10 @@ function Step2AddressDetails() {
               <ControlledField
                 control={control}
                 name="permanentCity"
-                kind="select"
+                kind="city"
                 label="City"
                 labelHi="शहर"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_CITY_OPTIONS]}
                 placeholder="Select City"
                 required
               />
@@ -1203,11 +1212,10 @@ function Step2AddressDetails() {
               <ControlledField
                 control={control}
                 name="officeCity"
-                kind="select"
+                kind="city"
                 label="City"
                 labelHi="शहर"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_CITY_OPTIONS]}
                 placeholder="Select City"
                 required
               />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
-import PicklistField from "./PicklistField";
-import PicklistModal from "./PicklistModal";
+import PicklistField from "../common/PicklistField";
+import PicklistModal from "../common/PicklistModal";
 import { fetchCountries, type CountryOption } from "@/lib/masterMaintenanceApi";
 
 export interface CountryPicklistFieldProps {
@@ -53,41 +53,22 @@ export default function CountryPicklistField({
   const [open, setOpen] = useState(false);
   const [countries, setCountries] = useState<CountryOption[]>([]);
   const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState("");
 
   // Pre-fetch on mount if enabled
   useEffect(() => {
-    if (preFetch && !loaded && !loading) {
+    if (preFetch) {
+      setLoading(true);
       fetchCountries()
-        .then((list) => {
-          setCountries(list);
-          setLoaded(true);
-        })
+        .then((list) => setCountries(list))
         .catch(() => setLoadError("Failed to pre-load countries"))
         .finally(() => setLoading(false));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preFetch]);
 
   const openPicklist = () => {
     setOpen(true);
-    if (loaded || loading) return;
-
-    setLoading(true);
-    setLoadError("");
-    fetchCountries()
-      .then((list) => {
-        if (list.length === 0) {
-          setLoadError("No countries available");
-        } else {
-          setCountries(list);
-          setLoaded(true);
-        }
-      })
-      .catch((err) => {
-        setLoadError(err.message || "Failed to load countries");
-      })
-      .finally(() => setLoading(false));
   };
 
   // Called when the user clicks "Submit" inside the picklist modal.

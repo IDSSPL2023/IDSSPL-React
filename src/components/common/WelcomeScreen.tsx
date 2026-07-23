@@ -3,6 +3,7 @@ import { ChevronRight, Search } from "lucide-react";
 import Image from "@/components/ui/Image";
 import { IMAGES } from "@/assets";
 
+
 export interface WelcomeScreenItem {
   id: string;
   title: string;
@@ -45,7 +46,7 @@ export default function WelcomeScreen({
         <Image src={backgroundImageSrc} alt="" fill priority className="object-cover" />
 
         <div className="relative flex flex-col items-center gap-6 px-6 py-12 text-center sm:py-16">
-          <h1 className="text-2xl font-bold text-[#1C398E] sm:text-3xl md:text-[34px] dark:text-slate-100">
+          <h1 className="text-2xl font-bold text-white sm:text-3xl md:text-[34px] dark:text-slate-100">
             {title}
             {titleHi && <span className="ml-2 font-normal text-[#1C398E]/70 dark:text-slate-400">/ {titleHi}</span>}
           </h1>
@@ -111,3 +112,4 @@ export default function WelcomeScreen({
     </div>
   );
 }
+   

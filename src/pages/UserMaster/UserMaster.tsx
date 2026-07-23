@@ -1,5 +1,6 @@
 import { IMAGES } from "@/assets";
 import { useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import {
   User,
   IdCard,
@@ -26,7 +27,7 @@ import BranchListPickerModal from "@/components/common/BranchPickListModal";
 import SuccessModal from "@/components/shared/SuccessModal";
 import { fetchPincodeDetails } from "@/lib/pincode";
 import UserMasterTable from "@/components/UserMaster/UserMasterTable";
-import { AppNavbar, FilterModal } from "@/components/common";
+import { AppNavbar, FilterModal, CountryPicklistField } from "@/components/common";
 import {
   type UserFilters,
   defaultValues,
@@ -493,19 +494,8 @@ function AddUserMaster_AddUserForm({
               )}
             </FieldShell>
             <FieldShell label="City" labelHi="शहरे" required>
-              <TextInput
-                icon={<Building2 size={16} />}
-                value={city}
-                onChange={() => {}}
-                readOnly
-                placeholder="City"
-                error={!!errors.city}
-              />
-              {errors.city && (
-                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                  {errors.city}
-                </p>
-              )}
+              <CityPicklistField label="" icon={<Building2 size={16} />} value={city} onSelect={(selectedCity) => setCity(selectedCity.name)} error={errors.city} />
+              {errors.city && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.city}</p>}
             </FieldShell>
             <FieldShell label="State" labelHi="राज्य" required>
               <TextInput
@@ -522,21 +512,19 @@ function AddUserMaster_AddUserForm({
                 </p>
               )}
             </FieldShell>
-            <FieldShell label="Country" labelHi="देश" required>
-              <TextInput
-                icon={<Flag size={16} />}
-                value={country}
-                onChange={() => {}}
-                readOnly
-                placeholder="Select Country"
-                error={!!errors.country}
-              />
-              {errors.country && (
-                <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                  {errors.country}
-                </p>
-              )}
-            </FieldShell>
+            <CountryPicklistField
+              label="Country"
+              labelHi="देश"
+              icon={<Flag size={16} />}
+              value={country}
+              onSelect={(c) => {
+                setCountry(c.name);
+                clearError("country");
+              }}
+              placeholder="Select Country"
+              required
+              error={errors.country}
+            />
           </div>
         </SectionCard>
 

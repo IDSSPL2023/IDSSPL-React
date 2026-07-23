@@ -11,7 +11,7 @@ const FilterModal = ({ masterKey, initialFilters = {}, onClose, onApply }) => {
     const config = getMasterConfig(masterKey);
     const defaults = {};
     config.filterFields.forEach((f) => {
-      defaults[f.key] = initialFilters[f.key] ?? "";
+      defaults[f.key] = initialFilters[f.key] ?? (f.type === "select" ? f.options?.[0] ?? "" : "");
     });
     setFilters(defaults);
   }, [masterKey, initialFilters]);
@@ -23,7 +23,7 @@ const FilterModal = ({ masterKey, initialFilters = {}, onClose, onApply }) => {
   const handleClear = () => {
     const cleared = {};
     config.filterFields.forEach((f) => {
-      cleared[f.key] = "";
+      cleared[f.key] = f.type === "select" ? f.options?.[0] ?? "" : "";
     });
     setFilters(cleared);
     onApply(cleared);
@@ -61,13 +61,27 @@ const FilterModal = ({ masterKey, initialFilters = {}, onClose, onApply }) => {
               <label className="mb-1.5 block text-sm font-medium text-[#1F2858] dark:text-slate-100">
                 {field.label}
               </label>
-              <input
-                type="text"
-                value={filters[field.key] ?? ""}
-                placeholder={`Search by ${field.label}`}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-500"
-              />
+              {field.type === "select" ? (
+                <select
+                  value={filters[field.key] ?? ""}
+                  onChange={(e) => handleChange(field.key, e.target.value)}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100"
+                >
+                  {field.options?.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  value={filters[field.key] ?? ""}
+                  placeholder={field.placeholder ?? `Search by ${field.label}`}
+                  onChange={(e) => handleChange(field.key, e.target.value)}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-500"
+                />
+              )}
             </div>
           ))}
         </div>
