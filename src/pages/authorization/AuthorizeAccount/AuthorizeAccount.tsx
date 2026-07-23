@@ -17,6 +17,7 @@ import RowActionMenu, { type RowActionMenuItem } from "@/components/shared/RowAc
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
 import FixedAssetPage from "@/pages/futuremodels/FixedAsset/FixedAsset";
+import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
 
 /* ===== from AuthorizeSavingAccountModal.tsx ===== */
 /* ===================== Shared types ===================== */
@@ -3476,11 +3477,14 @@ export const AuthorizeAccountPage = ({ accountType }: AuthorizeAccountPage_Autho
 
   const [activeTab, setActiveTab] = useState<AuthorizationTabKey>("new");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filters, setFilters] = useState<AccountFilters>({
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const defaultAccountFilters: AccountFilters = {
     accountName: "",
     accountNumber: "",
     accountType: "",
-  });
+  };
+  const [filters, setFilters] = useState<AccountFilters>(defaultAccountFilters);
+  const handleResetFilters = () => setFilters(defaultAccountFilters);
   const [selectedRow, setSelectedRow] = useState<AuthorizeAccountPage_AuthorizeRow | null>(null);
   const [isAuthorizeModalOpen, setIsAuthorizeModalOpen] = useState(false);
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -3632,6 +3636,11 @@ export const AuthorizeAccountPage = ({ accountType }: AuthorizeAccountPage_Autho
           active={activeTab}
           onChange={setActiveTab}
           onOpenFilter={() => setIsFilterOpen(true)}
+          isSearchVisible={isSearchVisible}
+          onToggleSearch={() => setIsSearchVisible((v) => !v)}
+          hasActiveFilters={hasActiveFilters(filters)}
+          activeFilterSummary={getActiveFilterSummary(filters)}
+          onResetFilters={handleResetFilters}
         />
 
         {/* Custom Table */}
