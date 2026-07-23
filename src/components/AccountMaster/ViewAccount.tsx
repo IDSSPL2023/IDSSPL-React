@@ -33,6 +33,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { TabModal } from "@/components/common";
 import type { TabModalTab } from "@/components/common";
+import CustomerIdPicklistField, { type CustomerOption } from "../common/CustomerIdPicklistField";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -660,8 +661,16 @@ function DetailsTab({ data }: { data: AccountDetails }) {
   const update = (key: keyof AccountDetails) => (value: string) =>
     setFormData((prev) => ({ ...prev, [key]: value }));
 
-  const [isCustomerListOpen, setIsCustomerListOpen] = useState(false);
   const [isBranchListOpen, setIsBranchListOpen] = useState(false);
+
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    setFormData((prev) => ({
+      ...prev,
+      customerId: customer.customerId,
+      customerName: customer.customerName,
+    }));
+  };
 
   return (
     <>
@@ -671,7 +680,19 @@ function DetailsTab({ data }: { data: AccountDetails }) {
       <Field icon={Calendar} labelEn="Account Open Date" labelMr="खाते उघडण्याची तारीख" value={formData.accountOpenDate} type="date" onChange={update("accountOpenDate")} />
       <Field icon={Calendar} labelEn="Account Closed Date" labelMr="खाते बंद झाल्याची तारीख" value={formData.accountClosedDate} type="date" onChange={update("accountClosedDate")} />
 
-      <Field icon={IdCard} labelEn="Customer ID" labelMr="ग्राहक आयडी" value={formData.customerId} menu menuActive={isCustomerListOpen} onMenuClick={() => setIsCustomerListOpen(true)} onChange={update("customerId")} />
+      {/* Customer ID with Picklist */}
+      <div className="flex h-full min-w-0 flex-col">
+        <BilingualLabel en="Customer ID" mr="ग्राहक आयडी" required />
+        <CustomerIdPicklistField
+          label=""
+          value={formData.customerId || ""}
+          placeholder="Select Customer"
+          onSelect={handleCustomerSelect}
+          preFetch={false}
+          pageSize={10}
+        />
+      </div>
+
       <Field icon={User} labelEn="Customer Name" labelMr="ग्राहकाचे नाव" value={formData.customerName} onChange={update("customerName")} />
       <Field icon={User} labelEn="Created By" labelMr="किंमत तयार केली" value={formData.createdBy} onChange={update("createdBy")} />
       <Field icon={Landmark} labelEn="Branch Code" labelMr="शाखा कोड" value={formData.branchCode} menu menuActive={isBranchListOpen} onMenuClick={() => setIsBranchListOpen(true)} onChange={update("branchCode")} />
@@ -697,23 +718,6 @@ function DetailsTab({ data }: { data: AccountDetails }) {
       <Field icon={UserCog} labelEn="Officer ID" labelMr="कर्मचारी आयडी" value={formData.officerId} onChange={update("officerId")} />
       <SelectField icon={AlertTriangle} labelEn="Risk Category" labelMr="धोक्याचा प्रकार" value={formData.riskCategory} onChange={update("riskCategory")} />
     </FieldGrid>
-
-    {isCustomerListOpen && (
-      <ListModal
-        title="Customer Type List"
-        columns={[
-          { key: "id", label: "Customer ID" },
-          { key: "name", label: "Customer Name" },
-        ]}
-        rows={CUSTOMER_LIST}
-        onSelect={(item) => {
-          update("customerId")(item.id);
-          update("customerName")(item.name);
-          setIsCustomerListOpen(false);
-        }}
-        onClose={() => setIsCustomerListOpen(false)}
-      />
-    )}
 
     {isBranchListOpen && (
       <ListModal
@@ -843,8 +847,19 @@ function NomineeTab({
   rows: NomineeDetails[];
   onChangeRows: React.Dispatch<React.SetStateAction<NomineeDetails[]>>;
 }) {
-  // Which row's Customer List popup is open (null = none open)
-  const [openListIndex, setOpenListIndex] = useState<number | null>(null);
+  const editMode = useContext(EditModeContext);
+  const isEditable = editMode;
+
+  // Handle nominee customer selection from picklist
+  const handleNomineeSelect = (index: number, customer: CustomerOption) => {
+    onChangeRows((prev) =>
+      prev.map((row, i) =>
+        i === index
+          ? { ...row, nomineeCustomerId: customer.customerId, nomineeName: customer.customerName }
+          : row
+      )
+    );
+  };
 
   const updateRow = (index: number, key: keyof NomineeDetails) => (value: string) =>
     onChangeRows((prev) => prev.map((row, i) => (i === index ? { ...row, [key]: value } : row)));
@@ -887,16 +902,17 @@ function NomineeTab({
           </div>
 
           <div className="min-w-0">
-            <Field
-              icon={IdCard}
-              labelEn="Nominee Customer ID"
-              labelMr="नॉमिनी ग्राहक आयडी"
-              value={formData.nomineeCustomerId}
-              menu
-              menuActive={openListIndex === index}
-              onMenuClick={() => setOpenListIndex(index)}
-              onChange={updateRow(index, "nomineeCustomerId")}
-            />
+            <div className="flex h-full min-w-0 flex-col">
+              <BilingualLabel en="Nominee Customer ID" mr="नॉमिनी ग्राहक आयडी" required />
+              <CustomerIdPicklistField
+                label=""
+                value={formData.nomineeCustomerId || ""}
+                placeholder="Select Nominee"
+                onSelect={(customer) => handleNomineeSelect(index, customer)}
+                preFetch={false}
+                pageSize={10}
+              />
+            </div>
           </div>
 
           <div className="min-w-0">
@@ -918,23 +934,6 @@ function NomineeTab({
         </div>
       </div>
     ))}
-
-    {openListIndex !== null && (
-      <ListModal
-        title="Customer Type List"
-        columns={[
-          { key: "id", label: "Customer ID" },
-          { key: "name", label: "Customer Name" },
-        ]}
-        rows={CUSTOMER_LIST}
-        onSelect={(item) => {
-          updateRow(openListIndex, "nomineeCustomerId")(item.id);
-          updateRow(openListIndex, "nomineeName")(item.name);
-          setOpenListIndex(null);
-        }}
-        onClose={() => setOpenListIndex(null)}
-      />
-    )}
     </>
   );
 }
@@ -950,6 +949,15 @@ function JointHolderTab({ data }: { data: JointHolderDetails }) {
 
   const [isCustomerListOpen, setIsCustomerListOpen] = useState(false);
 
+  // Handle joint holder customer selection from picklist
+  const handleJointHolderSelect = (customer: CustomerOption) => {
+    setFormData((prev) => ({
+      ...prev,
+      jtHolderCustomerId: customer.customerId,
+      jtHolderName: customer.customerName,
+    }));
+  };
+
   return (
     <>
     <div className="rounded-[20px] border-x border-b-2 border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
@@ -962,7 +970,17 @@ function JointHolderTab({ data }: { data: JointHolderDetails }) {
           options={SALUTATION_OPTIONS}
           onChange={update("salutationCode")}
         />
-        <Field icon={IdCard} labelEn="J/T Holder Customer ID" labelMr="J/T धारक ग्राहक आयडी" required={false} value={formData.jtHolderCustomerId} menu menuActive={isCustomerListOpen} onMenuClick={() => setIsCustomerListOpen(true)} onChange={update("jtHolderCustomerId")} />
+        <div className="flex h-full min-w-0 flex-col">
+          <BilingualLabel en="J/T Holder Customer ID" mr="J/T धारक ग्राहक आयडी" required={false} />
+          <CustomerIdPicklistField
+            label=""
+            value={formData.jtHolderCustomerId || ""}
+            placeholder="Select Joint Holder"
+            onSelect={handleJointHolderSelect}
+            preFetch={false}
+            pageSize={10}
+          />
+        </div>
         <Field icon={User} labelEn="J/T Holder Name" labelMr="J/T धारकाचे नाव" value={formData.jtHolderName} onChange={update("jtHolderName")} />
       </div>
 

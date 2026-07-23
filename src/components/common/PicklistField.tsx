@@ -59,8 +59,8 @@ export default function PicklistField({
       <button
         type="button"
         onClick={onOpenPicklist}
-        disabled={disabled}
-        aria-label={`Open ${label || "picklist"} list`}
+        disabled={disabled || readOnly}
+        aria-label={`Open ${label} list`}
         className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#EEF2FF] text-primary transition-colors hover:bg-primary-200 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <MoreVertical size={18} />

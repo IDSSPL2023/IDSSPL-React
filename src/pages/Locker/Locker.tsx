@@ -15,6 +15,8 @@ import ListModal from "@/components/AccountMaster/ListModal";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import Pagination from "@/components/shared/Pagination";
 import { CountryPicklistField } from "@/components/common";
+import CustomerIdPicklistField, { CustomerOption } from "@/components/common/CustomerIdPicklistField";
+// import CustomerIdPicklistField, { type CustomerOption } from "../common/CustomerIdPicklistField";
 
 /* ===== from LockerTable.tsx ===== */
 export interface LockerTable_LockerRow {
@@ -319,20 +321,14 @@ const AddLocker_ACCOUNT_LIST: AddLocker_PickRow[] = [
   { code: "000246", name: "Akshay Om More" },
   { code: "000247", name: "Priya Sharma" },
 ];
-const AddLocker_CUSTOMER_LIST: AddLocker_PickRow[] = [
-  { code: "00012", name: "Akshay Om More" },
-  { code: "00015", name: "Priya Sharma" },
-  { code: "00021", name: "Rahul Verma" },
-];
 
-type AddLocker_PickerField = "cupboardNo" | "lockerType" | "lockerNumber" | "savingAccountCode" | "customerId";
+type AddLocker_PickerField = "cupboardNo" | "lockerType" | "lockerNumber" | "savingAccountCode";
 
 const AddLocker_PICKER_CONFIG: Record<AddLocker_PickerField, { title: string; codeLabel: string; nameLabel: string; rows: AddLocker_PickRow[] }> = {
   cupboardNo: { title: "Cupboard List", codeLabel: "Code", nameLabel: "Cupboard", rows: AddLocker_CUPBOARD_LIST },
   lockerType: { title: "Locker Type List", codeLabel: "Code", nameLabel: "Locker Type", rows: AddLocker_LOCKER_TYPE_LIST },
   lockerNumber: { title: "Locker Number List", codeLabel: "Code", nameLabel: "Locker Number", rows: AddLocker_LOCKER_NUMBER_LIST },
   savingAccountCode: { title: "Account List", codeLabel: "Account Code", nameLabel: "Name", rows: AddLocker_ACCOUNT_LIST },
-  customerId: { title: "Customer List", codeLabel: "Customer ID", nameLabel: "Name", rows: AddLocker_CUSTOMER_LIST },
 };
 
 /* ------------------------------------------------------------------ */
@@ -393,6 +389,12 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
     setIsValidated(false);
   };
 
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    updateForm("customerId", customer.customerId);
+    updateForm("customerName", customer.customerName);
+  };
+
   const updateJointHolder = (index: number, patch: Partial<AddLocker_LockerPersonRow>) => {
     setJointHolders((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
     setIsValidated(false);
@@ -420,9 +422,6 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
     if (activePicker === "savingAccountCode") {
       updateForm("savingAccountCode", row.code);
       updateForm("accountName", row.name);
-    } else if (activePicker === "customerId") {
-      updateForm("customerId", row.code);
-      updateForm("customerName", row.name);
     } else {
       updateForm(activePicker, row.code);
     }
@@ -634,12 +633,15 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
                 <TextInput icon={<User size={16} />} value={form.accountName} onChange={() => {}} placeholder="Account Name" readOnly />
               </FieldShell>
               <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={tab1Errors.customerId}>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1">
-                    <TextInput icon={<IdCard size={16} />} value={form.customerId} onChange={(v) => updateForm("customerId", v)} error={tab1Errors.customerId} />
-                  </div>
-                  <AddLocker_LookupTrigger onClick={() => setActivePicker("customerId")} />
-                </div>
+                <CustomerIdPicklistField
+                  label=""
+                  value={form.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerSelect}
+                  preFetch={false}
+                  pageSize={10}
+                  error={tab1Errors.customerId ? "This field is required" : ""}
+                />
               </FieldShell>
               <FieldShell label="Customer Name" labelHi="खाते नाव">
                 <TextInput icon={<User size={16} />} value={form.customerName} onChange={() => {}} placeholder="Account Name" readOnly />
@@ -715,12 +717,15 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
                 <TextInput icon={<Hash size={16} />} value={form.lockerNumber} onChange={(v) => updateForm("lockerNumber", v)} />
               </FieldShell>
               <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={tab1Errors.customerId}>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1">
-                    <TextInput icon={<IdCard size={16} />} value={form.customerId} onChange={(v) => updateForm("customerId", v)} error={tab1Errors.customerId} />
-                  </div>
-                  <AddLocker_LookupTrigger onClick={() => setActivePicker("customerId")} />
-                </div>
+                <CustomerIdPicklistField
+                  label=""
+                  value={form.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerSelect}
+                  preFetch={false}
+                  pageSize={10}
+                  error={tab1Errors.customerId ? "This field is required" : ""}
+                />
               </FieldShell>
               <FieldShell label="Customer Name" labelHi="खाते नाव">
                 <TextInput icon={<User size={16} />} value={form.customerName} onChange={() => {}} placeholder="Account Name" readOnly />
@@ -756,12 +761,15 @@ const AddLocker = ({ onClose, onSave }: AddLocker_AddLockerProps) => {
                 <TextInput icon={<Hash size={16} />} value={form.lockerNumber} onChange={(v) => updateForm("lockerNumber", v)} />
               </FieldShell>
               <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={tab1Errors.customerId}>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1">
-                    <TextInput icon={<IdCard size={16} />} value={form.customerId} onChange={(v) => updateForm("customerId", v)} error={tab1Errors.customerId} />
-                  </div>
-                  <AddLocker_LookupTrigger onClick={() => setActivePicker("customerId")} />
-                </div>
+                <CustomerIdPicklistField
+                  label=""
+                  value={form.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerSelect}
+                  preFetch={false}
+                  pageSize={10}
+                  error={tab1Errors.customerId ? "This field is required" : ""}
+                />
               </FieldShell>
               <FieldShell label="Customer Name" labelHi="खाते नाव">
                 <TextInput icon={<User size={16} />} value={form.customerName} onChange={() => {}} placeholder="Account Name" readOnly />
@@ -884,6 +892,11 @@ function FilterModal({ onClose, onApply, initialValues = FilterModal_defaultLock
     setValues((prev) => ({ ...prev, [activeFilter]: e.target.value }));
   };
 
+  // Handle customer selection from picklist for filter
+  const handleCustomerFilterSelect = (customer: CustomerOption) => {
+    setValues((prev) => ({ ...prev, customerId: customer.customerId }));
+  };
+
   const handleClearAll = () => {
     setValues(FilterModal_defaultLockerFilterValues);
     onApply(FilterModal_defaultLockerFilterValues);
@@ -970,6 +983,28 @@ function FilterModal({ onClose, onApply, initialValues = FilterModal_defaultLock
                 <button
                   type="button"
                   onClick={() => setValues((prev) => ({ ...prev, status: "" }))}
+                  className="text-sm font-medium text-primary underline hover:text-[#0a56aa]"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          ) : activeFilter === "customerId" ? (
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <CustomerIdPicklistField
+                  label=""
+                  value={values.customerId}
+                  placeholder="Select Customer"
+                  onSelect={handleCustomerFilterSelect}
+                  preFetch={false}
+                  pageSize={10}
+                />
+              </div>
+              {values.customerId && (
+                <button
+                  type="button"
+                  onClick={() => setValues((prev) => ({ ...prev, customerId: "" }))}
                   className="text-sm font-medium text-primary underline hover:text-[#0a56aa]"
                 >
                   Clear

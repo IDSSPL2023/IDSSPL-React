@@ -21,11 +21,18 @@ import {
   Receipt,
   FileCheck,
   FileSpreadsheet,
-  Table
+  Table,
+  Check,
+  X,
+  Printer
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
 import { useBilingual } from "@/i18n/useBilingual";
+import { DateInput, FieldShell, SectionCard, TextInput } from '@/components/shared/FormFields';
+import ListModal from '@/components/AccountMaster/ListModal';
+import { SuccessModal } from '@/components/common';
+import { IMAGES } from "@/assets";
 
 // ==========================================
 // TYPES
@@ -75,177 +82,161 @@ interface FormData {
   chargesAmount: string;
 }
 
-interface FieldConfig {
-  key: keyof FormData;
+// ==========================================
+// REUSABLE COMPONENTS (From Reference)
+// ==========================================
+
+/* ===================== Currency Input Field ===================== */
+interface CurrencyInputProps {
+  value: string;
+  onChange?: (val: string) => void;
+  readOnly?: boolean;
+  placeholder?: string;
+  error?: boolean;
+}
+
+function CurrencyInput({ value, onChange, readOnly = false, placeholder = "", error = false }: CurrencyInputProps) {
+  return (
+    <div
+      className={`flex items-center gap-2 rounded-lg border bg-white px-3 py-2.5 text-sm transition-colors ${
+        error ? "border-red-400" : "border-slate-600"
+      } ${readOnly ? "bg-slate-50" : "focus-within:border-blue-500"}`}
+    >
+      <IndianRupee size={16} className="text-slate-400 shrink-0" />
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+        readOnly={readOnly}
+        placeholder={placeholder}
+        className={`w-full flex-1 bg-transparent outline-none ${
+          readOnly ? "text-slate-500 cursor-not-allowed" : "text-slate-700"
+        }`}
+      />
+    </div>
+  );
+}
+
+/* ===================== Local Select field ===================== */
+interface SelectFieldProps {
+  icon?: React.ReactNode;
+  value: string;
+  onChange: (v: string) => void;
+  options: { label: string; value: string }[];
+  placeholder?: string;
+  error?: boolean;
+  disabled?: boolean;
+}
+
+function SelectField({ icon, value, onChange, options, placeholder, error, disabled }: SelectFieldProps) {
+  return (
+    <div
+      className={`flex items-center gap-2 rounded-lg border bg-white px-3 py-2.5 text-sm transition-colors ${
+        error ? "border-red-400" : "border-slate-600"
+      } ${disabled ? "bg-slate-50 text-slate-400" : "focus-within:border-blue-500"}`}
+    >
+      {icon && <span className="text-slate-400">{icon}</span>}
+      <select
+        value={value}
+        disabled={disabled}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full flex-1 appearance-none bg-transparent text-slate-700 outline-none disabled:cursor-not-allowed"
+      >
+        <option value="" disabled>
+          {placeholder || "Select"}
+        </option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown size={16} className="shrink-0 text-slate-400" />
+    </div>
+  );
+}
+
+/* ===================== Reusable picklist field ===================== */
+interface PickerCodeFieldProps {
   label: string;
   labelHi: string;
-  placeholder: string;
-  icon: LucideIcon;
-  readOnly?: boolean;
-  suffix?: boolean;
-  select?: boolean;
-  hasMenu?: boolean;
-  onMenuClick?: () => void;
-}
-
-// ==========================================
-// REUSABLE COMPONENTS
-// ==========================================
-
-// ==========================================
-// FORM FIELD COMPONENT
-// ==========================================
-
-function FormField({
-  field,
-  value,
-  onChange,
-}: {
-  field: FieldConfig;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-}) {
-  const Icon = field.icon;
-  const hasMenu = field.hasMenu || Boolean(field.onMenuClick);
-  const isReadOnly = field.readOnly || false;
+  placeholder?: string;
+  error?: boolean;
+  onPickerClick: () => void;
+}
 
-  if (field.select) {
-    return (
-      <div className="mb-3 last:mb-0">
-        <label className="block text-[11px] font-semibold text-slate-700 mb-1.5">
-          {field.label}
-          <span className="text-slate-400 font-normal">
-            {" "}
-            <span className="text-slate-600">/</span> {field.labelHi}
-          </span>
-          {field.label !== 'Is Ho Transaction' && <span className="text-red-500">*</span>}
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-            <Icon className="w-3.5 h-3.5 text-slate-400" />
-          </div>
-          <select
-            value={value}
-            onChange={onChange}
-            disabled={isReadOnly}
-            className={`
-              w-full h-8 rounded-[10px] border border-slate-300
-              pl-8 pr-3 text-[11px] outline-none
-              focus:border-blue-500 focus:ring-1 focus:ring-blue-500
-              appearance-none
-              ${isReadOnly 
-                ? 'bg-[#f0f2f5] text-slate-500 cursor-not-allowed border-slate-200' 
-                : 'bg-white text-slate-600'
-              }
-            `}
-          >
-            <option value="" className="text-[11px] text-slate-400">{field.placeholder}</option>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-          </select>
-          <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+function PickerCodeField({ label, labelHi, value, placeholder, error, onPickerClick }: PickerCodeFieldProps) {
   return (
-    <div className="mb-3 last:mb-0">
-      <label className="block text-[11px] font-semibold text-slate-700 mb-1.5">
-        {field.label}
-        <span className="text-slate-400 font-normal">
-          {" "}
-          <span className="text-slate-600">/</span> {field.labelHi}
-        </span>
-        {field.label !== 'Is Ho Transaction' && 
-         field.label !== 'Total Deposit Amount' && 
-         field.label !== 'Principal Amount' && 
-         field.label !== 'Interest Amount' && 
-         field.label !== 'Charges Amount' && <span className="text-red-500">*</span>}
-      </label>
-
+    <FieldShell label={label} labelHi={labelHi} required error={error}>
       <div className="flex items-center gap-2">
-        <div
-          className={`
-            group flex flex-1 items-center w-full h-8 rounded-[10px]
-            border px-2.5
-            transition-all duration-200
-            ${isReadOnly 
-              ? 'bg-[#f0f2f5] border-slate-200 cursor-not-allowed' 
-              : 'bg-white border-slate-300 hover:border-blue-400 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500'
-            }
-            ${hasMenu ? 'cursor-pointer' : ''}
-          `}
+        <div className="min-w-0 flex-1">
+          <TextInput icon={<User size={16} />} value={value} onChange={() => {}} readOnly placeholder={placeholder} />
+        </div>
+        <button
+          type="button"
+          onClick={onPickerClick}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100"
         >
-          <Icon className={`w-3.5 h-3.5 ${isReadOnly ? 'text-slate-400' : 'text-slate-400'} shrink-0`} />
-
-          <input
-            type="text"
-            readOnly={isReadOnly}
-            placeholder={field.placeholder}
-            value={value}
-            onChange={isReadOnly ? undefined : onChange}
-            className={`
-              ml-2 w-full bg-transparent outline-none
-              text-[11px]
-              placeholder:text-[11px] placeholder:text-slate-400 placeholder:font-normal
-              ${hasMenu ? 'pointer-events-none cursor-pointer' : ''}
-              ${isReadOnly ? 'text-slate-500 cursor-not-allowed' : 'text-slate-600'}
-            `}
-          />
-
-          {field.suffix && (
-            <span className={`text-[11px] font-medium ml-auto ${isReadOnly ? 'text-slate-400' : 'text-slate-400'}`}>₹</span>
-          )}
-        </div>
-
-        {hasMenu && (
-          <button
-            type="button"
-            onClick={field.onMenuClick}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border border-blue-600 bg-blue-50 text-blue-600 transition hover:bg-blue-100"
-          >
-            <MoreVertical size={14} strokeWidth={2.5} />
-          </button>
-        )}
+          <MoreVertical size={14} />
+        </button>
       </div>
-    </div>
+    </FieldShell>
   );
 }
 
 // ==========================================
-// SECTION CARD COMPONENT
+// PICKER DATA
 // ==========================================
 
-interface CardSectionProps {
-  icon: React.ReactNode;
-  title: string;
-  subTitle: string;
-  description: string;
-  children: React.ReactNode;
-  className?: string;
+interface AccountOption {
+  code: string;
+  name: string;
+  ledgerBalance?: string;
+  availableBalance?: string;
 }
 
-function CardSection({ icon, title, subTitle, description, children, className = '' }: CardSectionProps) {
-  return (
-    <div className={`border border-[#0256cc]/60 border-t-[3.5px] border-t-[#0256cc] rounded-[14px] p-2 bg-white shadow-sm ${className}`}>
-      <div className="flex items-start gap-3 mb-4">
-        <div className="p-2 bg-blue-50 rounded-lg border border-blue-100">
-          {icon}
-        </div>
-        <div>
-          <h2 className="text-sm font-bold text-slate-800">
-            {title} <span className="text-slate-400 font-normal text-xs">/ {subTitle}</span>
-          </h2>
-          <p className="text-[10px] text-slate-500 mt-0.5">{description}</p>
-        </div>
-      </div>
-      {children}
-    </div>
-  );
-}
+const ACCOUNT_OPTIONS: AccountOption[] = [
+  { code: "AC101", name: "Savings - Ramesh Kulkarni", ledgerBalance: "24500", availableBalance: "24000" },
+  { code: "AC102", name: "Savings - Sunita Patil", ledgerBalance: "18200", availableBalance: "18200" },
+  { code: "AC103", name: "Savings - Vikram Joshi", ledgerBalance: "9800", availableBalance: "9500" },
+];
+
+const TRANSFER_ACCOUNT_OPTIONS: AccountOption[] = [
+  { code: "00021010000163", name: "MATURED JEEVAN SIRI DEPOSIT" },
+  { code: "00021010000171", name: "SUSPENSE ACCOUNT" },
+  { code: "00021010000188", name: "SUNDRY DEPOSIT ACCOUNT" },
+];
+
+const INTEREST_RATE_OPTIONS = [
+  { label: "5%", value: "5" },
+  { label: "6%", value: "6" },
+  { label: "7%", value: "7" },
+  { label: "8%", value: "8" },
+  { label: "8.5%", value: "8.5" },
+  { label: "9%", value: "9" },
+  { label: "10%", value: "10" },
+];
+
+const MODE_OF_PAYMENT_OPTIONS = [
+  { label: "Cash", value: "cash" },
+  { label: "Cheque", value: "cheque" },
+  { label: "NEFT", value: "neft" },
+  { label: "RTGS", value: "rtgs" },
+  { label: "Transfer", value: "transfer" },
+];
+
+const OUTLIST_DESCRIPTION_OPTIONS = [
+  { label: "GL Outlist Description 1", value: "desc1" },
+  { label: "GL Outlist Description 2", value: "desc2" },
+  { label: "GL Outlist Description 3", value: "desc3" },
+];
+
+const ORG_RESPONDING_OPTIONS = [
+  { label: "ORG-001", value: "ORG-001" },
+  { label: "ORG-002", value: "ORG-002" },
+  { label: "ORG-003", value: "ORG-003" },
+];
 
 // ==========================================
 // MAIN COMPONENT
@@ -290,15 +281,23 @@ export default function AccountClosingLoanPage() {
     chargesAmount: '0.00',
   });
 
-  const handleChange = (field: keyof FormData) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isValidated, setIsValidated] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [accountPickerOpen, setAccountPickerOpen] = useState(false);
+  const [transferAccountPickerOpen, setTransferAccountPickerOpen] = useState(false);
+
+  const clearError = (key: string) => {
+    setErrors((prev) => ({ ...prev, [key]: "" }));
+    setIsValidated(false);
   };
 
-  const handleIsHoChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, isHoTransaction: value }));
-  };
+  const set =
+    <K extends keyof FormData>(key: K) =>
+    (val: FormData[K]) => {
+      setFormData((prev) => ({ ...prev, [key]: val }));
+      clearError(key as string);
+    };
 
   const handleRenewalChange = (value: string) => {
     setFormData((prev) => ({ ...prev, renewal: value }));
@@ -308,8 +307,56 @@ export default function AccountClosingLoanPage() {
     window.history.back();
   };
 
+  const REQUIRED_FIELDS: (keyof FormData)[] = [
+    "accountCode",
+    "accountName",
+    "glAccountCode",
+    "description",
+    "ledgerBalance",
+    "availableBalance",
+    "scrollNumber",
+    "interestRate",
+    "modeOfPayment",
+    "transferAcCode",
+    "transferAcName",
+    "depositAmount",
+    "refundAmount",
+    "surcharge",
+    "completedMonths",
+    "overdue",
+    "particular",
+    "particular1",
+    "outlistSerialNo",
+    "outlistDescription",
+    "outlistDocNo",
+    "serviceCharges",
+    "adviceNumber",
+    "adviceDate",
+    "acReviewDate",
+    "orgResponding",
+    "serviceTax",
+    "interestCalculationDate",
+  ];
+
+  const validate = (): boolean => {
+    const nextErrors: Record<string, string> = {};
+
+    REQUIRED_FIELDS.forEach((key) => {
+      if (!formData[key]?.toString().trim()) {
+        nextErrors[key] = "required";
+      }
+    });
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
   const handleValidate = () => {
-    console.log('Validate clicked');
+    const valid = validate();
+    setIsValidated(valid);
+    if (valid) {
+      console.log('Validation passed');
+    }
   };
 
   const handleCancel = () => {
@@ -321,292 +368,61 @@ export default function AccountClosingLoanPage() {
   };
 
   const handleSave = () => {
-    console.log('Save clicked');
+    if (!isValidated) return;
+    console.log('Save clicked', formData);
+    setShowSuccess(true);
   };
 
-  const handleAccountCodeMenu = () => {
-    console.log('Open account code menu');
-  };
+  const grid4 = "grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4";
 
-  // Account Details Fields
-  const section1Fields: FieldConfig[] = [
-    {
-      key: 'accountCode',
-      label: 'Account Code',
-      labelHi: 'खाते कोड',
-      placeholder: 'Select Account Code',
-      icon: MapPin,
-      hasMenu: true,
-      onMenuClick: handleAccountCodeMenu,
-    },
-    {
-      key: 'accountName',
-      label: 'Account Name',
-      labelHi: 'खात्याचे नाव',
-      placeholder: 'Account Name',
-      icon: User,
-      readOnly: true,
-    },
-    {
-      key: 'glAccountCode',
-      label: 'GL Account Code',
-      labelHi: 'जीएल खाते कोड',
-      placeholder: 'GL Account Code',
-      icon: Hash,
-    },
-    {
-      key: 'description',
-      label: 'Description',
-      labelHi: 'प्रक्रियाचे नाव',
-      placeholder: 'Customer Name',
-      icon: FileText,
-    },
-    {
-      key: 'ledgerBalance',
-      label: 'Ledger Balance',
-      labelHi: 'उपलब्ध शिल्पक',
-      placeholder: 'Available Balance / दैव कालावधी',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'availableBalance',
-      label: 'Available Balance',
-      labelHi: 'दैव कालावधी',
-      placeholder: 'Enter Available Balance',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'scrollNumber',
-      label: 'Scroll Number',
-      labelHi: 'स्कोल क्रमांक',
-      placeholder: 'Scroll Number',
-      icon: ScrollText,
-    },
-    {
-      key: 'interestRate',
-      label: 'Interest Rate',
-      labelHi: 'व्याज दर',
-      placeholder: 'Interest Rate %',
-      icon: Percent,
-      select: true,
-    },
-  ];
+  if (showSuccess) {
+    return (
+      <SuccessModal
+        title="Loan Account Closed Successfully"
+        subtitle=""
+        onClose={() => {
+          setShowSuccess(false);
+        }}
+        onDone={() => {
+          setShowSuccess(false);
+        }}
+      />
+    );
+  }
 
-  // Payment Details Fields
-  const section2Fields: FieldConfig[] = [
-    {
-      key: 'modeOfPayment',
-      label: 'Mode of Payment',
-      labelHi: 'पेमेंट पद्धत',
-      placeholder: 'Select Mode of Payment',
-      icon: CreditCard,
-      select: true,
-    },
-    {
-      key: 'transferAcCode',
-      label: 'Transfer A/c Code',
-      labelHi: 'रक्कम',
-      placeholder: 'Enter Amount',
-      icon: Hash,
-    },
-    {
-      key: 'transferAcName',
-      label: 'Transfer A/c Name',
-      labelHi: 'रक्कम',
-      placeholder: 'Enter Amount',
-      icon: User,
-    },
-    {
-      key: 'depositAmount',
-      label: 'Deposit Amount',
-      labelHi: 'दैव सारांश',
-      placeholder: 'Deposit Amount',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'refundAmount',
-      label: 'Refund Amount',
-      labelHi: 'दैव रक्कम',
-      placeholder: 'DD-MMM-YYYY',
-      icon: Calendar,
-      readOnly: true,
-    },
-    {
-      key: 'surcharge',
-      label: 'Surcharge',
-      labelHi: 'मुदतपूर्ती तारीख',
-      placeholder: 'Maturity Value',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'completedMonths',
-      label: 'Completed Months',
-      labelHi: 'मुदतपूर्ती मूल्य',
-      placeholder: 'Period of Deposit',
-      icon: Calendar,
-      readOnly: true,
-    },
-    {
-      key: 'overdue',
-      label: 'Overdue',
-      labelHi: 'दैव सारांश',
-      placeholder: 'Deposit Amount',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'particular',
-      label: 'Particular',
-      labelHi: 'तपशील',
-      placeholder: 'By Cash',
-      icon: FileText,
-      readOnly: true,
-    },
-    {
-      key: 'particular1',
-      label: 'Particular 1',
-      labelHi: 'तपशील 1',
-      placeholder: 'By Cash',
-      icon: FileText,
-      readOnly: true,
-    },
-  ];
-
-  // Accounting Details Fields
-  const section3Fields: FieldConfig[] = [
-    {
-      key: 'outlistSerialNo',
-      label: 'Outlist Serial No.',
-      labelHi: 'आउटलिस्ट दस्तऐवज क्रमांक',
-      placeholder: 'Outlist Doc No.',
-      icon: FileText,
-      readOnly: true,
-    },
-    {
-      key: 'outlistDescription',
-      label: 'Outlist Description',
-      labelHi: 'जीएल आउटलिस्ट वर्णन',
-      placeholder: 'GL Outlist Description',
-      icon: FileText,
-      select: true,
-      readOnly: true,
-    },
-    {
-      key: 'outlistDocNo',
-      label: 'Outlist Doc. No.',
-      labelHi: 'आउटलिस्ट दस्तऐवज क्रमांक',
-      placeholder: 'Outlist Doc No.',
-      icon: FileText,
-      readOnly: true,
-    },
-    {
-      key: 'serviceCharges',
-      label: 'Service Charges',
-      labelHi: 'तपशील',
-      placeholder: 'By Cash',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'adviceNumber',
-      label: 'Advice Number',
-      labelHi: 'लिंग',
-      placeholder: 'Advice Number',
-      icon: FileText,
-      readOnly: true,
-    },
-    {
-      key: 'adviceDate',
-      label: 'Advice Date',
-      labelHi: 'लिंग',
-      placeholder: 'Advice Date',
-      icon: Calendar,
-      readOnly: true,
-    },
-    {
-      key: 'acReviewDate',
-      label: 'A/c Review Date',
-      labelHi: 'रक्कम',
-      placeholder: 'Enter Amount',
-      icon: Calendar,
-      readOnly: false,
-    },
-    {
-      key: 'orgResponding',
-      label: 'Org/Responding',
-      labelHi: 'लिंग',
-      placeholder: 'Token Number',
-      icon: FileText,
-      select: true,
-      readOnly: true,
-    },
-    {
-      key: 'serviceTax',
-      label: 'Service Tax',
-      labelHi: 'लिंग',
-      placeholder: 'Advice Number',
-      icon: FileText,
-      readOnly: true,
-    },
-    {
-      key: 'interestCalculationDate',
-      label: 'Interest Calculation Date',
-      labelHi: 'लिंग',
-      placeholder: 'Advice Date',
-      icon: Calendar,
-      readOnly: true,
-    },
-  ];
-
-  // Recovery Summary Fields
-  const recoveryFields: FieldConfig[] = [
-    {
-      key: 'totalDepositAmount',
-      label: 'Total Deposit Amount',
-      labelHi: 'पूर्वीय निवेश करण्याची माहिती',
-      placeholder: 'Deposit Amount',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'principalAmount',
-      label: 'Principal Amount',
-      labelHi: 'मूल रक्कम',
-      placeholder: 'DD-MMM-YYYY',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'interestAmountRecovery',
-      label: 'Interest Amount',
-      labelHi: 'व्याज रक्कम',
-      placeholder: 'Maturity Value',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-    {
-      key: 'chargesAmount',
-      label: 'Charges Amount',
-      labelHi: 'शुल्क रक्कम',
-      placeholder: 'Period of Deposit',
-      icon: IndianRupee,
-      suffix: true,
-      readOnly: true,
-    },
-  ];
+  const footer = (
+    <div className="flex items-center justify-end gap-3 mt-6 pb-4">
+      <button
+        onClick={handleValidate}
+        disabled={isValidated}
+        className="flex items-center gap-1.5 px-5 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Validate <span>✓</span>
+      </button>
+      
+      <button
+        onClick={handleCancel}
+        className="flex items-center gap-1.5 px-5 py-2 bg-white border border-[#0b66c2] text-[#0b66c2] hover:bg-slate-50 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
+      >
+        Cancel <span className="text-[10px]">✕</span>
+      </button>
+      
+      <button
+        onClick={handlePrintVoucher}
+        className="flex items-center gap-1.5 px-4 py-2 bg-[#e2e8f0] hover:bg-[#cbd5e1] text-slate-700 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
+      >
+        Print Voucher <span className="text-xs">🖨️</span>
+      </button>
+      
+      <button
+        onClick={handleSave}
+        disabled={!isValidated}
+        className="flex items-center gap-4 px-6 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Save <span className="text-[10px]">▼</span>
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#F4F6FC]">
@@ -625,134 +441,295 @@ export default function AccountClosingLoanPage() {
 
       <div className="px-6 py-3 space-y-4 max-w-8xl mx-auto">
         {/* Section 1: Account Details */}
-        <CardSection
-          icon={<User className="w-4 h-4 text-blue-600" />}
-          title="Account Details"
-          subTitle="खाते तपशील"
-          description="Manage customer's personal and identity information. / प्राप्तिकारी वैयक्तिक व शेड्यूक संबंधित माहिती व्यवस्थापित करा."
+        <SectionCard
+          titleEn="Account Details"
+          titleHi="खाते तपशील"
+          subtitleEn="Manage customer's personal and identity information."
+          subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
+          icon={IMAGES.PERSON_ICON}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {section1Fields.map((field) => (
-              <div key={field.key} className="flex items-end gap-2">
-                <div className="flex-1">
-                  <FormField
-                    field={field}
-                    value={formData[field.key]}
-                    onChange={handleChange(field.key)}
-                  />
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <PickerCodeField
+              label="Account Code"
+              labelHi="खाते कोड"
+              value={formData.accountCode}
+              placeholder="Select Account Code"
+              error={!!errors.accountCode}
+              onPickerClick={() => setAccountPickerOpen(true)}
+            />
+
+            <FieldShell label="Account Name" labelHi="खात्याचे नाव" required error={!!errors.accountName}>
+              <TextInput icon={<User size={16} />} value={formData.accountName} onChange={() => {}} readOnly placeholder="Account Name" error={!!errors.accountName} />
+            </FieldShell>
+
+            <FieldShell label="GL Account Code" labelHi="जीएल खाते कोड" required error={!!errors.glAccountCode}>
+              <TextInput icon={<Hash size={16} />} value={formData.glAccountCode} onChange={set("glAccountCode")} placeholder="GL Account Code" error={!!errors.glAccountCode} />
+            </FieldShell>
+
+            <FieldShell label="Description" labelHi="प्रक्रियाचे नाव" required error={!!errors.description}>
+              <TextInput icon={<FileText size={16} />} value={formData.description} onChange={set("description")} placeholder="Customer Name" error={!!errors.description} />
+            </FieldShell>
+
+            <FieldShell label="Ledger Balance" labelHi="उपलब्ध शिल्पक" required error={!!errors.ledgerBalance}>
+              <CurrencyInput 
+                value={formData.ledgerBalance} 
+                readOnly={true}
+                error={!!errors.ledgerBalance}
+              />
+            </FieldShell>
+
+            <FieldShell label="Available Balance" labelHi="दैव कालावधी" required error={!!errors.availableBalance}>
+              <CurrencyInput 
+                value={formData.availableBalance} 
+                readOnly={true}
+                error={!!errors.availableBalance}
+              />
+            </FieldShell>
+
+            <FieldShell label="Scroll Number" labelHi="स्कोल क्रमांक" required error={!!errors.scrollNumber}>
+              <TextInput icon={<ScrollText size={16} />} value={formData.scrollNumber} onChange={set("scrollNumber")} placeholder="Scroll Number" error={!!errors.scrollNumber} />
+            </FieldShell>
+
+            <FieldShell label="Interest Rate" labelHi="व्याज दर" required error={!!errors.interestRate}>
+              <SelectField
+                icon={<Percent size={16} />}
+                value={formData.interestRate}
+                onChange={set("interestRate")}
+                placeholder="Interest Rate %"
+                options={INTEREST_RATE_OPTIONS}
+                error={!!errors.interestRate}
+              />
+            </FieldShell>
           </div>
-        </CardSection>
+        </SectionCard>
 
         {/* Section 2: Payment Details */}
-        <CardSection
-          icon={<CreditCard className="w-4 h-4 text-blue-600" />}
-          title="Payment Details"
-          subTitle="पेमेंट तपशील"
-          description="Manage customer's personal and identity information. / प्राप्तिकारी वैयक्तिक व शेड्यूक संबंधित माहिती व्यवस्थापित करा."
+        <SectionCard
+          titleEn="Payment Details"
+          titleHi="पेमेंट तपशील"
+          subtitleEn="Manage customer's personal and identity information."
+          subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
+          icon={IMAGES.PERSON_ICON}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {section2Fields.slice(0, 3).map((field) => (
-              <div key={field.key}>
-                <FormField
-                  field={field}
-                  value={formData[field.key]}
-                  onChange={handleChange(field.key)}
-                />
-              </div>
-            ))}
-            
-            {/* Renewal Radio Buttons */}
-            <div className="mb-2">
-              <label className="block text-[11px] font-semibold text-slate-700 mb-1.5">
-                Renewal <span className="text-slate-400 font-normal">/ अतिरिक्त व्याज गणना</span>
-              </label>
-              <div className="flex items-center gap-6 mt-1">
-                <label className="flex items-center gap-2 text-[11px] text-slate-700 cursor-pointer">
+          <div className={grid4}>
+            <FieldShell label="Mode of Payment" labelHi="पेमेंट पद्धत" required error={!!errors.modeOfPayment}>
+              <SelectField
+                icon={<CreditCard size={16} />}
+                value={formData.modeOfPayment}
+                onChange={set("modeOfPayment")}
+                placeholder="Select Mode of Payment"
+                options={MODE_OF_PAYMENT_OPTIONS}
+                error={!!errors.modeOfPayment}
+              />
+            </FieldShell>
+
+            <PickerCodeField
+              label="Transfer A/c Code"
+              labelHi="रक्कम"
+              value={formData.transferAcCode}
+              placeholder="Enter Amount"
+              error={!!errors.transferAcCode}
+              onPickerClick={() => setTransferAccountPickerOpen(true)}
+            />
+
+            <FieldShell label="Transfer A/c Name" labelHi="रक्कम" required error={!!errors.transferAcName}>
+              <TextInput icon={<User size={16} />} value={formData.transferAcName} onChange={() => {}} readOnly placeholder="Enter Amount" error={!!errors.transferAcName} />
+            </FieldShell>
+
+            <FieldShell label="Renewal" labelHi="अतिरिक्त व्याज गणना" required>
+              <div className="flex items-center gap-6 pt-1">
+                <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
                   <input
                     type="radio"
                     name="renewal"
                     value="yes"
                     checked={formData.renewal === 'yes'}
                     onChange={(e) => handleRenewalChange(e.target.value)}
-                    className="w-3.5 h-3.5 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="font-medium">Yes</span>
                 </label>
-                <label className="flex items-center gap-2 text-[11px] text-slate-700 cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
                   <input
                     type="radio"
                     name="renewal"
                     value="no"
                     checked={formData.renewal === 'no'}
                     onChange={(e) => handleRenewalChange(e.target.value)}
-                    className="w-3.5 h-3.5 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="font-medium">No</span>
                 </label>
               </div>
-            </div>
-
-            {section2Fields.slice(3).map((field) => (
-              <div key={field.key}>
-                <FormField
-                  field={field}
-                  value={formData[field.key]}
-                  onChange={handleChange(field.key)}
-                />
-              </div>
-            ))}
+            </FieldShell>
           </div>
-        </CardSection>
+
+          <div className={`${grid4} mt-4`}>
+            <FieldShell label="Deposit Amount" labelHi="दैव सारांश" required error={!!errors.depositAmount}>
+              <CurrencyInput 
+                value={formData.depositAmount} 
+                readOnly={true}
+                error={!!errors.depositAmount}
+              />
+            </FieldShell>
+
+            <FieldShell label="Refund Amount" labelHi="दैव रक्कम" required error={!!errors.refundAmount}>
+              <TextInput icon={<Calendar size={16} />} value={formData.refundAmount} onChange={() => {}} readOnly error={!!errors.refundAmount} />
+            </FieldShell>
+
+            <FieldShell label="Surcharge" labelHi="मुदतपूर्ती तारीख" required error={!!errors.surcharge}>
+              <CurrencyInput 
+                value={formData.surcharge} 
+                readOnly={true}
+                error={!!errors.surcharge}
+              />
+            </FieldShell>
+
+            <FieldShell label="Completed Months" labelHi="मुदतपूर्ती मूल्य" required error={!!errors.completedMonths}>
+              <TextInput icon={<Calendar size={16} />} value={formData.completedMonths} onChange={() => {}} readOnly error={!!errors.completedMonths} />
+            </FieldShell>
+          </div>
+
+          <div className={`${grid4} mt-4`}>
+            <FieldShell label="Overdue" labelHi="दैव सारांश" required error={!!errors.overdue}>
+              <CurrencyInput 
+                value={formData.overdue} 
+                readOnly={true}
+                error={!!errors.overdue}
+              />
+            </FieldShell>
+
+            <FieldShell label="Particular" labelHi="तपशील" required error={!!errors.particular}>
+              <TextInput icon={<FileText size={16} />} value={formData.particular} onChange={() => {}} readOnly placeholder="By Cash" error={!!errors.particular} />
+            </FieldShell>
+
+            <FieldShell label="Particular 1" labelHi="तपशील 1" required error={!!errors.particular1}>
+              <TextInput icon={<FileText size={16} />} value={formData.particular1} onChange={() => {}} readOnly placeholder="By Cash" error={!!errors.particular1} />
+            </FieldShell>
+          </div>
+        </SectionCard>
 
         {/* Section 3: Accounting Details */}
-        <CardSection
-          icon={<ClipboardList className="w-4 h-4 text-blue-600" />}
-          title="Accounting Details"
-          subTitle="दैव सारांश"
-          description="Manage customer's personal and identity information. / प्राप्तिकारी वैयक्तिक व शेड्यूक संबंधित माहिती व्यवस्थापित करा."
+        <SectionCard
+          titleEn="Accounting Details"
+          titleHi="दैव सारांश"
+          subtitleEn="Manage customer's personal and identity information."
+          subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
+          icon={IMAGES.PERSON_ICON}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {section3Fields.map((field) => (
-              <div key={field.key}>
-                <FormField
-                  field={field}
-                  value={formData[field.key]}
-                  onChange={handleChange(field.key)}
-                />
-              </div>
-            ))}
+          <div className={grid4}>
+            <FieldShell label="Outlist Serial No." labelHi="आउटलिस्ट दस्तऐवज क्रमांक" required error={!!errors.outlistSerialNo}>
+              <TextInput icon={<FileText size={16} />} value={formData.outlistSerialNo} onChange={() => {}} readOnly placeholder="Outlist Doc No." error={!!errors.outlistSerialNo} />
+            </FieldShell>
+
+            <FieldShell label="Outlist Description" labelHi="जीएल आउटलिस्ट वर्णन" required error={!!errors.outlistDescription}>
+              <SelectField
+                icon={<FileText size={16} />}
+                value={formData.outlistDescription}
+                onChange={set("outlistDescription")}
+                placeholder="GL Outlist Description"
+                options={OUTLIST_DESCRIPTION_OPTIONS}
+                error={!!errors.outlistDescription}
+                disabled={true}
+              />
+            </FieldShell>
+
+            <FieldShell label="Outlist Doc. No." labelHi="आउटलिस्ट दस्तऐवज क्रमांक" required error={!!errors.outlistDocNo}>
+              <TextInput icon={<FileText size={16} />} value={formData.outlistDocNo} onChange={() => {}} readOnly placeholder="Outlist Doc No." error={!!errors.outlistDocNo} />
+            </FieldShell>
+
+            <FieldShell label="Service Charges" labelHi="तपशील" required error={!!errors.serviceCharges}>
+              <CurrencyInput 
+                value={formData.serviceCharges} 
+                readOnly={true}
+                error={!!errors.serviceCharges}
+              />
+            </FieldShell>
           </div>
-        </CardSection>
+
+          <div className={`${grid4} mt-4`}>
+            <FieldShell label="Advice Number" labelHi="लिंग" required error={!!errors.adviceNumber}>
+              <TextInput icon={<FileText size={16} />} value={formData.adviceNumber} onChange={() => {}} readOnly placeholder="Advice Number" error={!!errors.adviceNumber} />
+            </FieldShell>
+
+            <FieldShell label="Advice Date" labelHi="लिंग" required error={!!errors.adviceDate}>
+              <DateInput value={formData.adviceDate} onChange={() => {}} readOnly error={!!errors.adviceDate} />
+            </FieldShell>
+
+            <FieldShell label="A/c Review Date" labelHi="रक्कम" required error={!!errors.acReviewDate}>
+              <DateInput value={formData.acReviewDate} onChange={set("acReviewDate")} error={!!errors.acReviewDate} />
+            </FieldShell>
+
+            <FieldShell label="Org/Responding" labelHi="लिंग" required error={!!errors.orgResponding}>
+              <SelectField
+                icon={<FileText size={16} />}
+                value={formData.orgResponding}
+                onChange={set("orgResponding")}
+                placeholder="Token Number"
+                options={ORG_RESPONDING_OPTIONS}
+                error={!!errors.orgResponding}
+                disabled={true}
+              />
+            </FieldShell>
+          </div>
+
+          <div className={`${grid4} mt-4`}>
+            <FieldShell label="Service Tax" labelHi="लिंग" required error={!!errors.serviceTax}>
+              <TextInput icon={<FileText size={16} />} value={formData.serviceTax} onChange={() => {}} readOnly placeholder="Advice Number" error={!!errors.serviceTax} />
+            </FieldShell>
+
+            <FieldShell label="Interest Calculation Date" labelHi="लिंग" required error={!!errors.interestCalculationDate}>
+              <DateInput value={formData.interestCalculationDate} onChange={() => {}} readOnly error={!!errors.interestCalculationDate} />
+            </FieldShell>
+          </div>
+        </SectionCard>
 
         {/* Section 4: Recovery Summary - Fields */}
-        <CardSection
-          icon={<RefreshCw className="w-4 h-4 text-blue-600" />}
-          title="Recovery Summary"
-          subTitle="व्याज तपशील"
-          description="Manage customer's personal and identity information. / प्राप्त करण्याची व्यवस्थित करण्याची माहिती व्यवस्थापित करा."
+        <SectionCard
+          titleEn="Recovery Summary"
+          titleHi="व्याज तपशील"
+          subtitleEn="Manage customer's personal and identity information."
+          subtitleHi="ग्राहकाची वैयक्तिक व ओळख संबंधित माहिती व्यवस्थापित करा."
+          icon={IMAGES.PERSON_ICON}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {recoveryFields.map((field) => (
-              <div key={field.key}>
-                <FormField
-                  field={field}
-                  value={formData[field.key]}
-                  onChange={handleChange(field.key)}
-                />
-              </div>
-            ))}
+          <div className={grid4}>
+            <FieldShell label="Total Deposit Amount" labelHi="पूर्वीय निवेश करण्याची माहिती">
+              <CurrencyInput 
+                value={formData.totalDepositAmount} 
+                readOnly={true}
+              />
+            </FieldShell>
+
+            <FieldShell label="Principal Amount" labelHi="मूल रक्कम">
+              <CurrencyInput 
+                value={formData.principalAmount} 
+                readOnly={true}
+              />
+            </FieldShell>
+
+            <FieldShell label="Interest Amount" labelHi="व्याज रक्कम">
+              <CurrencyInput 
+                value={formData.interestAmountRecovery} 
+                readOnly={true}
+              />
+            </FieldShell>
+
+            <FieldShell label="Charges Amount" labelHi="शुल्क रक्कम">
+              <CurrencyInput 
+                value={formData.chargesAmount} 
+                readOnly={true}
+              />
+            </FieldShell>
           </div>
-        </CardSection>
+        </SectionCard>
 
         {/* Section 5: Recovery Tables */}
-        <CardSection
-          icon={<Table className="w-4 h-4 text-blue-600" />}
-          title="Recovery Details"
-          subTitle="वसूली तपशील"
-          description="Manage recovery calculations and details. / वसूली गणना आणि तपशील व्यवस्थापित करा."
+        <SectionCard
+          titleEn="Recovery Details"
+          titleHi="वसूली तपशील"
+          subtitleEn="Manage recovery calculations and details."
+          subtitleHi="वसूली गणना आणि तपशील व्यवस्थापित करा."
+          icon={IMAGES.PERSON_ICON}
         >
           {/* Two Column Layout for Tables */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -862,40 +839,56 @@ export default function AccountClosingLoanPage() {
               </div>
             </div>
           </div>
-        </CardSection>
+        </SectionCard>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 mt-6 pb-4">
-          <button
-            onClick={handleValidate}
-            className="flex items-center gap-1.5 px-5 py-2 bg-[#0b66c2] hover:bg-[#0a58a8] text-white text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-          >
-            Validate <span>✓</span>
-          </button>
-          
-          <button
-            onClick={handleCancel}
-            className="flex items-center gap-1.5 px-5 py-2 bg-white border border-[#0b66c2] text-[#0b66c2] hover:bg-slate-50 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-          >
-            Cancel <span className="text-[10px]">✕</span>
-          </button>
-          
-          <button
-            onClick={handlePrintVoucher}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#e2e8f0] hover:bg-[#cbd5e1] text-slate-700 text-xs font-semibold rounded-md shadow-sm transition-all duration-200"
-          >
-            Print Voucher <span className="text-xs">🖨️</span>
-          </button>
-          
-          <button
-            onClick={handleSave}
-            className="flex items-center gap-4 px-6 py-2 bg-[#e2e8f0] text-slate-400 text-xs font-semibold rounded-md cursor-not-allowed"
-            disabled
-          >
-            Save <span className="text-[10px]">▼</span>
-          </button>
-        </div>
+        {footer}
       </div>
+
+      {/* Account Code Picker Modal */}
+      {accountPickerOpen && (
+        <ListModal
+          title="Account Code List"
+          columns={[
+            { key: "code", label: "Account Code" },
+            { key: "name", label: "Account Name" },
+          ]}
+          rows={ACCOUNT_OPTIONS}
+          onClose={() => setAccountPickerOpen(false)}
+          onSelect={(account: AccountOption) => {
+            setFormData((prev) => ({
+              ...prev,
+              accountCode: account.code,
+              accountName: account.name,
+              ledgerBalance: account.ledgerBalance || prev.ledgerBalance,
+              availableBalance: account.availableBalance || prev.availableBalance,
+            }));
+            clearError("accountCode");
+            setAccountPickerOpen(false);
+          }}
+        />
+      )}
+
+      {/* Transfer Account Code Picker Modal */}
+      {transferAccountPickerOpen && (
+        <ListModal
+          title="Transfer A/c Code List"
+          columns={[
+            { key: "code", label: "A/c Code" },
+            { key: "name", label: "A/c Name" },
+          ]}
+          rows={TRANSFER_ACCOUNT_OPTIONS}
+          onClose={() => setTransferAccountPickerOpen(false)}
+          onSelect={(account: AccountOption) => {
+            setFormData((prev) => ({
+              ...prev,
+              transferAcCode: account.code,
+              transferAcName: account.name,
+            }));
+            clearError("transferAcCode");
+            setTransferAccountPickerOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }
