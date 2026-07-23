@@ -18,6 +18,36 @@ export interface StateRecord {
   stateName: string;
 }
 
+export interface ClearingTypeRecord {
+  id: string;
+  description: string;
+  clearingHouseCode: string;
+  payableRequired: string;
+  payableHead: string;
+  receivableRequired: string;
+  receivableHead: string;
+}
+
+export interface ProductRecord {
+  productCode: string;
+  description: string;
+  shortDescription: string;
+  accountType: string;
+  implemented: string;
+  cashTransactionAllowed: string;
+  defaultMinimumBalanceId: number;
+  interestRoundingFactor: number;
+  nomineeRequired: string;
+  inwardClearingAllowed: string;
+  panCardAllowed: string;
+  individual: string;
+}
+
+export interface GlAccountOption {
+  glAccountCode: string;
+  description: string;
+}
+
 /** Shape returned by the Branch list browse — a subset of the full detail record. */
 export interface BranchSummary {
   branchCode: string;
@@ -354,6 +384,439 @@ export async function createState(payload: {
     stateCode: String(body?.stateCode ?? payload.stateCode),
     countryCode: String(body?.countryCode ?? payload.countryCode),
     stateName: String(body?.stateName ?? payload.stateName),
+  };
+}
+
+/** GET /clearing-types — browse all clearing types. */
+export async function fetchClearingTypes(): Promise<ClearingTypeRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/clearing-types`);
+  if (!response.ok) throw new Error(`Failed to load clearing types (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    id: String(item.id ?? ""),
+    description: String(item.description ?? ""),
+    clearingHouseCode: String(item.clearingHouseCode ?? ""),
+    payableRequired: String(item.payableRequired ?? ""),
+    payableHead: String(item.payableHead ?? ""),
+    receivableRequired: String(item.receivableRequired ?? ""),
+    receivableHead: String(item.receivableHead ?? ""),
+  }));
+}
+
+/** POST /clearing-types — creates a new clearing type. */
+export async function createClearingType(payload: {
+  id: string;
+  description: string;
+  clearingHouseCode: string;
+  payableRequired: string;
+  payableHead: string;
+  receivableRequired: string;
+  receivableHead: string;
+}): Promise<ClearingTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/clearing-types`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: Number(payload.id) || payload.id,
+      description: payload.description,
+      clearingHouseCode: payload.clearingHouseCode,
+      payableRequired: payload.payableRequired,
+      payableHead: payload.payableHead,
+      receivableRequired: payload.receivableRequired,
+      receivableHead: payload.receivableHead,
+    }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create clearing type (${response.status})`));
+  }
+  return {
+    id: String(data?.id ?? payload.id),
+    description: String(data?.description ?? payload.description),
+    clearingHouseCode: String(data?.clearingHouseCode ?? payload.clearingHouseCode),
+    payableRequired: String(data?.payableRequired ?? payload.payableRequired),
+    payableHead: String(data?.payableHead ?? payload.payableHead),
+    receivableRequired: String(data?.receivableRequired ?? payload.receivableRequired),
+    receivableHead: String(data?.receivableHead ?? payload.receivableHead),
+  };
+}
+
+/** GET /clearing-types/{id} — full clearing type detail, used to populate View/Edit. */
+export async function fetchClearingTypeById(id: string): Promise<ClearingTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/clearing-types/${encodeURIComponent(id)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load clearing type (${response.status})`));
+  }
+  return {
+    id: String(data?.id ?? id),
+    description: String(data?.description ?? ""),
+    clearingHouseCode: String(data?.clearingHouseCode ?? ""),
+    payableRequired: String(data?.payableRequired ?? ""),
+    payableHead: String(data?.payableHead ?? ""),
+    receivableRequired: String(data?.receivableRequired ?? ""),
+    receivableHead: String(data?.receivableHead ?? ""),
+  };
+}
+
+/** PUT /clearing-types/{id} — updates an existing clearing type. */
+export async function updateClearingType(
+  id: string,
+  payload: {
+    description: string;
+    clearingHouseCode: string;
+    payableRequired: string;
+    payableHead: string;
+    receivableRequired: string;
+    receivableHead: string;
+  }
+): Promise<ClearingTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/clearing-types/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update clearing type (${response.status})`));
+  }
+  return {
+    id,
+    description: String(data?.description ?? payload.description),
+    clearingHouseCode: String(data?.clearingHouseCode ?? payload.clearingHouseCode),
+    payableRequired: String(data?.payableRequired ?? payload.payableRequired),
+    payableHead: String(data?.payableHead ?? payload.payableHead),
+    receivableRequired: String(data?.receivableRequired ?? payload.receivableRequired),
+    receivableHead: String(data?.receivableHead ?? payload.receivableHead),
+  };
+}
+
+/** GET /products — browse all products. */
+export async function fetchProducts(): Promise<ProductRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/products`);
+  if (!response.ok) throw new Error(`Failed to load products (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    productCode: String(item.productCode ?? ""),
+    description: String(item.description ?? ""),
+    shortDescription: String(item.shortDescription ?? ""),
+    accountType: String(item.accountType ?? ""),
+    implemented: String(item.implemented ?? ""),
+    cashTransactionAllowed: String(item.cashTransactionAllowed ?? ""),
+    defaultMinimumBalanceId: Number(item.defaultMinimumBalanceId ?? 0),
+    interestRoundingFactor: Number(item.interestRoundingFactor ?? 0),
+    nomineeRequired: String(item.nomineeRequired ?? ""),
+    inwardClearingAllowed: String(item.inwardClearingAllowed ?? ""),
+    panCardAllowed: String(item.panCardAllowed ?? ""),
+    individual: String(item.individual ?? ""),
+  }));
+}
+
+/** POST /gl-accounts/search — used to populate the GL Account Code picklist. */
+export async function searchGlAccounts(params: { searchBy?: string; textToSearch?: string } = {}): Promise<GlAccountOption[]> {
+  const { searchBy = "GL_ACCOUNT_CODE", textToSearch = "" } = params;
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy, textToSearch }),
+  });
+  if (!response.ok) throw new Error(`Failed to load GL accounts (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    glAccountCode: String(item.glAccountCode ?? item.code ?? ""),
+    description: String(item.description ?? ""),
+  }));
+}
+
+/**
+ * POST /products — creates a product. Mirrors the legacy "Create New Product" screen:
+ * the product fields are nested, and the GL account code used to seed the ledger rows
+ * is passed alongside it.
+ */
+export async function createProduct(payload: {
+  product: {
+    productCode: string;
+    description: string;
+    shortDescription: string;
+    accountType: string;
+    implemented: string;
+    cashTransactionAllowed: string;
+    defaultMinimumBalanceId: number;
+    interestRoundingFactor: number;
+    nomineeRequired: string;
+    inwardClearingAllowed: string;
+    panCardAllowed: string;
+    individual: string;
+  };
+  glAccountCode: string;
+}): Promise<ProductRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/products`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create product (${response.status})`));
+  }
+  const body = ((data?.product as Record<string, unknown>) ?? data ?? {}) as Record<string, unknown>;
+  return {
+    productCode: String(body.productCode ?? payload.product.productCode),
+    description: String(body.description ?? payload.product.description),
+    shortDescription: String(body.shortDescription ?? payload.product.shortDescription),
+    accountType: String(body.accountType ?? payload.product.accountType),
+    implemented: String(body.implemented ?? payload.product.implemented),
+    cashTransactionAllowed: String(body.cashTransactionAllowed ?? payload.product.cashTransactionAllowed),
+    defaultMinimumBalanceId: Number(body.defaultMinimumBalanceId ?? payload.product.defaultMinimumBalanceId),
+    interestRoundingFactor: Number(body.interestRoundingFactor ?? payload.product.interestRoundingFactor),
+    nomineeRequired: String(body.nomineeRequired ?? payload.product.nomineeRequired),
+    inwardClearingAllowed: String(body.inwardClearingAllowed ?? payload.product.inwardClearingAllowed),
+    panCardAllowed: String(body.panCardAllowed ?? payload.product.panCardAllowed),
+    individual: String(body.individual ?? payload.product.individual),
+  };
+}
+
+export interface DepositInterestRateRecord {
+  accountTypeCode: string;
+  categoryCode: string;
+  dateOfApplication: string;
+  fromPeriod: number;
+  toPeriod: number;
+  unitOfPeriod: string;
+  rateOfInterest: number;
+}
+
+/** GET /deposit-interest-rates — browse all TD/RD/PG interest rate slabs. */
+export async function fetchDepositInterestRates(): Promise<DepositInterestRateRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-interest-rates`);
+  if (!response.ok) throw new Error(`Failed to load deposit interest rates (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => {
+    const id = (item.id as Record<string, unknown>) ?? item;
+    return {
+      accountTypeCode: String(id.accountTypeCode ?? ""),
+      categoryCode: String(id.categoryCode ?? ""),
+      dateOfApplication: String(id.dateOfApplication ?? ""),
+      fromPeriod: Number(id.fromPeriod ?? 0),
+      toPeriod: Number(id.toPeriod ?? 0),
+      unitOfPeriod: String(id.unitOfPeriod ?? ""),
+      rateOfInterest: Number(item.rateOfInterest ?? 0),
+    };
+  });
+}
+
+/** POST /deposit-interest-rates — creates a TD/RD/PG interest rate slab. */
+export async function createDepositInterestRate(payload: {
+  accountTypeCode: string;
+  categoryCode: string;
+  dateOfApplication: string;
+  fromPeriod: number;
+  toPeriod: number;
+  unitOfPeriod: string;
+  rateOfInterest: number;
+}): Promise<DepositInterestRateRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-interest-rates`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: {
+        accountTypeCode: payload.accountTypeCode,
+        categoryCode: payload.categoryCode,
+        dateOfApplication: `${payload.dateOfApplication}T00:00:00`,
+        fromPeriod: payload.fromPeriod,
+        toPeriod: payload.toPeriod,
+        unitOfPeriod: payload.unitOfPeriod,
+      },
+      rateOfInterest: payload.rateOfInterest,
+    }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create deposit interest rate (${response.status})`));
+  }
+  return payload;
+}
+
+export interface InstallmentTypeRecord {
+  id: string;
+  description: string;
+  diaryBased: string;
+  principalArrearsOnDiary: string;
+  interestArrearsOnDiary: string;
+  installmentOn: string;
+}
+
+const toInstallmentTypeRecord = (item: Record<string, unknown>, fallbackId?: string): InstallmentTypeRecord => ({
+  id: String(item.id ?? fallbackId ?? ""),
+  description: String(item.description ?? ""),
+  diaryBased: String(item.diaryBased ?? ""),
+  principalArrearsOnDiary: String(item.principalArrearsOnDiary ?? ""),
+  interestArrearsOnDiary: String(item.interestArrearsOnDiary ?? ""),
+  installmentOn: String(item.installmentOn ?? ""),
+});
+
+/** GET /installment-types — browse all installment types. */
+export async function fetchInstallmentTypes(): Promise<InstallmentTypeRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/installment-types`);
+  if (!response.ok) throw new Error(`Failed to load installment types (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toInstallmentTypeRecord(item));
+}
+
+/** GET /installment-types/{id} — full detail, used to populate View/Edit. */
+export async function fetchInstallmentTypeById(id: string): Promise<InstallmentTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/installment-types/${encodeURIComponent(id)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load installment type (${response.status})`));
+  }
+  return toInstallmentTypeRecord(data ?? {}, id);
+}
+
+/** POST /installment-types — creates an installment type. */
+export async function createInstallmentType(payload: {
+  id: string;
+  description: string;
+  diaryBased: string;
+  principalArrearsOnDiary: string;
+  interestArrearsOnDiary: string;
+  installmentOn: string;
+}): Promise<InstallmentTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/installment-types`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create installment type (${response.status})`));
+  }
+  return toInstallmentTypeRecord(data ?? payload, payload.id);
+}
+
+/** PUT /installment-types/{id} — updates an existing installment type. */
+export async function updateInstallmentType(
+  id: string,
+  payload: {
+    description: string;
+    diaryBased: string;
+    principalArrearsOnDiary: string;
+    interestArrearsOnDiary: string;
+    installmentOn: string;
+  }
+): Promise<InstallmentTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/installment-types/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update installment type (${response.status})`));
+  }
+  return toInstallmentTypeRecord(data ?? payload, id);
+}
+
+export interface InstrumentTypeRecord {
+  code: string;
+  description: string;
+}
+
+/**
+ * POST /instrument-types/search — there is no plain GET list for this master;
+ * an empty textToSearch returns every row, which is how the browse table is populated.
+ */
+export async function fetchInstrumentTypes(): Promise<InstrumentTypeRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/instrument-types/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy: "DESCRIPTION", textToSearch: "" }),
+  });
+  if (!response.ok) throw new Error(`Failed to load instrument types (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    code: String(item.code ?? ""),
+    description: String(item.description ?? ""),
+  }));
+}
+
+/** POST /instrument-types/save — idempotent create-or-update by natural key (code). */
+export async function saveInstrumentType(payload: { code: string; description: string }): Promise<InstrumentTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/instrument-types/save`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to save instrument type (${response.status})`));
+  }
+  return {
+    code: String(data?.code ?? payload.code),
+    description: String(data?.description ?? payload.description),
+  };
+}
+
+/** GET /products/{productCode} — full product detail, used to populate View/Edit. */
+export async function fetchProductByCode(productCode: string): Promise<ProductRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/products/${encodeURIComponent(productCode)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load product (${response.status})`));
+  }
+  return {
+    productCode: String(data?.productCode ?? productCode),
+    description: String(data?.description ?? ""),
+    shortDescription: String(data?.shortDescription ?? ""),
+    accountType: String(data?.accountType ?? ""),
+    implemented: String(data?.implemented ?? ""),
+    cashTransactionAllowed: String(data?.cashTransactionAllowed ?? ""),
+    defaultMinimumBalanceId: Number(data?.defaultMinimumBalanceId ?? 0),
+    interestRoundingFactor: Number(data?.interestRoundingFactor ?? 0),
+    nomineeRequired: String(data?.nomineeRequired ?? ""),
+    inwardClearingAllowed: String(data?.inwardClearingAllowed ?? ""),
+    panCardAllowed: String(data?.panCardAllowed ?? ""),
+    individual: String(data?.individual ?? ""),
+  };
+}
+
+/** PUT /products/{productCode} — updates an existing product. */
+export async function updateProduct(
+  productCode: string,
+  payload: {
+    description: string;
+    shortDescription: string;
+    accountType: string;
+    implemented: string;
+    cashTransactionAllowed: string;
+    defaultMinimumBalanceId: number;
+    interestRoundingFactor: number;
+    nomineeRequired: string;
+    inwardClearingAllowed: string;
+  }
+): Promise<ProductRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/products/${encodeURIComponent(productCode)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update product (${response.status})`));
+  }
+  return {
+    productCode,
+    description: String(data?.description ?? payload.description),
+    shortDescription: String(data?.shortDescription ?? payload.shortDescription),
+    accountType: String(data?.accountType ?? payload.accountType),
+    implemented: String(data?.implemented ?? payload.implemented),
+    cashTransactionAllowed: String(data?.cashTransactionAllowed ?? payload.cashTransactionAllowed),
+    defaultMinimumBalanceId: Number(data?.defaultMinimumBalanceId ?? payload.defaultMinimumBalanceId),
+    interestRoundingFactor: Number(data?.interestRoundingFactor ?? payload.interestRoundingFactor),
+    nomineeRequired: String(data?.nomineeRequired ?? payload.nomineeRequired),
+    inwardClearingAllowed: String(data?.inwardClearingAllowed ?? payload.inwardClearingAllowed),
+    panCardAllowed: "N",
+    individual: "N",
   };
 }
 
