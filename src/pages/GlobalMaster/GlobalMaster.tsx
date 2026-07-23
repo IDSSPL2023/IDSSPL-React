@@ -198,16 +198,16 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
 
   const breadcrumbs = openMaster
     ? [
-        { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
-        { label: en("globalMaster.title"), href: "#", onClick: handleCloseMaster },
-        { label: openMaster.titleEn, href: "#" },
-      ]
+      { label: en("common.home"), href: "/" },
+      { label: en("common.misActivity"), href: "/mis-activity" },
+      { label: en("globalMaster.title"), href: "#", onClick: handleCloseMaster },
+      { label: openMaster.titleEn, href: "#" },
+    ]
     : [
-        { label: en("common.home"), href: "/" },
-        { label: en("common.misActivity"), href: "/mis-activity" },
-        { label: en("globalMaster.title"), href: "#" },
-      ];
+      { label: en("common.home"), href: "/" },
+      { label: en("common.misActivity"), href: "/mis-activity" },
+      { label: en("globalMaster.title"), href: "#" },
+    ];
 
   const handleAddSave = async (formData: Record<string, string>) => {
     if (!openMaster) return;
@@ -302,8 +302,8 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
           loading={tableLoading}
         />
       ) : (
-        <div className="mx-auto max-w-7xl p-4">
-          <div className="rounded-xl bg-white p-5 dark:bg-slate-900">
+        <div className="mx-auto min-w-7xl p-4">
+          <div className="rounded-xl bg-white dark:bg-slate-900">
             <WelcomeScreen
               title="Welcome to Master Maintenance Global"
               searchPlaceholder="Search masters..."
