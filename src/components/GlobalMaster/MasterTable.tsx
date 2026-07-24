@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { SquarePen } from "lucide-react";
+import { Eye, SquarePen } from "lucide-react";
 import { GlobalTable, StatusBadge } from "@/components/common";
 import type { ColumnDef, SortDirection, TableAction } from "@/components/common";
 import { getMasterConfig, rowToFormData, buildRowFromForm, type MasterColumn } from "./masterConfig";
 import MasterParameterModal from "./MasterParameterModal";
+import { updateVehicleOwnedType, updateSocialSubSector, updateAddressProof } from "@/api/globalmaster.api";
 
 const PAGE_SIZE = 10;
 
@@ -26,6 +27,7 @@ export default function MasterTable({ master, rows, filters, searchQuery, onRows
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
   const [editRow, setEditRow] = useState<Record<string, unknown> | null>(null);
+  const [viewRow, setViewRow] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => setPage(1), [filters, searchQuery, master.key]);
 
@@ -66,8 +68,65 @@ export default function MasterTable({ master, rows, filters, searchQuery, onRows
     }
   };
 
-  const handleEditSave = (formData: Record<string, string>) => {
+  const handleEditSave = async (formData: Record<string, string>) => {
     if (!editRow) return;
+
+    if (master.key === "vehicleOwned") {
+      try {
+        const updated = await updateVehicleOwnedType({
+          vehicleOwnedId: Number(editRow.vehicleOwnedId),
+          description: formData.description,
+        });
+        onRowsChange(
+          rows.map((row) =>
+            row.id === editRow.id
+              ? { ...row, vehicleOwnedId: String(updated.vehicleOwnedId), description: updated.description }
+              : row
+          )
+        );
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to update vehicle owned type. Please try again.");
+        return;
+      }
+      setEditRow(null);
+      return;
+    }
+
+    if (master.key === "socialSubSector") {
+      try {
+        const updated = await updateSocialSubSector({
+          socialSectorId: Number(editRow.socialSectorId),
+          socialSubSectorId: Number(editRow.socialSubSectorId),
+          description: formData.description,
+        });
+        onRowsChange(
+          rows.map((row) => (row.id === editRow.id ? { ...row, description: updated.description } : row))
+        );
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to update social sub sector. Please try again.");
+        return;
+      }
+      setEditRow(null);
+      return;
+    }
+
+    if (master.key === "addressProof") {
+      try {
+        const updated = await updateAddressProof({
+          addressProofId: Number(editRow.addressProofId),
+          description: formData.description,
+        });
+        onRowsChange(
+          rows.map((row) => (row.id === editRow.id ? { ...row, description: updated.description } : row))
+        );
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Failed to update address proof. Please try again.");
+        return;
+      }
+      setEditRow(null);
+      return;
+    }
+
     onRowsChange(
       rows.map((row) => (row.id === editRow.id ? { ...row, ...buildRowFromForm(master.key, formData) } : row))
     );
@@ -90,7 +149,10 @@ export default function MasterTable({ master, rows, filters, searchQuery, onRows
 
   const actions: TableAction<Record<string, unknown>>[] | undefined = config.hideActions
     ? undefined
-    : [{ key: "edit", label: "Edit", icon: SquarePen, onClick: (row) => setEditRow(row) }];
+    : [
+        { key: "view", label: "View", icon: Eye, onClick: (row) => setViewRow(row) },
+        { key: "edit", label: "Edit", icon: SquarePen, onClick: (row) => setEditRow(row) },
+      ];
 
   return (
     <div className="min-w-7xl mx-auto p-4">
@@ -113,6 +175,16 @@ export default function MasterTable({ master, rows, filters, searchQuery, onRows
           initialData={rowToFormData(master.key, editRow as Record<string, string>)}
           onClose={() => setEditRow(null)}
           onSave={handleEditSave}
+        />
+      )}
+
+      {viewRow && (
+        <MasterParameterModal
+          mode="view"
+          masterKey={master.key}
+          initialData={rowToFormData(master.key, viewRow as Record<string, string>)}
+          onClose={() => setViewRow(null)}
+          onSave={() => setViewRow(null)}
         />
       )}
     </div>

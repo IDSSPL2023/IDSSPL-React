@@ -103,23 +103,6 @@ const operationCapacityRows: Record<string, string>[] = Array.from({ length: 14 
   hasJointHolder: "No",
 }));
 
-const addressProofRows: Record<string, string>[] = [
-  { id: "1", addressProofCode: "01", description: "Telephone Bill" },
-  { id: "2", addressProofCode: "02", description: "Electricity Bill" },
-  { id: "3", addressProofCode: "03", description: "Passport" },
-  { id: "4", addressProofCode: "04", description: "Aadhaar Card" },
-  { id: "5", addressProofCode: "05", description: "Driving License" },
-  { id: "6", addressProofCode: "06", description: "Ration Card" },
-  { id: "7", addressProofCode: "07", description: "Bank Statement" },
-  { id: "8", addressProofCode: "08", description: "Voter ID" },
-  { id: "9", addressProofCode: "09", description: "Gas Bill" },
-  { id: "10", addressProofCode: "10", description: "Water Bill" },
-  { id: "11", addressProofCode: "11", description: "Property Tax Receipt" },
-  { id: "12", addressProofCode: "12", description: "Rent Agreement" },
-  { id: "13", addressProofCode: "13", description: "Employer Letter" },
-  { id: "14", addressProofCode: "14", description: "Other" },
-];
-
 const clearingBankRows: Record<string, string>[] = Array.from({ length: 14 }, (_, i) => ({
   id: String(i + 1),
   bankCode: `BK${String(i + 1).padStart(3, "0")}`,
@@ -231,17 +214,17 @@ export const MASTER_CONFIG: Record<string, MasterConfigEntry> = {
   },
   addressProof: {
     columns: [
-      { key: "addressProofCode", label: "Address Proof Code" },
+      { key: "addressProofId", label: "Address Proof ID" },
       { key: "description", label: "Description" },
     ],
-    rows: addressProofRows,
+    rows: [],
     formColumns: 1,
     fields: [
-      { key: "addressProofCode", labelEn: "Address Proof Code", labelHi: "पत्ता पुराव्याचा कोड", placeholder: "Select Address Proof Code", icon: "shield", type: "select", options: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"], readOnlyOnEdit: true },
+      { key: "addressProofId", labelEn: "Address Proof ID", labelHi: "पत्ता पुरावा आयडी", placeholder: "Enter Address Proof ID", icon: "shield", readOnlyOnEdit: true },
       { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "text" },
     ],
     filterFields: [
-      { key: "addressProofCode", label: "Address Proof Code" },
+      { key: "addressProofId", label: "Address Proof ID" },
       { key: "description", label: "Description" },
     ],
   },
@@ -301,6 +284,41 @@ export const MASTER_CONFIG: Record<string, MasterConfigEntry> = {
       { key: "cityName", label: "City Name" },
     ],
     hideActions: true,
+  },
+  socialSubSector: {
+    columns: [
+      { key: "socialSectorId", label: "Social Sector ID" },
+      { key: "socialSubSectorId", label: "Social Sub Sector ID" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    formColumns: 2,
+    fields: [
+      { key: "socialSectorId", labelEn: "Social Sector ID", labelHi: "सामाजिक क्षेत्र आयडी", placeholder: "Enter Social Sector ID", icon: "hash", readOnlyOnEdit: true },
+      { key: "socialSubSectorId", labelEn: "Social Sub Sector ID", labelHi: "सामाजिक उप-क्षेत्र आयडी", placeholder: "Enter Social Sub Sector ID", icon: "hash", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "text" },
+    ],
+    filterFields: [
+      { key: "socialSectorId", label: "Social Sector ID" },
+      { key: "socialSubSectorId", label: "Social Sub Sector ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  vehicleOwned: {
+    columns: [
+      { key: "vehicleOwnedId", label: "Vehicle Owned ID" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    formColumns: 1,
+    fields: [
+      { key: "vehicleOwnedId", labelEn: "Vehicle Owned ID", labelHi: "वाहन मालकी आयडी", placeholder: "Enter Vehicle Owned ID", icon: "hash", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "text" },
+    ],
+    filterFields: [
+      { key: "vehicleOwnedId", label: "Vehicle Owned ID" },
+      { key: "description", label: "Description" },
+    ],
   },
   state: {
     columns: [

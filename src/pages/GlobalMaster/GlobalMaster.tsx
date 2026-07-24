@@ -22,8 +22,17 @@ import {
   createCity,
   fetchStates,
   createState,
+  fetchVehicleOwnedTypes,
+  createVehicleOwnedType,
+  fetchSocialSubSectors,
+  createSocialSubSector,
+  fetchAddressProofs,
+  createAddressProof,
   type CityRecord,
   type StateRecord,
+  type VehicleOwnedTypeRecord,
+  type SocialSubSectorRecord,
+  type AddressProofRecord,
 } from "@/api/globalmaster.api";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -34,6 +43,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
 const ROUTED_MASTER_KEYS: Record<string, string> = {
   city: "/globalmaster/citymaster",
   state: "/globalmaster/statemaster",
+  vehicleOwned: "/globalmaster/vehicleownedmaster",
+  socialSubSector: "/globalmaster/socialsubsectormaster",
+  addressProof: "/globalmaster/addressproofmaster",
 };
 
 const mapCityRecordToRow = (record: CityRecord): Record<string, unknown> => ({
@@ -48,6 +60,25 @@ const mapStateRecordToRow = (record: StateRecord): Record<string, unknown> => ({
   stateCode: record.stateCode,
   stateName: record.stateName,
   country: record.countryCode,
+});
+
+const mapVehicleOwnedTypeRecordToRow = (record: VehicleOwnedTypeRecord): Record<string, unknown> => ({
+  id: String(record.vehicleOwnedId),
+  vehicleOwnedId: String(record.vehicleOwnedId),
+  description: record.description,
+});
+
+const mapSocialSubSectorRecordToRow = (record: SocialSubSectorRecord): Record<string, unknown> => ({
+  id: `${record.socialSectorId}-${record.socialSubSectorId}`,
+  socialSectorId: String(record.socialSectorId),
+  socialSubSectorId: String(record.socialSubSectorId),
+  description: record.description,
+});
+
+const mapAddressProofRecordToRow = (record: AddressProofRecord): Record<string, unknown> => ({
+  id: String(record.addressProofId),
+  addressProofId: String(record.addressProofId),
+  description: record.description,
 });
 
 interface MasterItem {
@@ -104,6 +135,48 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
     }
   }, []);
 
+  const loadVehicleOwnedTypes = useCallback(async () => {
+    setTableLoading(true);
+    try {
+      const records = await fetchVehicleOwnedTypes();
+      setTableRows(records.map(mapVehicleOwnedTypeRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load vehicle owned types from server.");
+      setTableRows([]);
+    } finally {
+      setTableLoading(false);
+    }
+  }, []);
+
+  const loadSocialSubSectors = useCallback(async () => {
+    setTableLoading(true);
+    try {
+      const records = await fetchSocialSubSectors();
+      setTableRows(records.map(mapSocialSubSectorRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load social sub sectors from server.");
+      setTableRows([]);
+    } finally {
+      setTableLoading(false);
+    }
+  }, []);
+
+  const loadAddressProofs = useCallback(async () => {
+    setTableLoading(true);
+    try {
+      const records = await fetchAddressProofs();
+      setTableRows(records.map(mapAddressProofRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load address proofs from server.");
+      setTableRows([]);
+    } finally {
+      setTableLoading(false);
+    }
+  }, []);
+
   const handleOpenMaster = useCallback(
     (master: MasterItem) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -123,10 +196,28 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
         return;
       }
 
+      if (master.key === "vehicleOwned") {
+        setTableRows([]);
+        loadVehicleOwnedTypes();
+        return;
+      }
+
+      if (master.key === "socialSubSector") {
+        setTableRows([]);
+        loadSocialSubSectors();
+        return;
+      }
+
+      if (master.key === "addressProof") {
+        setTableRows([]);
+        loadAddressProofs();
+        return;
+      }
+
       const config = getMasterConfig(master.key);
       setTableRows([...config.rows]);
     },
-    [loadCities, loadStates]
+    [loadCities, loadStates, loadVehicleOwnedTypes, loadSocialSubSectors, loadAddressProofs]
   );
 
   useEffect(() => {
@@ -172,9 +263,21 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
       loadStates();
       return;
     }
+    if (openMaster.key === "vehicleOwned") {
+      loadVehicleOwnedTypes();
+      return;
+    }
+    if (openMaster.key === "socialSubSector") {
+      loadSocialSubSectors();
+      return;
+    }
+    if (openMaster.key === "addressProof") {
+      loadAddressProofs();
+      return;
+    }
     const config = getMasterConfig(openMaster.key);
     setTableRows([...config.rows]);
-  }, [openMaster, loadCities, loadStates]);
+  }, [openMaster, loadCities, loadStates, loadVehicleOwnedTypes, loadSocialSubSectors, loadAddressProofs]);
 
   const activeFilterCount = useMemo(
     () => Object.values(filters).filter((v) => v?.trim()).length,
@@ -256,6 +359,65 @@ const GlobalMasterPage: React.FC<GlobalMasterPageProps> = ({ initialMasterKey })
         setShowSuccess(true);
       } catch (err) {
         setErrorMessage(err instanceof Error ? err.message : "Failed to create state. Please try again.");
+      }
+      return;
+    }
+
+    if (openMaster.key === "vehicleOwned") {
+      try {
+        const created = await createVehicleOwnedType({
+          vehicleOwnedId: Number(formData.vehicleOwnedId),
+          description: formData.description,
+        });
+        setTableRows((prev) => [...prev, mapVehicleOwnedTypeRecordToRow(created)]);
+        setSuccessDetails([
+          { label: "Vehicle Owned ID", value: String(created.vehicleOwnedId) },
+          { label: "Description", value: created.description },
+        ]);
+        setShowAdd(false);
+        setShowSuccess(true);
+      } catch (err) {
+        setErrorMessage(err instanceof Error ? err.message : "Failed to create vehicle owned type. Please try again.");
+      }
+      return;
+    }
+
+    if (openMaster.key === "socialSubSector") {
+      try {
+        const created = await createSocialSubSector({
+          socialSectorId: Number(formData.socialSectorId),
+          socialSubSectorId: Number(formData.socialSubSectorId),
+          description: formData.description,
+        });
+        setTableRows((prev) => [...prev, mapSocialSubSectorRecordToRow(created)]);
+        setSuccessDetails([
+          { label: "Social Sector ID", value: String(created.socialSectorId) },
+          { label: "Social Sub Sector ID", value: String(created.socialSubSectorId) },
+          { label: "Description", value: created.description },
+        ]);
+        setShowAdd(false);
+        setShowSuccess(true);
+      } catch (err) {
+        setErrorMessage(err instanceof Error ? err.message : "Failed to create social sub sector. Please try again.");
+      }
+      return;
+    }
+
+    if (openMaster.key === "addressProof") {
+      try {
+        const created = await createAddressProof({
+          addressProofId: Number(formData.addressProofId),
+          description: formData.description,
+        });
+        setTableRows((prev) => [...prev, mapAddressProofRecordToRow(created)]);
+        setSuccessDetails([
+          { label: "Address Proof ID", value: String(created.addressProofId) },
+          { label: "Description", value: created.description },
+        ]);
+        setShowAdd(false);
+        setShowSuccess(true);
+      } catch (err) {
+        setErrorMessage(err instanceof Error ? err.message : "Failed to create address proof. Please try again.");
       }
       return;
     }

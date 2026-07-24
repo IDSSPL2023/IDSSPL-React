@@ -34,6 +34,12 @@ const ROUTED_MASTER_KEYS = {
   depositRule: "/headoffice/depositrule",
   glAccount: "/headoffice/glaccountmaster",
   finalAccountGroup: "/headoffice/finalaccountgroup",
+  accountMinBal: "/headoffice/accountminbalance",
+  accountType: "/headoffice/accounttype",
+  activityCode: "/headoffice/activitycode",
+  branchParameter: "/headoffice/branchparameter",
+  chequeType: "/headoffice/chequetype",
+  classificationCode: "/headoffice/classificationcode",
 };
 
 // Masters that work without a dedicated route redirect (opened inline, still
@@ -90,7 +96,7 @@ const Tab = ({ label, active, onClick }) => (
   </button>
 );
 
-const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filters }) => {
+const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filters, serverPagination }) => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -129,6 +135,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
         rows={tableRows}
         filters={filters}
         onRowsChange={onRowsChange}
+        serverPagination={serverPagination}
       />
     );
   }

@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_MASTER_MAINTENANCE_API_URL || "http://13.202.249.213:8080";
+const BASE_URL = import.meta.env.VITE_MASTER_MAINTENANCE_API_URL || "https://backend.dynamicbanksoft.com";
 
 export interface ClearingTypeRecord {
   id: string;
@@ -95,6 +95,33 @@ function extractList(data: unknown): Record<string, unknown>[] {
   const record = data as Record<string, unknown>;
   const list = record.content ?? record.data ?? record.results ?? record.items;
   return Array.isArray(list) ? list : [];
+}
+
+export interface PagedResult<T> {
+  records: T[];
+  totalPages: number;
+  totalElements: number;
+}
+
+/** The backend rejects size > 200, so real server pagination (not a big one-shot fetch) is required. */
+const PAGE_SIZE = 10;
+
+/**
+ * Every master-maintenance list endpoint is paginated server-side (default
+ * size=20) even when the docs don't mention page/size — passing this as the
+ * one-shot "give me everything" size is safe for masters whose real row count
+ * stays under the 200 cap; masters that exceed it need real page-by-page
+ * fetching instead (see PAGE_SIZE above).
+ */
+const MAX_PAGE_SIZE = 200;
+
+function toPagedResult<T>(data: unknown, mapper: (item: Record<string, unknown>) => T): PagedResult<T> {
+  const record = (data ?? {}) as Record<string, unknown>;
+  return {
+    records: extractList(data).map(mapper),
+    totalPages: Number(record.totalPages ?? 1),
+    totalElements: Number(record.totalElements ?? 0),
+  };
 }
 
 /** GET /default-branch-accounts — browse all branch clearing-account mappings. */
@@ -308,9 +335,9 @@ export async function updateClearingType(
   };
 }
 
-/** GET /products — browse all products. */
+/** GET /products — browse all products (105 real rows fit in one size=200 call). */
 export async function fetchProducts(): Promise<ProductRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/products`);
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/products?page=0&size=${MAX_PAGE_SIZE}`);
   if (!response.ok) throw new Error(`Failed to load products (${response.status})`);
   const data = await parseJson(response);
   return extractList(data).map((item) => ({
@@ -403,23 +430,25 @@ export interface DepositInterestRateRecord {
   rateOfInterest: number;
 }
 
-/** GET /deposit-interest-rates — browse all TD/RD/PG interest rate slabs. */
-export async function fetchDepositInterestRates(): Promise<DepositInterestRateRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-interest-rates`);
+const toDepositInterestRateRecord = (item: Record<string, unknown>): DepositInterestRateRecord => {
+  const id = (item.id as Record<string, unknown>) ?? item;
+  return {
+    accountTypeCode: String(id.accountTypeCode ?? ""),
+    categoryCode: String(id.categoryCode ?? ""),
+    dateOfApplication: String(id.dateOfApplication ?? ""),
+    fromPeriod: Number(id.fromPeriod ?? 0),
+    toPeriod: Number(id.toPeriod ?? 0),
+    unitOfPeriod: String(id.unitOfPeriod ?? ""),
+    rateOfInterest: Number(item.rateOfInterest ?? 0),
+  };
+};
+
+/** GET /deposit-interest-rates — real server pagination (1600+ real rows); page is 0-indexed. */
+export async function fetchDepositInterestRates(page = 0): Promise<PagedResult<DepositInterestRateRecord>> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-interest-rates?page=${page}&size=${PAGE_SIZE}`);
   if (!response.ok) throw new Error(`Failed to load deposit interest rates (${response.status})`);
   const data = await parseJson(response);
-  return extractList(data).map((item) => {
-    const id = (item.id as Record<string, unknown>) ?? item;
-    return {
-      accountTypeCode: String(id.accountTypeCode ?? ""),
-      categoryCode: String(id.categoryCode ?? ""),
-      dateOfApplication: String(id.dateOfApplication ?? ""),
-      fromPeriod: Number(id.fromPeriod ?? 0),
-      toPeriod: Number(id.toPeriod ?? 0),
-      unitOfPeriod: String(id.unitOfPeriod ?? ""),
-      rateOfInterest: Number(item.rateOfInterest ?? 0),
-    };
-  });
+  return toPagedResult(data, toDepositInterestRateRecord);
 }
 
 /** POST /deposit-interest-rates — creates a TD/RD/PG interest rate slab. */
@@ -546,7 +575,7 @@ const toIndustryRecord = (item: Record<string, unknown>, fallbackId?: string): I
 
 /** GET /industries — browse all industries. */
 export async function fetchIndustries(): Promise<IndustryRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/industries`);
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/industries?page=0&size=${MAX_PAGE_SIZE}`);
   if (!response.ok) throw new Error(`Failed to load industries (${response.status})`);
   const data = await parseJson(response);
   return extractList(data).map((item) => toIndustryRecord(item));
@@ -646,6 +675,398 @@ export async function updateDepositRule(id: string, payload: { description: stri
   return toDepositRuleRecord(data ?? payload, id);
 }
 
+export interface ClassificationCodeRecord {
+  classificationId: number;
+  description: string;
+}
+
+const toClassificationCodeRecord = (item: Record<string, unknown>, fallbackId?: string): ClassificationCodeRecord => ({
+  classificationId: Number(item.classificationId ?? fallbackId ?? 0),
+  description: String(item.description ?? ""),
+});
+
+/** GET /classification-codes — browse all classification codes (only 8 real rows fit in one size=200 call). */
+export async function fetchClassificationCodes(): Promise<ClassificationCodeRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/classification-codes?page=0&size=${MAX_PAGE_SIZE}`);
+  if (!response.ok) throw new Error(`Failed to load classification codes (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toClassificationCodeRecord(item));
+}
+
+/** POST /classification-codes/find — load a single row by its natural key, used for View/Edit. */
+export async function fetchClassificationCodeById(classificationId: string): Promise<ClassificationCodeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/classification-codes/find`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ classificationId: Number(classificationId) }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load classification code (${response.status})`));
+  }
+  return toClassificationCodeRecord(data ?? {}, classificationId);
+}
+
+/** POST /classification-codes — strict create. */
+export async function createClassificationCode(payload: ClassificationCodeRecord): Promise<ClassificationCodeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/classification-codes`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create classification code (${response.status})`));
+  }
+  return toClassificationCodeRecord(data ?? (payload as unknown as Record<string, unknown>), String(payload.classificationId));
+}
+
+/** PUT /classification-codes — strict update; classificationId travels in the body, not the URL. */
+export async function updateClassificationCode(payload: ClassificationCodeRecord): Promise<ClassificationCodeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/classification-codes`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update classification code (${response.status})`));
+  }
+  return toClassificationCodeRecord(data ?? (payload as unknown as Record<string, unknown>), String(payload.classificationId));
+}
+
+export interface ChequeTypeRecord {
+  chequeTypeCode: string;
+  description: string;
+}
+
+const toChequeTypeRecord = (item: Record<string, unknown>, fallbackCode?: string): ChequeTypeRecord => ({
+  chequeTypeCode: String(item.chequeTypeCode ?? fallbackCode ?? ""),
+  description: String(item.description ?? ""),
+});
+
+/** GET /cheque-types — browse all cheque types (only 6 real rows fit in one size=200 call). */
+export async function fetchChequeTypes(): Promise<ChequeTypeRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cheque-types?page=0&size=${MAX_PAGE_SIZE}`);
+  if (!response.ok) throw new Error(`Failed to load cheque types (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toChequeTypeRecord(item));
+}
+
+/** POST /cheque-types/find — load a single row by its natural key, used for View/Edit. */
+export async function fetchChequeTypeByCode(chequeTypeCode: string): Promise<ChequeTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cheque-types/find`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chequeTypeCode }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load cheque type (${response.status})`));
+  }
+  return toChequeTypeRecord(data ?? {}, chequeTypeCode);
+}
+
+/** POST /cheque-types — strict create. */
+export async function createChequeType(payload: ChequeTypeRecord): Promise<ChequeTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cheque-types`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create cheque type (${response.status})`));
+  }
+  return toChequeTypeRecord(data ?? (payload as unknown as Record<string, unknown>), payload.chequeTypeCode);
+}
+
+/** PUT /cheque-types — strict update; chequeTypeCode travels in the body, not the URL. */
+export async function updateChequeType(payload: ChequeTypeRecord): Promise<ChequeTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cheque-types`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update cheque type (${response.status})`));
+  }
+  return toChequeTypeRecord(data ?? (payload as unknown as Record<string, unknown>), payload.chequeTypeCode);
+}
+
+export interface BranchParameterRecord {
+  branchCode: string;
+  serviceBranchCode: string;
+  weeklyHoliday: number;
+  isDenominationRequired: string;
+  isTellerSystemUsed: string;
+  isHeadOffice: string;
+  isOnlineClearingImplemented: string;
+  isBranchTransacting: string;
+  workingDay: string;
+  isDayEndExecuted: string;
+  sbNextInterestPostingDate: string;
+  caNextInterestPostingDate: string;
+  tdNextInterestPostingDate: string;
+  tlNextInterestPostingDate: string;
+  ccNextInterestPostingDate: string;
+}
+
+const toBranchParameterRecord = (item: Record<string, unknown>, fallbackCode?: string): BranchParameterRecord => ({
+  branchCode: String(item.branchCode ?? fallbackCode ?? ""),
+  serviceBranchCode: String(item.serviceBranchCode ?? ""),
+  weeklyHoliday: Number(item.weeklyHoliday ?? 0),
+  isDenominationRequired: String(item.isDenominationRequired ?? "N"),
+  isTellerSystemUsed: String(item.isTellerSystemUsed ?? "N"),
+  isHeadOffice: String(item.isHeadOffice ?? "N"),
+  isOnlineClearingImplemented: String(item.isOnlineClearingImplemented ?? "N"),
+  isBranchTransacting: String(item.isBranchTransacting ?? "N"),
+  workingDay: String(item.workingDay ?? ""),
+  isDayEndExecuted: String(item.isDayEndExecuted ?? "N"),
+  sbNextInterestPostingDate: String(item.sbNextInterestPostingDate ?? ""),
+  caNextInterestPostingDate: String(item.caNextInterestPostingDate ?? ""),
+  tdNextInterestPostingDate: String(item.tdNextInterestPostingDate ?? ""),
+  tlNextInterestPostingDate: String(item.tlNextInterestPostingDate ?? ""),
+  ccNextInterestPostingDate: String(item.ccNextInterestPostingDate ?? ""),
+});
+
+/** GET /branch-parameters — real server pagination; page is 0-indexed. */
+export async function fetchBranchParameters(page = 0): Promise<PagedResult<BranchParameterRecord>> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/branch-parameters?page=${page}&size=${PAGE_SIZE}`);
+  if (!response.ok) throw new Error(`Failed to load branch parameters (${response.status})`);
+  const data = await parseJson(response);
+  return toPagedResult(data, toBranchParameterRecord);
+}
+
+/** POST /branch-parameters/find — loads BranchParameter + BranchParameterNonCBS as one form, used for View/Edit. */
+export async function fetchBranchParameterByCode(branchCode: string): Promise<BranchParameterRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/branch-parameters/find`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ branchCode }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load branch parameter (${response.status})`));
+  }
+  return toBranchParameterRecord(data ?? {}, branchCode);
+}
+
+/** POST /branch-parameters — strict transactional create across both branch parameter tables. */
+export async function createBranchParameter(payload: BranchParameterRecord): Promise<BranchParameterRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/branch-parameters`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create branch parameter (${response.status})`));
+  }
+  return toBranchParameterRecord(data ?? (payload as unknown as Record<string, unknown>), payload.branchCode);
+}
+
+/** PUT /branch-parameters/{branchCode} — strict transactional update; branchCode is fixed via the URL. */
+export async function updateBranchParameter(branchCode: string, payload: BranchParameterRecord): Promise<BranchParameterRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/branch-parameters/${encodeURIComponent(branchCode)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update branch parameter (${response.status})`));
+  }
+  return toBranchParameterRecord(data ?? (payload as unknown as Record<string, unknown>), branchCode);
+}
+
+export interface ActivityCodeRecord {
+  activityId: number;
+  description: string;
+}
+
+const toActivityCodeRecord = (item: Record<string, unknown>, fallbackId?: string): ActivityCodeRecord => ({
+  activityId: Number(item.activityId ?? fallbackId ?? 0),
+  description: String(item.description ?? ""),
+});
+
+/** GET /activity-codes — real server pagination; page is 0-indexed. */
+export async function fetchActivityCodes(page = 0): Promise<PagedResult<ActivityCodeRecord>> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/activity-codes?page=${page}&size=${PAGE_SIZE}`);
+  if (!response.ok) throw new Error(`Failed to load activity codes (${response.status})`);
+  const data = await parseJson(response);
+  return toPagedResult(data, toActivityCodeRecord);
+}
+
+/** POST /activity-codes/find — load a single row by its natural key, used for View/Edit. */
+export async function fetchActivityCodeById(activityId: string): Promise<ActivityCodeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/activity-codes/find`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ activityId: Number(activityId) }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load activity code (${response.status})`));
+  }
+  return toActivityCodeRecord(data ?? {}, activityId);
+}
+
+/** POST /activity-codes — strict create. */
+export async function createActivityCode(payload: ActivityCodeRecord): Promise<ActivityCodeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/activity-codes`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create activity code (${response.status})`));
+  }
+  return toActivityCodeRecord(data ?? (payload as unknown as Record<string, unknown>), String(payload.activityId));
+}
+
+/** PUT /activity-codes — strict update; activityId travels in the body, not the URL. */
+export async function updateActivityCode(payload: ActivityCodeRecord): Promise<ActivityCodeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/activity-codes`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update activity code (${response.status})`));
+  }
+  return toActivityCodeRecord(data ?? (payload as unknown as Record<string, unknown>), String(payload.activityId));
+}
+
+export interface AccountTypeRecord {
+  accountType: string;
+  name: string;
+  loanDeposit: string;
+}
+
+const toAccountTypeRecord = (item: Record<string, unknown>, fallbackCode?: string): AccountTypeRecord => ({
+  accountType: String(item.accountType ?? fallbackCode ?? ""),
+  name: String(item.name ?? ""),
+  loanDeposit: String(item.loanDeposit ?? ""),
+});
+
+/** GET /account-types — real server pagination; page is 0-indexed. */
+export async function fetchAccountTypes(page = 0): Promise<PagedResult<AccountTypeRecord>> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-types?page=${page}&size=${PAGE_SIZE}`);
+  if (!response.ok) throw new Error(`Failed to load account types (${response.status})`);
+  const data = await parseJson(response);
+  return toPagedResult(data, toAccountTypeRecord);
+}
+
+/** POST /account-types/find — load a single row by its natural key, used for View/Edit. */
+export async function fetchAccountTypeByCode(accountType: string): Promise<AccountTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-types/find`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ accountType }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load account type (${response.status})`));
+  }
+  return toAccountTypeRecord(data ?? {}, accountType);
+}
+
+/** POST /account-types — strict create. */
+export async function createAccountType(payload: AccountTypeRecord): Promise<AccountTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-types`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create account type (${response.status})`));
+  }
+  return toAccountTypeRecord(data ?? (payload as unknown as Record<string, unknown>), payload.accountType);
+}
+
+/** PUT /account-types — strict update; accountType travels in the body, not the URL. */
+export async function updateAccountType(payload: AccountTypeRecord): Promise<AccountTypeRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-types`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update account type (${response.status})`));
+  }
+  return toAccountTypeRecord(data ?? (payload as unknown as Record<string, unknown>), payload.accountType);
+}
+
+export interface AccountMinBalanceRecord {
+  minimumBalanceId: number;
+  minimumBalance: number;
+  minimumBalanceWithCheque: number;
+  minimumBalanceWithAtm: number;
+}
+
+const toAccountMinBalanceRecord = (item: Record<string, unknown>): AccountMinBalanceRecord => ({
+  minimumBalanceId: Number(item.minimumBalanceId ?? 0),
+  minimumBalance: Number(item.minimumBalance ?? 0),
+  minimumBalanceWithCheque: Number(item.minimumBalanceWithCheque ?? 0),
+  minimumBalanceWithAtm: Number(item.minimumBalanceWithAtm ?? 0),
+});
+
+/** GET /account-minimum-balances — real server pagination; page is 0-indexed. */
+export async function fetchAccountMinBalances(page = 0): Promise<PagedResult<AccountMinBalanceRecord>> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-minimum-balances?page=${page}&size=${PAGE_SIZE}`);
+  if (!response.ok) throw new Error(`Failed to load account minimum balances (${response.status})`);
+  const data = await parseJson(response);
+  return toPagedResult(data, toAccountMinBalanceRecord);
+}
+
+/** POST /account-minimum-balances/find — load a single row by its natural key, used for View/Edit. */
+export async function fetchAccountMinBalanceById(minimumBalanceId: string): Promise<AccountMinBalanceRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-minimum-balances/find`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ minimumBalanceId: Number(minimumBalanceId) }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load account minimum balance (${response.status})`));
+  }
+  return toAccountMinBalanceRecord(data ?? {});
+}
+
+/** POST /account-minimum-balances — strict create; id, all balances client-supplied. */
+export async function createAccountMinBalance(payload: AccountMinBalanceRecord): Promise<AccountMinBalanceRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-minimum-balances`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create account minimum balance (${response.status})`));
+  }
+  return toAccountMinBalanceRecord(data ?? (payload as unknown as Record<string, unknown>));
+}
+
+/** PUT /account-minimum-balances — strict update; minimumBalanceId travels in the body, not the URL. */
+export async function updateAccountMinBalance(payload: AccountMinBalanceRecord): Promise<AccountMinBalanceRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/account-minimum-balances`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update account minimum balance (${response.status})`));
+  }
+  return toAccountMinBalanceRecord(data ?? (payload as unknown as Record<string, unknown>));
+}
+
 export interface FinalAccountGroupRecord {
   code: string;
   description: string;
@@ -658,7 +1079,7 @@ const toFinalAccountGroupRecord = (item: Record<string, unknown>, fallbackCode?:
 
 /** GET /final-account-groups — browse all final account groups. */
 export async function fetchFinalAccountGroups(): Promise<FinalAccountGroupRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/final-account-groups`);
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/final-account-groups?page=0&size=${MAX_PAGE_SIZE}`);
   if (!response.ok) throw new Error(`Failed to load final account groups (${response.status})`);
   const data = await parseJson(response);
   return extractList(data).map((item) => toFinalAccountGroupRecord(item));
@@ -741,12 +1162,12 @@ const toGlAccountRecord = (item: Record<string, unknown>, fallbackCode?: string)
   createOutListWhen: String(item.createOutListWhen ?? "N"),
 });
 
-/** GET /gl-accounts — browse all GL accounts. */
-export async function fetchGlAccounts(): Promise<GlAccountRecord[]> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts`);
+/** GET /gl-accounts — real server pagination (1000+ real rows); page is 0-indexed. */
+export async function fetchGlAccounts(page = 0): Promise<PagedResult<GlAccountRecord>> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts?page=${page}&size=${PAGE_SIZE}`);
   if (!response.ok) throw new Error(`Failed to load GL accounts (${response.status})`);
   const data = await parseJson(response);
-  return extractList(data).map((item) => toGlAccountRecord(item));
+  return toPagedResult(data, toGlAccountRecord);
 }
 
 /** GET /gl-accounts/{glAccountCode} — full detail, used to populate View/Edit. */

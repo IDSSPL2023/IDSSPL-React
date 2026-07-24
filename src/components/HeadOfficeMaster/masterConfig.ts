@@ -98,18 +98,107 @@ export const MASTER_CONFIG = {
       { key: "minBalance", label: "Minimum Balance" },
     ],
   },
+  classificationCode: {
+    columns: [
+      { key: "classificationId", label: "Classification ID" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "classificationId", labelEn: "Classification ID", labelHi: "वर्गीकरण आयडी", placeholder: "Enter Classification ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "classificationId", label: "Classification ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  chequeType: {
+    columns: [
+      { key: "chequeTypeCode", label: "Cheque Type" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "chequeTypeCode", labelEn: "Cheque Type", labelHi: "चेकचा प्रकार", placeholder: "Enter Cheque Type", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Cheque Type Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "chequeTypeCode", label: "Cheque Type" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  branchParameter: {
+    // Branch Name / Is CBS Implemented from the legacy screen design aren't part
+    // of the real Branch Parameter API, so they're dropped here.
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "serviceBranchCode", label: "Service Branch Code" },
+      { key: "weeklyHoliday", label: "Weekly Holiday" },
+      { key: "isBranchTransacting", label: "Is Branch Transacting" },
+      { key: "isHeadOffice", label: "Is Head Office" },
+      { key: "isDenominationRequired", label: "Is Denomination Required" },
+      { key: "isTellerSystemUsed", label: "Is Teller System Used" },
+      { key: "isOnlineClearingImplemented", label: "Is Online Clearing Implemented" },
+      { key: "isDayEndExecuted", label: "Is Day End Executed" },
+      { key: "workingDay", label: "Working Day" },
+      { key: "sbNextInterestPostingDate", label: "SB Next Interest Posting Date" },
+      { key: "caNextInterestPostingDate", label: "CA Next Interest Posting Date" },
+      { key: "tdNextInterestPostingDate", label: "TD Next Interest Posting Date" },
+      { key: "tlNextInterestPostingDate", label: "TL Next Interest Posting Date" },
+      { key: "ccNextInterestPostingDate", label: "CC Next Interest Posting Date" },
+    ],
+    rows: [],
+    fields: [
+      { key: "branchCode", labelEn: "Branch Code", labelHi: "शाखा कोड", placeholder: "Enter Branch Code", icon: "id", readOnlyOnEdit: true },
+      { key: "serviceBranchCode", labelEn: "Service Branch Code", labelHi: "सेवा शाखा कोड", placeholder: "Enter Service Branch Code", icon: "bank" },
+      { key: "weeklyHoliday", labelEn: "Weekly Holiday", labelHi: "साप्ताहिक सुट्टी", placeholder: "Enter Weekly Holiday (1-7)", icon: "calendar" },
+      { key: "isBranchTransacting", labelEn: "Is Branch Transacting", labelHi: "शाखा व्यवहार करत आहे का", type: "radio" },
+      { key: "isHeadOffice", labelEn: "Is Head Office", labelHi: "मुख्य कार्यालय आहे का", type: "radio" },
+      { key: "isDenominationRequired", labelEn: "Is Denomination Required", labelHi: "मूल्यवर्ग आवश्यक आहे का", type: "radio" },
+      { key: "isTellerSystemUsed", labelEn: "Is Teller System Used", labelHi: "टेलर सिस्टम वापरली आहे का", type: "radio" },
+      { key: "isOnlineClearingImplemented", labelEn: "Is Online Clearing Implemented", labelHi: "ऑनलाइन क्लिअरिंग लागू आहे का", type: "radio" },
+      { key: "isDayEndExecuted", labelEn: "Is Day End Executed", labelHi: "डे एंड कार्यान्वित झाले का", type: "radio" },
+      { key: "workingDay", labelEn: "Working Day", labelHi: "कामकाजाचा दिवस", placeholder: "Select Working Day", icon: "calendar", type: "date" },
+      { key: "sbNextInterestPostingDate", labelEn: "SB Next Interest Posting Date", labelHi: "एसबी पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "caNextInterestPostingDate", labelEn: "CA Next Interest Posting Date", labelHi: "सीए पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "tdNextInterestPostingDate", labelEn: "TD Next Interest Posting Date", labelHi: "टीडी पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "tlNextInterestPostingDate", labelEn: "TL Next Interest Posting Date", labelHi: "टीएल पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "ccNextInterestPostingDate", labelEn: "CC Next Interest Posting Date", labelHi: "सीसी पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+    ],
+    filterFields: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "serviceBranchCode", label: "Service Branch Code" },
+    ],
+  },
+  activityCode: {
+    columns: [
+      { key: "activityId", label: "Activity ID" },
+      { key: "description", label: "Activity Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "activityId", labelEn: "Activity ID", labelHi: "क्रियाकलाप आयडी", placeholder: "Enter Activity ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Activity Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "activityId", label: "Activity ID" },
+      { key: "description", label: "Activity Description" },
+    ],
+  },
   accountType: {
+    // "Created Date" from the legacy screen design isn't part of the real
+    // Account Type API (accountType/name/loanDeposit only), so it's dropped here.
     columns: [
       { key: "accountId", label: "Account ID" },
       { key: "accountName", label: "Account Name" },
-      { key: "createdDate", label: "Created Date" },
       { key: "loanDeposit", label: "Loan Deposit" },
     ],
     rows: accountTypeRows,
     fields: [
       { key: "accountId", labelEn: "Account Type ID", labelHi: "खात्याचा प्रकार आयडी", placeholder: "Enter Account Type ID", icon: "id", readOnlyOnEdit: true },
       { key: "accountName", labelEn: "Account Name", labelHi: "खात्याचे नाव", placeholder: "Enter Account Name", icon: "user" },
-      { key: "loanDeposit", labelEn: "Loan Deposit", labelHi: "कर्ज ठेव", placeholder: "Enter Loan Deposit", icon: "layers" },
+      { key: "loanDeposit", labelEn: "Loan Deposit", labelHi: "कर्ज ठेव", placeholder: "Select Loan Deposit", icon: "layers", type: "select", options: ["Deposit", "Loan"] },
     ],
     filterFields: [
       { key: "accountId", label: "Account ID" },
