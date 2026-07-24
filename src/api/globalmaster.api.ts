@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_MASTER_MAINTENANCE_API_URL || "http://13.202.249.213:8080";
+const BASE_URL = import.meta.env.VITE_MASTER_MAINTENANCE_API_URL || "https://backend.dynamicbanksoft.com";
 
 async function parseJson(response: Response): Promise<unknown> {
   const text = await response.text();
