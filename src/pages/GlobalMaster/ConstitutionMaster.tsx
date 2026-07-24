@@ -24,22 +24,32 @@ import {
   type FilterValues,
   type Validator,
 } from "@/components/common";
-import ModalWrapperWithHeader from "@/components/shared/Wrappers/ModalWrapperWithHeader";
 import TextInput from "@/components/shared/Inputs/TextInput";
 import SuccessModal from "@/components/shared/SuccessModal";
 import { useRouter } from "@/lib/navigation";
 import { useBilingual } from "@/i18n/useBilingual";
 import {
-  fetchConstitutions,
+  searchConstitutions,
   createConstitution,
   updateConstitution,
   type ConstitutionRecord,
+  type SearchConstitutionsRequest,
 } from "@/api/constitutionmaster.api";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
 
-const PAGE_SIZE = 10;
+// --- Custom debounce hook ---
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debounced;
+}
 
+// --- Constants ---
+const PAGE_SIZE = 10;
 type ModalMode = "add" | "edit" | "view" | null;
 
 interface FormState {
@@ -59,18 +69,25 @@ export default function ConstitutionMasterPage() {
   const router = useRouter();
   const { en, isEnglish } = useBilingual();
 
+  // --- State ---
   const [rows, setRows] = useState<ConstitutionRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
+  // Quick search input (updates immediately)
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 400); // debounced version for API calls
+
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [showFilter, setShowFilter] = useState(false);
 
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalElements, setTotalElements] = useState(0);
 
+  // Modal states
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [activeRecord, setActiveRecord] = useState<ConstitutionRecord | null>(
     null,
@@ -86,12 +103,43 @@ export default function ConstitutionMasterPage() {
   } | null>(null);
   const [errorInfo, setErrorInfo] = useState<string | null>(null);
 
+  // --- Data fetching (server-side) ---
   const loadConstitutions = useCallback(async () => {
     setLoading(true);
     setLoadError(null);
     try {
-      const records = await fetchConstitutions();
-      setRows(records);
+      // Determine search field from filters or debounced search
+      let searchBy: "constitutionCode" | "description" | undefined;
+      let textToSearch: string | undefined;
+
+      if (filters.constitutionCode?.trim()) {
+        searchBy = "constitutionCode";
+        textToSearch = filters.constitutionCode.trim();
+      } else if (filters.description?.trim()) {
+        searchBy = "description";
+        textToSearch = filters.description.trim();
+      } else if (debouncedSearchQuery.trim()) {
+        searchBy = "constitutionCode"; // default field
+        textToSearch = debouncedSearchQuery.trim();
+      }
+
+      const searchRequest: SearchConstitutionsRequest = {
+        page: page - 1,
+        size: PAGE_SIZE,
+        searchBy,
+        textToSearch,
+        sort: sortKey
+          ? {
+              field: sortKey,
+              direction: sortAsc ? "ASC" : "DESC",
+            }
+          : undefined,
+      };
+
+      const response = await searchConstitutions(searchRequest);
+      setRows(response.content);
+      setTotalPages(response.totalPages);
+      setTotalElements(response.totalElements);
     } catch (err) {
       console.error(err);
       setLoadError(
@@ -100,73 +148,47 @@ export default function ConstitutionMasterPage() {
           : "Failed to load Constitution Master records.",
       );
       setRows([]);
+      setTotalPages(1);
+      setTotalElements(0);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, filters, debouncedSearchQuery, sortKey, sortAsc]);
 
+  // Reload when dependencies change (including debounced search)
   useEffect(() => {
     loadConstitutions();
   }, [loadConstitutions]);
 
-  useEffect(() => setPage(1), [filters, searchQuery]);
+  // Reset page when filters, debounced search, or sort changes
+  useEffect(() => {
+    setPage(1);
+  }, [filters, debouncedSearchQuery, sortKey, sortAsc]);
 
-  const filteredRows = useMemo(() => {
-    let result = rows;
-    const activeFilters = Object.entries(filters).filter(([, v]) => v?.trim());
-    if (activeFilters.length > 0) {
-      result = result.filter((row) =>
-        activeFilters.every(([key, value]) =>
-          String((row as unknown as Record<string, unknown>)[key] ?? "")
-            .toLowerCase()
-            .includes(value.toLowerCase()),
-        ),
-      );
-    }
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      result = result.filter(
-        (row) =>
-          row.constitutionCode.toLowerCase().includes(q) ||
-          row.description.toLowerCase().includes(q),
-      );
-    }
-    return result;
-  }, [rows, filters, searchQuery]);
-
-  const sortedRows = useMemo(() => {
-    if (!sortKey) return filteredRows;
-    return [...filteredRows].sort((a, b) => {
-      const valA = String(
-        (a as unknown as Record<string, unknown>)[sortKey] ?? "",
-      ).toLowerCase();
-      const valB = String(
-        (b as unknown as Record<string, unknown>)[sortKey] ?? "",
-      ).toLowerCase();
-      if (valA < valB) return sortAsc ? -1 : 1;
-      if (valA > valB) return sortAsc ? 1 : -1;
-      return 0;
-    });
-  }, [filteredRows, sortKey, sortAsc]);
-
-  const totalPages = Math.max(1, Math.ceil(sortedRows.length / PAGE_SIZE));
-  const paginatedRows = sortedRows.slice(
-    (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE,
-  );
+  // --- Handlers ---
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value); // updates input immediately
+    // page reset is handled by the useEffect above (debouncedSearchQuery changes)
+  };
 
   const handleSort = (key: string) => {
-    if (sortKey === key) setSortAsc((prev) => !prev);
-    else {
+    if (sortKey === key) {
+      setSortAsc((prev) => !prev);
+    } else {
       setSortKey(key);
       setSortAsc(true);
     }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
   };
 
   const activeFilterCount = useMemo(
     () => Object.values(filters).filter((v) => v?.trim()).length,
     [filters],
   );
+
   const filterSummary = useMemo(() => {
     const entries = Object.entries(filters).filter(([, v]) => v?.trim());
     if (entries.length === 0) return "";
@@ -177,11 +199,13 @@ export default function ConstitutionMasterPage() {
     return `${label}:${firstVal}${extra}`;
   }, [filters]);
 
+  // --- Table columns ---
   const columns: ColumnDef<ConstitutionRecord>[] = [
     { key: "constitutionCode", header: "Constitution Code", sortable: true },
     { key: "description", header: "Description", sortable: true },
   ];
 
+  // --- Modal handlers (unchanged) ---
   const openAdd = () => {
     setModalMode("add");
     setActiveRecord(null);
@@ -224,6 +248,7 @@ export default function ConstitutionMasterPage() {
     { key: "view", label: "View", icon: Eye, onClick: openView },
   ];
 
+  // --- Form validation & save ---
   const handleChange = (key: keyof FormState, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
     setValidated(false);
@@ -245,28 +270,22 @@ export default function ConstitutionMasterPage() {
     setSaving(true);
     try {
       if (modalMode === "add") {
-        const created = await createConstitution({
+        await createConstitution({
           constitutionCode: formData.constitutionCode,
           description: formData.description,
         });
-        setRows((prev) => [...prev, created]);
+        await loadConstitutions();
         setModalMode(null);
         setSuccessInfo({
           title: "Parameter Added Successfully",
           subtitle: "Your Parameter is Added Successfully",
         });
       } else if (modalMode === "edit" && activeRecord) {
-        const updated = await updateConstitution({
+        await updateConstitution({
           description: formData.description,
           constitutionCode: activeRecord.constitutionCode,
         });
-        setRows((prev) =>
-          prev.map((row) =>
-            row.constitutionCode === activeRecord.constitutionCode
-              ? updated
-              : row,
-          ),
-        );
+        await loadConstitutions();
         setModalMode(null);
         setSuccessInfo({
           title: "Parameter Edit Successfully",
@@ -288,6 +307,7 @@ export default function ConstitutionMasterPage() {
     }
   };
 
+  // --- Breadcrumbs ---
   const breadcrumbs = [
     { label: en("common.home"), href: "/" },
     { label: en("common.misActivity"), href: "#" },
@@ -299,6 +319,7 @@ export default function ConstitutionMasterPage() {
     { label: "Constitution Master", href: "#" },
   ];
 
+  // --- Render ---
   return (
     <div className="app-page-bg min-h-screen dark:bg-slate-950">
       <GlobalNav
@@ -309,8 +330,8 @@ export default function ConstitutionMasterPage() {
         showActions
         onFilter={() => setShowFilter(true)}
         onAdd={openAdd}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        searchQuery={searchQuery} // passes immediate value for display
+        onSearchChange={handleSearchChange}
         onRefresh={loadConstitutions}
         activeFilterCount={activeFilterCount}
         filterSummary={filterSummary}
@@ -324,17 +345,22 @@ export default function ConstitutionMasterPage() {
         )}
         <GlobalTable
           columns={columns}
-          rows={paginatedRows}
+          rows={rows}
           rowKey={(row) => row.constitutionCode}
           actions={actions}
           sortKey={sortKey}
           sortDirection={(sortAsc ? "asc" : "desc") as SortDirection}
           onSortChange={handleSort}
-          pagination={{ page, totalPages, onPageChange: setPage }}
+          pagination={{
+            page,
+            totalPages,
+            onPageChange: handlePageChange,
+          }}
           loading={loading}
         />
       </div>
 
+      {/* Add/Edit Modal - unchanged */}
       {(modalMode === "add" || modalMode === "edit") && (
         <ModalWrapper
           open
@@ -415,6 +441,7 @@ export default function ConstitutionMasterPage() {
         </ModalWrapper>
       )}
 
+      {/* View Modal - unchanged */}
       {modalMode === "view" && activeRecord && (
         <ModalWrapper
           open
@@ -470,15 +497,20 @@ export default function ConstitutionMasterPage() {
         </ModalWrapper>
       )}
 
+      {/* Filter Modal */}
       {showFilter && (
         <FilterModal
           fields={FILTER_FIELDS}
           initialValues={filters as FilterValues}
           onClose={() => setShowFilter(false)}
-          onApply={(values) => setFilters(values)}
+          onApply={(values) => {
+            setFilters(values);
+            setPage(1);
+          }}
         />
       )}
 
+      {/* Success/Error Modals */}
       {successInfo && (
         <SuccessModal
           title={successInfo.title}

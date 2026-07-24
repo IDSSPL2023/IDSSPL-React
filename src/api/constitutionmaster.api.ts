@@ -5,6 +5,23 @@ export interface ConstitutionRecord {
   description: string;
 }
 
+export interface SearchConstitutionsRequest {
+  page?: number;
+  size?: number;
+  searchBy?: "constitutionCode" | "description";
+  textToSearch?: string;
+  sort?: {
+    field: string;
+    direction: "ASC" | "DESC";
+  };
+}
+
+export interface SearchConstitutionsResponse {
+  content: ConstitutionRecord[];
+  totalPages: number;
+  totalElements: number;
+}
+
 const toConstitutionRecord = (
   item: Record<string, unknown>,
   fallbackCode?: string,
@@ -15,13 +32,54 @@ const toConstitutionRecord = (
   description: String(item.description ?? ""),
 });
 
-/** GET /constitutions — browse all constitution-type records. */
-export async function fetchConstitutions(): Promise<ConstitutionRecord[]> {
-  const data = await apiGet("/api/v1/master-maintenance/constitutions");
-  return extractList(data).map((item) => toConstitutionRecord(item));
+export async function searchConstitutions(
+  request: SearchConstitutionsRequest = {},
+): Promise<SearchConstitutionsResponse> {
+  const { page = 0, size = 20, searchBy, textToSearch, sort } = request;
+
+  const params: Record<string, string | number | boolean | undefined> = {
+    page,
+    size,
+  };
+  if (sort) {
+    params.sortField = sort.field;
+    params.sortDirection = sort.direction;
+  }
+
+  const body: { searchBy?: string; textToSearch?: string } = {};
+  if (searchBy && textToSearch) {
+    body.searchBy = searchBy;
+    body.textToSearch = textToSearch;
+  }
+
+  const data = await apiPost<Record<string, unknown>>(
+    "/api/v1/master-maintenance/constitutions/search",
+    body,
+    { params },
+  );
+
+  const content = extractList(data).map((item) => toConstitutionRecord(item));
+  const totalPages =
+    typeof data?.totalPages === "number"
+      ? data.totalPages
+      : Math.ceil(
+          (typeof data?.totalElements === "number"
+            ? data.totalElements
+            : content.length) / size,
+        );
+  const totalElements =
+    typeof data?.totalElements === "number"
+      ? data.totalElements
+      : content.length;
+
+  return { content, totalPages, totalElements };
 }
 
-/** GET /constitutions/{code} — full detail, used to populate View/Edit. */
+export async function fetchConstitutions(): Promise<ConstitutionRecord[]> {
+  const result = await searchConstitutions({ page: 0, size: 20 });
+  return result.content;
+}
+
 export async function fetchConstitutionByCode(
   constitutionCode: string,
 ): Promise<ConstitutionRecord> {
@@ -31,7 +89,6 @@ export async function fetchConstitutionByCode(
   return toConstitutionRecord(data ?? {}, constitutionCode);
 }
 
-/** POST /constitutions — creates a constitution-type record (code is client-supplied). */
 export async function createConstitution(
   payload: ConstitutionRecord,
 ): Promise<ConstitutionRecord> {
@@ -42,14 +99,13 @@ export async function createConstitution(
   return toConstitutionRecord(data ?? payload, payload.constitutionCode);
 }
 
-/** PUT /constitutions/{code} — updates an existing constitution-type record's description. */
 export async function updateConstitution(payload: {
   description: string;
   constitutionCode: string;
 }): Promise<ConstitutionRecord> {
   const data = await apiPut<Record<string, unknown>>(
-    `/api/v1/master-maintenance/constitutions`,
+    "/api/v1/master-maintenance/constitutions",
     payload,
   );
-  return toConstitutionRecord(data ?? payload);
+  return toConstitutionRecord(data ?? payload, payload.constitutionCode);
 }
