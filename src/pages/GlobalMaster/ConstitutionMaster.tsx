@@ -256,12 +256,10 @@ export default function ConstitutionMasterPage() {
           subtitle: "Your Parameter is Added Successfully",
         });
       } else if (modalMode === "edit" && activeRecord) {
-        const updated = await updateConstitution(
-          activeRecord.constitutionCode,
-          {
-            description: formData.description,
-          },
-        );
+        const updated = await updateConstitution({
+          description: formData.description,
+          constitutionCode: activeRecord.constitutionCode,
+        });
         setRows((prev) =>
           prev.map((row) =>
             row.constitutionCode === activeRecord.constitutionCode

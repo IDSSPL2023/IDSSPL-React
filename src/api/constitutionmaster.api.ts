@@ -5,8 +5,13 @@ export interface ConstitutionRecord {
   description: string;
 }
 
-const toConstitutionRecord = (item: Record<string, unknown>, fallbackCode?: string): ConstitutionRecord => ({
-  constitutionCode: String(item.constitutionCode ?? item.code ?? fallbackCode ?? ""),
+const toConstitutionRecord = (
+  item: Record<string, unknown>,
+  fallbackCode?: string,
+): ConstitutionRecord => ({
+  constitutionCode: String(
+    item.constitutionCode ?? item.code ?? fallbackCode ?? "",
+  ),
   description: String(item.description ?? ""),
 });
 
@@ -17,27 +22,34 @@ export async function fetchConstitutions(): Promise<ConstitutionRecord[]> {
 }
 
 /** GET /constitutions/{code} — full detail, used to populate View/Edit. */
-export async function fetchConstitutionByCode(constitutionCode: string): Promise<ConstitutionRecord> {
+export async function fetchConstitutionByCode(
+  constitutionCode: string,
+): Promise<ConstitutionRecord> {
   const data = await apiGet<Record<string, unknown>>(
-    `/api/v1/master-maintenance/constitutions/${encodeURIComponent(constitutionCode)}`
+    `/api/v1/master-maintenance/constitutions/${encodeURIComponent(constitutionCode)}`,
   );
   return toConstitutionRecord(data ?? {}, constitutionCode);
 }
 
 /** POST /constitutions — creates a constitution-type record (code is client-supplied). */
-export async function createConstitution(payload: ConstitutionRecord): Promise<ConstitutionRecord> {
-  const data = await apiPost<Record<string, unknown>>("/api/v1/master-maintenance/constitutions", payload);
+export async function createConstitution(
+  payload: ConstitutionRecord,
+): Promise<ConstitutionRecord> {
+  const data = await apiPost<Record<string, unknown>>(
+    "/api/v1/master-maintenance/constitutions",
+    payload,
+  );
   return toConstitutionRecord(data ?? payload, payload.constitutionCode);
 }
 
 /** PUT /constitutions/{code} — updates an existing constitution-type record's description. */
-export async function updateConstitution(
-  constitutionCode: string,
-  payload: { description: string }
-): Promise<ConstitutionRecord> {
+export async function updateConstitution(payload: {
+  description: string;
+  constitutionCode: string;
+}): Promise<ConstitutionRecord> {
   const data = await apiPut<Record<string, unknown>>(
-    `/api/v1/master-maintenance/constitutions/${encodeURIComponent(constitutionCode)}`,
-    payload
+    `/api/v1/master-maintenance/constitutions`,
+    payload,
   );
-  return toConstitutionRecord(data ?? payload, constitutionCode);
+  return toConstitutionRecord(data ?? payload);
 }
