@@ -212,7 +212,7 @@ const CashDepositAuthorizePage = () => {
   const handleResetFilters = () => setFilters(CashDepositFilterModal_defaultCashDepositFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <AppNavbar
         titleEn="Cash Deposit Authorize"
         titleHi="रोख जमा अधिकृत करणे"

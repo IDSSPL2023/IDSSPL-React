@@ -21,6 +21,8 @@ import {
   Search,
   AlertCircle,
 } from "lucide-react";
+import CustomerIdPicklistField, { CustomerOption } from "@/components/common/CustomerIdPicklistField";
+// import CustomerIdPicklistField, { type CustomerOption } from "./CustomerIdPicklistField";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -36,11 +38,6 @@ interface AddFixedAssetAccountModalProps {
 type DeprecationMethod = "Day" | "Month";
 type DeprecationCalculateOn = "Opening Balance" | "Current Balance";
 
-interface CustomerListRow {
-  customerId: string;
-  name: string;
-}
-
 function useCloseHandler(onClose?: () => void) {
   const router = useRouter();
   return () => {
@@ -51,23 +48,6 @@ function useCloseHandler(onClose?: () => void) {
     }
   };
 }
-
-// Sample rows for the Customer pickup list
-const CUSTOMER_LIST: CustomerListRow[] = [
-  { customerId: "0000200012", name: "BALAMI MANJUNATH IRANNA" },
-  { customerId: "0002000001", name: "SAVAKAR RAMANNA FAKIRAP" },
-  { customerId: "0002000002", name: "JALI SHIVAPPA PARASAPPA" },
-  { customerId: "0002000003", name: "CHALAWADI SANGAPPA YALLAVVA" },
-  { customerId: "0002000004", name: "DESAI SUVARNA SANJAY" },
-  { customerId: "0002000005", name: "BENNUR LAXMAVVA SHIVAPPA" },
-  { customerId: "0002000006", name: "DIVANAJI KRISHNA VENKATESH" },
-  { customerId: "0002000007", name: "KAMBAR KASTURI LAXMAN" },
-  { customerId: "0002000008", name: "KURI SIDDAPPA GADIGEPPA" },
-  { customerId: "0002000009", name: "PATIL MARENDRA RAMANAGOUDA" },
-  { customerId: "0002000010", name: "SUNAGAD RUKMAVVA KASHAPPA" },
-  { customerId: "0002000011", name: "SONNAD RAJASAB HASANASAB" },
-  { customerId: "0002000012", name: "HANAMAR SURESH PAKEERAPPA" },
-];
 
 function HeaderIcon() {
   return (
@@ -345,40 +325,6 @@ function TextField({ icon, value, onChange, placeholder, prefix, disabled, error
   );
 }
 
-function TextFieldWithMenu({
-  icon,
-  value,
-  onChange,
-  onMenuClick,
-  menuActive,
-  error,
-}: {
-  icon?: ReactNode;
-  value: string;
-  onChange: (v: string) => void;
-  onMenuClick: () => void;
-  menuActive?: boolean;
-  error?: boolean;
-}) {
-  return (
-    <div className="flex flex-1 items-stretch gap-2">
-      <TextField icon={icon} value={value} onChange={onChange} error={error} />
-      <button
-        type="button"
-        onClick={onMenuClick}
-        aria-label="More options"
-        className={`flex h-[42px] w-[42px] shrink-0 items-center justify-center self-center rounded-lg border transition-colors ${
-          menuActive
-            ? "border-primary-200 bg-primary-100 text-primary"
-            : "border-slate-200 bg-primary-50 text-primary hover:bg-primary-100"
-        }`}
-      >
-        <MoreVertical size={16} />
-      </button>
-    </div>
-  );
-}
-
 interface SelectFieldProps {
   icon?: ReactNode;
   value: string;
@@ -457,105 +403,6 @@ function RadioOption<T extends string>({
       </span>
       {label}
     </button>
-  );
-}
-
-function CustomerListModal({
-  onSelect,
-  onClose,
-}: {
-  onSelect: (row: CustomerListRow) => void;
-  onClose: () => void;
-}) {
-  const [searchText, setSearchText] = useState("");
-
-  const filteredRows = useMemo(() => {
-    if (!searchText.trim()) return CUSTOMER_LIST;
-    const q = searchText.trim().toLowerCase();
-    return CUSTOMER_LIST.filter(
-      (row) => row.customerId.toLowerCase().includes(q) || row.name.toLowerCase().includes(q)
-    );
-  }, [searchText]);
-
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4">
-      <div className="relative flex max-h-[85vh] w-[95vw] max-w-[720px] flex-col overflow-hidden rounded-[28px] bg-white shadow-2xl">
-        <div className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-primary-100" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-primary-100" />
-
-        <div className="relative z-10 flex items-center justify-between gap-4 px-6 pt-6 pb-5">
-          <h2 className="shrink-0 text-lg font-bold text-slate-800">Customer List</h2>
-          <div className="relative w-full max-w-[260px]">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Search"
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm text-slate-700 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-          >
-            <X className="h-4 w-4" strokeWidth={1.75} />
-          </button>
-        </div>
-
-        <div className="scrollbar-hide relative z-10 flex-1 overflow-y-auto px-6 pb-6">
-          <table className="w-full border-collapse text-left text-sm">
-            <thead>
-              <tr className="bg-primary-100 text-slate-700">
-                <th className="rounded-l-lg px-4 py-3 font-semibold">Customer Id</th>
-                <th className="px-4 py-3 text-center font-semibold">Name</th>
-                <th className="rounded-r-lg px-4 py-3 text-right font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRows.map((row) => (
-                <tr key={row.customerId} className="border-b border-slate-50 last:border-0">
-                  <td className="px-4 py-3">
-                    <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                      {row.customerId}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center text-slate-700">{row.name}</td>
-                  <td className="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => onSelect(row)}
-                      className="rounded-lg bg-primary-50 px-4 py-1.5 text-sm font-medium text-primary transition hover:bg-primary-100"
-                    >
-                      Select
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {filteredRows.length === 0 && (
-                <tr>
-                  <td colSpan={3} className="px-4 py-8 text-center text-sm text-slate-400">
-                    No customers found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <style>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}</style>
-      </div>
-    </div>
   );
 }
 
@@ -660,9 +507,11 @@ export default function FixedAssetPage({
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isValidated, setIsValidated] = useState(false);
 
-  const handleCustomerSelect = (row: CustomerListRow) => {
-    setCustomerId(row.customerId);
-    setCustomerName(row.name);
+  // Handle customer selection from picklist
+  const handleCustomerSelect = (customer: CustomerOption) => {
+    console.log("customer", customer,customerId)
+    setCustomerId(customer.customerId);
+    setCustomerName(customer.customerName);
     setIsCustomerListOpen(false);
     setErrors((prev) => ({ ...prev, customerId: "", customerName: "" }));
     setIsValidated(false);
@@ -834,17 +683,13 @@ export default function FixedAssetPage({
           </FieldWrap>
 
           <FieldWrap label="Customer ID" labelHi="ग्राहक आयडी" error={errors.customerId}>
-            <TextFieldWithMenu
-              icon={<IdCard size={16} />}
+            <CustomerIdPicklistField
+              label=""
               value={customerId}
-              onChange={(v) => {
-                setCustomerId(v);
-                setErrors((prev) => ({ ...prev, customerId: "" }));
-                setIsValidated(false);
-              }}
-              menuActive={isCustomerListOpen}
-              onMenuClick={() => setIsCustomerListOpen(true)}
-              error={!!errors.customerId}
+              placeholder="Select Customer"
+              onSelect={handleCustomerSelect}
+              preFetch={false}
+              pageSize={10}
             />
           </FieldWrap>
 
@@ -1096,9 +941,9 @@ export default function FixedAssetPage({
         {renderContent()}
 
         {/* Modals */}
-        {isCustomerListOpen && (
+        {/* {isCustomerListOpen && (
           <CustomerListModal onSelect={handleCustomerSelect} onClose={() => setIsCustomerListOpen(false)} />
-        )}
+        )} */}
 
         {isSuccessOpen && (
           <SuccessModal
@@ -1145,9 +990,9 @@ export default function FixedAssetPage({
         {renderContent()}
 
         {/* Modals */}
-        {isCustomerListOpen && (
+        {/* {isCustomerListOpen && (
           <CustomerListModal onSelect={handleCustomerSelect} onClose={() => setIsCustomerListOpen(false)} />
-        )}
+        )} */}
 
         {isSuccessOpen && (
           <SuccessModal

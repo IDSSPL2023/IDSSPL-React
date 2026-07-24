@@ -709,7 +709,7 @@ const TlOtherChargesAuthorizePage = () => {
   const handleResetFilters = () => setFilters(TlOtherChargesFilterModal_defaultTlOtherChargesFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="TL Other Charges Authorize"
         titleHi="मुदत कर्जाचे इतर शुल्क अधिकृत करणे"

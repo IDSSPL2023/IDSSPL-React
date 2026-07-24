@@ -78,9 +78,8 @@ export default function Sidebar({ isOpen: _isOpen, onClose: _onClose }: SidebarP
 
   return (
     <div
-      className={`flex h-screen flex-col rounded-r-2xl border-r border-primary bg-[#0C0B1E] transition-[width] duration-300 ${
-        collapsed ? "w-[72px]" : "w-[230px]"
-      }`}
+      className={`flex h-screen flex-col rounded-r-2xl border-r border-primary bg-[#0C0B1E] transition-[width] duration-300 ${collapsed ? "w-[72px]" : "w-[230px]"
+        }`}
       onMouseEnter={() => setCollapsed(false)}
       onMouseLeave={() => {
         setCollapsed(true);

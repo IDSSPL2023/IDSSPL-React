@@ -464,7 +464,7 @@ const TdInterestPaymentAuthorizePage = () => {
   const handleResetFilters = () => setFilters(defaultTdInterestPaymentFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="TD Interest Payment Mark Authorize"
         titleHi="मुदत ठेव व्याज भुगतान चिन्हांकित"

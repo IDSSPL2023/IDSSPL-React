@@ -130,7 +130,7 @@ function AccountFreezeModal({ onClose, onSubmit, data }: AccountFreezeModal_Acco
         <div className="relative z-10 flex items-center justify-between gap-4 px-8 pt-7 pb-5">
           <div className="flex items-center gap-3">
             <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
-              <Image src="/person1.png" alt="" fill sizes="48px" className="object-contain" />
+              <Image src={IMAGES.PERSON_ICON} alt="" fill sizes="48px" className="object-contain" />
             </span>
             <h2 className="text-[22px] font-bold text-[#1E1B4B] dark:text-slate-100">
               Account Status
@@ -563,11 +563,12 @@ const AccountTypeMenuConfig_addInsuranceDetailsItem = (
   onClick: () => handlers.onAddInsuranceDetails(row),
 });
 
-// CA/SA Account Type - Menu 1
+// CA/SA Account Type - Menu 1 (Edit only — no View, per this account type's own requirement)
 const AccountTypeMenuConfig_caSaMenuConfig: AccountTypeMenuConfig_AccountTypeMenuConfig = {
   accountType: "ca-sa",
   getMenuItems: (row, tRaw, handlers) => [
-    ...AccountTypeMenuConfig_viewEditFreezeItems(row, tRaw, handlers),
+    { key: "edit", label: tRaw("common.edit"), icon: SquarePen, onClick: () => handlers.onEdit(row) },
+    { key: "freeze", label: tRaw("accountMaster.table.menuFreezeUnfreeze"), icon: Lock, onClick: () => handlers.onFreeze(row) },
     { key: "chequeBookIssue", label: tRaw("accountMaster.table.menuChequeBookIssue"), icon: BookOpenCheck, onClick: () => handlers.onChequeBookIssue(row) },
     { key: "standingInstruction", label: tRaw("accountMaster.table.menuStandingInstruction"), icon: ClipboardList, onClick: () => handlers.onStandingInstruction(row) },
     { key: "memo", label: tRaw("accountMaster.table.menuMemo"), icon: StickyNote, onClick: () => handlers.onMemo(row) },
@@ -1044,7 +1045,7 @@ export const AccountMasterPage = ({ accountType }: AccountMasterPage_AccountMast
     });
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] relative">
+    <div className="min-h-screen app-page-bg relative">
       <NavbarAM
         titleEn={titleEn}
         titleHi={titleHi}
@@ -1173,7 +1174,7 @@ const AccountMasterLandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn={en("application.title")}
         titleHi={t("application.title")}

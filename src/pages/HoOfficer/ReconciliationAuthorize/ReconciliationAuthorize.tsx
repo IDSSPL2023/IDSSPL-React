@@ -560,7 +560,7 @@ const ReconciliationAuthorizePage = () => {
   const handleResetFilters = () => setFilters(ReconciliationFilterModal_defaultReconciliationFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Reconciliation Authorize"
         titleHi="समायोजन अधिकृत करणे"

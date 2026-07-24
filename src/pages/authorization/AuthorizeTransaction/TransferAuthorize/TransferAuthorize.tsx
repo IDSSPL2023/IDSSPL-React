@@ -737,7 +737,7 @@ const TransferAuthorizePage = () => {
   const handleResetFilters = () => setFilters(TransferFilterModal_defaultTransferFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Transfer Authorize"
         titleHi="हस्तांतरण अधिकृत करणे"

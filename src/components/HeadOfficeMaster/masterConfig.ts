@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IdCard, IndianRupee, User, Layers } from "lucide-react";
+import { IdCard, IndianRupee, User, Layers, Building2, RefreshCw, Percent, Calendar, ClipboardList } from "lucide-react";
 
 export const MASTERS = [
   { icon: "Wallet", titleEn: "Account Minimum Balance", titleHi: "खात्यातील किमान शिल्लक", key: "accountMinBal" },
@@ -48,6 +48,11 @@ const FIELD_ICONS = {
   rupee: IndianRupee,
   user: User,
   layers: Layers,
+  bank: Building2,
+  refresh: RefreshCw,
+  percent: Percent,
+  calendar: Calendar,
+  clipboard: ClipboardList,
 };
 
 const accountMinBalRows = Array.from({ length: 13 }, (_, i) => {
@@ -112,6 +117,139 @@ export const MASTER_CONFIG = {
       { key: "loanDeposit", label: "Loan Deposit" },
     ],
   },
+  defaultBranchAccounts: {
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "inwardClearingAccountCode", label: "Inward Clearing Account Code" },
+      { key: "outwardClearingAccountCode", label: "Outward Clearing Account Code" },
+    ],
+    rows: [],
+    fields: [
+      { key: "branchCode", labelEn: "Branch Code", labelHi: "शाखा कोड", placeholder: "Enter Branch Code", icon: "id", readOnlyOnEdit: true },
+      { key: "inwardClearingAccountCode", labelEn: "Inward Clearing Account Code", labelHi: "इनवर्ड क्लीयरिंग खाते कोड", placeholder: "Enter Inward Clearing Account Code", icon: "user" },
+      { key: "outwardClearingAccountCode", labelEn: "Outward Clearing Account Code", labelHi: "आउटवर्ड क्लीयरिंग खाते कोड", placeholder: "Enter Outward Clearing Account Code", icon: "user" },
+    ],
+    filterFields: [
+      { key: "searchBy", label: "Search By", type: "select", options: ["NAME", "BRANCH_CODE"] },
+      { key: "textToSearch", label: "Search Text", placeholder: "Enter branch name or code" },
+    ],
+  },
+  clearingType: {
+    columns: [
+      { key: "id", label: "Clearing Type ID" },
+      { key: "description", label: "Description" },
+      { key: "clearingHouseCode", label: "Clearing House Code" },
+      { key: "payableRequired", label: "Payable Required" },
+      { key: "payableHead", label: "Payable Head" },
+      { key: "receivableRequired", label: "Receivable Required" },
+      { key: "receivableHead", label: "Receivable Head" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Clearing Type", labelHi: "क्लिअरिंग प्रकार", placeholder: "Enter Clearing Type", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Clearing Type Description", labelHi: "क्लिअरिंग प्रकाराचे वर्णन", placeholder: "Enter Clearing Type Description", icon: "user" },
+      { key: "clearingHouseCode", labelEn: "Clearing House Code", labelHi: "क्लिअरिंग हाऊस कोड", placeholder: "Enter Clearing House Codde", icon: "bank" },
+      { key: "payableRequired", labelEn: "Is Payable Required", labelHi: "अल्पवयीन आहे का", type: "radio", pairWith: "payableHead" },
+      { key: "payableHead", labelEn: "Payable Head", labelHi: "देय खाते शीर्ष", placeholder: "Enter Payable Head", icon: "refresh" },
+      { key: "receivableRequired", labelEn: "Is Receivable Required", labelHi: "अल्पवयीन आहे का", type: "radio", pairWith: "receivableHead" },
+      { key: "receivableHead", labelEn: "Receivable Head", labelHi: "प्राप्य खाते शीर्ष", placeholder: "Enter Receivable Head", icon: "refresh" },
+    ],
+    filterFields: [
+      { key: "id", label: "Clearing Type ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  productMaster: {
+    // Only columns backed by real fields on the Product Master API response
+    // (see GET /products) — Copy From / GL Account Code / Max Cash & Withdrawal
+    // Limit are Add-time-only concepts, not stored on the product record.
+    columns: [
+      { key: "accountType", label: "Account Type Code" },
+      { key: "productCode", label: "Product Code" },
+      { key: "defaultMinimumBalanceId", label: "Default Min Balance Id" },
+      { key: "interestRoundingFactor", label: "Interest Rounding Factor" },
+      { key: "implemented", label: "Is Implemented" },
+      { key: "nomineeRequired", label: "Is Nominee Required" },
+      { key: "cashTransactionAllowed", label: "Is Cash Transaction Allowed" },
+      { key: "inwardClearingAllowed", label: "Is Inward Clearing Allowed" },
+    ],
+    rows: [],
+    // Add/View/Edit for this master render via ProductParameterModal instead of
+    // the generic field-config loop, so no `fields` array is needed here.
+    fields: [],
+    filterFields: [
+      { key: "productCode", label: "Product Code" },
+      { key: "description", label: "Description" },
+      { key: "accountType", label: "Account Type" },
+    ],
+  },
+  tdInterestRate: {
+    // Read-only browse matching GET /deposit-interest-rates; the natural key is
+    // the whole row (accountTypeCode + categoryCode + dateOfApplication + period range).
+    columns: [
+      { key: "accountTypeCode", label: "Account Type Code" },
+      { key: "categoryCode", label: "Category Code" },
+      { key: "dateOfApplication", label: "Date Of Application" },
+      { key: "fromPeriod", label: "From period" },
+      { key: "toPeriod", label: "To Period" },
+      { key: "unitOfPeriod", label: "Unit to Period" },
+      { key: "rateOfInterest", label: "Rate Of Interest" },
+    ],
+    rows: [],
+    fields: [
+      { key: "accountTypeCode", labelEn: "Account Type Code", labelHi: "खात्याच्या प्रकाराचा कोड", placeholder: "Enter Account Type Code", icon: "id" },
+      { key: "categoryCode", labelEn: "Category Code", labelHi: "वर्गवारी संकेत", type: "select", options: ["PUBLIC", "STAFF"], placeholder: "Select Category" },
+      { key: "dateOfApplication", labelEn: "Date Of Application", labelHi: "अर्ज करण्याची तारीख", type: "date", placeholder: "Select Date Of Application", icon: "calendar" },
+      { key: "fromPeriod", labelEn: "From Period", labelHi: "कालावधीचा प्रकार", placeholder: "Enter From Period", icon: "rupee" },
+      { key: "toPeriod", labelEn: "To Period", labelHi: "कालावधीपर्यंत", placeholder: "Enter To Period", icon: "rupee" },
+      { key: "unitOfPeriod", labelEn: "Unit Of Period", labelHi: "कालावधीचे एकक", type: "select", options: ["D", "M", "Y"], placeholder: "Select Unit Of Period" },
+      { key: "rateOfInterest", labelEn: "Rate of Interest", labelHi: "व्याजदर", placeholder: "Enter Rate of Interest", icon: "percent" },
+    ],
+    filterFields: [
+      { key: "accountTypeCode", label: "Account Type Code" },
+      { key: "categoryCode", label: "Category Code" },
+    ],
+  },
+  installmentType: {
+    columns: [
+      { key: "id", label: "Installment Type ID" },
+      { key: "description", label: "Installment Description" },
+      { key: "installmentOn", label: "Installment On" },
+      { key: "diaryBased", label: "Is Dairy Base" },
+      { key: "principalArrearsOnDiary", label: "Principal Arreires On Diary" },
+      { key: "interestArrearsOnDiary", label: "Interest Arreires On Diary" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Installment Type ID", labelHi: "हप्ता प्रकार आयडी", placeholder: "Enter Installment Type ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Installment Type Description", labelHi: "हप्ता प्रकार वर्णन", placeholder: "Enter Installment Type Description", icon: "user" },
+      { key: "installmentOn", labelEn: "Installment On", labelHi: "हप्ता लागू आधार", type: "select", options: ["P", "S", "B", "N"], placeholder: "Select Installment On", icon: "clipboard" },
+      { key: "diaryBased", labelEn: "Is Diary Base", labelHi: "डायरी आधारित आहे का", type: "radio", pairWith: "principalArrearsOnDiary" },
+      { key: "principalArrearsOnDiary", labelEn: "Principal Arreirs On Diary", labelHi: "डायरीवरील थकीत मूळ रक्कम", type: "radio" },
+      { key: "interestArrearsOnDiary", labelEn: "Interest Arreirs On Diary", labelHi: "डायरीवरील थकीत व्याज रक्कम", type: "radio" },
+    ],
+    filterFields: [
+      { key: "id", label: "Installment Type ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  instrumentType: {
+    // Create/update both go through the idempotent POST /instrument-types/save
+    // (there is no plain GET list or separate create endpoint for this master).
+    columns: [
+      { key: "code", label: "Instrument Type" },
+      { key: "description", label: "Instrument Type Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "code", labelEn: "Instrument Type", labelHi: "साधन प्रकार", placeholder: "Enter Instrument Type", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Instrument Type Description", labelHi: "साधन प्रकार वर्णन", placeholder: "Enter Classification Description", icon: "user" },
+    ],
+    filterFields: [
+      { key: "code", label: "Instrument Type" },
+      { key: "description", label: "Description" },
+    ],
+  },
 };
 
 const DEFAULT_CONFIG = {
@@ -148,7 +286,7 @@ export const emptyFormData = (masterKey) => {
   const config = getMasterConfig(masterKey);
   const data = {};
   config.fields.forEach((field) => {
-    data[field.key] = "";
+    data[field.key] = field.type === "radio" ? "N" : "";
   });
   return data;
 };

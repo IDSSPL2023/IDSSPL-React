@@ -13,10 +13,12 @@ import FilterModal, { type AccountFilters } from "@/components/shared/FilterModa
 import AuthorizationTabs, { type AuthorizationTabKey } from "@/components/Authorization/AuthorizationTabs";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import RowActionMenu, { type RowActionMenuItem } from "@/components/shared/RowActionMenu";
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
 import FixedAssetPage from "@/pages/futuremodels/FixedAsset/FixedAsset";
+import { hasActiveFilters, getActiveFilterSummary } from "@/components/shared/filterSummary";
 
 /* ===== from AuthorizeSavingAccountModal.tsx ===== */
 /* ===================== Shared types ===================== */
@@ -455,14 +457,15 @@ function AuthorizeSavingAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -576,14 +579,15 @@ function AuthorizeSavingAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<Building2 size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<Building2 size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -1263,14 +1267,15 @@ function AuthorizeLoanAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -1939,14 +1944,15 @@ function AuthorizeLoanAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.guarantorState || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.guarantorState || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -2104,14 +2110,15 @@ function AuthorizeLoanAccountModal({
           onChange={() => {}}
         />
 
-        <FieldShell label="State" labelHi="राज्य" required>
-          <TextInput
-            icon={<Building2 size={16} />}
-            value={data.salaryState || "Maharashtra"}
-            onChange={() => {}}
-            readOnly
-          />
-        </FieldShell>
+        <StatePicklistField
+          label="State"
+          labelHi="राज्य"
+          icon={<Building2 size={16} />}
+          value={data.salaryState || "Maharashtra"}
+          onSelect={() => {}}
+          required
+          readOnly
+        />
 
         <FieldShell label="Country" labelHi="देश" required>
           <TextInput
@@ -2867,14 +2874,15 @@ function AuthorizeDepositAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<HomeIcon size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<HomeIcon size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -2988,14 +2996,15 @@ function AuthorizeDepositAccountModal({
             onChange={() => {}}
           />
 
-          <FieldShell label="State" labelHi="राज्य" required>
-            <TextInput
-              icon={<Building2 size={16} />}
-              value={data.state || "Maharashtra"}
-              onChange={() => {}}
-              readOnly
-            />
-          </FieldShell>
+          <StatePicklistField
+            label="State"
+            labelHi="राज्य"
+            icon={<Building2 size={16} />}
+            value={data.state || "Maharashtra"}
+            onSelect={() => {}}
+            required
+            readOnly
+          />
 
           <FieldShell label="Country" labelHi="देश" required>
             <TextInput
@@ -3476,11 +3485,14 @@ export const AuthorizeAccountPage = ({ accountType }: AuthorizeAccountPage_Autho
 
   const [activeTab, setActiveTab] = useState<AuthorizationTabKey>("new");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filters, setFilters] = useState<AccountFilters>({
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const defaultAccountFilters: AccountFilters = {
     accountName: "",
     accountNumber: "",
     accountType: "",
-  });
+  };
+  const [filters, setFilters] = useState<AccountFilters>(defaultAccountFilters);
+  const handleResetFilters = () => setFilters(defaultAccountFilters);
   const [selectedRow, setSelectedRow] = useState<AuthorizeAccountPage_AuthorizeRow | null>(null);
   const [isAuthorizeModalOpen, setIsAuthorizeModalOpen] = useState(false);
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -3611,7 +3623,7 @@ export const AuthorizeAccountPage = ({ accountType }: AuthorizeAccountPage_Autho
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <GlobalNav
         titleEn={en("authorization.title")}
         titleHi={t("authorization.title")}
@@ -3632,6 +3644,11 @@ export const AuthorizeAccountPage = ({ accountType }: AuthorizeAccountPage_Autho
           active={activeTab}
           onChange={setActiveTab}
           onOpenFilter={() => setIsFilterOpen(true)}
+          isSearchVisible={isSearchVisible}
+          onToggleSearch={() => setIsSearchVisible((v) => !v)}
+          hasActiveFilters={hasActiveFilters(filters)}
+          activeFilterSummary={getActiveFilterSummary(filters)}
+          onResetFilters={handleResetFilters}
         />
 
         {/* Custom Table */}
@@ -3817,7 +3834,7 @@ const ITEMS: AuthorizeMasterItem[] = [
     key: "fixedAssetClosing",
     icon: ShieldAlert,
     cardKey: "fixedAssetClosing",
-    // href: "/authorization/authorizeaccountmain/fixed-close",
+    href: "/authorization/authorizeaccountmain/fixed-close",
   },
   {
     key: "investmentAuthorization",
@@ -3924,7 +3941,7 @@ const AuthorizeAccountMainPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn={en("accountAuthorizeMaster.navTitle")}
         titleHi={t("accountAuthorizeMaster.navTitle")}
@@ -3953,7 +3970,7 @@ const AuthorizeAccountMainPage = () => {
               />
               <button
                 type="button"
-                className="shrink-0 rounded-md bg-primary-700 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-800"
+                className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
               >
                 {en("accountAuthorizeMaster.show")}
               </button>

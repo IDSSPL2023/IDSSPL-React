@@ -13,6 +13,7 @@ type PayrollTransactionCard_PayrollTransactionCardProps = {
 };
 
 const PayrollTransactionCard = ({ item, onOpen }: PayrollTransactionCard_PayrollTransactionCardProps) => {
+  const router = useRouter();
   return (
     <div className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:border-primary-300 hover:shadow-[0_4px_20px_rgba(11,99,193,0.15)] dark:border-slate-800 dark:bg-slate-900 sm:p-5">
       <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full">
@@ -33,8 +34,12 @@ const PayrollTransactionCard = ({ item, onOpen }: PayrollTransactionCard_Payroll
 
       <button
         type="button"
-        onClick={() => onOpen?.(item)}
-        className="flex shrink-0 items-center gap-1 rounded-full border border-primary bg-white px-4 py-2 text-sm font-medium text-primary transition-colors duration-200 hover:bg-primary hover:text-white"
+        disabled={!item.href}
+        onClick={() => item.href && router.push(item.href)}
+        className={`flex shrink-0 items-center gap-1 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200 ${item.href
+          ? "border-primary bg-white text-primary hover:bg-primary hover:text-white"
+          : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+          }`}
       >
         Open <ChevronRight size={16} />
       </button>
@@ -48,13 +53,14 @@ export type PayrollTransactionData_PayrollTransactionItem = {
   id: string;
   title: string;
   icon: string;
+  href?: string;
 };
 
 const PayrollTransactionData_ICON = IMAGES.AUTHORIZE_TRANSACTION_LIST_ICON;
 
 export const PayrollTransactionData_PAYROLL_TRANSACTION_ITEMS: PayrollTransactionData_PayrollTransactionItem[] = [
   { id: "earning-deduction-master", title: "Earning Deduction Master", icon: PayrollTransactionData_ICON },
-  { id: "employee-leave-balance", title: "Employee Leave Balance", icon: PayrollTransactionData_ICON },
+  { id: "employee-leave-balance", title: "Employee Leave Balance", icon: PayrollTransactionData_ICON, href: "/payroll/transaction/employee-leave-balance" },
   { id: "employee-loan-details", title: "Employee Loan Details", icon: PayrollTransactionData_ICON },
   { id: "update-fix-fields", title: "Update Fix Fields", icon: PayrollTransactionData_ICON },
   { id: "application-authorize", title: "Application Authorize", icon: PayrollTransactionData_ICON },
@@ -82,7 +88,7 @@ const PayrollTransaction = () => {
   }, [query]);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Payroll Transaction"
         breadcrumbs={[

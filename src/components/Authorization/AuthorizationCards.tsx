@@ -84,6 +84,7 @@ const AUTHORIZATION_ITEMS: AuthorizationItem[] = [
     badge: "New",
     description: "The newly created record is awaiting authorization.",
     count: 56,
+    href: "/authorization/locker",
   },
   {
     key: "sms",

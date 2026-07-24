@@ -31,7 +31,7 @@ const ClerkSmsPage: FC = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <Nav
         titleEn={en("clerkSms.title")}
         titleHi={t("clerkSms.title")}

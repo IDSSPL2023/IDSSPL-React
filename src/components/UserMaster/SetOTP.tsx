@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "@/components/ui/Image";
+import { IMAGES } from "@/assets";
 import { User, IdCard, RefreshCw, X, Check, ChevronDown, LucideIcon } from "lucide-react";
 
 /* ===================== Types ===================== */
@@ -133,7 +134,7 @@ export default function SetOtpModal({ open, userId = "", userName = "", onClose,
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-center gap-3 sm:gap-4">
               <Image
-                src="/SetPassword.png.png"
+                src={IMAGES.SET_PASSWORD}
                 alt="Set User OTP"
                 width={64}
                 height={64}

@@ -78,7 +78,7 @@ function UserMasterAuthorization() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar">
+    <div className="min-h-screen app-page-bg no-scrollbar">
       <NavbarCA
         titleEn="User Authorization"
         titleHi="अधिकृतीकरण"

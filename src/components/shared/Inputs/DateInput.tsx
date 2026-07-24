@@ -1,5 +1,6 @@
 import { Calendar, LucideIcon } from "lucide-react";
 import { useId, useRef, useEffect, useState } from "react";
+import { formatDateDDMMMYYYY } from "@/lib/dateFormat";
 
 interface DateInputProps {
   labelEn: string;
@@ -89,19 +90,22 @@ function DateInput({
     return `${baseClasses} ${borderClass} ${stateClasses}`;
   };
 
+  // Native <input type="date"> can't be given a custom display format, so the
+  // native text is made transparent and a DD-MMM-YYYY overlay is drawn on top
+  // (see getOverlayClasses). Clicks still reach the native input underneath.
   const getInputClasses = () => {
-    const baseClasses =
-      "w-full bg-transparent text-[15px] outline-none disabled:cursor-not-allowed";
-    const colorClasses = readOnly
+    return "w-full bg-transparent text-[15px] text-transparent caret-transparent outline-none disabled:cursor-not-allowed";
+  };
+
+  const getOverlayClasses = () => {
+    return readOnly
       ? "text-slate-500 dark:text-slate-400"
       : value
         ? "text-[#4B5563] dark:text-slate-100"
         : "text-slate-400 dark:text-slate-500";
-    // Icon is always defined (has default), so we can use it directly
-    const spacingClasses = "ml-3";
-
-    return `${baseClasses} ${colorClasses} ${spacingClasses}`;
   };
+
+  const displayValue = formatDateDDMMMYYYY(value);
 
   return (
     <div className="w-full">
@@ -134,25 +138,32 @@ function DateInput({
           />
         )}
 
-        <input
-          ref={inputRef}
-          id={inputId}
-          type="date"
-          value={value}
-          readOnly={readOnly}
-          disabled={readOnly}
-          onChange={handleInputChange}
-          onClick={handleInputClick}
-          onFocus={() => !readOnly && setIsOpen(true)}
-          onBlur={handleBlur}
-          className={getInputClasses()}
-          aria-invalid={hasError}
-          aria-describedby={hasError ? errorId : undefined}
-          placeholder={placeholder}
-          style={{
-            colorScheme: readOnly ? "light" : "light dark",
-          }}
-        />
+        <div className="relative ml-3 w-full">
+          <input
+            ref={inputRef}
+            id={inputId}
+            type="date"
+            value={value}
+            readOnly={readOnly}
+            disabled={readOnly}
+            onChange={handleInputChange}
+            onClick={handleInputClick}
+            onFocus={() => !readOnly && setIsOpen(true)}
+            onBlur={handleBlur}
+            className={getInputClasses()}
+            aria-invalid={hasError}
+            aria-describedby={hasError ? errorId : undefined}
+            placeholder={placeholder}
+            style={{
+              colorScheme: readOnly ? "light" : "light dark",
+            }}
+          />
+          <span
+            className={`pointer-events-none absolute inset-0 flex items-center text-[15px] ${getOverlayClasses()}`}
+          >
+            {displayValue || placeholder}
+          </span>
+        </div>
       </div>
 
       {hasError && (

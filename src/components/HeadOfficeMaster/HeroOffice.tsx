@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import DataTable from "./DataTable";
 import { MASTERS, getMasterConfig } from "./masterConfig";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ICON_MAP = {
   Wallet, UserCircle, ShieldCheck, GitBranch, SlidersHorizontal, CreditCard,
@@ -22,6 +22,15 @@ const ICON_MAP = {
 };
 
 const TABS = ["All Masters", "Recently Used"];
+
+const ROUTED_MASTER_KEYS = {
+  branch: "/branchmaster",
+  clearingType: "/headoffice/clearintype",
+  productMaster: "/headoffice/productmaster",
+  tdInterestRate: "/headoffice/tdinterestrate",
+  installmentType: "/headoffice/installmenttype",
+  instrumentType: "/headoffice/instrumenttype",
+};
 
 const MasterCard = ({ icon, titleEn, titleHi, onOpen }) => {
   const Icon = ICON_MAP[icon] || Wallet;
@@ -68,6 +77,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
   const [activeTab, setActiveTab] = useState(TABS[0]);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const filteredMasters = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -79,14 +89,19 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
     );
   }, [query]);
 
-  // Side-effect: navigate away, don't return the navigate() call itself
+  // Side-effect: navigate away, don't return the navigate() call itself.
+  // Skip the redirect when we're already on the target route (e.g. the page
+  // was opened directly via its dedicated URL), otherwise this would loop
+  // back to itself and never render the table.
+  const routedPath = openMaster && ROUTED_MASTER_KEYS[openMaster.key];
+  const needsRedirect = routedPath && location.pathname !== routedPath;
   useEffect(() => {
-    if (openMaster?.titleEn === "Branch Master") {
-      navigate("/branchmaster");
+    if (needsRedirect) {
+      navigate(routedPath);
     }
-  }, [openMaster, navigate]);
+  }, [needsRedirect, routedPath, navigate]);
 
-  if (openMaster?.titleEn === "Branch Master") {
+  if (needsRedirect) {
     return null; // render nothing while the redirect happens
   }
 
@@ -122,7 +137,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
             />
             <button
               type="button"
-              className="bg-primary-700 hover:bg-primary-800 text-white text-sm font-medium rounded-md px-5 py-2 transition-colors"
+              className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
             >
               Show
             </button>

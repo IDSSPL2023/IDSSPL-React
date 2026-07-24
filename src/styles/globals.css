@@ -60,6 +60,16 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Standard page backdrop, replacing the old flat #E7EAEF fill — used across
+   every page's outermost wrapper in place of `bg-[#E7EAEF]`. */
+.app-page-bg {
+  background-image: url("../assets/images/backgrounds/welcome-hero.png");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 /* Hide scrollbar but keep scrolling */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

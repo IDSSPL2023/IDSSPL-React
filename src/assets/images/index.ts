@@ -50,6 +50,7 @@ import tdLot from "./modules/td-lot.png";
 import transfer from "./modules/transfer.png";
 import user from "./common/user.png";
 import xls from "./common/xls.png";
+import bg from "./background1.jpg"
 import account from "./account.png"
 import staff from "./staff.png"
 import deposit from "./deposites.png"
@@ -59,7 +60,7 @@ import branchManager from "./rajesh-kumar.jpg"
 import branchMaster from "./branch-master.png"
 
 export const IMAGES = {
-  WELCOME_HERO_BG: welcomeHero,
+  WELCOME_HERO_BG: bg,
   ACCOUNT_STATUS: accountStatus,
   ADD_ICON: addIcon,
   ADDRESS: address,

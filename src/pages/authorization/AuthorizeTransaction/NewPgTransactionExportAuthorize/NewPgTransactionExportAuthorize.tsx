@@ -589,7 +589,7 @@ const NewPgTransactionExportAuthorizePage = () => {
   const handleResetFilters = () => setFilters(NewPgTransactionExportFilterModal_defaultNewPgTransactionExportFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="New PG Transaction Export"
         titleHi="नवीन पीजी व्यवहार निर्यात अधिकृत करणे"

@@ -1470,7 +1470,7 @@ export default function BillAuthorizationOptions() {
   };
 
   return (
-    <>
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <div className="mx-auto min-w-7xl p-4">
         <div className="rounded-xl bg-white p-5 dark:bg-slate-900">
           {/* Hero */}
@@ -1484,7 +1484,10 @@ export default function BillAuthorizationOptions() {
                 placeholder="Search Bill Authorization..."
                 className="flex-1 text-sm text-gray-700 outline-none placeholder:text-gray-400"
               />
-              <button className="rounded-md bg-primary-700 px-5 py-2 text-sm font-medium text-white hover:bg-primary-800">
+              <button
+                type="button"
+                className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+              >
                 {en("supportUtility.show")}
               </button>
             </div>
@@ -1535,6 +1538,6 @@ export default function BillAuthorizationOptions() {
       {modalState.isOpen && modalState.type === "obc-realize-unrealize-authorize" && (
         <OBCRealizeUnrealizeAuthorizeModal open={true} onClose={closeModal} />
       )}
-    </>
+    </div>
   );
 }
