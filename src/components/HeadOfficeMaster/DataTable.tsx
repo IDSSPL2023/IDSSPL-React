@@ -24,14 +24,30 @@ import {
   updateFinalAccountGroup,
   fetchGlAccountByCode,
   updateGlAccount,
+  fetchAccountMinBalanceById,
+  updateAccountMinBalance,
+  fetchAccountTypeByCode,
+  updateAccountType,
+  fetchActivityCodeById,
+  updateActivityCode,
+  fetchBranchParameterByCode,
+  updateBranchParameter,
+  fetchChequeTypeByCode,
+  updateChequeType,
+  fetchClassificationCodeById,
+  updateClassificationCode,
 } from "@/api/headoffice.api";
+
+// The API stores loanDeposit as a legacy L/D code; the Add/Edit select shows
+// the friendly words, so this pair converts at the display <-> payload boundary.
+const loanDepositLabelFromCode = (code) => (code === "L" ? "Loan" : code === "D" ? "Deposit" : code);
+const loanDepositCodeFromLabel = (label) => (label === "Loan" ? "L" : label === "Deposit" ? "D" : label);
 
 const PAGE_SIZE = 10;
 
 const menuOptions = [
   { key: "view", label: "View", icon: Eye },
   { key: "edit", label: "Edit", icon: SquarePen },
-  { key: "branchEnableDisable", label: "Branch Enable Disable ", icon: GitBranch },
 ];
 
 const SortableHeader = ({ label, sortable, onSort }) => (
@@ -115,15 +131,15 @@ const renderInstallmentTypeCell = (col, row) => {
   return row[col.key];
 };
 
-const DataTable = ({ master, rows, filters, onRowsChange }) => {
+const DataTable = ({ master, rows, filters, onRowsChange, serverPagination }) => {
   const config = getMasterConfig(master.key);
   const [sortKey, setSortKey] = useState(null);
   const [sortAsc, setSortAsc] = useState(true);
   const [modal, setModal] = useState(null);
-  const [page, setPage] = useState(1);
+  const [clientPage, setClientPage] = useState(1);
 
   useEffect(() => {
-    setPage(1);
+    setClientPage(1);
   }, [master.key, filters]);
 
   const handleSort = (key) => {
@@ -161,8 +177,13 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
     });
   }, [filteredRows, sortKey, sortAsc]);
 
-  const totalPages = Math.max(1, Math.ceil(sortedRows.length / PAGE_SIZE));
-  const pagedRows = sortedRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  // For server-paginated masters, `rows` is already just the current page's
+  // batch (10 rows fetched from the server) — don't re-slice it client-side,
+  // and drive the pagination control from the server's own page/totalPages.
+  const page = serverPagination ? serverPagination.page : clientPage;
+  const setPage = serverPagination ? serverPagination.onPageChange : setClientPage;
+  const totalPages = serverPagination ? serverPagination.totalPages : Math.max(1, Math.ceil(sortedRows.length / PAGE_SIZE));
+  const pagedRows = serverPagination ? sortedRows : sortedRows.slice((clientPage - 1) * PAGE_SIZE, clientPage * PAGE_SIZE);
 
   const handleMenuAction = async (action, row) => {
     if (action === "branchEnableDisable") {
@@ -257,6 +278,103 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
       return;
     }
 
+    if (master.key === "accountMinBal" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchAccountMinBalanceById(row.id);
+        const freshRow = {
+          id: String(fresh.minimumBalanceId),
+          minBalanceId: String(fresh.minimumBalanceId),
+          minBalance: String(fresh.minimumBalance),
+          minBalanceCheque: String(fresh.minimumBalanceWithCheque),
+          minBalanceAtm: String(fresh.minimumBalanceWithAtm),
+        };
+        setModal({ mode: action, data: rowToFormData(master.key, freshRow), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest account minimum balance details.");
+      }
+      return;
+    }
+
+    if (master.key === "accountType" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchAccountTypeByCode(row.id);
+        const freshRow = {
+          id: fresh.accountType,
+          accountId: fresh.accountType,
+          accountName: fresh.name,
+          loanDeposit: loanDepositLabelFromCode(fresh.loanDeposit),
+        };
+        setModal({ mode: action, data: rowToFormData(master.key, freshRow), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest account type details.");
+      }
+      return;
+    }
+
+    if (master.key === "activityCode" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchActivityCodeById(row.id);
+        const freshRow = {
+          id: String(fresh.activityId),
+          activityId: String(fresh.activityId),
+          description: fresh.description,
+        };
+        setModal({ mode: action, data: rowToFormData(master.key, freshRow), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest activity code details.");
+      }
+      return;
+    }
+
+    if (master.key === "branchParameter" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchBranchParameterByCode(row.id);
+        const freshRow = { id: fresh.branchCode, ...fresh, weeklyHoliday: String(fresh.weeklyHoliday) };
+        setModal({ mode: action, data: rowToFormData(master.key, freshRow), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest branch parameter details.");
+      }
+      return;
+    }
+
+    if (master.key === "chequeType" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchChequeTypeByCode(row.id);
+        const freshRow = { id: fresh.chequeTypeCode, ...fresh };
+        setModal({ mode: action, data: rowToFormData(master.key, freshRow), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest cheque type details.");
+      }
+      return;
+    }
+
+    if (master.key === "classificationCode" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchClassificationCodeById(row.id);
+        const freshRow = {
+          id: String(fresh.classificationId),
+          classificationId: String(fresh.classificationId),
+          description: fresh.description,
+        };
+        setModal({ mode: action, data: rowToFormData(master.key, freshRow), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest classification code details.");
+      }
+      return;
+    }
+
     setModal({
       mode: action,
       data: rowToFormData(master.key, row),
@@ -282,16 +400,6 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
         id: String(Date.now()),
         ...formData,
       };
-      if (master.key === "accountType") {
-        newRow.createdDate = new Date().toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }).toUpperCase();
-      }
       onRowsChange([...rows, newRow]);
     } else if (modal?.mode === "edit") {
       if (master.key === "clearingType") {
@@ -410,6 +518,143 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
           );
         } catch (err) {
           alert(err instanceof Error ? err.message : "Failed to update final account group. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "accountMinBal") {
+        try {
+          const updated = await updateAccountMinBalance({
+            minimumBalanceId: Number(modal.rowId),
+            minimumBalance: Number(formData.minBalance) || 0,
+            minimumBalanceWithCheque: Number(formData.minBalanceCheque) || 0,
+            minimumBalanceWithAtm: Number(formData.minBalanceAtm) || 0,
+          });
+          const updatedRow = {
+            id: String(updated.minimumBalanceId),
+            minBalanceId: String(updated.minimumBalanceId),
+            minBalance: String(updated.minimumBalance),
+            minBalanceCheque: String(updated.minimumBalanceWithCheque),
+            minBalanceAtm: String(updated.minimumBalanceWithAtm),
+          };
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updatedRow } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update account minimum balance. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "accountType") {
+        try {
+          const updated = await updateAccountType({
+            accountType: modal.rowId,
+            name: formData.accountName,
+            loanDeposit: loanDepositCodeFromLabel(formData.loanDeposit),
+          });
+          const updatedRow = {
+            id: updated.accountType,
+            accountId: updated.accountType,
+            accountName: updated.name,
+            loanDeposit: loanDepositLabelFromCode(updated.loanDeposit),
+          };
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updatedRow } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update account type. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "activityCode") {
+        try {
+          const updated = await updateActivityCode({
+            activityId: Number(modal.rowId),
+            description: formData.description,
+          });
+          const updatedRow = {
+            id: String(updated.activityId),
+            activityId: String(updated.activityId),
+            description: updated.description,
+          };
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updatedRow } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update activity code. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "branchParameter") {
+        try {
+          const updated = await updateBranchParameter(modal.rowId, {
+            branchCode: modal.rowId,
+            serviceBranchCode: formData.serviceBranchCode,
+            weeklyHoliday: Number(formData.weeklyHoliday) || 0,
+            isDenominationRequired: formData.isDenominationRequired,
+            isTellerSystemUsed: formData.isTellerSystemUsed,
+            isHeadOffice: formData.isHeadOffice,
+            isOnlineClearingImplemented: formData.isOnlineClearingImplemented,
+            isBranchTransacting: formData.isBranchTransacting,
+            workingDay: formData.workingDay,
+            isDayEndExecuted: formData.isDayEndExecuted,
+            sbNextInterestPostingDate: formData.sbNextInterestPostingDate,
+            caNextInterestPostingDate: formData.caNextInterestPostingDate,
+            tdNextInterestPostingDate: formData.tdNextInterestPostingDate,
+            tlNextInterestPostingDate: formData.tlNextInterestPostingDate,
+            ccNextInterestPostingDate: formData.ccNextInterestPostingDate,
+          });
+          const updatedRow = { id: updated.branchCode, ...updated, weeklyHoliday: String(updated.weeklyHoliday) };
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updatedRow } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update branch parameter. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "chequeType") {
+        try {
+          const updated = await updateChequeType({
+            chequeTypeCode: modal.rowId,
+            description: formData.description,
+          });
+          const updatedRow = { id: updated.chequeTypeCode, ...updated };
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updatedRow } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update cheque type. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "classificationCode") {
+        try {
+          const updated = await updateClassificationCode({
+            classificationId: Number(modal.rowId),
+            description: formData.description,
+          });
+          const updatedRow = {
+            id: String(updated.classificationId),
+            classificationId: String(updated.classificationId),
+            description: updated.description,
+          };
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updatedRow } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update classification code. Please try again.");
           throw err;
         }
         setModal(null);

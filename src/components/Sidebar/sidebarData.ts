@@ -97,13 +97,13 @@ export const menuItems: NavItemData[] = [
         id: "mis-master-mainenance-global",
         title: "Master Maintenance Global",
         icon: Database,
-        href: "/misactivity/mastermaintenanceglobal",
+        href: "/globalmaster",
       },
       {
         id: "mis-master-maintanance-head-office",
         title: "Master Maintenance - HeadOffice",
         icon: Database,
-        href: "/misactivity/mastermaintenanceheadoffice",
+        href: "/headoffice",
       },
       {
         id: "mis-master-maintanance-user",
@@ -691,13 +691,13 @@ export const menuItems: NavItemData[] = [
         icon: ArrowLeftRight,
         href: "/payroll/transaction"
       },
-       {
-      id: "payroll-transaction-entry",
-      title: "Transaction Entry",
-      icon: ArrowLeftRight,
-      href: "/transaction-entry"
-    },
-    
+      {
+        id: "payroll-transaction-entry",
+        title: "Transaction Entry",
+        icon: ArrowLeftRight,
+        href: "/transaction-entry"
+      },
+
       {
         id: "payroll-authrization",
         title: "Authorization",
@@ -872,12 +872,12 @@ export const menuItems: NavItemData[] = [
       },
     ],
   },
-{
-  id: "calculator",
-  title: "Calculator",
-  icon: Calculator,
-  href: "/loan-calculators",
-},
+  {
+    id: "calculator",
+    title: "Calculator",
+    icon: Calculator,
+    href: "/loan-calculators",
+  },
 
   // General / future items not tied to a specific role menu in the sheet.
   { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href: "/futuremodals" },

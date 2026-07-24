@@ -32,10 +32,18 @@ const MODAL_META = {
     icon: SquarePen,
     useImage: false,
   },
+  view: {
+    titleEn: "View Parameter",
+    titleHi: "पॅरामीटर पहा",
+    subtitleEn: "View the parameter information and associated details.",
+    subtitleHi: "पॅरामीटरची माहिती आणि संबंधित तपशील पहा.",
+    icon: UserRound,
+    useImage: false,
+  },
 } as const;
 
 interface MasterParameterModalProps {
-  mode: "add" | "edit";
+  mode: "add" | "edit" | "view";
   masterKey: string;
   initialData: Record<string, string>;
   onClose: () => void;
@@ -57,6 +65,7 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
   }, [initialData, mode, masterKey]);
 
   const isEdit = mode === "edit";
+  const isView = mode === "view";
 
   const handleChange = (key: string, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -89,7 +98,7 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
 
   const renderField = (field: MasterField) => {
     const Icon = getFieldIcon(field.icon);
-    const isReadOnly = isEdit && field.readOnlyOnEdit;
+    const isReadOnly = isView || (isEdit && field.readOnlyOnEdit);
     const value = formData[field.key] ?? "";
     const error = errors[field.key];
 
@@ -203,8 +212,11 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
       onSave={handleSave}
       isValid={validated}
       saving={saving}
+      viewOnly={isView}
     >
-      <div className={gridClass}>{config.fields.map(renderField)}</div>
+      <div className="rounded-[20px] border-x border-b border-t-4 border-primary bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900">
+        <div className={gridClass}>{config.fields.map(renderField)}</div>
+      </div>
     </NormalFormModal>
   );
 }

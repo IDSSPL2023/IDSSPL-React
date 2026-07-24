@@ -27,6 +27,18 @@ import {
   createFinalAccountGroup,
   fetchGlAccounts,
   createGlAccount,
+  fetchAccountMinBalances,
+  createAccountMinBalance,
+  fetchAccountTypes,
+  createAccountType,
+  fetchActivityCodes,
+  createActivityCode,
+  fetchBranchParameters,
+  createBranchParameter,
+  fetchChequeTypes,
+  createChequeType,
+  fetchClassificationCodes,
+  createClassificationCode,
   fetchBranchAccount,
   searchBranchAccounts,
   type ClearingTypeRecord,
@@ -38,6 +50,12 @@ import {
   type DepositRuleRecord,
   type FinalAccountGroupRecord,
   type GlAccountRecord,
+  type AccountMinBalanceRecord,
+  type AccountTypeRecord,
+  type ActivityCodeRecord,
+  type BranchParameterRecord,
+  type ChequeTypeRecord,
+  type ClassificationCodeRecord,
 } from "@/api/headoffice.api";
 
 interface BreadcrumbItem {
@@ -72,6 +90,49 @@ const mapGlAccountRecordToRow = (record: GlAccountRecord): Record<string, unknow
 const mapFinalAccountGroupRecordToRow = (record: FinalAccountGroupRecord): Record<string, unknown> => ({
   id: record.code,
   ...record,
+});
+
+const mapAccountMinBalanceRecordToRow = (record: AccountMinBalanceRecord): Record<string, unknown> => ({
+  id: String(record.minimumBalanceId),
+  minBalanceId: String(record.minimumBalanceId),
+  minBalance: String(record.minimumBalance),
+  minBalanceCheque: String(record.minimumBalanceWithCheque),
+  minBalanceAtm: String(record.minimumBalanceWithAtm),
+});
+
+// The API stores loanDeposit as a legacy L/D code; the Add form's select shows
+// the friendly words, so this pair converts at the display <-> payload boundary.
+export const loanDepositLabelFromCode = (code: string): string => (code === "L" ? "Loan" : code === "D" ? "Deposit" : code);
+export const loanDepositCodeFromLabel = (label: string): string => (label === "Loan" ? "L" : label === "Deposit" ? "D" : label);
+
+const mapAccountTypeRecordToRow = (record: AccountTypeRecord): Record<string, unknown> => ({
+  id: record.accountType,
+  accountId: record.accountType,
+  accountName: record.name,
+  loanDeposit: loanDepositLabelFromCode(record.loanDeposit),
+});
+
+const mapActivityCodeRecordToRow = (record: ActivityCodeRecord): Record<string, unknown> => ({
+  id: String(record.activityId),
+  activityId: String(record.activityId),
+  description: record.description,
+});
+
+const mapBranchParameterRecordToRow = (record: BranchParameterRecord): Record<string, unknown> => ({
+  id: record.branchCode,
+  ...record,
+  weeklyHoliday: String(record.weeklyHoliday),
+});
+
+const mapChequeTypeRecordToRow = (record: ChequeTypeRecord): Record<string, unknown> => ({
+  id: record.chequeTypeCode,
+  ...record,
+});
+
+const mapClassificationCodeRecordToRow = (record: ClassificationCodeRecord): Record<string, unknown> => ({
+  id: String(record.classificationId),
+  classificationId: String(record.classificationId),
+  description: record.description,
 });
 
 const formatDateOfApplication = (value: string): string => {
@@ -117,6 +178,11 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [showFilter, setShowFilter] = useState(false);
+  // The backend only supports true server pagination (size capped at 200) for
+  // these four masters; everything else fetches its full list once and the
+  // table paginates it client-side.
+  const [serverPage, setServerPage] = useState(1);
+  const [serverTotalPages, setServerTotalPages] = useState(1);
 
   const loadClearingTypes = useCallback(async () => {
     try {
@@ -151,10 +217,86 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
     }
   }, []);
 
-  const loadGlAccounts = useCallback(async () => {
+  const loadClassificationCodes = useCallback(async () => {
     try {
-      const records = await fetchGlAccounts();
-      setTableRows(records.map(mapGlAccountRecordToRow));
+      const records = await fetchClassificationCodes();
+      setTableRows(records.map(mapClassificationCodeRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load classification codes from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadChequeTypes = useCallback(async () => {
+    try {
+      const records = await fetchChequeTypes();
+      setTableRows(records.map(mapChequeTypeRecordToRow));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load cheque types from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadBranchParameters = useCallback(async (page = 1) => {
+    try {
+      const result = await fetchBranchParameters(page - 1);
+      setTableRows(result.records.map(mapBranchParameterRecordToRow));
+      setServerTotalPages(Math.max(1, result.totalPages));
+      setServerPage(page);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load branch parameters from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadActivityCodes = useCallback(async (page = 1) => {
+    try {
+      const result = await fetchActivityCodes(page - 1);
+      setTableRows(result.records.map(mapActivityCodeRecordToRow));
+      setServerTotalPages(Math.max(1, result.totalPages));
+      setServerPage(page);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load activity codes from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadAccountTypes = useCallback(async (page = 1) => {
+    try {
+      const result = await fetchAccountTypes(page - 1);
+      setTableRows(result.records.map(mapAccountTypeRecordToRow));
+      setServerTotalPages(Math.max(1, result.totalPages));
+      setServerPage(page);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load account types from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadAccountMinBalances = useCallback(async (page = 1) => {
+    try {
+      const result = await fetchAccountMinBalances(page - 1);
+      setTableRows(result.records.map(mapAccountMinBalanceRecordToRow));
+      setServerTotalPages(Math.max(1, result.totalPages));
+      setServerPage(page);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to load account minimum balances from server.");
+      setTableRows([]);
+    }
+  }, []);
+
+  const loadGlAccounts = useCallback(async (page = 1) => {
+    try {
+      const result = await fetchGlAccounts(page - 1);
+      setTableRows(result.records.map(mapGlAccountRecordToRow));
+      setServerTotalPages(Math.max(1, result.totalPages));
+      setServerPage(page);
     } catch (err) {
       console.error(err);
       alert("Failed to load GL accounts from server.");
@@ -162,16 +304,46 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
     }
   }, []);
 
-  const loadTdInterestRates = useCallback(async () => {
+  const loadTdInterestRates = useCallback(async (page = 1) => {
     try {
-      const records = await fetchDepositInterestRates();
-      setTableRows(records.map(mapDepositInterestRateRecordToRow));
+      const result = await fetchDepositInterestRates(page - 1);
+      setTableRows(result.records.map(mapDepositInterestRateRecordToRow));
+      setServerTotalPages(Math.max(1, result.totalPages));
+      setServerPage(page);
     } catch (err) {
       console.error(err);
       alert("Failed to load TD interest rates from server.");
       setTableRows([]);
     }
   }, []);
+
+  const handleServerPageChange = useCallback(
+    (page: number) => {
+      if (!openMaster) return;
+      if (openMaster.key === "accountMinBal") loadAccountMinBalances(page);
+      else if (openMaster.key === "activityCode") loadActivityCodes(page);
+      else if (openMaster.key === "accountType") loadAccountTypes(page);
+      else if (openMaster.key === "branchParameter") loadBranchParameters(page);
+      else if (openMaster.key === "glAccount") loadGlAccounts(page);
+      else if (openMaster.key === "tdInterestRate") loadTdInterestRates(page);
+    },
+    [
+      openMaster,
+      loadAccountMinBalances,
+      loadActivityCodes,
+      loadAccountTypes,
+      loadBranchParameters,
+      loadGlAccounts,
+      loadTdInterestRates,
+    ]
+  );
+
+  const SERVER_PAGINATED_KEYS = ["accountMinBal", "activityCode", "accountType", "branchParameter", "glAccount", "tdInterestRate"];
+
+  const serverPagination =
+    openMaster && SERVER_PAGINATED_KEYS.includes(openMaster.key)
+      ? { page: serverPage, totalPages: serverTotalPages, onPageChange: handleServerPageChange }
+      : undefined;
 
   const loadInstallmentTypes = useCallback(async () => {
     try {
@@ -256,6 +428,42 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         return;
       }
 
+      if (master.key === "accountMinBal") {
+        setTableRows([]);
+        loadAccountMinBalances();
+        return;
+      }
+
+      if (master.key === "accountType") {
+        setTableRows([]);
+        loadAccountTypes();
+        return;
+      }
+
+      if (master.key === "activityCode") {
+        setTableRows([]);
+        loadActivityCodes();
+        return;
+      }
+
+      if (master.key === "branchParameter") {
+        setTableRows([]);
+        loadBranchParameters();
+        return;
+      }
+
+      if (master.key === "chequeType") {
+        setTableRows([]);
+        loadChequeTypes();
+        return;
+      }
+
+      if (master.key === "classificationCode") {
+        setTableRows([]);
+        loadClassificationCodes();
+        return;
+      }
+
       if (master.key === "finalAccountGroup") {
         setTableRows([]);
         loadFinalAccountGroups();
@@ -295,7 +503,7 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
       const config = getMasterConfig(master.key);
       setTableRows([...config.rows]);
     },
-    [loadClearingTypes, loadProducts, loadGlAccounts, loadTdInterestRates, loadInstallmentTypes, loadInstrumentTypes, loadIndustries, loadDepositRules, loadFinalAccountGroups, loadDefaultBranchAccounts]
+    [loadClearingTypes, loadProducts, loadGlAccounts, loadAccountMinBalances, loadAccountTypes, loadActivityCodes, loadBranchParameters, loadChequeTypes, loadClassificationCodes, loadTdInterestRates, loadInstallmentTypes, loadInstrumentTypes, loadIndustries, loadDepositRules, loadFinalAccountGroups, loadDefaultBranchAccounts]
   );
 
   useEffect(() => {
@@ -312,7 +520,7 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
     setFilters({});
     setModalMode(null);
     setShowFilter(false);
-    if (initialMasterKey) router.push("/headofficemaster");
+    if (initialMasterKey) router.push("/headoffice");
   }, [initialMasterKey, router]);
 
   const breadcrumbs: BreadcrumbItem[] = openMaster
@@ -459,20 +667,110 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         return;
       }
 
+      if (openMaster.key === "accountMinBal") {
+        try {
+          const created = await createAccountMinBalance({
+            minimumBalanceId: Number(formData.minBalanceId) || 0,
+            minimumBalance: Number(formData.minBalance) || 0,
+            minimumBalanceWithCheque: Number(formData.minBalanceCheque) || 0,
+            minimumBalanceWithAtm: Number(formData.minBalanceAtm) || 0,
+          });
+          setTableRows((prev) => [...prev, mapAccountMinBalanceRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create account minimum balance. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "accountType") {
+        try {
+          const created = await createAccountType({
+            accountType: formData.accountId,
+            name: formData.accountName,
+            loanDeposit: loanDepositCodeFromLabel(formData.loanDeposit),
+          });
+          setTableRows((prev) => [...prev, mapAccountTypeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create account type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "activityCode") {
+        try {
+          const created = await createActivityCode({
+            activityId: Number(formData.activityId) || 0,
+            description: formData.description,
+          });
+          setTableRows((prev) => [...prev, mapActivityCodeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create activity code. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "branchParameter") {
+        try {
+          const created = await createBranchParameter({
+            branchCode: formData.branchCode,
+            serviceBranchCode: formData.serviceBranchCode,
+            weeklyHoliday: Number(formData.weeklyHoliday) || 0,
+            isDenominationRequired: formData.isDenominationRequired,
+            isTellerSystemUsed: formData.isTellerSystemUsed,
+            isHeadOffice: formData.isHeadOffice,
+            isOnlineClearingImplemented: formData.isOnlineClearingImplemented,
+            isBranchTransacting: formData.isBranchTransacting,
+            workingDay: formData.workingDay,
+            isDayEndExecuted: formData.isDayEndExecuted,
+            sbNextInterestPostingDate: formData.sbNextInterestPostingDate,
+            caNextInterestPostingDate: formData.caNextInterestPostingDate,
+            tdNextInterestPostingDate: formData.tdNextInterestPostingDate,
+            tlNextInterestPostingDate: formData.tlNextInterestPostingDate,
+            ccNextInterestPostingDate: formData.ccNextInterestPostingDate,
+          });
+          setTableRows((prev) => [...prev, mapBranchParameterRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create branch parameter. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "chequeType") {
+        try {
+          const created = await createChequeType({
+            chequeTypeCode: formData.chequeTypeCode,
+            description: formData.description,
+          });
+          setTableRows((prev) => [...prev, mapChequeTypeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create cheque type. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
+      if (openMaster.key === "classificationCode") {
+        try {
+          const created = await createClassificationCode({
+            classificationId: Number(formData.classificationId) || 0,
+            description: formData.description,
+          });
+          setTableRows((prev) => [...prev, mapClassificationCodeRecordToRow(created)]);
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to create classification code. Please try again.");
+          throw err;
+        }
+        return;
+      }
+
       const newRow: Record<string, unknown> = {
         id: String(Date.now()),
         ...formData,
       };
-      if (openMaster.key === "accountType") {
-        newRow.createdDate = new Date().toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }).toUpperCase();
-      }
       setTableRows((prev) => [...prev, newRow]);
     },
     [openMaster, loadDefaultBranchAccounts]
@@ -542,6 +840,7 @@ const HeadOfficeMasterPage: React.FC<HeadOfficeMasterPageProps> = ({ initialMast
         tableRows={tableRows}
         onRowsChange={setTableRows}
         filters={filters}
+        serverPagination={serverPagination}
       />
 
       {modalMode === "add" && openMaster && openMaster.key === "productMaster" && (
