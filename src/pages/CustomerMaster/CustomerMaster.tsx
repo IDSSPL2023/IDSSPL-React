@@ -1,5 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import { User, IdCard, Baby, Heart, Car, AlertTriangle, Home, Phone, Flag, Building2, MapPin, Hash, X, Upload, Mail, UserCircle2, Smartphone, Eye, SquarePen, List, Copy, Pencil, Check, ChevronRight } from "lucide-react";
+import { User, IdCard, Baby, Heart, Car, AlertTriangle, Home, Phone, Flag, Building2, MapPin, Hash, X, Upload, Mail, UserCircle2, Smartphone, Eye, SquarePen, List, Copy, Pencil, Check, ChevronRight, CalendarDays, Calendar, FileText } from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
 import { FieldShell, TextInput, SelectInput, DateInput, RadioYesNo, SectionCard, DocumentRow, UploadZone } from "@/components/shared/FormFields";
 import { CountryPicklistField, CityPicklistField } from "@/components/common";
@@ -10,9 +10,13 @@ import RowActionMenu from "@/components/shared/RowActionMenu";
 import SrNoBadge from "@/components/shared/SrNoBadge";
 import StatusPill from "@/components/shared/StatusPill";
 import SortableHeaderLabel from "@/components/shared/SortableHeaderLabel";
-import { IMAGES } from "@/assets";
+import { ICONS, IMAGES } from "@/assets";
 import Image from "@/components/ui/Image";
 import NavbarCM from "@/components/CustomerMaster/NavbarCM";
+// import ITREntryModal from "./ITREntryModal";
+import SectionWrapper from "@/components/shared/Wrappers/SectionWrapper";
+import PickerInput from "@/components/shared/Inputs/PickerInput";
+import ListModal, { ListModalItem } from "@/components/shared/Modals/ListModal";
 
 /* ===== from AddCM.tsx ===== */
 const AddCM_TABS = [
@@ -21,12 +25,22 @@ const AddCM_TABS = [
   "KYC",
   "Profile Details",
   "Capture Signature & Photo",
+  "ITR Entry"
 ] as const;
 
 type AddCM_TabKey = (typeof AddCM_TABS)[number];
 type AddCM_AddCMProps = {
   onClose?: () => void;
 };
+const CUSTOMER_LIST_DATA: ListModalItem[] = [
+  { id: "1", code: "CUST001", name: "Rajesh Kumar" },
+  { id: "2", code: "CUST002", name: "Priya Sharma" },
+  { id: "3", code: "CUST003", name: "Amit Patel" },
+  { id: "4", code: "CUST004", name: "Sneha Reddy" },
+  { id: "5", code: "CUST005", name: "Vikram Singh" },
+];
+
+
 
 const AddCM_SALUTATIONS = ["MR", "MRS", "MS", "DR"];
 const AddCM_GENDERS = ["Male", "Female", "Other"];
@@ -182,6 +196,17 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
     fixedYearlyIncome: "",
     sixthMonthFixAmount: "",
     limitAmtTransaction: "",
+  });
+
+  // ITR Entry state
+  const [itrData, setItrData] = useState({
+    customerId: "0002",
+    customerName: "name@company.com",
+    assessmentFromYear: "0002",
+    toYear: "name@company.com",
+    eFillingAcknowledgment: "43",
+    dateOfEFilling: "43",
+    panNumber: "43",
   });
 
   const updateDoc = (
@@ -705,6 +730,107 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
             subtitleHi="ग्राहकाचा प्रोफाइल फोटो अपलोड किंवा कॅप्चर करा."
           />
         </div>
+      )}
+
+      {/* ── ITR Entry ── */}
+      {activeTab === "ITR Entry" && (
+        <SectionWrapper
+          icon={<img src={ICONS.PERSON} alt="ITR Entry" className="h-10 w-10" />}
+          titleEn="ITR Entry"
+          titleHi="आयटीआर नोंद"
+          subtitleEn="View the parameter information and associated details."
+          subtitleHi="परामीटरची माहिती आणि संबंधित तपशील पहा."
+          className="mb-6"
+        >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {/* Column 1 */}
+            <div className="space-y-4">
+              {/* <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required>
+                <TextInput
+                  icon={<User size={16} />}
+                  value={itrData.customerId}
+                  onChange={(v) => setItrData((p) => ({ ...p, customerId: v }))}
+                  placeholder="Enter Customer ID"
+                />
+              </FieldShell> */}
+              <PickerInput
+                  labelEn="Customer ID"
+                  labelHi="ग्राहक आयडी"
+                  icon={ICONS.USER_CIRCLE}
+                  placeholder="Select Customer"
+                  value={itrData.customerId}
+                  onChange={(v) => setItrData((p) => ({ ...p, customerId: v }))}
+                  handleOpenList={() => {
+                    // Open customer list modal
+                    console.log("Open customer list");
+                  }}
+                  required
+                />
+
+              <FieldShell label="Assessment From Year" labelHi="मूल्यांकन वर्ष" required>
+                <TextInput
+                  icon={<Calendar size={16} />}
+                  value={itrData.assessmentFromYear}
+                  onChange={(v) => setItrData((p) => ({ ...p, assessmentFromYear: v }))}
+                  placeholder="Enter Assessment From Year"
+                />
+              </FieldShell>
+
+              <FieldShell label="E Filling Acknowledgment" labelHi="ई-फिलिंग स्वीकृती" required>
+                <TextInput
+                  icon={<FileText size={16} />}
+                  value={itrData.eFillingAcknowledgment}
+                  onChange={(v) => setItrData((p) => ({ ...p, eFillingAcknowledgment: v }))}
+                  placeholder="Enter E Filling Acknowledgment"
+                />
+              </FieldShell>
+
+              <FieldShell label="Pan Number" labelHi="पॅन क्रमांक" required>
+                <TextInput
+                  icon={<Hash size={16} />}
+                  value={itrData.panNumber}
+                  onChange={(v) => setItrData((p) => ({ ...p, panNumber: v }))}
+                  placeholder="Enter Pan Number"
+                />
+              </FieldShell>
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-4">
+              <FieldShell label="Customer Name" labelHi="ग्राहकाचे नाव" required>
+                <TextInput
+                  icon={<User size={16} />}
+                  value={itrData.customerName}
+                  onChange={(v) => setItrData((p) => ({ ...p, customerName: v }))}
+                  placeholder="Enter Customer Name"
+                />
+              </FieldShell>
+
+              <FieldShell label="To Year" labelHi="वर्ष" required>
+                <TextInput
+                  icon={<CalendarDays size={16} />}
+                  value={itrData.toYear}
+                  onChange={(v) => setItrData((p) => ({ ...p, toYear: v }))}
+                  placeholder="Enter To Year"
+                />
+              </FieldShell>
+
+              <FieldShell label="Date of E Filling Date" labelHi="ई-फिलिंग तारीख" required>
+                <TextInput
+                  icon={<Calendar size={16} />}
+                  value={itrData.dateOfEFilling}
+                  onChange={(v) => setItrData((p) => ({ ...p, dateOfEFilling: v }))}
+                  placeholder="Enter Date of E Filling"
+                />
+              </FieldShell>
+            </div>
+
+            {/* Column 3 - Empty for spacing */}
+            <div className="space-y-4">
+              {/* Additional fields can be added here if needed */}
+            </div>
+          </div>
+        </SectionWrapper>
       )}
     </FormModal>
   );
@@ -1417,6 +1543,7 @@ const ViewEditCM_TABS = [
   "Address Details",
   "KYC",
   "Profile Details",
+  "ITR Entry"
 ] as const;
 
 type ViewEditCM_TabKey = (typeof ViewEditCM_TABS)[number];
@@ -1657,6 +1784,17 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
     fixedYearlyIncome: "",
     sixthMonthFixAmount: "",
     limitAmtTransaction: "",
+  });
+
+  // ITR Entry state for View/Edit
+  const [itrData, setItrData] = useState({
+    customerId: customerData.customerId,
+    customerName: customerData.name,
+    assessmentFromYear: "",
+    toYear: "",
+    eFillingAcknowledgment: "",
+    dateOfEFilling: "",
+    panNumber: "",
   });
 
   const updateDoc = (
@@ -2238,6 +2376,114 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
             ))}
           </div>
         </SectionCard>
+      )}
+
+      {/* ── ITR Entry ── */}
+      {activeTab === "ITR Entry" && (
+        <SectionWrapper
+          icon={<img src={ICONS.PERSON} alt="ITR Entry" className="h-10 w-10" />}
+          titleEn="ITR Entry"
+          titleHi="आयटीआर नोंद"
+          subtitleEn="View the parameter information and associated details."
+          subtitleHi="परामीटरची माहिती आणि संबंधित तपशील पहा."
+          className="mb-6"
+        >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {/* Column 1 */}
+            <div className="space-y-4">
+              {/* <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required>
+                <TextInput
+                  icon={<User size={16} />}
+                  value={itrData.customerId}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, customerId: v }))}
+                  placeholder="Enter Customer ID"
+                  readOnly={isView}
+                />
+              </FieldShell> */}
+              {/* <PickerInput
+                  labelEn="Customer ID"
+                  labelHi="ग्राहक आयडी"
+                  icon={ICONS.USER_CIRCLE}
+                  placeholder="Select Customer"
+                  value={itrData.customerId}
+                  onChange={(v) => setItrData((p) => ({ ...p, customerId: v }))}
+                  handleOpenList={() => {
+                    // Open customer list modal
+                    console.log("Open customer list");
+                  }}
+                  required
+                /> */}
+
+              <FieldShell label="Assessment From Year" labelHi="मूल्यांकन वर्ष" required>
+                <TextInput
+                  icon={<Calendar size={16} />}
+                  value={itrData.assessmentFromYear}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, assessmentFromYear: v }))}
+                  placeholder="Enter Assessment From Year"
+                  readOnly={isView}
+                />
+              </FieldShell>
+
+              <FieldShell label="E Filling Acknowledgment" labelHi="ई-फिलिंग स्वीकृती" required>
+                <TextInput
+                  icon={<FileText size={16} />}
+                  value={itrData.eFillingAcknowledgment}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, eFillingAcknowledgment: v }))}
+                  placeholder="Enter E Filling Acknowledgment"
+                  readOnly={isView}
+                />
+              </FieldShell>
+
+              <FieldShell label="Pan Number" labelHi="पॅन क्रमांक" required>
+                <TextInput
+                  icon={<Hash size={16} />}
+                  value={itrData.panNumber}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, panNumber: v }))}
+                  placeholder="Enter Pan Number"
+                  readOnly={isView}
+                />
+              </FieldShell>
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-4">
+              <FieldShell label="Customer Name" labelHi="ग्राहकाचे नाव" required>
+                <TextInput
+                  icon={<User size={16} />}
+                  value={itrData.customerName}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, customerName: v }))}
+                  placeholder="Enter Customer Name"
+                  readOnly={isView}
+                />
+              </FieldShell>
+
+              <FieldShell label="To Year" labelHi="वर्ष" required>
+                <TextInput
+                  icon={<CalendarDays size={16} />}
+                  value={itrData.toYear}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, toYear: v }))}
+                  placeholder="Enter To Year"
+                  readOnly={isView}
+                />
+              </FieldShell>
+
+              <FieldShell label="Date of E Filling Date" labelHi="ई-फिलिंग तारीख" required>
+                <TextInput
+                  icon={<Calendar size={16} />}
+                  value={itrData.dateOfEFilling}
+                  onChange={(v) => !isView && setItrData((p) => ({ ...p, dateOfEFilling: v }))}
+                  placeholder="Enter Date of E Filling"
+                  readOnly={isView}
+                />
+              </FieldShell>
+            </div>
+
+            {/* Column 3 - Empty for spacing */}
+            <div className="space-y-4">
+              {/* Additional fields can be added here if needed */}
+            </div>
+          </div>
+        </SectionWrapper>
       )}
 
       {/* View mode: custom footer with Cancel + Next only */}

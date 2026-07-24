@@ -42,8 +42,7 @@ export interface PicklistModalProps<T> {
   maxWidthPx?: number;
   maxHeightPx?: number;
   minHeightPx?: number;
-  /** Overrides the modal's height with an explicit Tailwind class (e.g. "h-[930px]"). */
-  modalHeightClassName?: string;
+   searchPlaceholder?: string;
 }
 
 export default function PicklistModal<T>({
@@ -73,7 +72,6 @@ export default function PicklistModal<T>({
   maxWidthPx = 1400,
   maxHeightPx = 900,
   minHeightPx = 600,
-  modalHeightClassName,
 }: PicklistModalProps<T>) {
   const [internalSearch, setInternalSearch] = useState("");
   const [internalSearchBy, setInternalSearchBy] = useState(
@@ -228,11 +226,11 @@ export default function PicklistModal<T>({
     <BaseModal
       onClose={onClose}
       maxWidthPx={maxWidthPx}
-      maxHeightPx={modalHeightClassName ? undefined : maxHeightPx}
+      maxHeightPx={maxHeightPx}
       minHeightPx={minHeightPx}
       size="full"
       ariaLabel={title}
-      contentClassName={`rounded-[36px] p-6 ${modalHeightClassName ?? ""}`}
+      contentClassName="rounded-[36px] p-6"
       bodyClassName="flex flex-1 flex-col overflow-hidden"
       showCloseButton={false}
     >

@@ -18,6 +18,7 @@ import {
   AlertCircle,
   ScrollText,
   FileSignature,
+  ChevronsDown,
 } from "lucide-react";
 import ModalWrapper from "@/components/shared/Wrappers/ModalWrapper";
 import { ICONS } from "@/assets";
@@ -405,7 +406,7 @@ function OutwardClearingBounceModal({
         onClick: handleDisplayVouchers,
         variant: "outline" as const,
         icon: <FileText size={16} />,
-        className: "border-blue-500 text-blue-600 hover:bg-blue-50",
+        // className: "border-blue-500 text-blue-600 hover:bg-blue-50",
       },
       {
         label: "Cancel",
@@ -417,7 +418,7 @@ function OutwardClearingBounceModal({
         label: "Bounce",
         onClick: handleBounce,
         variant: "outline" as const,
-        icon: <AlertCircle size={16} />,
+        icon: <ChevronsDown size={16} />,
         disabled: !validated,
         className: validated
           ? "bg-red-50 text-red-600 border-red-300 hover:bg-red-100"
