@@ -2,24 +2,11 @@
 import { IMAGES } from "@/assets";
 import { useState } from "react";
 import Image from "@/components/ui/Image";
-import { X, Check, ChevronDown, ThumbsUp, UserRound, SquarePen, ShieldCheck, Copy, FileText, Coins, Percent } from "lucide-react";
+import { X, Check, ChevronDown, ThumbsUp, UserRound, SquarePen, FileText, Hash, Landmark } from "lucide-react";
 import PicklistModal from "@/components/common/PicklistModal";
-import { fetchProducts, searchGlAccounts } from "@/api/headoffice.api";
+import { searchFinalAccountGroupsForGl, searchCdRatioGroups } from "@/api/headoffice.api";
 
 const PAGE_SIZE = 10;
-
-export const ACCOUNT_TYPES = [
-  { code: "SB", description: "Saving Deposit" },
-  { code: "CA", description: "Current Account" },
-  { code: "TD", description: "Term Deposit" },
-  { code: "RD", description: "Recurring Deposit" },
-  { code: "CC", description: "Cash Credit" },
-  { code: "OD", description: "Over Draft" },
-  { code: "TL", description: "Term Loan" },
-  { code: "PG", description: "Pigmy Deposit" },
-  { code: "GL", description: "General Ledger" },
-  { code: "FA", description: "Fixed Asset" },
-];
 
 const MODAL_META = {
   add: {
@@ -48,60 +35,45 @@ const MODAL_META = {
 };
 
 const emptyForm = () => ({
-  accountType: "",
-  accountTypeDescription: "",
-  productCode: "",
-  description: "",
-  copyFrom: "",
-  copyFromDescription: "",
   glAccountCode: "",
-  glAccountDescription: "",
-  defaultMinimumBalanceId: "",
-  maxCashLimit: "",
-  maxWithdrawalLimit: "",
-  interestRoundingFactor: "",
-  implemented: "N",
-  nomineeRequired: "N",
-  cashTransactionAllowed: "Y",
-  inwardClearingAllowed: "Y",
+  description: "",
+  sequenceNumber: "",
+  dayBookSequenceNumber: "",
+  positiveFinalAccountGroup: "",
+  positiveFinalAccountGroupDescription: "",
+  negativeFinalAccountGroup: "",
+  negativeFinalAccountGroupDescription: "",
+  cdRatioGroupCode: "",
+  cdRatioGroupDescription: "",
+  transactionAllowed: "Y",
+  directOuterInBspl: "N",
+  accountSerial: "",
+  alie: "A",
 });
 
 const formFromRecord = (record) => ({
   ...emptyForm(),
-  accountType: record.accountType ?? "",
-  accountTypeDescription: ACCOUNT_TYPES.find((a) => a.code === record.accountType)?.description ?? record.accountType ?? "",
-  productCode: record.productCode ?? "",
+  glAccountCode: record.glAccountCode ?? "",
   description: record.description ?? "",
-  defaultMinimumBalanceId: record.defaultMinimumBalanceId != null ? String(record.defaultMinimumBalanceId) : "",
-  interestRoundingFactor: record.interestRoundingFactor != null ? String(record.interestRoundingFactor) : "",
-  implemented: record.implemented ?? "N",
-  nomineeRequired: record.nomineeRequired ?? "N",
-  cashTransactionAllowed: record.cashTransactionAllowed ?? "Y",
-  inwardClearingAllowed: record.inwardClearingAllowed ?? "Y",
+  sequenceNumber: record.sequenceNumber != null ? String(record.sequenceNumber) : "",
+  dayBookSequenceNumber: record.dayBookSequenceNumber != null ? String(record.dayBookSequenceNumber) : "",
+  positiveFinalAccountGroup: record.positiveFinalAccountGroup ?? "",
+  negativeFinalAccountGroup: record.negativeFinalAccountGroup ?? "",
+  cdRatioGroupCode: record.cdRatioGroupCode ?? "",
+  transactionAllowed: record.transactionAllowed ?? "Y",
+  directOuterInBspl: record.directOuterInBspl ?? "N",
+  accountSerial: record.accountSerial ?? "",
+  alie: record.alie ?? "A",
 });
 
-const ADD_REQUIRED_KEYS = [
-  "accountType",
-  "accountTypeDescription",
-  "productCode",
-  "description",
-  "copyFrom",
-  "copyFromDescription",
+const REQUIRED_KEYS = [
   "glAccountCode",
-  "glAccountDescription",
-  "defaultMinimumBalanceId",
-  "maxCashLimit",
-  "maxWithdrawalLimit",
-  "interestRoundingFactor",
-];
-
-const EDIT_REQUIRED_KEYS = [
-  "accountType",
-  "accountTypeDescription",
-  "productCode",
   "description",
-  "defaultMinimumBalanceId",
-  "interestRoundingFactor",
+  "sequenceNumber",
+  "dayBookSequenceNumber",
+  "positiveFinalAccountGroup",
+  "negativeFinalAccountGroup",
+  "cdRatioGroupCode",
 ];
 
 function TextField({ label, labelHi, icon: Icon, value, onChange, placeholder, error, readOnly }) {
@@ -213,23 +185,24 @@ function RadioField({ label, labelHi, value, onChange, disabled }) {
   );
 }
 
-export default function ProductParameterModal({ mode = "add", initialData = null, onClose, onSave }) {
+export default function GlAccountParameterModal({ mode = "add", initialData = null, onClose, onSave }) {
   const isView = mode === "view";
   const isEdit = mode === "edit";
   const isAdd = mode === "add";
   const meta = MODAL_META[mode];
-  const requiredKeys = isAdd ? ADD_REQUIRED_KEYS : EDIT_REQUIRED_KEYS;
 
   const [form, setForm] = useState(() => (initialData ? formFromRecord(initialData) : emptyForm()));
   const [errors, setErrors] = useState({});
   const [validated, setValidated] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMenuOpen, setSaveMenuOpen] = useState(false);
-  const [picklist, setPicklist] = useState(null); // "accountType" | "copyFrom" | "glAccountCode"
-  const [products, setProducts] = useState([]);
-  const [productsPage, setProductsPage] = useState(1);
-  const [glAccounts, setGlAccounts] = useState([]);
-  const [glAccountsPage, setGlAccountsPage] = useState(1);
+  const [picklist, setPicklist] = useState(null); // "positiveGroup" | "negativeGroup" | "cdRatioGroup"
+  const [positiveGroups, setPositiveGroups] = useState([]);
+  const [positiveGroupsPage, setPositiveGroupsPage] = useState(1);
+  const [negativeGroups, setNegativeGroups] = useState([]);
+  const [negativeGroupsPage, setNegativeGroupsPage] = useState(1);
+  const [cdRatioGroups, setCdRatioGroups] = useState([]);
+  const [cdRatioGroupsPage, setCdRatioGroupsPage] = useState(1);
   const [picklistLoading, setPicklistLoading] = useState(false);
 
   const update = (key, value) => {
@@ -244,34 +217,37 @@ export default function ProductParameterModal({ mode = "add", initialData = null
     setPicklist(which);
   };
 
-  const handleCopyFromSearch = async (searchBy, textToSearch) => {
+  const handlePositiveGroupSearch = async (searchBy, textToSearch) => {
     setPicklistLoading(true);
     try {
-      const all = await fetchProducts();
-      const q = textToSearch.trim().toLowerCase();
-      const filtered = !q
-        ? all
-        : all.filter((p) =>
-            searchBy === "DESCRIPTION"
-              ? p.description.toLowerCase().includes(q)
-              : p.productCode.toLowerCase().includes(q)
-          );
-      setProducts(filtered);
-      setProductsPage(1);
+      setPositiveGroups(await searchFinalAccountGroupsForGl({ groupFor: "POSITIVE", searchBy, textToSearch }));
+      setPositiveGroupsPage(1);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to load products.");
+      alert(err instanceof Error ? err.message : "Failed to load final account groups.");
     } finally {
       setPicklistLoading(false);
     }
   };
 
-  const handleGlAccountSearch = async (searchBy, textToSearch) => {
+  const handleNegativeGroupSearch = async (searchBy, textToSearch) => {
     setPicklistLoading(true);
     try {
-      setGlAccounts(await searchGlAccounts({ searchBy, textToSearch }));
-      setGlAccountsPage(1);
+      setNegativeGroups(await searchFinalAccountGroupsForGl({ groupFor: "NEGATIVE", searchBy, textToSearch }));
+      setNegativeGroupsPage(1);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Search failed.");
+      alert(err instanceof Error ? err.message : "Failed to load final account groups.");
+    } finally {
+      setPicklistLoading(false);
+    }
+  };
+
+  const handleCdRatioGroupSearch = async (searchBy, textToSearch) => {
+    setPicklistLoading(true);
+    try {
+      setCdRatioGroups(await searchCdRatioGroups({ searchBy, textToSearch }));
+      setCdRatioGroupsPage(1);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to load CD ratio groups.");
     } finally {
       setPicklistLoading(false);
     }
@@ -279,7 +255,7 @@ export default function ProductParameterModal({ mode = "add", initialData = null
 
   const handleValidate = () => {
     const nextErrors = {};
-    requiredKeys.forEach((key) => {
+    REQUIRED_KEYS.forEach((key) => {
       if (!form[key]?.toString().trim()) nextErrors[key] = true;
     });
     setErrors(nextErrors);
@@ -290,24 +266,28 @@ export default function ProductParameterModal({ mode = "add", initialData = null
     if (!validated || saving) return;
     setSaving(true);
     try {
-      const product = {
-        productCode: form.productCode,
+      const glAccount = {
+        accountSerial: form.accountSerial || String(Date.now()).slice(-7),
         description: form.description,
-        shortDescription: form.description.slice(0, 10),
-        accountType: form.accountType,
-        implemented: form.implemented,
-        cashTransactionAllowed: form.cashTransactionAllowed,
-        defaultMinimumBalanceId: Number(form.defaultMinimumBalanceId) || 0,
-        interestRoundingFactor: Number(form.interestRoundingFactor) || 0,
-        nomineeRequired: form.nomineeRequired,
-        inwardClearingAllowed: form.inwardClearingAllowed,
-        panCardAllowed: "N",
-        individual: "N",
+        sequenceNumber: Number(form.sequenceNumber) || 0,
+        alie: form.alie,
+        transactionAllowed: form.transactionAllowed,
+        dayBookSequenceNumber: Number(form.dayBookSequenceNumber) || 0,
+        directOuterInBspl: form.directOuterInBspl,
+        positiveFinalAccountGroup: form.positiveFinalAccountGroup,
+        negativeFinalAccountGroup: form.negativeFinalAccountGroup,
+        cdRatioGroupCode: form.cdRatioGroupCode,
+        includeExpenseStatement: "N",
+        createOutListWhen: "N",
       };
       if (isAdd) {
-        await onSave({ product, glAccountCode: form.glAccountCode });
+        await onSave({
+          glAccount: { glAccountCode: form.glAccountCode, ...glAccount },
+          effectiveDate: new Date().toISOString().slice(0, 10),
+          userId: "admin",
+        });
       } else {
-        await onSave({ product });
+        await onSave({ glAccountCode: form.glAccountCode, update: glAccount });
       }
       onClose();
     } catch {
@@ -315,23 +295,6 @@ export default function ProductParameterModal({ mode = "add", initialData = null
     } finally {
       setSaving(false);
     }
-  };
-
-  const applyCopyFrom = (product) => {
-    setForm((prev) => ({
-      ...prev,
-      copyFrom: product.productCode,
-      copyFromDescription: product.description,
-      accountType: product.accountType,
-      accountTypeDescription: ACCOUNT_TYPES.find((a) => a.code === product.accountType)?.description ?? product.accountType,
-      defaultMinimumBalanceId: String(product.defaultMinimumBalanceId ?? ""),
-      interestRoundingFactor: String(product.interestRoundingFactor ?? ""),
-      implemented: product.implemented ?? prev.implemented,
-      cashTransactionAllowed: product.cashTransactionAllowed ?? prev.cashTransactionAllowed,
-      nomineeRequired: product.nomineeRequired ?? prev.nomineeRequired,
-      inwardClearingAllowed: product.inwardClearingAllowed ?? prev.inwardClearingAllowed,
-    }));
-    setPicklist(null);
   };
 
   const HeaderIcon = meta.useImage ? null : meta.Icon;
@@ -370,176 +333,124 @@ export default function ProductParameterModal({ mode = "add", initialData = null
         {/* Form */}
         <div className="bg-white rounded-[20px] border-x border-b border-t-4 border-primary p-6 shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:bg-slate-900">
           <div className="grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-2">
-            <PicklistTriggerField
-              label="Account Type"
-              labelHi="खाते प्रकार"
+            <TextField
+              label="GL Account Code"
+              labelHi="जीएल अकाउंट कोड"
               icon={UserRound}
-              value={form.accountType}
-              placeholder="Select Account Type"
-              error={errors.accountType}
-              readOnly={isView}
-              onOpen={() => openPicklist("accountType")}
-            />
-            <TextField
-              label="Description"
-              labelHi="वर्णन"
-              icon={FileText}
-              value={form.accountTypeDescription}
-              readOnly
-              placeholder="Enter Account Type Description"
-              error={errors.accountTypeDescription}
-              onChange={() => {}}
-            />
-
-            <TextField
-              label="Product Code"
-              labelHi="उत्पादन कोड"
-              icon={ShieldCheck}
-              value={form.productCode}
-              placeholder="Enter Product Code"
-              error={errors.productCode}
+              value={form.glAccountCode}
+              placeholder="Enter GL Account Code"
+              error={errors.glAccountCode}
               readOnly={isView || isEdit}
-              onChange={(v) => update("productCode", v)}
+              onChange={(v) => update("glAccountCode", v)}
             />
             <TextField
               label="Description"
               labelHi="वर्णन"
               icon={FileText}
               value={form.description}
-              placeholder="Enter Product Code Description"
+              placeholder="Enter Description"
               error={errors.description}
               readOnly={isView}
               onChange={(v) => update("description", v)}
             />
 
-            {isAdd && (
-              <>
-                <PicklistTriggerField
-                  label="Copy From"
-                  labelHi="यावरून प्रत तयार करा"
-                  icon={Copy}
-                  value={form.copyFrom}
-                  placeholder="Select Copy From"
-                  error={errors.copyFrom}
-                  onOpen={() => openPicklist("copyFrom")}
-                />
-                <TextField
-                  label="Description"
-                  labelHi="वर्णन"
-                  icon={FileText}
-                  value={form.copyFromDescription}
-                  readOnly
-                  placeholder="Enter Copy From Description"
-                  error={errors.copyFromDescription}
-                  onChange={() => {}}
-                />
-
-                <PicklistTriggerField
-                  label="GL Account Code"
-                  labelHi="जीएल खाते कोड"
-                  icon={UserRound}
-                  value={form.glAccountCode}
-                  placeholder="Select GL Account Code"
-                  error={errors.glAccountCode}
-                  onOpen={() => openPicklist("glAccountCode")}
-                />
-                <TextField
-                  label="Description"
-                  labelHi="वर्णन"
-                  icon={FileText}
-                  value={form.glAccountDescription}
-                  readOnly
-                  placeholder="Enter GL Account Code Description"
-                  error={errors.glAccountDescription}
-                  onChange={() => {}}
-                />
-              </>
-            )}
-
             <TextField
-              label="Default Minimum Balance ID"
-              labelHi="डीफॉल्ट किमान शिल्लक ID"
-              icon={Coins}
-              value={form.defaultMinimumBalanceId}
-              placeholder="Enter Default Minimum Balance ID"
-              error={errors.defaultMinimumBalanceId}
+              label="BS/PL Sequence No"
+              labelHi="बीएस / पीएल सिक्वेन्स नंबर"
+              icon={Hash}
+              value={form.sequenceNumber}
+              placeholder="Enter BS/PL Sequence No."
+              error={errors.sequenceNumber}
               readOnly={isView}
-              onChange={(v) => update("defaultMinimumBalanceId", v)}
+              onChange={(v) => update("sequenceNumber", v)}
             />
-            {isAdd ? (
-              <TextField
-                label="Max Cash Limit"
-                labelHi="कमाल रोख मर्यादा"
-                icon={Coins}
-                value={form.maxCashLimit}
-                placeholder="Enter Max Cash Limit"
-                error={errors.maxCashLimit}
-                onChange={(v) => update("maxCashLimit", v)}
-              />
-            ) : (
-              <TextField
-                label="Interest Rounding Factor"
-                labelHi="व्याज गोलाई घटक"
-                icon={Percent}
-                value={form.interestRoundingFactor}
-                placeholder="Enter Interest Rounding Factor"
-                error={errors.interestRoundingFactor}
-                readOnly={isView}
-                onChange={(v) => update("interestRoundingFactor", v)}
-              />
-            )}
-
-            {isAdd && (
-              <>
-                <TextField
-                  label="Max Withdrawal Limit"
-                  labelHi="कमाल पैसे काढण्याची मर्यादा"
-                  icon={Coins}
-                  value={form.maxWithdrawalLimit}
-                  placeholder="Enter Max Withdrawal Limit"
-                  error={errors.maxWithdrawalLimit}
-                  onChange={(v) => update("maxWithdrawalLimit", v)}
-                />
-                <TextField
-                  label="Interest Rounding Factor"
-                  labelHi="व्याज गोलाई घटक"
-                  icon={Percent}
-                  value={form.interestRoundingFactor}
-                  placeholder="Enter Interest Rounding Factor"
-                  error={errors.interestRoundingFactor}
-                  onChange={(v) => update("interestRoundingFactor", v)}
-                />
-              </>
-            )}
-
-            <RadioField
-              label="Is Implemented"
-              labelHi="अंमलात आणले आहे का"
-              value={form.implemented}
-              disabled={isView}
-              onChange={(v) => update("implemented", v)}
-            />
-            <RadioField
-              label="Is Nominee Required"
-              labelHi="नामनिर्देशित व्यक्ती आवश्यक आहे का"
-              value={form.nomineeRequired}
-              disabled={isView}
-              onChange={(v) => update("nomineeRequired", v)}
+            <TextField
+              label="Day Book Seq No"
+              labelHi="दैनिक नोंदवही क्रम क्रमांक"
+              icon={Hash}
+              value={form.dayBookSequenceNumber}
+              placeholder="Enter Day Book Sequence No"
+              error={errors.dayBookSequenceNumber}
+              readOnly={isView}
+              onChange={(v) => update("dayBookSequenceNumber", v)}
             />
 
+            <PicklistTriggerField
+              label="Final Account Master When Positive"
+              labelHi="फायनल अकाउंट मास्टर व्हेन पॉझिटिव्ह"
+              icon={Landmark}
+              value={form.positiveFinalAccountGroup}
+              placeholder="Enter Final Account Master"
+              error={errors.positiveFinalAccountGroup}
+              readOnly={isView}
+              onOpen={() => openPicklist("positiveGroup")}
+            />
+            <TextField
+              label="Description"
+              labelHi="वर्णन"
+              icon={FileText}
+              value={form.positiveFinalAccountGroupDescription}
+              readOnly
+              placeholder="Enter Description"
+              error={errors.positiveFinalAccountGroupDescription}
+              onChange={() => {}}
+            />
+
+            <PicklistTriggerField
+              label="Final Account Master When Negative"
+              labelHi="फायनल अकाउंट मास्टर व्हेन नेगेटिव्ह"
+              icon={Landmark}
+              value={form.negativeFinalAccountGroup}
+              placeholder="Enter Final Account Master"
+              error={errors.negativeFinalAccountGroup}
+              readOnly={isView}
+              onOpen={() => openPicklist("negativeGroup")}
+            />
+            <TextField
+              label="Description"
+              labelHi="वर्णन"
+              icon={FileText}
+              value={form.negativeFinalAccountGroupDescription}
+              readOnly
+              placeholder="Enter Description"
+              error={errors.negativeFinalAccountGroupDescription}
+              onChange={() => {}}
+            />
+
+            <PicklistTriggerField
+              label="CD Ratio Group"
+              labelHi="सीडी रेशिओ ग्रुप"
+              icon={Hash}
+              value={form.cdRatioGroupCode}
+              placeholder="Select CD Ratio Group"
+              error={errors.cdRatioGroupCode}
+              readOnly={isView}
+              onOpen={() => openPicklist("cdRatioGroup")}
+            />
+            <TextField
+              label="Description"
+              labelHi="वर्णन"
+              icon={FileText}
+              value={form.cdRatioGroupDescription}
+              readOnly
+              placeholder="Enter Description"
+              error={errors.cdRatioGroupDescription}
+              onChange={() => {}}
+            />
+
             <RadioField
-              label="Is Cash Transaction Allowed"
-              labelHi="रोख व्यवहारास परवानगी आहे का"
-              value={form.cashTransactionAllowed}
+              label="Is Transaction Allowed"
+              labelHi="व्यवहाराला परवानगी आहे का?"
+              value={form.transactionAllowed}
               disabled={isView}
-              onChange={(v) => update("cashTransactionAllowed", v)}
+              onChange={(v) => update("transactionAllowed", v)}
             />
             <RadioField
-              label="Is Inward Clearing Allowed"
-              labelHi="आवक क्लिअरिंगस परवानगी आहे का"
-              value={form.inwardClearingAllowed}
+              label="Direct Outer In BS / PL Report"
+              labelHi="डायरेक्ट आउटर इन बीएस / पीएल रिपोर्ट दाखवावे का?"
+              value={form.directOuterInBspl}
               disabled={isView}
-              onChange={(v) => update("inwardClearingAllowed", v)}
+              onChange={(v) => update("directOuterInBspl", v)}
             />
           </div>
         </div>
@@ -614,75 +525,89 @@ export default function ProductParameterModal({ mode = "add", initialData = null
         </div>
       </div>
 
-      {picklist === "accountType" && (
+      {picklist === "positiveGroup" && (
         <PicklistModal
-          title="Select Account Type"
+          title="Select Final Account Master (Positive)"
           columns={[
-            { key: "code", header: "Account Type", width: "180px" },
+            { key: "code", header: "Code", width: "160px" },
             { key: "description", header: "Description" },
           ]}
-          rows={ACCOUNT_TYPES}
+          rows={positiveGroups.slice((positiveGroupsPage - 1) * PAGE_SIZE, positiveGroupsPage * PAGE_SIZE)}
           rowKey={(row) => row.code}
-          onSelect={(row) => {
-            setForm((prev) => ({ ...prev, accountType: row.code, accountTypeDescription: row.description }));
-            setPicklist(null);
-          }}
-          onClose={() => setPicklist(null)}
-        />
-      )}
-
-      {picklist === "copyFrom" && (
-        <PicklistModal
-          title="Select Copy From"
-          columns={[
-            { key: "productCode", header: "Product Code", width: "160px" },
-            { key: "description", header: "Description" },
-            { key: "accountType", header: "Account Type", width: "140px" },
-          ]}
-          rows={products.slice((productsPage - 1) * PAGE_SIZE, productsPage * PAGE_SIZE)}
-          rowKey={(row) => row.productCode}
           loading={picklistLoading}
-          emptyMessage="No products found"
+          emptyMessage="No final account groups found"
           searchByOptions={[
-            { label: "Product Code", value: "PRODUCT_CODE" },
+            { label: "Code", value: "FINAL_ACCOUNT_GROUP_CODE" },
             { label: "Description", value: "DESCRIPTION" },
           ]}
-          onSearchSubmit={handleCopyFromSearch}
-          onSelect={applyCopyFrom}
-          onClose={() => setPicklist(null)}
-          pagination={{
-            page: productsPage,
-            totalPages: Math.max(1, Math.ceil(products.length / PAGE_SIZE)),
-            onPageChange: setProductsPage,
-          }}
-        />
-      )}
-
-      {picklist === "glAccountCode" && (
-        <PicklistModal
-          title="Select GL Account Code"
-          columns={[
-            { key: "glAccountCode", header: "GL Account Code", width: "200px" },
-            { key: "description", header: "Description" },
-          ]}
-          rows={glAccounts.slice((glAccountsPage - 1) * PAGE_SIZE, glAccountsPage * PAGE_SIZE)}
-          rowKey={(row) => row.glAccountCode}
-          loading={picklistLoading}
-          emptyMessage="No GL accounts found"
-          searchByOptions={[
-            { label: "GL Account Code", value: "GL_ACCOUNT_CODE" },
-            { label: "Description", value: "DESCRIPTION" },
-          ]}
-          onSearchSubmit={handleGlAccountSearch}
+          onSearchSubmit={handlePositiveGroupSearch}
           onSelect={(row) => {
-            setForm((prev) => ({ ...prev, glAccountCode: row.glAccountCode, glAccountDescription: row.description }));
+            setForm((prev) => ({ ...prev, positiveFinalAccountGroup: row.code, positiveFinalAccountGroupDescription: row.description }));
             setPicklist(null);
           }}
           onClose={() => setPicklist(null)}
           pagination={{
-            page: glAccountsPage,
-            totalPages: Math.max(1, Math.ceil(glAccounts.length / PAGE_SIZE)),
-            onPageChange: setGlAccountsPage,
+            page: positiveGroupsPage,
+            totalPages: Math.max(1, Math.ceil(positiveGroups.length / PAGE_SIZE)),
+            onPageChange: setPositiveGroupsPage,
+          }}
+        />
+      )}
+
+      {picklist === "negativeGroup" && (
+        <PicklistModal
+          title="Select Final Account Master (Negative)"
+          columns={[
+            { key: "code", header: "Code", width: "160px" },
+            { key: "description", header: "Description" },
+          ]}
+          rows={negativeGroups.slice((negativeGroupsPage - 1) * PAGE_SIZE, negativeGroupsPage * PAGE_SIZE)}
+          rowKey={(row) => row.code}
+          loading={picklistLoading}
+          emptyMessage="No final account groups found"
+          searchByOptions={[
+            { label: "Code", value: "FINAL_ACCOUNT_GROUP_CODE" },
+            { label: "Description", value: "DESCRIPTION" },
+          ]}
+          onSearchSubmit={handleNegativeGroupSearch}
+          onSelect={(row) => {
+            setForm((prev) => ({ ...prev, negativeFinalAccountGroup: row.code, negativeFinalAccountGroupDescription: row.description }));
+            setPicklist(null);
+          }}
+          onClose={() => setPicklist(null)}
+          pagination={{
+            page: negativeGroupsPage,
+            totalPages: Math.max(1, Math.ceil(negativeGroups.length / PAGE_SIZE)),
+            onPageChange: setNegativeGroupsPage,
+          }}
+        />
+      )}
+
+      {picklist === "cdRatioGroup" && (
+        <PicklistModal
+          title="Select CD Ratio Group"
+          columns={[
+            { key: "code", header: "Code", width: "160px" },
+            { key: "description", header: "Description" },
+          ]}
+          rows={cdRatioGroups.slice((cdRatioGroupsPage - 1) * PAGE_SIZE, cdRatioGroupsPage * PAGE_SIZE)}
+          rowKey={(row) => row.code}
+          loading={picklistLoading}
+          emptyMessage="No CD ratio groups found"
+          searchByOptions={[
+            { label: "Code", value: "CD_RATIO_CODE" },
+            { label: "Description", value: "DESCRIPTION" },
+          ]}
+          onSearchSubmit={handleCdRatioGroupSearch}
+          onSelect={(row) => {
+            setForm((prev) => ({ ...prev, cdRatioGroupCode: row.code, cdRatioGroupDescription: row.description }));
+            setPicklist(null);
+          }}
+          onClose={() => setPicklist(null)}
+          pagination={{
+            page: cdRatioGroupsPage,
+            totalPages: Math.max(1, Math.ceil(cdRatioGroups.length / PAGE_SIZE)),
+            onPageChange: setCdRatioGroupsPage,
           }}
         />
       )}

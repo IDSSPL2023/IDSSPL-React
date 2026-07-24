@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Building2, SquarePen, UserRound } from "lucide-react";
+import { SquarePen, UserRound } from "lucide-react";
 import Image from "@/components/ui/Image";
 import {
   NormalFormModal,
   TextField,
   SelectField,
   CountryPicklistField,
+  CityPicklistField,
   RadioGroupField,
   validateFields,
   isFormValid,
   required,
   type Validator,
-  CityPicklistField,
 } from "@/components/common";
 import { getMasterConfig, getFieldIcon, countryCodeByName, type MasterField } from "./masterConfig";
 
@@ -149,18 +149,36 @@ export default function MasterParameterModal({ mode, masterKey, initialData, onC
       );
     }
 
+    if (field.type === "city") {
+      return (
+        <div key={field.key} className="mb-4 last:mb-0">
+          <CityPicklistField
+            label={field.labelEn}
+            labelHi={field.labelHi}
+            icon={<Icon size={18} />}
+            value={value}
+            onSelect={(city) => handleChange(field.key, city.name)}
+            required
+            readOnly={isReadOnly}
+            error={error}
+          />
+        </div>
+      );
+    }
+
     return (
       <div key={field.key} className="mb-4 last:mb-0">
-         <CityPicklistField
-                label="City Code"
-                labelHi="शहर कोड"
-                icon={<Building2 size={18} />}
-                value={formData.cityCode}
-                onSelect={(city) => handleChange("cityCode", city.cityCode)}
-                required
-                error={errors.cityCode ? "This field is required" : undefined}
-                preFetch={true}
-              />
+        <TextField
+          label={field.labelEn}
+          labelHi={field.labelHi}
+          icon={<Icon size={18} />}
+          value={value}
+          onChange={(v) => handleChange(field.key, v)}
+          placeholder={field.placeholder}
+          required
+          readOnly={isReadOnly}
+          error={error}
+        />
       </div>
     );
   };

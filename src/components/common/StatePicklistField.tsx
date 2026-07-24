@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import PicklistField from "./PicklistField";
-import { fetchStates, type StateRecord } from "@/lib/masterMaintenanceApi";
+import { fetchStates, type StateRecord } from "@/api/globalmaster.api";
 import StatePicklistModal from "./StatePicklistModal";
 
 export interface StatePicklistFieldProps {

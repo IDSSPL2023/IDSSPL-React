@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import BaseModal from "./BaseModal";
 import PaginationModal from "./PaginationModal";
 import type { PaginationState } from "./table.types";
-import { StateRecord } from "@/lib/masterMaintenanceApi";
+import { StateRecord } from "@/api/globalmaster.api";
 
 export interface PicklistColumn {
   key: string;

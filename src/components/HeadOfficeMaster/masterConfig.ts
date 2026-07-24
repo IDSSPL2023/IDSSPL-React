@@ -250,6 +250,73 @@ export const MASTER_CONFIG = {
       { key: "description", label: "Description" },
     ],
   },
+  finalAccountGroup: {
+    columns: [
+      { key: "code", label: "Final Account Group Code" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "code", labelEn: "Final Account Group Code", labelHi: "अंतिम खात्याचा गट कोड", placeholder: "Enter Final Account Group Code", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "code", label: "Final Account Group Code" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  glAccount: {
+    // Branch Code / Product Code aren't part of the documented create/update
+    // request body, but are shown here in case the list/detail response
+    // includes them (toGlAccountRecord defaults them to "" when absent).
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "productCode", label: "Product Code" },
+      { key: "accountSerial", label: "Account Serial" },
+      { key: "glAccountCode", label: "GL Account Code" },
+      { key: "description", label: "Description" },
+      { key: "alie", label: "ALIE" },
+      { key: "dayBookSequenceNumber", label: "Day Book Sequence Number" },
+    ],
+    rows: [],
+    // Add/View/Edit for this master render via GlAccountParameterModal instead
+    // of the generic field-config loop, so no `fields` array is needed here.
+    fields: [],
+    filterFields: [
+      { key: "glAccountCode", label: "GL Account Code" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  depositRule: {
+    columns: [
+      { key: "id", label: "Deposit Rule ID" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Deposit Rule ID", labelHi: "ठेव नियम आयडी", placeholder: "Enter Deposit Rule ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "id", label: "Deposit Rule ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  industry: {
+    columns: [
+      { key: "id", label: "Industry ID" },
+      { key: "description", label: "Industry Type" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Industry Type ID", labelHi: "इंडस्ट्री टाईप आयडी", placeholder: "Enter Industry Type ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Describe Industry", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "id", label: "Industry ID" },
+      { key: "description", label: "Industry Type" },
+    ],
+  },
 };
 
 const DEFAULT_CONFIG = {

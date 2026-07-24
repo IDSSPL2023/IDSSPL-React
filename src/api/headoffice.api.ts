@@ -1,23 +1,5 @@
 const BASE_URL = import.meta.env.VITE_MASTER_MAINTENANCE_API_URL || "http://13.202.249.213:8080";
 
-export interface CityRecord {
-  cityCode: string;
-  name: string;
-  countryCode: string;
-  countryName: string;
-}
-
-export interface CountryOption {
-  code: string;
-  name: string;
-}
-
-export interface StateRecord {
-  stateCode: string;
-  countryCode: string;
-  stateName: string;
-}
-
 export interface ClearingTypeRecord {
   id: string;
   description: string;
@@ -115,61 +97,7 @@ function extractList(data: unknown): Record<string, unknown>[] {
   return Array.isArray(list) ? list : [];
 }
 
-/** GET /cities — full CityDE data used to populate the City Master table. */
-// export async function fetchCities(): Promise<CityRecord[]> {
-//   const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities`);
-//   if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
-//   const data = await parseJson(response);
-//   return extractList(data).map((item) => ({
-//     cityCode: String(item.cityCode ?? ""),
-//     name: String(item.name ?? ""),
-//     countryCode: String(item.countryCode ?? ""),
-//     countryName: String(item.countryName ?? ""),
-//   }));
-// }
-
-// lib/masterMaintenanceApi.ts
-
-// lib/masterMaintenanceApi.ts
-
-export interface CityRecord {
-  cityCode: string;
-  name: string;
-  // countryCode?: string;
-  // countryName?: string;
-}
-
-export interface CitySearchParams {
-  searchBy?: "CODE" | "NAME";
-  textToSearch?: string;
-}
-
-export async function fetchCities(
-  params: CitySearchParams = {}
-): Promise<CityRecord[]> {
-  const { searchBy = "NAME", textToSearch = "" } = params;
-
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities/search`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ searchBy, textToSearch }),
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Failed to load cities (${response.status})`);
-  }
-  
-  const data = await parseJson(response);
-  
-  return extractList(data).map((item) => ({
-    cityCode: String(item.cityCode ?? item.code ?? item.value ?? ""),
-    name: String(item.name ?? item.cityName ?? item.label ?? item.text ?? ""),
-    countryCode: String(item.countryCode ?? ""),
-    countryName: String(item.countryName ?? ""),
-  }));
-}
-
-/** GET /cities — full CityDE data used to populate the City Master table. */
+/** GET /default-branch-accounts — browse all branch clearing-account mappings. */
 export async function fetchBranchAccount(): Promise<BranchAccount[]> {
   const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/default-branch-accounts`);
   if (!response.ok) throw new Error(`Failed to load Bank Accounts (${response.status})`);
@@ -273,128 +201,6 @@ export async function updateBranchAccount(
     branchCode: String(data.branchCode ?? branchCode),
     inwardClearingAccountCode: String(data.inwardClearingAccountCode ?? payload.inwardClearingAccountCode),
     outwardClearingAccountCode: String(data.outwardClearingAccountCode ?? payload.outwardClearingAccountCode),
-  };
-}
-
-// lib/masterMaintenanceApi.ts
-
-// export async function fetchCities(params?: {
-//   searchBy?: string;
-//   textToSearch?: string;
-// }): Promise<CityRecord[]> {
-//   let url = `${BASE_URL}/api/v1/master-maintenance/cities`;
-  
-//   // Build query params if provided
-//   if (params?.searchBy && params?.textToSearch) {
-//     const searchParams = new URLSearchParams();
-//     searchParams.append('searchBy', params.searchBy);
-//     searchParams.append('textToSearch', params.textToSearch);
-//     url += `?${searchParams.toString()}`;
-//   }
-  
-//   const response = await fetch(url);
-//   if (!response.ok) throw new Error(`Failed to load cities (${response.status})`);
-//   const data = await parseJson(response);
-//   return extractList(data).map((item) => ({
-//     cityCode: String(item.cityCode ?? ""),
-//     name: String(item.name ?? ""),
-//     countryCode: String(item.countryCode ?? ""),
-//     countryName: String(item.countryName ?? ""),
-//   }));
-// }
-/** POST /countries/search — empty textToSearch returns all countries; used for the Country dropdown. */
-export interface CountrySearchParams {
-  searchBy?: string;   // "NAME" | "CODE" | ...
-  textToSearch?: string;
-}
-
-export async function fetchCountries(
-  params: CountrySearchParams = {}
-): Promise<CountryOption[]> {
-  const { searchBy = "NAME", textToSearch = "" } = params;
-
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/countries/search`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ searchBy, textToSearch }),
-  });
-  if (!response.ok) throw new Error(`Failed to load countries (${response.status})`);
-  const data = await parseJson(response);
-  return extractList(data).map((item) => ({
-    code: String(item.code ?? item.countryCode ?? item.value ?? ""),
-    name: String(item.name ?? item.countryName ?? item.label ?? item.text ?? ""),
-  }));
-}
-
-/** POST /cities — creates a new city; the server assigns cityCode and returns 409 if the name already exists. */
-export async function createCity(payload: {
-  name: string;
-  countryCode: string;
-}): Promise<CityRecord> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/cities`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = (await parseJson(response)) as Record<string, unknown> | null;
-  if (!response.ok || data?.hasError) {
-    throw new Error(String(data?.responseMessage ?? `Failed to create city (${response.status})`));
-  }
-  return {
-    cityCode: String(data?.cityCode ?? ""),
-    name: String(data?.name ?? payload.name),
-    countryCode: String(data?.countryCode ?? payload.countryCode),
-    countryName: String(data?.countryName ?? ""),
-  };
-}
-
-/** GET /master/states — browse returning stateCode, countryCode, stateName. */
-export async function fetchStates(payload?: {
-  searchBy: "CODE" | "NAME" | "STATE_NAME" | "COUNTRY_CODE";
-  textToSearch: string;
-}): Promise<StateRecord[]> {
-  const response = await fetch(
-    `${BASE_URL}/api/v1/master-maintenance/states/search`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    },
-  );
-  if (!response.ok)
-    throw new Error(`Failed to load states (${response.status})`);
-  const data = await parseJson(response);
-  return extractList(data).map((item) => ({
-    stateCode: String(item.stateCode ?? ""),
-    countryCode: String(item.countryCode ?? ""),
-    stateName: String(item.stateName ?? ""),
-  }));
-}
-
-/**
- * POST /master/states — creates a state; stateCode is client-supplied. The server
- * responds 200 even on logical failure (e.g. duplicate code), signaling the error via
- * `{ hasError: true, responseMessage }` in the body rather than an HTTP error status.
- */
-export async function createState(payload: {
-  stateCode: string;
-  countryCode: string;
-  stateName: string;
-}): Promise<StateRecord> {
-  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/states`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = (await parseJson(response)) as Record<string, unknown> | null;
-  if (!response.ok || data?.hasError) {
-    throw new Error(String(data?.responseMessage ?? `Failed to create state (${response.status})`));
-  }
-  const body = (data?.body ?? data) as Record<string, unknown> | undefined;
-  return {
-    stateCode: String(body?.stateCode ?? payload.stateCode),
-    countryCode: String(body?.countryCode ?? payload.countryCode),
-    stateName: String(body?.stateName ?? payload.stateName),
   };
 }
 
@@ -726,6 +532,315 @@ export async function updateInstallmentType(
     throw new Error(String(data?.responseMessage ?? `Failed to update installment type (${response.status})`));
   }
   return toInstallmentTypeRecord(data ?? payload, id);
+}
+
+export interface IndustryRecord {
+  id: string;
+  description: string;
+}
+
+const toIndustryRecord = (item: Record<string, unknown>, fallbackId?: string): IndustryRecord => ({
+  id: String(item.id ?? fallbackId ?? ""),
+  description: String(item.description ?? ""),
+});
+
+/** GET /industries — browse all industries. */
+export async function fetchIndustries(): Promise<IndustryRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/industries`);
+  if (!response.ok) throw new Error(`Failed to load industries (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toIndustryRecord(item));
+}
+
+/** GET /industries/{id} — full detail, used to populate View/Edit. */
+export async function fetchIndustryById(id: string): Promise<IndustryRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/industries/${encodeURIComponent(id)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load industry (${response.status})`));
+  }
+  return toIndustryRecord(data ?? {}, id);
+}
+
+/** POST /industries — creates an industry (id is 0..99, client-supplied). */
+export async function createIndustry(payload: { id: string; description: string }): Promise<IndustryRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/industries`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: Number(payload.id) || payload.id, description: payload.description }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create industry (${response.status})`));
+  }
+  return toIndustryRecord(data ?? payload, payload.id);
+}
+
+/** PUT /industries/{id} — updates an existing industry's description. */
+export async function updateIndustry(id: string, payload: { description: string }): Promise<IndustryRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/industries/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update industry (${response.status})`));
+  }
+  return toIndustryRecord(data ?? payload, id);
+}
+
+export interface DepositRuleRecord {
+  id: string;
+  description: string;
+}
+
+const toDepositRuleRecord = (item: Record<string, unknown>, fallbackId?: string): DepositRuleRecord => ({
+  id: String(item.id ?? fallbackId ?? ""),
+  description: String(item.description ?? ""),
+});
+
+/** GET /deposit-rules — browse all deposit rules. */
+export async function fetchDepositRules(): Promise<DepositRuleRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-rules`);
+  if (!response.ok) throw new Error(`Failed to load deposit rules (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toDepositRuleRecord(item));
+}
+
+/** GET /deposit-rules/{id} — full detail, used to populate View/Edit. */
+export async function fetchDepositRuleById(id: string): Promise<DepositRuleRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-rules/${encodeURIComponent(id)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load deposit rule (${response.status})`));
+  }
+  return toDepositRuleRecord(data ?? {}, id);
+}
+
+/** POST /deposit-rules — creates a deposit rule (id is the legacy two-digit Deposit Rule Id). */
+export async function createDepositRule(payload: { id: string; description: string }): Promise<DepositRuleRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-rules`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: Number(payload.id) || payload.id, description: payload.description }),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create deposit rule (${response.status})`));
+  }
+  return toDepositRuleRecord(data ?? payload, payload.id);
+}
+
+/** PUT /deposit-rules/{id} — updates an existing deposit rule's description. */
+export async function updateDepositRule(id: string, payload: { description: string }): Promise<DepositRuleRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/deposit-rules/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update deposit rule (${response.status})`));
+  }
+  return toDepositRuleRecord(data ?? payload, id);
+}
+
+export interface FinalAccountGroupRecord {
+  code: string;
+  description: string;
+}
+
+const toFinalAccountGroupRecord = (item: Record<string, unknown>, fallbackCode?: string): FinalAccountGroupRecord => ({
+  code: String(item.code ?? fallbackCode ?? ""),
+  description: String(item.description ?? ""),
+});
+
+/** GET /final-account-groups — browse all final account groups. */
+export async function fetchFinalAccountGroups(): Promise<FinalAccountGroupRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/final-account-groups`);
+  if (!response.ok) throw new Error(`Failed to load final account groups (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toFinalAccountGroupRecord(item));
+}
+
+/** GET /final-account-groups/{code} — full detail, used to populate View/Edit. */
+export async function fetchFinalAccountGroupByCode(code: string): Promise<FinalAccountGroupRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/final-account-groups/${encodeURIComponent(code)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load final account group (${response.status})`));
+  }
+  return toFinalAccountGroupRecord(data ?? {}, code);
+}
+
+/** POST /final-account-groups — creates a final account group (four-character legacy code). */
+export async function createFinalAccountGroup(payload: { code: string; description: string }): Promise<FinalAccountGroupRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/final-account-groups`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create final account group (${response.status})`));
+  }
+  return toFinalAccountGroupRecord(data ?? payload, payload.code);
+}
+
+/** PUT /final-account-groups/{code} — updates an existing final account group's description. */
+export async function updateFinalAccountGroup(code: string, payload: { description: string }): Promise<FinalAccountGroupRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/final-account-groups/${encodeURIComponent(code)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update final account group (${response.status})`));
+  }
+  return toFinalAccountGroupRecord(data ?? payload, code);
+}
+
+export interface GlAccountRecord {
+  glAccountCode: string;
+  // Not part of the documented create/update request body, but tolerated on
+  // read in case the list/detail response includes them (legacy GL rows are
+  // conceptually scoped per branch/product). Defaults to "" when absent.
+  branchCode: string;
+  productCode: string;
+  accountSerial: string;
+  description: string;
+  sequenceNumber: number;
+  alie: string;
+  transactionAllowed: string;
+  dayBookSequenceNumber: number;
+  directOuterInBspl: string;
+  positiveFinalAccountGroup: string;
+  negativeFinalAccountGroup: string;
+  cdRatioGroupCode: string;
+  includeExpenseStatement: string;
+  createOutListWhen: string;
+}
+
+const toGlAccountRecord = (item: Record<string, unknown>, fallbackCode?: string): GlAccountRecord => ({
+  glAccountCode: String(item.glAccountCode ?? fallbackCode ?? ""),
+  branchCode: String(item.branchCode ?? ""),
+  productCode: String(item.productCode ?? ""),
+  accountSerial: String(item.accountSerial ?? ""),
+  description: String(item.description ?? ""),
+  sequenceNumber: Number(item.sequenceNumber ?? 0),
+  alie: String(item.alie ?? "A"),
+  transactionAllowed: String(item.transactionAllowed ?? "Y"),
+  dayBookSequenceNumber: Number(item.dayBookSequenceNumber ?? 0),
+  directOuterInBspl: String(item.directOuterInBspl ?? "N"),
+  positiveFinalAccountGroup: String(item.positiveFinalAccountGroup ?? ""),
+  negativeFinalAccountGroup: String(item.negativeFinalAccountGroup ?? ""),
+  cdRatioGroupCode: String(item.cdRatioGroupCode ?? ""),
+  includeExpenseStatement: String(item.includeExpenseStatement ?? "N"),
+  createOutListWhen: String(item.createOutListWhen ?? "N"),
+});
+
+/** GET /gl-accounts — browse all GL accounts. */
+export async function fetchGlAccounts(): Promise<GlAccountRecord[]> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts`);
+  if (!response.ok) throw new Error(`Failed to load GL accounts (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => toGlAccountRecord(item));
+}
+
+/** GET /gl-accounts/{glAccountCode} — full detail, used to populate View/Edit. */
+export async function fetchGlAccountByCode(glAccountCode: string): Promise<GlAccountRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts/${encodeURIComponent(glAccountCode)}`);
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to load GL account (${response.status})`));
+  }
+  return toGlAccountRecord(data ?? {}, glAccountCode);
+}
+
+/** POST /gl-accounts — creates a GL account. effectiveDate/userId seed the ledger rows. */
+export async function createGlAccount(payload: {
+  glAccount: Omit<GlAccountRecord, "sequenceNumber" | "dayBookSequenceNumber"> & {
+    sequenceNumber: number;
+    dayBookSequenceNumber: number;
+  };
+  effectiveDate: string;
+  userId: string;
+}): Promise<GlAccountRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to create GL account (${response.status})`));
+  }
+  return toGlAccountRecord(data ?? payload.glAccount, payload.glAccount.glAccountCode);
+}
+
+/** PUT /gl-accounts/{glAccountCode} — updates an existing GL account (glAccountCode itself is fixed). */
+export async function updateGlAccount(
+  glAccountCode: string,
+  payload: Omit<GlAccountRecord, "glAccountCode">
+): Promise<GlAccountRecord> {
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts/${encodeURIComponent(glAccountCode)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = (await parseJson(response)) as Record<string, unknown> | null;
+  if (!response.ok || data?.hasError) {
+    throw new Error(String(data?.responseMessage ?? `Failed to update GL account (${response.status})`));
+  }
+  return toGlAccountRecord(data ?? payload, glAccountCode);
+}
+
+export interface FinalAccountGroupOption {
+  code: string;
+  description: string;
+}
+
+/** POST /gl-accounts/final-account-groups/search — populates the positive/negative Final Account Master picklists. */
+export async function searchFinalAccountGroupsForGl(params: {
+  groupFor: "POSITIVE" | "NEGATIVE";
+  searchBy?: string;
+  textToSearch?: string;
+}): Promise<FinalAccountGroupOption[]> {
+  const { groupFor, searchBy = "DESCRIPTION", textToSearch = "" } = params;
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts/final-account-groups/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ groupFor, searchBy, textToSearch }),
+  });
+  if (!response.ok) throw new Error(`Failed to load final account groups (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    code: String(item.code ?? item.finalAccountGroupCode ?? ""),
+    description: String(item.description ?? ""),
+  }));
+}
+
+export interface CdRatioGroupOption {
+  code: string;
+  description: string;
+}
+
+/** POST /gl-accounts/cd-ratio-groups/search — populates the CD Ratio Group picklist. */
+export async function searchCdRatioGroups(params: { searchBy?: string; textToSearch?: string } = {}): Promise<CdRatioGroupOption[]> {
+  const { searchBy = "DESCRIPTION", textToSearch = "" } = params;
+  const response = await fetch(`${BASE_URL}/api/v1/master-maintenance/gl-accounts/cd-ratio-groups/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ searchBy, textToSearch }),
+  });
+  if (!response.ok) throw new Error(`Failed to load CD ratio groups (${response.status})`);
+  const data = await parseJson(response);
+  return extractList(data).map((item) => ({
+    code: String(item.code ?? item.cdRatioGroupCode ?? ""),
+    description: String(item.description ?? ""),
+  }));
 }
 
 export interface InstrumentTypeRecord {

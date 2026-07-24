@@ -6,8 +6,9 @@ import PaginationModal from "@/components/common/PaginationModal";
 import { getMasterConfig, rowToFormData } from "./masterConfig";
 import ParameterModal from "./ParameterModal";
 import ProductParameterModal, { ACCOUNT_TYPES } from "./ProductParameterModal";
+import GlAccountParameterModal from "./GlAccountParameterModal";
 import BranchEnableDisableModal from "./BranchEnableDisableModal";
-import { fetchBranchAccount } from "@/lib/masterMaintenanceApi";
+import { fetchBranchAccount } from "@/api/headoffice.api";
 import {
   fetchClearingTypeById,
   updateClearingType,
@@ -15,7 +16,15 @@ import {
   updateProduct,
   fetchInstallmentTypeById,
   updateInstallmentType,
-} from "@/lib/masterMaintenanceApi";
+  fetchIndustryById,
+  updateIndustry,
+  fetchDepositRuleById,
+  updateDepositRule,
+  fetchFinalAccountGroupByCode,
+  updateFinalAccountGroup,
+  fetchGlAccountByCode,
+  updateGlAccount,
+} from "@/api/headoffice.api";
 
 const PAGE_SIZE = 10;
 
@@ -176,6 +185,18 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
       return;
     }
 
+    if (master.key === "glAccount" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: row, rowId: row.id });
+      try {
+        const fresh = await fetchGlAccountByCode(row.id);
+        setModal({ mode: action, data: fresh, rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest GL account details.");
+      }
+      return;
+    }
+
     if (master.key === "productMaster" && (action === "view" || action === "edit")) {
       setModal({ mode: action, data: row, rowId: row.id });
       try {
@@ -196,6 +217,42 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
       } catch (err) {
         console.error(err);
         alert(err instanceof Error ? err.message : "Failed to load the latest installment type details.");
+      }
+      return;
+    }
+
+    if (master.key === "industry" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchIndustryById(row.id);
+        setModal({ mode: action, data: rowToFormData(master.key, fresh), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest industry details.");
+      }
+      return;
+    }
+
+    if (master.key === "depositRule" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchDepositRuleById(row.id);
+        setModal({ mode: action, data: rowToFormData(master.key, fresh), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest deposit rule details.");
+      }
+      return;
+    }
+
+    if (master.key === "finalAccountGroup" && (action === "view" || action === "edit")) {
+      setModal({ mode: action, data: rowToFormData(master.key, row), rowId: row.id });
+      try {
+        const fresh = await fetchFinalAccountGroupByCode(row.id);
+        setModal({ mode: action, data: rowToFormData(master.key, fresh), rowId: row.id });
+      } catch (err) {
+        console.error(err);
+        alert(err instanceof Error ? err.message : "Failed to load the latest final account group details.");
       }
       return;
     }
@@ -281,6 +338,19 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
         setModal(null);
         return;
       }
+      if (master.key === "glAccount") {
+        try {
+          const updated = await updateGlAccount(modal.rowId, formData.update);
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updated, id: updated.glAccountCode } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update GL account. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
       if (master.key === "installmentType") {
         try {
           const updated = await updateInstallmentType(modal.rowId, {
@@ -295,6 +365,51 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
           );
         } catch (err) {
           alert(err instanceof Error ? err.message : "Failed to update installment type. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "industry") {
+        try {
+          const updated = await updateIndustry(modal.rowId, {
+            description: formData.description,
+          });
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updated } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update industry. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "depositRule") {
+        try {
+          const updated = await updateDepositRule(modal.rowId, {
+            description: formData.description,
+          });
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updated } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update deposit rule. Please try again.");
+          throw err;
+        }
+        setModal(null);
+        return;
+      }
+      if (master.key === "finalAccountGroup") {
+        try {
+          const updated = await updateFinalAccountGroup(modal.rowId, {
+            description: formData.description,
+          });
+          onRowsChange(
+            rows.map((row) => (row.id === modal.rowId ? { ...row, ...updated } : row))
+          );
+        } catch (err) {
+          alert(err instanceof Error ? err.message : "Failed to update final account group. Please try again.");
           throw err;
         }
         setModal(null);
@@ -403,6 +518,13 @@ const DataTable = ({ master, rows, filters, onRowsChange }) => {
         />
       ) : modal && master.key === "productMaster" ? (
         <ProductParameterModal
+          mode={modal.mode}
+          initialData={modal.data}
+          onClose={() => setModal(null)}
+          onSave={handleSave}
+        />
+      ) : modal && master.key === "glAccount" ? (
+        <GlAccountParameterModal
           mode={modal.mode}
           initialData={modal.data}
           onClose={() => setModal(null)}
