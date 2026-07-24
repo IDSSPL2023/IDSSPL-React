@@ -12,7 +12,6 @@ export default function NavItem({ item, active, collapsed = false }: NavItemProp
   const router = useRouter();
   const { tRaw } = useBilingual();
   const Icon = item.icon;
-    console.log("NavItem clicked:", item.id, item.href);
 
   // Sidebar items are single labels (not bilingual pairs), so use tRaw so the
   // label always shows the selected language and never goes blank in English.
@@ -22,7 +21,7 @@ export default function NavItem({ item, active, collapsed = false }: NavItemProp
   const disabled = !item.href;
 
   const handleClick = () => {
-    console.log("NavItem clicked:", item.id, item.href);
+    // console.log("NavItem clicked:", item.id, item.href);
     if (item.href) router.push(item.href);
   };
 

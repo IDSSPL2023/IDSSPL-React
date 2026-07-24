@@ -237,6 +237,7 @@ export default function PicklistModal<T>({
       showCloseButton={false}
     >
       <div className="relative flex flex-1 flex-col overflow-hidden">
+        {/* Background Accents */}
         <div className="pointer-events-none absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[#DCEBFC] opacity-70 blur-[1px]" />
         <div className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-[#DCEBFC] opacity-70 blur-[1px]" />
 
@@ -308,8 +309,11 @@ export default function PicklistModal<T>({
             {columns.map((col) => (
               <div
                 key={col.key}
-                className="truncate px-4 text-sm font-semibold text-gray-700"
-                style={{ width: col.width, flex: col.width ? undefined : 1 }}
+                className="min-w-0 truncate px-1 text-sm font-semibold text-gray-700"
+                style={{
+                  width: col.width,
+                  flex: col.width ? "none" : 1,
+                }}
               >
                 {col.header}
               </div>
@@ -327,9 +331,13 @@ export default function PicklistModal<T>({
           {/* Table Body */}
           <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <div className="flex h-[64px] items-center justify-center text-sm text-gray-400">Loading…</div>
+              <div className="flex h-32 items-center justify-center text-sm text-gray-400">
+                Loading…
+              </div>
             ) : filteredRows.length === 0 ? (
-              <div className="flex h-[64px] items-center justify-center text-sm text-gray-400">{emptyMessage}</div>
+              <div className="flex h-32 items-center justify-center text-sm text-gray-400">
+                {emptyMessage}
+              </div>
             ) : (
               filteredRows.map((row) => (
                 <div
@@ -356,6 +364,7 @@ export default function PicklistModal<T>({
           </div>
         </div>
 
+        {/* Footer Pagination */}
         {pagination && (
           <div className="relative z-10 mt-4 shrink-0">
             <PaginationModal 

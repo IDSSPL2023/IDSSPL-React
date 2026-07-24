@@ -112,6 +112,9 @@ import SMSRegistrationPage from "@/pages/SMS/SMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
 
+import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
+import QueriesScreen from "./components/Clerk/queries/queryScreen";
+
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
   return <RoleAuthorizationFlow onClose={() => router.back()} />;
@@ -381,6 +384,7 @@ export const router = createBrowserRouter([
       { path: "/support-utility", element: <SupportUtilityPage /> },
       { path: "/misactivity/supportutility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
+      { path: "/clerk/queries", element: <QueriesScreen /> },
       { path: "/clerk/sms", element: <ClerkSmsPage /> },
       { path: "/locker", element: <LockerPage /> },
       { path: "/transactionmaster", element: <TransactionMasterPage /> },

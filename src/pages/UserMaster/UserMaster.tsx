@@ -1,6 +1,6 @@
 import { IMAGES } from "@/assets";
 import { useState } from "react";
-import CityPicklistField from "@/components/common/CityPicklistField";
+// import CityPicklistField from "@/components/common/CityPicklistField";
 import {
   User,
   IdCard,
@@ -40,6 +40,8 @@ import {
 } from "@/components/shared/filterSummary";
 import CustomerIdPicklistField, { type CustomerOption } from "@/components/common/CustomerIdPicklistField";
 import StatePicklistField from "@/components/common/StatePicklistField";
+
+import CityPicklistField from "@/components/shared/CityPicklistField";
 
 /* ===== from AddUserMaster.tsx ===== */
 /* ===================== AddUserMaster_AddUserForm ===================== */
@@ -113,6 +115,7 @@ function AddUserMaster_AddUserForm({
     }
 
     if (!currentAddress1.trim())
+     
       nextErrors.currentAddress1 = "Current Address 1 is required";
     if (!zip.trim()) {
       nextErrors.zip = "Pin code is required";

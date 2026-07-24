@@ -263,6 +263,7 @@ export const menuItems: NavItemData[] = [
         id: "clerk-queries",
         title: "Queries",
         icon: Search,
+        href:"/clerk/queries"
       },
       {
         id: "clerk-sms",
