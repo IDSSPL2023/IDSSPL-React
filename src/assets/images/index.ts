@@ -51,6 +51,13 @@ import transfer from "./modules/transfer.png";
 import user from "./common/user.png";
 import xls from "./common/xls.png";
 import bg from "./background1.jpg"
+import account from "./account.png"
+import staff from "./staff.png"
+import deposit from "./deposites.png"
+import loans from "./loans.png"
+import branchInfo from "./branch-info.png"
+import branchManager from "./rajesh-kumar.jpg"
+import branchMaster from "./branch-master.png"
 
 export const IMAGES = {
   WELCOME_HERO_BG: bg,
@@ -60,14 +67,19 @@ export const IMAGES = {
   AUTHORIZE: authorize,
   AUTHORIZE_TRANSACTION_LIST_ICON: authorizeTransactionListIcon,
   AUTHORIZE_USER: authorizeUser,
+  ACCOUNT:account,
   BACKGROUND_DARK: backgroundDark,
   BILL: bill,
+  BRANCH_INFO:branchInfo,
+  Branch_MANAGER:branchManager,
+  BRANCH_MASTER:branchMaster,
   CALENDAR: calendar,
   CASH_DEPOSIT: cashDeposit,
   CASH_WITHDRAWAL: cashWithdrawal,
   CASH_WITHDRAWAL_FORM_ICON: cashWithdrawalFormIcon,
   CONTACT: contact,
   DESK: desk,
+  DEPOSITES:deposit,
   EDIT_ICON: editIcon,
   ELLIPSE_58_4: ellipse584,
   FRAME_1618867441: frame1618867441,
@@ -96,12 +108,14 @@ export const IMAGES = {
   SETTING_USER: settingUser,
   SHIELD_CHECK: shieldCheck,
   SIGN: sign,
+  STAFF:staff,
   TD_CLOSING_REINVEST: tdClosingReinvest,
   TD_INTEREST_PAYMENT: tdInterestPayment,
   TD_LOT: tdLot,
   TRANSFER: transfer,
   USER: user,
   XLS: xls,
+  LOANS:loans,
 } as const;
 
 // Default export for convenience
