@@ -120,7 +120,7 @@ const ModalWrapper = ({
       ) {
         return (
           <div
-            className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full ${iconBgColor} overflow-hidden`}
+            className={`flex w-15.5 items-center justify-center ${iconBgColor} overflow-hidden`}
           >
             <img src={icon} alt="icon" className="h-16 w-16 object-cover" />
           </div>
@@ -217,7 +217,7 @@ const ModalWrapper = ({
       onClick={onClose}
     >
       <div
-        className={`flex max-h-[92vh] w-full ${maxWidthClasses[maxWidth]} flex-col rounded-2xl bg-white shadow-2xl dark:bg-slate-900 ${className}`}
+        className={`flex max-h-[92vh] w-full ${maxWidthClasses[maxWidth]} flex-col rounded-[2.25rem] bg-white shadow-2xl dark:bg-slate-900 ${className}`}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         {/* Header */}

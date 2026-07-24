@@ -34,6 +34,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 const ROUTED_MASTER_KEYS: Record<string, string> = {
   city: "/globalmaster/citymaster",
   state: "/globalmaster/statemaster",
+  constitution: "/globalmaster/constitutionmaster",
 };
 
 const mapCityRecordToRow = (record: CityRecord): Record<string, unknown> => ({

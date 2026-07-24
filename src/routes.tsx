@@ -63,6 +63,7 @@ import TermLoanOpenPage from "@/pages/futuremodels/TermLoanOpen/TermLoanOpen";
 import TLOtherChargesPage from "@/pages/futuremodels/TlOtherCharges/TlOtherCharges";
 import UnLeanPage from "@/pages/futuremodels/UnLean/UnLean";
 import GlobalMasterPage from "@/pages/GlobalMaster/GlobalMaster";
+import ConstitutionMasterPage from "@/pages/GlobalMaster/ConstitutionMaster";
 import HeadOfficeMasterPage from "@/pages/HeadOfficeMaster/HeadOfficeMaster";
 import SupportUtilityPage from "@/pages/SupportUtility/SupportUtility";
 import ClerkClearingPage from "@/pages/ClerkClearingPage";
@@ -367,6 +368,7 @@ export const router = createBrowserRouter([
       { path: "/misactivity/mastermaintenanceglobal", element: <GlobalMasterPage /> },
       { path: "/globalmaster/citymaster", element: <GlobalMasterPage initialMasterKey="city" /> },
       { path: "/globalmaster/statemaster", element: <GlobalMasterPage initialMasterKey="state" /> },
+      { path: "/globalmaster/constitutionmaster", element: <ConstitutionMasterPage /> },
       { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
       { path: "/misactivity/mastermaintenanceheadoffice", element: <HeadOfficeMasterPage /> },
       { path: "/headoffice/clearintype", element: <HeadOfficeMasterPage initialMasterKey="clearingType" /> },
