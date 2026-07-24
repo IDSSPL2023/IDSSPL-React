@@ -19,7 +19,7 @@ const ClerkClearingPage: FC = () => {
   const [activeMasterKey, setActiveMasterKey] = useState<string | null>(null);
 
   return (
-    <div className="bg-[#E7EAEF] min-h-screen dark:bg-slate-950">
+    <div className="app-page-bg min-h-screen dark:bg-slate-950">
       <Nav
         titleEn={en("clearing.hero.title")}
         breadcrumbs={[

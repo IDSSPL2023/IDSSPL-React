@@ -22,10 +22,10 @@ export const CashDepositPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -48,10 +48,10 @@ export const CashWithdrawalPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -74,10 +74,10 @@ export const ModifyTdsTransactionPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -100,10 +100,10 @@ export const NewPgTransactionExportPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -126,10 +126,10 @@ export const NewPgTransactionImportPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -152,10 +152,10 @@ export const RecurringInstallmentPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -178,10 +178,10 @@ export const RtgsPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -204,10 +204,10 @@ export const TdInterestPaymentPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -230,10 +230,10 @@ export const TdsTransactionPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -256,7 +256,7 @@ export const TlCcInstallmentPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarCM
         titleEn="TL/CC Installment"
         titleHi="TL/CC हप्ता"
@@ -283,10 +283,10 @@ export const TlDisbursementPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -309,10 +309,10 @@ export const TlOtherChargesPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -333,10 +333,10 @@ export const TransferPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },
@@ -367,10 +367,10 @@ const TransactionMasterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg dark:bg-slate-950">
       <NavbarCM
         titleEn="Transaction"
-        titleHi="अधिकृतीकरण"
+        titleHi="व्यवहार"
         breadcrumbs={[
           { label: "Home", href: "/dashboard" },
           { label: "Clerk", href: "#" },

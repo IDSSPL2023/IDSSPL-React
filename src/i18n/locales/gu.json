@@ -262,6 +262,10 @@
     "title": "ટર્મ ડિપોઝિટ બંધ કરો",
     "breadcrumb": "ટર્મ ડિપોઝિટ બંધ કરો"
   },
+  "cashDeposit": {
+    "title": "રોકડ જમા",
+    "subtitle": "નીચે રોકડ જમા વ્યવહારની વિગતો ભરો."
+  },
   "standingInstructions": {
     "title": "સ્થાયી સૂચનાઓ",
     "breadcrumb": "સ્થાયી સૂચનાઓ",

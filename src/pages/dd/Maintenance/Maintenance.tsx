@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CityPicklistField from "@/components/common/CityPicklistField";
 import { useRouter } from "@/lib/navigation";
 import GlobalNav from "@/components/GlobalMaster/GlobalNav";
 import { Printer, Save, X, CheckCircle, Building2, Landmark, Hash, FileText, CreditCard, Banknote, MapPin, Users, DollarSign } from "lucide-react";
@@ -210,7 +211,7 @@ export default function DDMaintenancePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+      <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
         <GlobalNav
           titleEn="DD Maintenance"
           titleHi="डिमांड ड्राफ्ट देखभाल"
@@ -318,14 +319,14 @@ export default function DDMaintenancePage() {
                 />
 
                 {/* City - TextInput */}
-                <TextInput
-                  labelEn="City"
+                <CityPicklistField
+                  label="City"
                   labelHi="शहर"
-                  icon={MapPin}
+                  icon={<MapPin size={16} />}
                   placeholder="Enter Amount"
                   value={formData.city}
-                  onChange={(value) => handleChange("city", value)}
-                  hasError={errors.city}
+                  onSelect={(city) => handleChange("city", city.name)}
+                  error={errors.city ? "This field is required" : undefined}
                   required={true}
                 />
 

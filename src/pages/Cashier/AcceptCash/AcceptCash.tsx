@@ -401,7 +401,7 @@ export default function PagesAcceptCashPage() {
   const [isAddOpen, setIsAddOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Accept Cash"
         titleHi="रोख स्वीकारा"

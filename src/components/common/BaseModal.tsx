@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
 import type { BaseModalProps, ModalSize } from "./modal.types";
+import ModalCloseButton from "./ModalCloseButton";
 
 const SIZE_CLASSES: Record<ModalSize, string> = {
   sm: "max-w-[500px]",
@@ -9,6 +9,15 @@ const SIZE_CLASSES: Record<ModalSize, string> = {
   xl: "max-w-[1427px]",
   "2xl": "max-w-[1475px]",
   full: "max-w-[95vw]",
+};
+
+const HEIGHT_CLASSES: Record<ModalSize, string> = {
+  sm: "max-h-[400px]",
+  md: "max-h-[600px]",
+  lg: "max-h-[800px]",
+  xl: "max-h-[900px]",
+  "2xl": "max-h-[1000px]",
+  full: "max-h-[95vh]",
 };
 
 const FOCUSABLE_SELECTOR =
@@ -29,6 +38,8 @@ export default function BaseModal({
   children,
   size = "md",
   maxWidthPx,
+  maxHeightPx,
+  minHeightPx,
   contentClassName = "",
   overlayClassName = "",
   bodyClassName = "",
@@ -94,8 +105,16 @@ export default function BaseModal({
         aria-modal="true"
         aria-label={typeof title === "string" ? title : ariaLabel}
         tabIndex={-1}
-        style={maxWidthPx ? { maxWidth: `${maxWidthPx}px` } : undefined}
-        className={`relative flex max-h-[90vh] w-full ${maxWidthPx ? "" : SIZE_CLASSES[size]} flex-col overflow-hidden rounded-2xl bg-white shadow-2xl outline-none dark:bg-slate-900 ${contentClassName}`}
+        style={{
+          maxWidth: maxWidthPx ? `${maxWidthPx}px` : undefined,
+          maxHeight: maxHeightPx ? `${maxHeightPx}px` : undefined,
+          minHeight: minHeightPx ? `${minHeightPx}px` : undefined,
+          height: maxHeightPx ? '100%' : 'auto',
+          width: '100%',
+        }}
+        className={`relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-2xl outline-none dark:bg-slate-900 ${
+          !maxWidthPx ? SIZE_CLASSES[size] : ''
+        } ${!maxHeightPx ? HEIGHT_CLASSES[size] : ''} ${contentClassName}`}
       >
         {!hasCustomHeader && (
           <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5 dark:border-slate-800">
@@ -106,16 +125,7 @@ export default function BaseModal({
                 {subtitle && <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
               </div>
             </div>
-            {showCloseButton && (
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-              >
-                <X className="h-5 w-5" strokeWidth={1.75} />
-              </button>
-            )}
+            {showCloseButton && <ModalCloseButton onClose={onClose} />}
           </div>
         )}
 

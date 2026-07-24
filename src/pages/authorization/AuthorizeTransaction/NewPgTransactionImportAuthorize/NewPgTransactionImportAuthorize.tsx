@@ -623,7 +623,7 @@ const NewPgTransactionImportAuthorizePage = () => {
   const handleResetFilters = () => setFilters(NewPgTransactionImportFilterModal_defaultNewPgTransactionImportFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="New PG Transaction Import"
         titleHi="नवीन पीजी व्यवहार आयात अधिकृत करणे"

@@ -369,7 +369,7 @@ const HoCashDepositAuthorizePage = () => {
   const handleResetFilters = () => setFilters(HoCashDepositFilterModal_defaultHoCashDepositFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="HO Cash Deposit Entry Authorize"
         titleHi="HO रोख जमा नोंद अधिकृत करणे"

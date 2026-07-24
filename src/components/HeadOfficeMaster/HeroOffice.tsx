@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import DataTable from "./DataTable";
 import { MASTERS, getMasterConfig } from "./masterConfig";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ICON_MAP = {
   Wallet, UserCircle, ShieldCheck, GitBranch, SlidersHorizontal, CreditCard,
@@ -23,11 +23,37 @@ const ICON_MAP = {
 
 const TABS = ["All Masters", "Recently Used"];
 
-const MasterCard = ({ icon, titleEn, titleHi, onOpen }) => {
+const ROUTED_MASTER_KEYS = {
+  branch: "/branchmaster",
+  clearingType: "/headoffice/clearintype",
+  productMaster: "/headoffice/productmaster",
+  tdInterestRate: "/headoffice/tdinterestrate",
+  installmentType: "/headoffice/installmenttype",
+  instrumentType: "/headoffice/instrumenttype",
+  industry: "/headoffice/industrymaster",
+  depositRule: "/headoffice/depositrule",
+  glAccount: "/headoffice/glaccountmaster",
+  finalAccountGroup: "/headoffice/finalaccountgroup",
+  accountMinBal: "/headoffice/accountminbalance",
+  accountType: "/headoffice/accounttype",
+  activityCode: "/headoffice/activitycode",
+  branchParameter: "/headoffice/branchparameter",
+  chequeType: "/headoffice/chequetype",
+  classificationCode: "/headoffice/classificationcode",
+};
+
+// Masters that work without a dedicated route redirect (opened inline, still
+// backed by real APIs) — these stay enabled even though they aren't in
+// ROUTED_MASTER_KEYS.
+const WORKS_WITHOUT_ROUTE = new Set(["defaultBranchAccounts"]);
+
+const isMasterEnabled = (key) => Boolean(ROUTED_MASTER_KEYS[key]) || WORKS_WITHOUT_ROUTE.has(key);
+
+const MasterCard = ({ icon, titleEn, titleHi, onOpen, disabled }) => {
   const Icon = ICON_MAP[icon] || Wallet;
 
   return (
-    <div className="group flex items-center justify-between rounded-md border border-[#E5E7EB] bg-white px-5 py-3 transition-all duration-200 hover:border-[#D7E3FF] hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary-800">
+    <div className={`group flex items-center justify-between rounded-md border border-[#E5E7EB] bg-white px-5 py-3 transition-all duration-200 dark:border-slate-800 dark:bg-slate-900 ${disabled ? "opacity-60" : "hover:border-[#D7E3FF] hover:shadow-md dark:hover:border-primary-800"}`}>
       <div className="flex items-center gap-4 min-w-0">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[#052F5B]">
           <Icon size={22} strokeWidth={2} className="text-white" />
@@ -41,7 +67,13 @@ const MasterCard = ({ icon, titleEn, titleHi, onOpen }) => {
       <button
         type="button"
         onClick={onOpen}
-        className="ml-4 flex shrink-0 items-center gap-1 rounded-full border border-[#2563EB] bg-[#EEF4FF] px-5 py-2 text-[15px] font-medium text-[#2563EB] transition-all duration-200 hover:bg-[#E2ECFF] active:scale-95 dark:bg-primary-950/40 dark:hover:bg-primary-900/40"
+        disabled={disabled}
+        title={disabled ? "Coming soon" : undefined}
+        className={`ml-4 flex shrink-0 items-center gap-1 rounded-full border px-5 py-2 text-[15px] font-medium transition-all duration-200 ${
+          disabled
+            ? "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500"
+            : "border-[#2563EB] bg-[#EEF4FF] text-[#2563EB] hover:bg-[#E2ECFF] active:scale-95 dark:bg-primary-950/40 dark:hover:bg-primary-900/40"
+        }`}
       >
         <span>Open</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -64,10 +96,11 @@ const Tab = ({ label, active, onClick }) => (
   </button>
 );
 
-const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filters }) => {
+const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filters, serverPagination }) => {
   const [activeTab, setActiveTab] = useState(TABS[0]);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const filteredMasters = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -79,14 +112,19 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
     );
   }, [query]);
 
-  // Side-effect: navigate away, don't return the navigate() call itself
+  // Side-effect: navigate away, don't return the navigate() call itself.
+  // Skip the redirect when we're already on the target route (e.g. the page
+  // was opened directly via its dedicated URL), otherwise this would loop
+  // back to itself and never render the table.
+  const routedPath = openMaster && ROUTED_MASTER_KEYS[openMaster.key];
+  const needsRedirect = routedPath && location.pathname !== routedPath;
   useEffect(() => {
-    if (openMaster?.titleEn === "Branch Master") {
-      navigate("/branchmaster");
+    if (needsRedirect) {
+      navigate(routedPath);
     }
-  }, [openMaster, navigate]);
+  }, [needsRedirect, routedPath, navigate]);
 
-  if (openMaster?.titleEn === "Branch Master") {
+  if (needsRedirect) {
     return null; // render nothing while the redirect happens
   }
 
@@ -97,6 +135,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
         rows={tableRows}
         filters={filters}
         onRowsChange={onRowsChange}
+        serverPagination={serverPagination}
       />
     );
   }
@@ -122,7 +161,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
             />
             <button
               type="button"
-              className="bg-primary-700 hover:bg-primary-800 text-white text-sm font-medium rounded-md px-5 py-2 transition-colors"
+              className="ml-2 shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
             >
               Show
             </button>
@@ -145,6 +184,7 @@ const HeroOffice = ({ openMaster, setOpenMaster, tableRows, onRowsChange, filter
                 icon={master.icon}
                 titleEn={master.titleEn}
                 titleHi={master.titleHi}
+                disabled={!isMasterEnabled(master.key)}
                 onOpen={() => setOpenMaster(master)}
               />
             ))

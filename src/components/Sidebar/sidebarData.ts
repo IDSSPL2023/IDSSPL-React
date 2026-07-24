@@ -79,19 +79,19 @@ export const menuItems: NavItemData[] = [
         title: "DAY Begin / End",
         titleKey: "sidebar.dayBeginEnd",
         icon: PlayCircle,
-        href: "/day-begin-end",
+        href: "/misactivity/daybeginend",
       },
       {
         id: "mis-financial-closing",
         title: "Financial Closing",
         icon: FileText,
-        href: "/financial-closing",
+        href: "/misactivity/financialclosing",
       },
       {
         id: "mis-interest-posting",
         title: "Interest Posting",
         icon: Percent,
-        href: "/interest-posting",
+        href: "/misactivity/interestposting",
       },
       {
         id: "mis-master-mainenance-global",
@@ -103,33 +103,26 @@ export const menuItems: NavItemData[] = [
         id: "mis-master-maintanance-head-office",
         title: "Master Maintenance - HeadOffice",
         icon: Database,
-        href: "/headofficemaster",
+        href: "/headoffice",
       },
       {
         id: "mis-master-maintanance-user",
         title: "Master Maintenance - User",
         icon: Database,
-        href: "/usermaster",
+        href: "/misactivity/mastermaintenanceuser",
       },
       {
         id: "mis-support-utility",
         title: "Support Utility",
         icon: FileText,
-        href: "/support-utility",
+        href: "/misactivity/supportutility",
       },
       {
         id: "mis-tds",
         title: "TDS",
         icon: Percent,
-        href: "/tds",
+        href: "/misactivity/tds",
       },
-      // {
-      //   id: "daybeginend",
-      //   title: "Day Begin / End",
-      //   titleKey: "sidebar.dayBeginEnd",
-      //   icon: Landmark,
-      //   href: "/day-begin-end",
-      // },
     ],
   },
   {
@@ -149,7 +142,6 @@ export const menuItems: NavItemData[] = [
   {
     id: "officer",
     title: "Officer",
-    titleKey: "sidebar.authorization",
     icon: UserCheck,
     href: "/authorization",
     // children: [
@@ -339,6 +331,7 @@ export const menuItems: NavItemData[] = [
     id: "shares",
     title: "Shares",
     icon: ClipboardList,
+    href: "/shares",
     children: [
       {
         id: "shares-annual-meeting-attendance",
@@ -702,7 +695,9 @@ export const menuItems: NavItemData[] = [
         id: "payroll-transaction-entry",
         title: "Transaction Entry",
         icon: ArrowLeftRight,
+        href: "/transaction-entry"
       },
+
       {
         id: "payroll-authrization",
         title: "Authorization",
@@ -873,16 +868,16 @@ export const menuItems: NavItemData[] = [
         id: "user-role-master-maintanance-user",
         title: "Master Maintenance - User",
         icon: Database,
-        href: "/usermaster",
+        href: "/misactivity/mastermaintenanceuser",
       },
     ],
   },
-{
-  id: "calculator",
-  title: "Calculator",
-  icon: Calculator,
-  href: "/loan-calculators",
-},
+  {
+    id: "calculator",
+    title: "Calculator",
+    icon: Calculator,
+    href: "/loan-calculators",
+  },
 
   // General / future items not tied to a specific role menu in the sheet.
   { id: "futuremodals", title: "Future Modals", titleKey: "sidebar.dba", icon: Database, href: "/futuremodals" },

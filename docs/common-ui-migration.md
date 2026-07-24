@@ -139,6 +139,7 @@ import { TabModal } from "@/components/common";
 | `/account-master/ca-sa` View (edit/view) | ✅ Done | `ViewAccount.tsx`'s private `Tabs` + fixed-overlay chrome replaced by `TabModal`; tab content (`DetailsTab`/`DepositTab`/`NomineeTab`/`JointHolderTab`) and `EditModeContext` untouched. Also benefits the `/accountmaster` route, which shares the same `ViewAccountModal`. |
 | `/authorization` | ✅ Done | `AuthorizationCards.tsx` now a config-only wrapper around `SubMenuScreen` |
 | `/day-begin-end` | ✅ Done | Rebuilt on `WelcomeScreen`; hero background moved to `src/assets/images/backgrounds/welcome-hero.png` (was `public/Background.png`) |
+| Global Master (`/globalmaster`, `/globalmaster/citymaster`) | ✅ Done | `GlobalMaster/GlobalNav.tsx` → `AppNavbar`; tile grid → `WelcomeScreen`; `DataTable.tsx` → new `GlobalMaster/MasterTable.tsx` on `GlobalTable`/`StatusBadge`; `ParameterModal.tsx` → new `GlobalMaster/MasterParameterModal.tsx` on `NormalFormModal`/`TextField`/`SelectField`/`RadioGroupField`/`validateFields`; local `FilterModal`/`SuccessModal` → common versions. `GlobalMaster/GlobalNav.tsx` itself was **not** deleted — still used by ~30 other non-migrated pages. Extended `common/SuccessModal` with an optional `details` list and `common/SelectField` with an optional `onFocus` (needed for City Master's lazy country-lookup dropdown) rather than forking either. |
 | Everything else | ❌ Not migrated | See list below — these still use the pre-existing `shared/*` components and are safe to migrate next using the same pattern |
 
 ### Remaining duplicate filter/table/modal files (not migrated this pass)
@@ -203,6 +204,11 @@ filter icon whenever there's an active filter, with no reveal step.
 
 - `components/AccountMaster/AccountMaster.tsx` — deleted. Confirmed zero
   importers anywhere in the codebase (dead duplicate of `AccountMasterPage.tsx`).
+- `GlobalMaster/MasterList.tsx`, `GlobalMaster/DataTable.tsx`,
+  `GlobalMaster/ParameterModal.tsx`, `GlobalMaster/FilterModal.tsx`,
+  `GlobalMaster/SuccessModal.tsx` — deleted as part of the Global Master
+  migration above. Confirmed zero importers outside `GlobalMaster.tsx` itself
+  before deleting (all five were page-private, unlike `GlobalNav.tsx`).
 - Everything else flagged as a "remaining duplicate" above (`shared/FormModal.tsx`,
   `shared/SuccessModal.tsx`, `GlobalMaster/GlobalNav.tsx`,
   `Authorization/AuthorizationTabs.tsx`, the three `*PickListModal.tsx` files,

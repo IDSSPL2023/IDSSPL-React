@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { Controller, type Control, type FieldValues, type Path, useFormContext, FormProvider, useForm } from "react-hook-form";
 import { FieldShell, TextInput, SelectInput, DateInput, SectionCard, RadioYesNo, DocumentRow } from "@/components/shared/FormFields";
+import { CountryPicklistField } from "@/components/common";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import { IMAGES } from "@/assets";
 import { User, IdCard, Heart, Baby, Car, AlertTriangle, Flag, Home, Phone, Hash, Building2, MapPin, Coins, Calendar, IndianRupee, Eye, ShieldCheck, Mail, X, ChevronDown, ThumbsUp, ThumbsDown } from "lucide-react";
 import Image from "@/components/ui/Image";
@@ -122,7 +124,6 @@ export const FormTypes_RESIDENCE_TYPE_OPTIONS = ["Apartment", "Independent House
 export const FormTypes_RESIDENCE_STATUS_OPTIONS = ["Owned", "Rented", "Parental", "Company Provided"] as const;
 export const FormTypes_CITY_OPTIONS = ["Mumbai", "Pune", "Kolhapur", "Nagpur"] as const;
 export const FormTypes_STATE_OPTIONS = ["Maharashtra", "Karnataka", "Goa"] as const;
-export const FormTypes_COUNTRY_OPTIONS = ["India"] as const;
 export const FormTypes_VEHICLE_OPTIONS = ["Yes", "No"] as const;
 export const FormTypes_RISK_CATEGORIES = ["Low", "Medium", "High"] as const;
 export const FormTypes_CATEGORY_CODES = ["Public", "Private", "Staff"] as const;
@@ -414,7 +415,7 @@ interface ControlledField_ControlledFieldProps<T extends FieldValues> {
   icon?: ReactNode;
   placeholder?: string;
   options?: string[];
-  kind?: "text" | "select" | "date";
+  kind?: "text" | "select" | "date" | "country" | "state" | "city";
 }
 
 function ControlledField<T extends FieldValues>({
@@ -433,7 +434,39 @@ function ControlledField<T extends FieldValues>({
       control={control}
       name={name}
       rules={{ required: required ? "This field is required" : false }}
-      render={({ field, fieldState }) => (
+      render={({ field, fieldState }) =>
+        kind === "country" ? (
+          <CountryPicklistField
+            label={label}
+            labelHi={labelHi}
+            icon={icon}
+            value={(field.value as string) ?? ""}
+            onSelect={(country) => field.onChange(country.name)}
+            required={required}
+            error={fieldState.error ? "This field is required" : undefined}
+          />
+        ) : kind === "city" ? (
+          <FieldShell label={label} labelHi={labelHi} required={required} error={!!fieldState.error}>
+            <TextInput
+              icon={icon}
+              value={(field.value as string) ?? ""}
+              onChange={() => {}}
+              placeholder={placeholder}
+              readOnly
+              error={!!fieldState.error}
+            />
+          </FieldShell>
+        ) : kind === "state" ? (
+          <StatePicklistField
+            label={label}
+            labelHi={labelHi}
+            icon={icon}
+            value={(field.value as string) ?? ""}
+            onSelect={(state) => field.onChange(state.stateName)}
+            required={required}
+            error={fieldState.error ? "This field is required" : undefined}
+          />
+        ) : (
         <FieldShell label={label} labelHi={labelHi} required={required} error={!!fieldState.error}>
           {kind === "select" ? (
             <SelectInput
@@ -461,7 +494,8 @@ function ControlledField<T extends FieldValues>({
             />
           )}
         </FieldShell>
-      )}
+        )
+      }
     />
   );
 }
@@ -997,33 +1031,30 @@ function Step2AddressDetails() {
           <ControlledField
             control={control}
             name="city"
-            kind="select"
+            kind="city"
             label="City"
             labelHi="शहर"
             icon={<Building2 size={16} />}
-            options={[...FormTypes_CITY_OPTIONS]}
             placeholder="Select City"
             required
           />
           <ControlledField
             control={control}
             name="state"
-            kind="select"
+            kind="state"
             label="State"
             labelHi="राज्य"
             icon={<Building2 size={16} />}
-            options={[...FormTypes_STATE_OPTIONS]}
             placeholder="Select State"
             required
           />
           <ControlledField
             control={control}
             name="country"
-            kind="select"
+            kind="country"
             label="Country"
             labelHi="देश"
             icon={<Flag size={16} />}
-            options={[...FormTypes_COUNTRY_OPTIONS]}
             placeholder="Select Country"
             required
           />
@@ -1094,33 +1125,30 @@ function Step2AddressDetails() {
               <ControlledField
                 control={control}
                 name="permanentCity"
-                kind="select"
+                kind="city"
                 label="City"
                 labelHi="शहर"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_CITY_OPTIONS]}
                 placeholder="Select City"
                 required
               />
               <ControlledField
                 control={control}
                 name="permanentState"
-                kind="select"
+                kind="state"
                 label="State"
                 labelHi="राज्य"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_STATE_OPTIONS]}
                 placeholder="Select State"
                 required
               />
               <ControlledField
                 control={control}
                 name="permanentCountry"
-                kind="select"
+                kind="country"
                 label="Country"
                 labelHi="देश"
                 icon={<Flag size={16} />}
-                options={[...FormTypes_COUNTRY_OPTIONS]}
                 placeholder="Select Country"
                 required
               />
@@ -1193,33 +1221,30 @@ function Step2AddressDetails() {
               <ControlledField
                 control={control}
                 name="officeCity"
-                kind="select"
+                kind="city"
                 label="City"
                 labelHi="शहर"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_CITY_OPTIONS]}
                 placeholder="Select City"
                 required
               />
               <ControlledField
                 control={control}
                 name="officeState"
-                kind="select"
+                kind="state"
                 label="State"
                 labelHi="राज्य"
                 icon={<Building2 size={16} />}
-                options={[...FormTypes_STATE_OPTIONS]} 
                 placeholder="Select State"
                 required
               />
               <ControlledField
                 control={control}
                 name="officeCountry"
-                kind="select"
+                kind="country"
                 label="Country"
                 labelHi="देश"
                 icon={<Flag size={16} />}
-                options={[...FormTypes_COUNTRY_OPTIONS]}
                 placeholder="Select Country"
                 required
               />
@@ -1922,7 +1947,7 @@ const AuthorizationCustomerPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar">
+    <div className="min-h-screen app-page-bg no-scrollbar">
       <NavbarCA
         titleEn={en("authorization.title")}
         titleHi={t("authorization.title")}

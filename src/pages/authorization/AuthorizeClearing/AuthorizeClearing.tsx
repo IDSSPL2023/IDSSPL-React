@@ -9,7 +9,7 @@ const AuthorizeClearing: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Authorize Clearing"
         titleHi="क्लिअरिंग अधिकृत करा"

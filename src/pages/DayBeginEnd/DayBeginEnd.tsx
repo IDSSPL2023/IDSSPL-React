@@ -632,13 +632,13 @@ export default function DayBeginEndPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <AppNavbar
         titleEn="Day Begin / End"
         titleHi="दिवस सुरू / संपवणे"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "MIS Activity", href: "/" },
+          { label: "MIS Activity", href: "#" },
           { label: "Day Begin / End", href: "#" },
         ]}
         onBack={() => router.back()}

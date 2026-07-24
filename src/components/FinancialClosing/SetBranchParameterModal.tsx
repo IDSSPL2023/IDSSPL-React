@@ -2,6 +2,7 @@ import { useState, type FC, type ReactNode } from "react";
 import { X, Check, Landmark, CalendarClock, MoreVertical } from "lucide-react";
 import SuccessModal from "@/components/shared/SuccessModal";
 import ListModal from "@/components/AccountMaster/ListModal";
+import ModalCloseButton from "@/components/common/ModalCloseButton";
 
 type YesNo = "Yes" | "No" | "";
 type PickerKey = "bank" | "branch";
@@ -343,13 +344,7 @@ const SetBranchParameterModal: FC<SetBranchParameterModalProps> = ({
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-            >
-              <X size={18} strokeWidth={2.5} />
-            </button>
+            <ModalCloseButton onClose={onClose} />
           </div>
 
           {/* Branch Details */}

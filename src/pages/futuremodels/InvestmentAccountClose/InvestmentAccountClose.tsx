@@ -6,7 +6,7 @@ const InvestmentAccountClosePage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Investment Account Close"
         titleHi="गुंतवणूक खाते बंद"

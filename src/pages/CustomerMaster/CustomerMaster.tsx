@@ -2,6 +2,8 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 import { User, IdCard, Baby, Heart, Car, AlertTriangle, Home, Phone, Flag, Building2, MapPin, Hash, X, Upload, Mail, UserCircle2, Smartphone, Eye, SquarePen, List, Copy, Pencil, Check, ChevronRight } from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
 import { FieldShell, TextInput, SelectInput, DateInput, RadioYesNo, SectionCard, DocumentRow, UploadZone } from "@/components/shared/FormFields";
+import { CountryPicklistField, CityPicklistField } from "@/components/common";
+import StatePicklistField from "@/components/common/StatePicklistField";
 import FilterModal, { type CustomerFilters, defaultValues } from "@/components/CustomerMaster/FilterModal";
 import { useBilingual } from "@/i18n/useBilingual";
 import RowActionMenu from "@/components/shared/RowActionMenu";
@@ -34,7 +36,6 @@ const AddCM_RESIDENCE_TYPES = ["Owned", "Rented", "Company Provided"];
 const AddCM_RESIDENCE_STATUS = ["Permanent", "Temporary"];
 const AddCM_CITIES = ["Kolhapur", "Mumbai", "Pune", "Nagpur"];
 const AddCM_STATES = ["Maharashtra", "Karnataka", "Goa"];
-const AddCM_COUNTRIES = ["India"];
 const AddCM_VEHICLE_OPTIONS = ["Yes", "No"];
 const AddCM_RISK_CATEGORIES = ["Low", "Medium", "High"];
 const AddCM_CATEGORY_CODES = ["Public", "Private", "Staff"];
@@ -519,15 +520,9 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
               <FieldShell label="Zip" labelHi="पिन कोड" required>
                 <TextInput icon={<Hash size={16} />} value={currentAddress.zip} onChange={(v) => setCurrentAddress((p) => ({ ...p, zip: v }))} placeholder="Enter Pin Code" />
               </FieldShell>
-              <FieldShell label="City" labelHi="शहरे" required>
-                <SelectInput icon={<Building2 size={16} />} value={currentAddress.city} onChange={(v) => setCurrentAddress((p) => ({ ...p, city: v }))} options={AddCM_CITIES} placeholder="Select City" />
-              </FieldShell>
-              <FieldShell label="State" labelHi="राज्य" required>
-                <SelectInput icon={<Building2 size={16} />} value={currentAddress.state} onChange={(v) => setCurrentAddress((p) => ({ ...p, state: v }))} options={AddCM_STATES} placeholder="Select State" />
-              </FieldShell>
-              <FieldShell label="Country" labelHi="देश" required>
-                <SelectInput icon={<Flag size={16} />} value={currentAddress.country} onChange={(v) => setCurrentAddress((p) => ({ ...p, country: v }))} options={AddCM_COUNTRIES} placeholder="Select Country" />
-              </FieldShell>
+              <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={currentAddress.city} onSelect={(c) => setCurrentAddress((p) => ({ ...p, city: c.name }))} preFetch={true} />
+              <StatePicklistField label="State" labelHi="राज्य" required icon={<Building2 size={16} />} value={currentAddress.state} onSelect={(s) => setCurrentAddress((p) => ({ ...p, state: s.stateName }))} placeholder="Select State" />
+              <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={currentAddress.country} onSelect={(c) => setCurrentAddress((p) => ({ ...p, country: c.name }))} />
             </div>
           </SectionCard>
 
@@ -554,15 +549,9 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
                 <FieldShell label="Zip" labelHi="पिन कोड" required>
                   <TextInput icon={<Hash size={16} />} value={permanentAddress.zip} onChange={(v) => setPermanentAddress((p) => ({ ...p, zip: v }))} placeholder="Enter Pin Code" />
                 </FieldShell>
-                <FieldShell label="City" labelHi="शहरे" required>
-                  <SelectInput icon={<Building2 size={16} />} value={permanentAddress.city} onChange={(v) => setPermanentAddress((p) => ({ ...p, city: v }))} options={AddCM_CITIES} placeholder="Select City" />
-                </FieldShell>
-                <FieldShell label="State" labelHi="राज्य" required>
-                  <SelectInput icon={<Building2 size={16} />} value={permanentAddress.state} onChange={(v) => setPermanentAddress((p) => ({ ...p, state: v }))} options={AddCM_STATES} placeholder="Select State" />
-                </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={permanentAddress.country} onChange={(v) => setPermanentAddress((p) => ({ ...p, country: v }))} options={AddCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={permanentAddress.city} onSelect={(c) => setPermanentAddress((p) => ({ ...p, city: c.name }))} preFetch={true} />
+                <StatePicklistField label="State" labelHi="राज्य" required icon={<Building2 size={16} />} value={permanentAddress.state} onSelect={(s) => setPermanentAddress((p) => ({ ...p, state: s.stateName }))} placeholder="Select State" />
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={permanentAddress.country} onSelect={(c) => setPermanentAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -590,15 +579,9 @@ const AddCM = ({ onClose = () => {} }: AddCM_AddCMProps) => {
                 <FieldShell label="Zip" labelHi="पिन कोड" required>
                   <TextInput icon={<Hash size={16} />} value={officeAddress.zip} onChange={(v) => setOfficeAddress((p) => ({ ...p, zip: v }))} placeholder="Enter Pin Code" />
                 </FieldShell>
-                <FieldShell label="City" labelHi="शहरे" required>
-                  <SelectInput icon={<Building2 size={16} />} value={officeAddress.city} onChange={(v) => setOfficeAddress((p) => ({ ...p, city: v }))} options={AddCM_CITIES} placeholder="Select City" />
-                </FieldShell>
-                <FieldShell label="State" labelHi="राज्य" required>
-                  <SelectInput icon={<Building2 size={16} />} value={officeAddress.state} onChange={(v) => setOfficeAddress((p) => ({ ...p, state: v }))} options={AddCM_STATES} placeholder="Select State" />
-                </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={officeAddress.country} onChange={(v) => setOfficeAddress((p) => ({ ...p, country: v }))} options={AddCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={officeAddress.city} onSelect={(c) => setOfficeAddress((p) => ({ ...p, city: c.name }))} preFetch={true} />
+                <StatePicklistField label="State" labelHi="राज्य" required icon={<Building2 size={16} />} value={officeAddress.state} onSelect={(s) => setOfficeAddress((p) => ({ ...p, state: s.stateName }))} placeholder="Select State" />
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={officeAddress.country} onSelect={(c) => setOfficeAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -1446,7 +1429,6 @@ const ViewEditCM_RESIDENCE_TYPES = ["Owned", "Rented", "Company Provided"];
 const ViewEditCM_RESIDENCE_STATUS = ["Permanent", "Temporary"];
 const ViewEditCM_CITIES = ["Kolhapur", "Mumbai", "Pune", "Nagpur"];
 const ViewEditCM_STATES = ["Maharashtra", "Karnataka", "Goa"];
-const ViewEditCM_COUNTRIES = ["India"];
 const ViewEditCM_VEHICLE_OPTIONS = ["Yes", "No"];
 const ViewEditCM_RISK_CATEGORIES = ["Low", "Medium", "High"];
 const ViewEditCM_CATEGORY_CODES = ["Public", "Private", "Staff"];
@@ -2084,15 +2066,9 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
               <FieldShell label="Zip" labelHi="पिन कोड" required>
                 <TextInput icon={<Hash size={16} />} value={currentAddress.zip} onChange={(v) => !isView && setCurrentAddress((p) => ({ ...p, zip: v }))} placeholder="Enter Pin Code" readOnly={isView} />
               </FieldShell>
-              <FieldShell label="City" labelHi="शहरे" required>
-                <SelectInput icon={<Building2 size={16} />} value={currentAddress.city} onChange={(v) => !isView && setCurrentAddress((p) => ({ ...p, city: v }))} options={ViewEditCM_CITIES} placeholder="Select City" />
-              </FieldShell>
-              <FieldShell label="State" labelHi="राज्य" required>
-                <SelectInput icon={<Building2 size={16} />} value={currentAddress.state} onChange={(v) => !isView && setCurrentAddress((p) => ({ ...p, state: v }))} options={ViewEditCM_STATES} placeholder="Select State" />
-              </FieldShell>
-              <FieldShell label="Country" labelHi="देश" required>
-                <SelectInput icon={<Flag size={16} />} value={currentAddress.country} onChange={(v) => !isView && setCurrentAddress((p) => ({ ...p, country: v }))} options={ViewEditCM_COUNTRIES} placeholder="Select Country" />
-              </FieldShell>
+              <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={currentAddress.city} readOnly={isView} onSelect={(c) => !isView && setCurrentAddress((p) => ({ ...p, city: c.name }))} preFetch={true} />
+              <StatePicklistField label="State" labelHi="राज्य" required icon={<Building2 size={16} />} value={currentAddress.state} onSelect={(s) => !isView && setCurrentAddress((p) => ({ ...p, state: s.stateName }))} placeholder="Select State" readOnly={isView} />
+              <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={currentAddress.country} readOnly={isView} onSelect={(c) => !isView && setCurrentAddress((p) => ({ ...p, country: c.name }))} />
             </div>
           </SectionCard>
 
@@ -2121,15 +2097,9 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
                 <FieldShell label="Zip" labelHi="पिन कोड" required>
                   <TextInput icon={<Hash size={16} />} value={permanentAddress.zip} onChange={(v) => !isView && setPermanentAddress((p) => ({ ...p, zip: v }))} placeholder="Enter Pin Code" readOnly={isView} />
                 </FieldShell>
-                <FieldShell label="City" labelHi="शहरे" required>
-                  <SelectInput icon={<Building2 size={16} />} value={permanentAddress.city} onChange={(v) => !isView && setPermanentAddress((p) => ({ ...p, city: v }))} options={ViewEditCM_CITIES} placeholder="Select City" />
-                </FieldShell>
-                <FieldShell label="State" labelHi="राज्य" required>
-                  <SelectInput icon={<Building2 size={16} />} value={permanentAddress.state} onChange={(v) => !isView && setPermanentAddress((p) => ({ ...p, state: v }))} options={ViewEditCM_STATES} placeholder="Select State" />
-                </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={permanentAddress.country} onChange={(v) => !isView && setPermanentAddress((p) => ({ ...p, country: v }))} options={ViewEditCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={permanentAddress.city} readOnly={isView} onSelect={(c) => !isView && setPermanentAddress((p) => ({ ...p, city: c.name }))} preFetch={true} />
+                <StatePicklistField label="State" labelHi="राज्य" required icon={<Building2 size={16} />} value={permanentAddress.state} onSelect={(s) => !isView && setPermanentAddress((p) => ({ ...p, state: s.stateName }))} placeholder="Select State" readOnly={isView} />
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={permanentAddress.country} readOnly={isView} onSelect={(c) => !isView && setPermanentAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -2159,15 +2129,9 @@ const ViewEditCM = ({ mode, customerData, onClose }: ViewEditCM_ViewEditCMProps)
                 <FieldShell label="Zip" labelHi="पिन कोड" required>
                   <TextInput icon={<Hash size={16} />} value={officeAddress.zip} onChange={(v) => !isView && setOfficeAddress((p) => ({ ...p, zip: v }))} placeholder="Enter Pin Code" readOnly={isView} />
                 </FieldShell>
-                <FieldShell label="City" labelHi="शहरे" required>
-                  <SelectInput icon={<Building2 size={16} />} value={officeAddress.city} onChange={(v) => !isView && setOfficeAddress((p) => ({ ...p, city: v }))} options={ViewEditCM_CITIES} placeholder="Select City" />
-                </FieldShell>
-                <FieldShell label="State" labelHi="राज्य" required>
-                  <SelectInput icon={<Building2 size={16} />} value={officeAddress.state} onChange={(v) => !isView && setOfficeAddress((p) => ({ ...p, state: v }))} options={ViewEditCM_STATES} placeholder="Select State" />
-                </FieldShell>
-                <FieldShell label="Country" labelHi="देश" required>
-                  <SelectInput icon={<Flag size={16} />} value={officeAddress.country} onChange={(v) => !isView && setOfficeAddress((p) => ({ ...p, country: v }))} options={ViewEditCM_COUNTRIES} placeholder="Select Country" />
-                </FieldShell>
+                <CityPicklistField label="City" labelHi="शहरे" required icon={<Building2 size={16} />} value={officeAddress.city} readOnly={isView} onSelect={(c) => !isView && setOfficeAddress((p) => ({ ...p, city: c.name }))} preFetch={true} />
+                <StatePicklistField label="State" labelHi="राज्य" required icon={<Building2 size={16} />} value={officeAddress.state} onSelect={(s) => !isView && setOfficeAddress((p) => ({ ...p, state: s.stateName }))} placeholder="Select State" readOnly={isView} />
+                <CountryPicklistField label="Country" labelHi="देश" required icon={<Flag size={16} />} value={officeAddress.country} readOnly={isView} onSelect={(c) => !isView && setOfficeAddress((p) => ({ ...p, country: c.name }))} />
               </div>
             )}
           </SectionCard>
@@ -2336,7 +2300,7 @@ const CustomerMasterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC] relative dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg relative dark:bg-slate-950">
       <NavbarCM
         titleEn={en("customerMaster.title")}
         titleHi={t("customerMaster.title")}

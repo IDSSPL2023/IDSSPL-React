@@ -703,7 +703,7 @@ const TlDisbursementAuthorizePage = () => {
   const handleResetFilters = () => setFilters(TlDisbursementFilterModal_defaultTlDisbursementFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="TL Disbursement Authorize"
         titleHi="मुदत कर्ज वितरण अधिकृत करणे"

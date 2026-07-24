@@ -287,6 +287,10 @@
     "title": "मुदत ठेव बंद करा",
     "breadcrumb": "मुदत ठेव बंद करा"
   },
+  "cashDeposit": {
+    "title": "रोख रक्कम जमा",
+    "subtitle": "खालील रोख रक्कम जमा व्यवहाराचा तपशील भरा."
+  },
   "standingInstructions": {
     "title": "स्थायी सूचना",
     "breadcrumb": "स्थायी सूचना",

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import {
   User,
-  IdCard,
   CreditCard,
   IndianRupee,
   FileText,
@@ -14,6 +13,7 @@ import {
   Check,
   X,
   ChevronDown,
+  UserRound,
 } from "lucide-react";
 import FormModal from "@/components/shared/FormModal";
 import {
@@ -26,6 +26,7 @@ import {
 import SuccessModal from "@/components/shared/SuccessModal";
 import BranchListPickerModal from "@/components/common/BranchPickListModal";
 import BankListPickerModal from "@/components/common/BankPickListModal";
+import CustomerIdPicklistField from "../common/CustomerIdPicklistField";
 
 const APPLICATION_OPTIONS = ["New", "Renewal"];
 const ACCOUNT_TYPE_OPTIONS = ["RI", "FD", "RD", "TD"];
@@ -313,13 +314,16 @@ const AddInvestmentAccountMaster = ({ onClose, onSave, variant = "modal" }: AddI
           </FieldShell>
 
           <FieldShell label="Customer ID" labelHi="ग्राहक आयडी" required error={errors.customerId}>
-            <TextInput
-              icon={<IdCard size={16} />}
+            <CustomerIdPicklistField
+              label=""
+              labelHi=""
+              icon={<UserRound size={18} />}
               value={form.customerId}
-              onChange={() => {}}
-              readOnly
-              placeholder="Enter Customer ID"
-              error={errors.customerId}
+              onSelect={(customer) => updateField("customerId", customer.customerId)}
+              preFetch={true}
+              error={errors.customerId ? "This field is required" : undefined}
+              placeholder="Search and select customer"
+              pageSize={3}
             />
           </FieldShell>
 

@@ -1,5 +1,4 @@
 import { ArrowLeft, Home, ChevronRight, Filter, Plus, Search, RefreshCw } from "lucide-react";
-import { type UserFilters } from "./FilterModal";
 
 type BreadcrumbItem = {
   label: string;
@@ -13,7 +12,8 @@ type NavbarAMProps = {
   onBack?: () => void;
   onAdd?: () => void;
   isSearchVisible?: boolean;
-  filters?: UserFilters;
+  hasActiveFilters?: boolean;
+  activeFilterSummary?: string;
   onToggleSearch?: () => void;
   onOpenFilter?: () => void;
   onResetFilters?: () => void;
@@ -33,7 +33,8 @@ const NavbarAM = ({
   onBack,
   onAdd,
   isSearchVisible = false,
-  filters,
+  hasActiveFilters = false,
+  activeFilterSummary = "",
   onToggleSearch,
   onOpenFilter,
   onResetFilters,
@@ -60,30 +61,6 @@ const NavbarAM = ({
       if (onOpenFilter) onOpenFilter();
     }
   };
-
-  const hasActiveFilters = Boolean(
-    filters && (filters.userId || filters.role || filters.createdDate || filters.status)
-  );
-
-  // Build the active-filters summary once, safely, regardless of TS narrowing
-  // across nested closures — avoids "possibly undefined" on filters.* below.
-  const activeFilterSummary = (() => {
-    if (!filters) return "";
-    const active: { label: string; value: string }[] = [];
-    if (filters.userId) active.push({ label: "ID", value: filters.userId });
-    // if (filters.userName) active.push({ label: "Name", value: filters.userName });
-    if (filters.role) active.push({ label: "Role", value: filters.role });
-    if (filters.createdDate) active.push({ label: "Date", value: filters.createdDate });
-    if (filters.status) active.push({ label: "Status", value: filters.status });
-
-    if (active.length === 0) return "";
-    const first = active[0];
-    const othersCount = active.length - 1;
-    if (othersCount > 0) {
-      return `${first.label}:${first.value} +${othersCount} more`;
-    }
-    return `${first.label}:${first.value}`;
-  })();
 
   return (
     <div className="w-full bg-white border-b border-gray-200 dark:bg-slate-900 dark:border-slate-800">

@@ -466,7 +466,7 @@ export default function BranchActivityPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="Branch Activity"
         titleHi="शाखा गतिविधी"

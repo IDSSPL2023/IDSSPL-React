@@ -12,7 +12,7 @@ const DepositClosingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6FC]">
+    <div className="min-h-screen app-page-bg">
       <NavbarCM
         titleEn="Deposit Closing"
         titleHi="ठेव बंद करा"

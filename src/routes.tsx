@@ -25,8 +25,10 @@ import InterestPostingPage from "@/pages/InterestPosting/InterestPosting";
 import AuthorizationPage from "@/pages/authorization/AuthorizationPage";
 import AuthorizePigmyOpenPage from "@/pages/authorization/AuthorizeAccount/AuthorizePigmyOpen/AuthorizePigmyOpen";
 import AuthorizePigmyClosePage from "@/pages/authorization/AuthorizeAccount/AuthorizePigmyClose/AuthorizePigmyClose";
+import FixedAssetClosingAuthorizePage from "@/pages/authorization/AuthorizeAccount/FixedAssetClosingAuthorize/FixedAssetClosingAuthorize";
 import AuthorizationCustomerPage from "@/pages/authorization/AuthorizeCustomer/AuthorizeCustomer";
 import AuthorizeClearingPage from "@/pages/authorization/AuthorizeClearing/AuthorizeClearing";
+import AuthorizeLockerPage from "@/pages/authorization/AuthorizeLocker/AuthorizeLocker";
 import AuthorizeTransactionPage from "@/pages/authorization/AuthorizeTransaction/AuthorizeTransaction";
 import CashDepositAuthorizePage from "@/pages/authorization/AuthorizeTransaction/CashDepositAuthorize/CashDepositAuthorize";
 import CashWithdrawalAuthorizePage from "@/pages/authorization/AuthorizeTransaction/CashWithdrawalAuthorize/CashWithdrawalAuthorize";
@@ -106,32 +108,15 @@ import DDMaintenancePage from "./pages/dd/Maintenance/Maintenance";
 import DDPrintingPage from "./pages/dd/Printing/Printing";
 import BillUtilityPage from "./pages/Bill/Bill";
 import BillAuthorizationOptions from "@/pages/authorization/AuthorizeBill/AuthorizeBill";
-import PayrollMaster from "./pages/payroll/Master/Master";
-import PayrollTransaction from "./pages/payroll/Transaction/Transaction";
-import EmployeeLeaveBalancePage from "@/pages/payroll/EmployeeLeaveBalancePage";
-import EmployeeLoanDetailsPage from "@/pages/payroll/EmployeeLoanDetailsPage";
-import LeaveOpeningBalancePage from "@/pages/payroll/LeaveOpeningBalancePage";
-import SalaryInstructionPage from "@/pages/payroll/SalaryInstructionPage";
-import SalaryUpdationPage from "@/pages/payroll/SalaryUpdationPage";
-import UpdateAttendancePage from "@/pages/payroll/UpdateAttendancePage";
-import ShareAllotmentEntryPage from "@/pages/shares/ShareAllotmentEntryPage";
-
 import SMSRegistrationPage from "@/pages/SMS/SMS";
-import SMSAuthorizeModal from "@/pages/authorization/AuthorizeSMS/AuthorizeSMS";
 import { AuthorizeAccountPage } from "@/pages/authorization/AuthorizeAccount/AuthorizeAccount";
 import AuthorizationClearingTablePage from "./pages/authorization/Clearing/AuthorizationClearingTablePage";
-
-import AnnualMeetingAttendancePage from "@/pages/shares/AnnualMeetingAttendance/AnnualMeetingAttendance";
 
 function RoleAuthorizationFlowRoute() {
   const router = useRouter();
   return <RoleAuthorizationFlow onClose={() => router.back()} />;
 }
 
-/**
- * Single source of truth for URL -> page. The URLs are unchanged from the
- * original Next.js app; only the file locations and component names differ.
- */
 export const router = createBrowserRouter([
   {
     path: "/login",
@@ -160,90 +145,47 @@ export const router = createBrowserRouter([
       { path: "/account-closing", element: <AccountClosingPage /> },
       { path: "/account-closing/ca-sa", element: <AccountClosingCaSaPage /> },
       { path: "/account-closing/deposit", element: <DepositClosingPage /> },
-      {
-        path: "/account-closing/investment",
-        element: <AccountClosingInvestmentPage />,
-      },
+      { path: "/account-closing/investment", element: <AccountClosingInvestmentPage />, },
       { path: "/account-closing/loan", element: <AccountClosingLoanPage /> },
       { path: "/account-closing/pigmy", element: <AccountClosingPigmyPage /> },
       { path: "/account-master", element: <AccountMasterLandingPage /> },
-      // { path: "/account-master/bill", element: <BillHero /> },
       { path: "/account-master/bill", element: <BillUtilityPage /> },
       { path: "/account-master/ca-sa", element: <AccountMasterTypePage accountType="ca-sa" /> },
-      {
-        path: "/account-master/deposit",
-        element: <AccountMasterTypePage accountType="deposit" />,
-      },
-      {
-        path: "/account-master/investment",
-        element: <AccountMasterTypePage accountType="investment" />,
-      },
+      { path: "/account-master/deposit", element: <AccountMasterTypePage accountType="deposit" />, },
+      { path: "/account-master/investment", element: <AccountMasterTypePage accountType="investment" />, },
       { path: "/account-master/loan", element: <AccountMasterTypePage accountType="loan" /> },
       { path: "/account-master/fixed-asset", element: <AccountMasterTypePage accountType="fixed-asset" /> },
       { path: "/account-master/pigmy", element: <AccountMasterTypePage accountType="pigmy" /> },
       { path: "/accountmaster", element: <AccountMasterPage /> },
       { path: "/ai-dashboard", element: <AiDashboardPage /> },
       { path: "/assignuserrole", element: <AssignUserRolePage /> },
-      { path: "/day-begin-end", element: <DayBeginEndPage /> },
+      { path: "/misactivity/daybeginend", element: <DayBeginEndPage /> },
       { path: "/dd", element: <DDPage /> },
       { path: "/dd/maintenance", element: <DDMaintenancePage /> },
       { path: "/dd/printing", element: <DDPrintingPage /> },
       { path: "/branch-activity", element: <BranchActivityPage /> },
-      { path: "/interest-posting", element: <InterestPostingPage /> },
+      { path: "/misactivity/interestposting", element: <InterestPostingPage /> },
       { path: "/authorization", element: <AuthorizationPage /> },
-      {
-        path: "/authorization/authorizeaccountmain",
-        element: <AuthorizeAccountMainPage />,
-      },
-      {
-        path: "/authorization/authorizerole",
-        element: <RoleAuthorizationFlowRoute />,
-      },
-      { path: "/interest-posting", element: <InterestPostingPage /> },
+      { path: "/authorization/authorizeaccountmain", element: <AuthorizeAccountMainPage />, },
+      { path: "/authorization/authorizerole", element: <RoleAuthorizationFlowRoute />, },
       { path: "/sms", element: <SMSRegistrationPage /> },
-      { path: "/annual-meeting-attendance", element: <AnnualMeetingAttendancePage /> },
       { path: "/futuremodels/calculator", element: <CalculatorPage /> },
+      { path: "/authorization/authorizeaccountmain/casa", element: <AuthorizeAccountPage accountType="casa" />, },
       {
-        path: "/authorization",
-        children: [
-          {
-            index: true,
-            element: <AuthorizationPage />,
-          },
-          {
-            path: "authorizeaccountmain",
-            children: [
-              {
-                index: true,
-                element: <AuthorizeAccountMainPage />,
-              },
-              {
-                path: "casa",
-                element: <AuthorizeAccountPage accountType="casa" />,
-              },
-              {
-                path: "deposite",
-                element: <AuthorizeAccountPage accountType="deposite" />,
-              },
-              {
-                path: "loan",
-                element: <AuthorizeAccountPage accountType="loan" />,
-              },
-              {
-                path: "fixed",
-                element: <AuthorizeAccountPage accountType="fixed" />,
-              },
-              {
-                path: "investment",
-                element: <AuthorizeAccountPage accountType="investment" />,
-              },
-            ],
-          },
-        ],
+        path: "/authorization/authorizeaccountmain/deposite",
+        element: <AuthorizeAccountPage accountType="deposite" />,
       },
       {
-        path: "/authorization/authorizerole",
-        element: <RoleAuthorizationFlowRoute />,
+        path: "/authorization/authorizeaccountmain/loan",
+        element: <AuthorizeAccountPage accountType="loan" />,
+      },
+      {
+        path: "/authorization/authorizeaccountmain/fixed",
+        element: <AuthorizeAccountPage accountType="fixed" />,
+      },
+      {
+        path: "/authorization/authorizeaccountmain/investment",
+        element: <AuthorizeAccountPage accountType="investment" />,
       },
       {
         path: "/authorization/authorizecustomer",
@@ -258,10 +200,6 @@ export const router = createBrowserRouter([
         element: <AuthorizePigmyClosePage />,
       },
       {
-        path: "/authorization/authorizecustomer",
-        element: <AuthorizationCustomerPage />,
-      },
-      {
         path: "/authorization/clearing",
         children: [
           {
@@ -274,6 +212,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      { path: "/authorization/locker", element: <AuthorizeLockerPage /> },
       {
         path: "/authorization/transaction",
         element: <AuthorizeTransactionPage />,
@@ -323,25 +262,19 @@ export const router = createBrowserRouter([
         path: "/authorization/transaction/term-deposit-interest-payment",
         element: <TermDepositInterestPayment />,
       },
-      { path: "/authorization/user", element: <AuthorizationUserPage /> },
       {
         path: "/authorization/BillAuthorize",
         element: <BillAuthorizationOptions />,
       },
 
       { path: "/manager/branchmaster", element: <BranchMasterPage /> },
+      { path: "/branchmaster", element: <BranchMasterPage /> },
       { path: "/customermaster", element: <CustomerMasterPage /> },
       { path: "/dashboard", element: <DashboardPage /> },
       { path: "/futuremodels", element: <FutureModelsPage /> },
-
-
-
-
       { path: "/loan-calculators", element: <LoanCalculatorsPage /> },
-
-
       { path: "/futuremodels/casa-closing", element: <CasaClosingPage /> },
-      { path: "/futuremodels/FixedAsset", element: <FixedAssetPage /> },
+      { path: "/futuremodels/FixedAsset", element: <div className="min-h-screen app-page-bg"><FixedAssetPage /></div> },
       {
         path: "/futuremodels/investment-account",
         element: <InvestmentAccountPage />,
@@ -356,11 +289,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/authorization/authorizeaccountmain/FixedAsset",
-        element: <FixedAssetPage />,
+        element: (
+          <div className="min-h-screen app-page-bg">
+            <FixedAssetPage />
+          </div>
+        ),
       },
       {
-        path: "/futuremodels/investment-account",
-        element: <InvestmentAccountPage />,
+        path: "/authorization/authorizeaccountmain/fixed-close",
+        element: <FixedAssetClosingAuthorizePage />,
       },
       {
         path: "/authorization/authorizeaccountmain/investment-account-close",
@@ -370,7 +307,11 @@ export const router = createBrowserRouter([
       // { path: "/futuremodels/memo", element: <MemoPage /> },
       {
         path: "/futuremodels/pigmy-deposit-details",
-        element: <PigmyDepositDetailsPage />,
+        element: (
+          <div className="min-h-screen app-page-bg">
+            <PigmyDepositDetailsPage />
+          </div>
+        ),
       },
       { path: "/futuremodels/PigmyDetails", element: <PigmyDetailsPage /> },
       {
@@ -388,10 +329,6 @@ export const router = createBrowserRouter([
         element: <TDClosingReinvestPage />,
       },
       { path: "/futuremodels/tl-close", element: <TlClosePage /> },
-      {
-        path: "/futuremodels/TDClosingReinvest",
-        element: <TDClosingReinvestPage />,
-      },
       {
         path: "/authorization/authorizeaccountmain/tl-close",
         element: <TlClosePage />,
@@ -420,15 +357,38 @@ export const router = createBrowserRouter([
         element: <ModifyCashHandlingRecord />,
       },
 
-      { path: "/financial-closing", element: <FinancialClosing /> },
+      { path: "/misactivity/financialclosing", element: <FinancialClosing /> },
       {
-        path: "/financial-closing/set-product-status",
+        path: "/misactivity/financialclosing/set-product-status",
         element: <SetProductStatusPage />,
       },
       { path: "/clerk/branchmaster", element: <BranchMasterPage /> },
+
+      // GlobalMaster
       { path: "/globalmaster", element: <GlobalMasterPage /> },
-      { path: "/headofficemaster", element: <HeadOfficeMasterPage /> },
+      { path: "/globalmaster/citymaster", element: <GlobalMasterPage initialMasterKey="city" /> },
+      { path: "/globalmaster/statemaster", element: <GlobalMasterPage initialMasterKey="state" /> },
+      { path: "/globalmaster/vehicleownedmaster", element: <GlobalMasterPage initialMasterKey="vehicleOwned" /> },
+      { path: "/globalmaster/socialsubsectormaster", element: <GlobalMasterPage initialMasterKey="socialSubSector" /> },
+      { path: "/globalmaster/addressproofmaster", element: <GlobalMasterPage initialMasterKey="addressProof" /> },
+      { path: "/headoffice", element: <HeadOfficeMasterPage /> },
+      { path: "/headoffice/clearintype", element: <HeadOfficeMasterPage initialMasterKey="clearingType" /> },
+      { path: "/headoffice/productmaster", element: <HeadOfficeMasterPage initialMasterKey="productMaster" /> },
+      { path: "/headoffice/tdinterestrate", element: <HeadOfficeMasterPage initialMasterKey="tdInterestRate" /> },
+      { path: "/headoffice/installmenttype", element: <HeadOfficeMasterPage initialMasterKey="installmentType" /> },
+      { path: "/headoffice/instrumenttype", element: <HeadOfficeMasterPage initialMasterKey="instrumentType" /> },
+      { path: "/headoffice/industrymaster", element: <HeadOfficeMasterPage initialMasterKey="industry" /> },
+      { path: "/headoffice/depositrule", element: <HeadOfficeMasterPage initialMasterKey="depositRule" /> },
+      { path: "/headoffice/glaccountmaster", element: <HeadOfficeMasterPage initialMasterKey="glAccount" /> },
+      { path: "/headoffice/finalaccountgroup", element: <HeadOfficeMasterPage initialMasterKey="finalAccountGroup" /> },
+      { path: "/headoffice/accountminbalance", element: <HeadOfficeMasterPage initialMasterKey="accountMinBal" /> },
+      { path: "/headoffice/accounttype", element: <HeadOfficeMasterPage initialMasterKey="accountType" /> },
+      { path: "/headoffice/activitycode", element: <HeadOfficeMasterPage initialMasterKey="activityCode" /> },
+      { path: "/headoffice/branchparameter", element: <HeadOfficeMasterPage initialMasterKey="branchParameter" /> },
+      { path: "/headoffice/chequetype", element: <HeadOfficeMasterPage initialMasterKey="chequeType" /> },
+      { path: "/headoffice/classificationcode", element: <HeadOfficeMasterPage initialMasterKey="classificationCode" /> },
       { path: "/support-utility", element: <SupportUtilityPage /> },
+      { path: "/misactivity/supportutility", element: <SupportUtilityPage /> },
       { path: "/clerk/clearing", element: <ClerkClearingPage /> },
       { path: "/clerk/sms", element: <ClerkSmsPage /> },
       { path: "/locker", element: <LockerPage /> },
@@ -464,9 +424,9 @@ export const router = createBrowserRouter([
         path: "/transactionmaster/modify-tds-transaction",
         element: <ModifyTdsTransactionPage />,
       },
-      { path: "/usermaster", element: <UserMasterPage /> },
+      { path: "/misactivity/mastermaintenanceuser", element: <UserMasterPage /> },
       { path: "/futuremodals", element: <FutureModalsPage /> },
-      { path: "/tds", element: <TDSReportsPage /> },
+      { path: "/misactivity/tds", element: <TDSReportsPage /> },
 
       // HO-Clerk Route
       { path: "/ho-clerk-application", element: <Application /> },
@@ -504,17 +464,23 @@ export const router = createBrowserRouter([
       },
 
       // Payroll
-      { path: "/payroll/master", element: <PayrollMaster /> },
-      { path: "/payroll/transaction", element: <PayrollTransaction /> },
-      { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
-      { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
-      { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
-      { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
-      { path: "/payroll/transaction/salary-updation", element: <SalaryUpdationPage /> },
-      { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
-
+      // { path: "/payroll/master", element: <PayrollMaster /> },
+      // { path: "/payroll/transaction", element: <PayrollTransaction /> },
+      // { path: "/payroll/transaction/employee-leave-balance", element: <EmployeeLeaveBalancePage /> },
+      // { path: "/payroll/transaction/employee-loan-details", element: <EmployeeLoanDetailsPage /> },
+      // { path: "/payroll/transaction/leave-opening-balance", element: <LeaveOpeningBalancePage /> },
+      // { path: "/payroll/transaction/salary-instruction", element: <SalaryInstructionPage /> },
+      // { path: "/payroll/transaction/salary-updation", element: /<SalaryUpdationPage /> },
+      // { path: "/payroll/transaction/update-attendance", element: <UpdateAttendancePage /> },
+      //       { path: "/payroll/employee-promotion", element: <EmployeePromotionPage /> },
+      // { path: "/payroll/employee-resignation", element: <EmployeeResignationPage /> },
+      // { path: "/payroll/employee-suspension", element: <EmployeeSuspensionPage /> },
+      // { path: "/payroll/employee-transfer", element: <EmployeeTransferPage /> },
+      // { path: "/payroll/leave-application", element: <LeaveApplicationPage /> },
+      // { path: "/payroll/employee-termination", element: <EmployeeTerminationPage /> },
+      // 
       // Shares
-      { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
+      // { path: "/shares/allotment-entry", element: <ShareAllotmentEntryPage /> },
     ],
   },
   { path: "*", element: <Navigate to="/dashboard" replace /> },

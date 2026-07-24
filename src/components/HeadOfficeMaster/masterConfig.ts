@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IdCard, IndianRupee, User, Layers } from "lucide-react";
+import { IdCard, IndianRupee, User, Layers, Building2, RefreshCw, Percent, Calendar, ClipboardList } from "lucide-react";
 
 export const MASTERS = [
   { icon: "Wallet", titleEn: "Account Minimum Balance", titleHi: "खात्यातील किमान शिल्लक", key: "accountMinBal" },
@@ -48,6 +48,11 @@ const FIELD_ICONS = {
   rupee: IndianRupee,
   user: User,
   layers: Layers,
+  bank: Building2,
+  refresh: RefreshCw,
+  percent: Percent,
+  calendar: Calendar,
+  clipboard: ClipboardList,
 };
 
 const accountMinBalRows = Array.from({ length: 13 }, (_, i) => {
@@ -93,23 +98,312 @@ export const MASTER_CONFIG = {
       { key: "minBalance", label: "Minimum Balance" },
     ],
   },
+  classificationCode: {
+    columns: [
+      { key: "classificationId", label: "Classification ID" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "classificationId", labelEn: "Classification ID", labelHi: "वर्गीकरण आयडी", placeholder: "Enter Classification ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "classificationId", label: "Classification ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  chequeType: {
+    columns: [
+      { key: "chequeTypeCode", label: "Cheque Type" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "chequeTypeCode", labelEn: "Cheque Type", labelHi: "चेकचा प्रकार", placeholder: "Enter Cheque Type", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Cheque Type Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "chequeTypeCode", label: "Cheque Type" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  branchParameter: {
+    // Branch Name / Is CBS Implemented from the legacy screen design aren't part
+    // of the real Branch Parameter API, so they're dropped here.
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "serviceBranchCode", label: "Service Branch Code" },
+      { key: "weeklyHoliday", label: "Weekly Holiday" },
+      { key: "isBranchTransacting", label: "Is Branch Transacting" },
+      { key: "isHeadOffice", label: "Is Head Office" },
+      { key: "isDenominationRequired", label: "Is Denomination Required" },
+      { key: "isTellerSystemUsed", label: "Is Teller System Used" },
+      { key: "isOnlineClearingImplemented", label: "Is Online Clearing Implemented" },
+      { key: "isDayEndExecuted", label: "Is Day End Executed" },
+      { key: "workingDay", label: "Working Day" },
+      { key: "sbNextInterestPostingDate", label: "SB Next Interest Posting Date" },
+      { key: "caNextInterestPostingDate", label: "CA Next Interest Posting Date" },
+      { key: "tdNextInterestPostingDate", label: "TD Next Interest Posting Date" },
+      { key: "tlNextInterestPostingDate", label: "TL Next Interest Posting Date" },
+      { key: "ccNextInterestPostingDate", label: "CC Next Interest Posting Date" },
+    ],
+    rows: [],
+    fields: [
+      { key: "branchCode", labelEn: "Branch Code", labelHi: "शाखा कोड", placeholder: "Enter Branch Code", icon: "id", readOnlyOnEdit: true },
+      { key: "serviceBranchCode", labelEn: "Service Branch Code", labelHi: "सेवा शाखा कोड", placeholder: "Enter Service Branch Code", icon: "bank" },
+      { key: "weeklyHoliday", labelEn: "Weekly Holiday", labelHi: "साप्ताहिक सुट्टी", placeholder: "Enter Weekly Holiday (1-7)", icon: "calendar" },
+      { key: "isBranchTransacting", labelEn: "Is Branch Transacting", labelHi: "शाखा व्यवहार करत आहे का", type: "radio" },
+      { key: "isHeadOffice", labelEn: "Is Head Office", labelHi: "मुख्य कार्यालय आहे का", type: "radio" },
+      { key: "isDenominationRequired", labelEn: "Is Denomination Required", labelHi: "मूल्यवर्ग आवश्यक आहे का", type: "radio" },
+      { key: "isTellerSystemUsed", labelEn: "Is Teller System Used", labelHi: "टेलर सिस्टम वापरली आहे का", type: "radio" },
+      { key: "isOnlineClearingImplemented", labelEn: "Is Online Clearing Implemented", labelHi: "ऑनलाइन क्लिअरिंग लागू आहे का", type: "radio" },
+      { key: "isDayEndExecuted", labelEn: "Is Day End Executed", labelHi: "डे एंड कार्यान्वित झाले का", type: "radio" },
+      { key: "workingDay", labelEn: "Working Day", labelHi: "कामकाजाचा दिवस", placeholder: "Select Working Day", icon: "calendar", type: "date" },
+      { key: "sbNextInterestPostingDate", labelEn: "SB Next Interest Posting Date", labelHi: "एसबी पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "caNextInterestPostingDate", labelEn: "CA Next Interest Posting Date", labelHi: "सीए पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "tdNextInterestPostingDate", labelEn: "TD Next Interest Posting Date", labelHi: "टीडी पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "tlNextInterestPostingDate", labelEn: "TL Next Interest Posting Date", labelHi: "टीएल पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+      { key: "ccNextInterestPostingDate", labelEn: "CC Next Interest Posting Date", labelHi: "सीसी पुढील व्याज नोंद तारीख", placeholder: "Select Date", icon: "calendar", type: "date" },
+    ],
+    filterFields: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "serviceBranchCode", label: "Service Branch Code" },
+    ],
+  },
+  activityCode: {
+    columns: [
+      { key: "activityId", label: "Activity ID" },
+      { key: "description", label: "Activity Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "activityId", labelEn: "Activity ID", labelHi: "क्रियाकलाप आयडी", placeholder: "Enter Activity ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Activity Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "activityId", label: "Activity ID" },
+      { key: "description", label: "Activity Description" },
+    ],
+  },
   accountType: {
+    // "Created Date" from the legacy screen design isn't part of the real
+    // Account Type API (accountType/name/loanDeposit only), so it's dropped here.
     columns: [
       { key: "accountId", label: "Account ID" },
       { key: "accountName", label: "Account Name" },
-      { key: "createdDate", label: "Created Date" },
       { key: "loanDeposit", label: "Loan Deposit" },
     ],
     rows: accountTypeRows,
     fields: [
       { key: "accountId", labelEn: "Account Type ID", labelHi: "खात्याचा प्रकार आयडी", placeholder: "Enter Account Type ID", icon: "id", readOnlyOnEdit: true },
       { key: "accountName", labelEn: "Account Name", labelHi: "खात्याचे नाव", placeholder: "Enter Account Name", icon: "user" },
-      { key: "loanDeposit", labelEn: "Loan Deposit", labelHi: "कर्ज ठेव", placeholder: "Enter Loan Deposit", icon: "layers" },
+      { key: "loanDeposit", labelEn: "Loan Deposit", labelHi: "कर्ज ठेव", placeholder: "Select Loan Deposit", icon: "layers", type: "select", options: ["Deposit", "Loan"] },
     ],
     filterFields: [
       { key: "accountId", label: "Account ID" },
       { key: "accountName", label: "Account Name" },
       { key: "loanDeposit", label: "Loan Deposit" },
+    ],
+  },
+  defaultBranchAccounts: {
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "inwardClearingAccountCode", label: "Inward Clearing Account Code" },
+      { key: "outwardClearingAccountCode", label: "Outward Clearing Account Code" },
+    ],
+    rows: [],
+    fields: [
+      { key: "branchCode", labelEn: "Branch Code", labelHi: "शाखा कोड", placeholder: "Enter Branch Code", icon: "id", readOnlyOnEdit: true },
+      { key: "inwardClearingAccountCode", labelEn: "Inward Clearing Account Code", labelHi: "इनवर्ड क्लीयरिंग खाते कोड", placeholder: "Enter Inward Clearing Account Code", icon: "user" },
+      { key: "outwardClearingAccountCode", labelEn: "Outward Clearing Account Code", labelHi: "आउटवर्ड क्लीयरिंग खाते कोड", placeholder: "Enter Outward Clearing Account Code", icon: "user" },
+    ],
+    filterFields: [
+      { key: "searchBy", label: "Search By", type: "select", options: ["NAME", "BRANCH_CODE"] },
+      { key: "textToSearch", label: "Search Text", placeholder: "Enter branch name or code" },
+    ],
+  },
+  clearingType: {
+    columns: [
+      { key: "id", label: "Clearing Type ID" },
+      { key: "description", label: "Description" },
+      { key: "clearingHouseCode", label: "Clearing House Code" },
+      { key: "payableRequired", label: "Payable Required" },
+      { key: "payableHead", label: "Payable Head" },
+      { key: "receivableRequired", label: "Receivable Required" },
+      { key: "receivableHead", label: "Receivable Head" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Clearing Type", labelHi: "क्लिअरिंग प्रकार", placeholder: "Enter Clearing Type", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Clearing Type Description", labelHi: "क्लिअरिंग प्रकाराचे वर्णन", placeholder: "Enter Clearing Type Description", icon: "user" },
+      { key: "clearingHouseCode", labelEn: "Clearing House Code", labelHi: "क्लिअरिंग हाऊस कोड", placeholder: "Enter Clearing House Codde", icon: "bank" },
+      { key: "payableRequired", labelEn: "Is Payable Required", labelHi: "अल्पवयीन आहे का", type: "radio", pairWith: "payableHead" },
+      { key: "payableHead", labelEn: "Payable Head", labelHi: "देय खाते शीर्ष", placeholder: "Enter Payable Head", icon: "refresh" },
+      { key: "receivableRequired", labelEn: "Is Receivable Required", labelHi: "अल्पवयीन आहे का", type: "radio", pairWith: "receivableHead" },
+      { key: "receivableHead", labelEn: "Receivable Head", labelHi: "प्राप्य खाते शीर्ष", placeholder: "Enter Receivable Head", icon: "refresh" },
+    ],
+    filterFields: [
+      { key: "id", label: "Clearing Type ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  productMaster: {
+    // Only columns backed by real fields on the Product Master API response
+    // (see GET /products) — Copy From / GL Account Code / Max Cash & Withdrawal
+    // Limit are Add-time-only concepts, not stored on the product record.
+    columns: [
+      { key: "accountType", label: "Account Type Code" },
+      { key: "productCode", label: "Product Code" },
+      { key: "defaultMinimumBalanceId", label: "Default Min Balance Id" },
+      { key: "interestRoundingFactor", label: "Interest Rounding Factor" },
+      { key: "implemented", label: "Is Implemented" },
+      { key: "nomineeRequired", label: "Is Nominee Required" },
+      { key: "cashTransactionAllowed", label: "Is Cash Transaction Allowed" },
+      { key: "inwardClearingAllowed", label: "Is Inward Clearing Allowed" },
+    ],
+    rows: [],
+    // Add/View/Edit for this master render via ProductParameterModal instead of
+    // the generic field-config loop, so no `fields` array is needed here.
+    fields: [],
+    filterFields: [
+      { key: "productCode", label: "Product Code" },
+      { key: "description", label: "Description" },
+      { key: "accountType", label: "Account Type" },
+    ],
+  },
+  tdInterestRate: {
+    // Read-only browse matching GET /deposit-interest-rates; the natural key is
+    // the whole row (accountTypeCode + categoryCode + dateOfApplication + period range).
+    columns: [
+      { key: "accountTypeCode", label: "Account Type Code" },
+      { key: "categoryCode", label: "Category Code" },
+      { key: "dateOfApplication", label: "Date Of Application" },
+      { key: "fromPeriod", label: "From period" },
+      { key: "toPeriod", label: "To Period" },
+      { key: "unitOfPeriod", label: "Unit to Period" },
+      { key: "rateOfInterest", label: "Rate Of Interest" },
+    ],
+    rows: [],
+    fields: [
+      { key: "accountTypeCode", labelEn: "Account Type Code", labelHi: "खात्याच्या प्रकाराचा कोड", placeholder: "Enter Account Type Code", icon: "id" },
+      { key: "categoryCode", labelEn: "Category Code", labelHi: "वर्गवारी संकेत", type: "select", options: ["PUBLIC", "STAFF"], placeholder: "Select Category" },
+      { key: "dateOfApplication", labelEn: "Date Of Application", labelHi: "अर्ज करण्याची तारीख", type: "date", placeholder: "Select Date Of Application", icon: "calendar" },
+      { key: "fromPeriod", labelEn: "From Period", labelHi: "कालावधीचा प्रकार", placeholder: "Enter From Period", icon: "rupee" },
+      { key: "toPeriod", labelEn: "To Period", labelHi: "कालावधीपर्यंत", placeholder: "Enter To Period", icon: "rupee" },
+      { key: "unitOfPeriod", labelEn: "Unit Of Period", labelHi: "कालावधीचे एकक", type: "select", options: ["D", "M", "Y"], placeholder: "Select Unit Of Period" },
+      { key: "rateOfInterest", labelEn: "Rate of Interest", labelHi: "व्याजदर", placeholder: "Enter Rate of Interest", icon: "percent" },
+    ],
+    filterFields: [
+      { key: "accountTypeCode", label: "Account Type Code" },
+      { key: "categoryCode", label: "Category Code" },
+    ],
+  },
+  installmentType: {
+    columns: [
+      { key: "id", label: "Installment Type ID" },
+      { key: "description", label: "Installment Description" },
+      { key: "installmentOn", label: "Installment On" },
+      { key: "diaryBased", label: "Is Dairy Base" },
+      { key: "principalArrearsOnDiary", label: "Principal Arreires On Diary" },
+      { key: "interestArrearsOnDiary", label: "Interest Arreires On Diary" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Installment Type ID", labelHi: "हप्ता प्रकार आयडी", placeholder: "Enter Installment Type ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Installment Type Description", labelHi: "हप्ता प्रकार वर्णन", placeholder: "Enter Installment Type Description", icon: "user" },
+      { key: "installmentOn", labelEn: "Installment On", labelHi: "हप्ता लागू आधार", type: "select", options: ["P", "S", "B", "N"], placeholder: "Select Installment On", icon: "clipboard" },
+      { key: "diaryBased", labelEn: "Is Diary Base", labelHi: "डायरी आधारित आहे का", type: "radio", pairWith: "principalArrearsOnDiary" },
+      { key: "principalArrearsOnDiary", labelEn: "Principal Arreirs On Diary", labelHi: "डायरीवरील थकीत मूळ रक्कम", type: "radio" },
+      { key: "interestArrearsOnDiary", labelEn: "Interest Arreirs On Diary", labelHi: "डायरीवरील थकीत व्याज रक्कम", type: "radio" },
+    ],
+    filterFields: [
+      { key: "id", label: "Installment Type ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  instrumentType: {
+    // Create/update both go through the idempotent POST /instrument-types/save
+    // (there is no plain GET list or separate create endpoint for this master).
+    columns: [
+      { key: "code", label: "Instrument Type" },
+      { key: "description", label: "Instrument Type Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "code", labelEn: "Instrument Type", labelHi: "साधन प्रकार", placeholder: "Enter Instrument Type", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Instrument Type Description", labelHi: "साधन प्रकार वर्णन", placeholder: "Enter Classification Description", icon: "user" },
+    ],
+    filterFields: [
+      { key: "code", label: "Instrument Type" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  finalAccountGroup: {
+    columns: [
+      { key: "code", label: "Final Account Group Code" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "code", labelEn: "Final Account Group Code", labelHi: "अंतिम खात्याचा गट कोड", placeholder: "Enter Final Account Group Code", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "code", label: "Final Account Group Code" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  glAccount: {
+    // Branch Code / Product Code aren't part of the documented create/update
+    // request body, but are shown here in case the list/detail response
+    // includes them (toGlAccountRecord defaults them to "" when absent).
+    columns: [
+      { key: "branchCode", label: "Branch Code" },
+      { key: "productCode", label: "Product Code" },
+      { key: "accountSerial", label: "Account Serial" },
+      { key: "glAccountCode", label: "GL Account Code" },
+      { key: "description", label: "Description" },
+      { key: "alie", label: "ALIE" },
+      { key: "dayBookSequenceNumber", label: "Day Book Sequence Number" },
+    ],
+    rows: [],
+    // Add/View/Edit for this master render via GlAccountParameterModal instead
+    // of the generic field-config loop, so no `fields` array is needed here.
+    fields: [],
+    filterFields: [
+      { key: "glAccountCode", label: "GL Account Code" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  depositRule: {
+    columns: [
+      { key: "id", label: "Deposit Rule ID" },
+      { key: "description", label: "Description" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Deposit Rule ID", labelHi: "ठेव नियम आयडी", placeholder: "Enter Deposit Rule ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Enter Description", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "id", label: "Deposit Rule ID" },
+      { key: "description", label: "Description" },
+    ],
+  },
+  industry: {
+    columns: [
+      { key: "id", label: "Industry ID" },
+      { key: "description", label: "Industry Type" },
+    ],
+    rows: [],
+    fields: [
+      { key: "id", labelEn: "Industry Type ID", labelHi: "इंडस्ट्री टाईप आयडी", placeholder: "Enter Industry Type ID", icon: "id", readOnlyOnEdit: true },
+      { key: "description", labelEn: "Description", labelHi: "वर्णन", placeholder: "Describe Industry", icon: "clipboard" },
+    ],
+    filterFields: [
+      { key: "id", label: "Industry ID" },
+      { key: "description", label: "Industry Type" },
     ],
   },
 };
@@ -148,7 +442,7 @@ export const emptyFormData = (masterKey) => {
   const config = getMasterConfig(masterKey);
   const data = {};
   config.fields.forEach((field) => {
-    data[field.key] = "";
+    data[field.key] = field.type === "radio" ? "N" : "";
   });
   return data;
 };

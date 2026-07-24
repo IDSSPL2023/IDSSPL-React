@@ -697,7 +697,7 @@ const HoTransferAuthorizePage = () => {
   const handleResetFilters = () => setFilters(HoTransferFilterModal_defaultHoTransferFilters);
 
   return (
-    <div className="min-h-screen bg-[#E7EAEF] no-scrollbar dark:bg-slate-950">
+    <div className="min-h-screen app-page-bg no-scrollbar dark:bg-slate-950">
       <GlobalNav
         titleEn="HO Transfer Entry Authorize"
         titleHi="HO हस्तांतरण नोंद अधिकृत करणे"
